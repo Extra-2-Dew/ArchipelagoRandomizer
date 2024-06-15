@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net35</TargetFramework>
+		<AssemblyName>ArchipelagoRandomizer</AssemblyName>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>Latest</LangVersion>
+		<NoWarn>1701;1702;0436</NoWarn>
+	</PropertyGroup>
+	
+	<!-- Custom properties-->
+	<PropertyGroup>
+		<GameDataPath>$([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\AppData\LocalLow\Ludosity\Ittle Dew 2</GameDataPath>
+		<OutDir>$(GameDataPath)\BepInEx\plugins\$(AssemblyName)</OutDir>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Include="ArchipelagoRandomizer.csproj.user" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.Core" Version="5.*" />
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+		<PackageReference Include="UnityEngine.Modules" Version="5.6.7" IncludeAssets="compile" />
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" />
+
+		<Reference Include="$(GameInstallPath)\ID2_Data\Managed\Assembly-CSharp.dll" Publicize="true">
+			<Private>false</Private>
+		</Reference>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="thumbnail.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+		<Publicize Include="Assembly-CSharp" />
+	</ItemGroup>
+  
+	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+	</ItemGroup>
+
+</Project>

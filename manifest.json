@@ -1,0 +1,15 @@
+{
+	"name": "",
+	"description": "",
+	"authors": [
+
+	],
+	"version": "0.0.1",
+	"requires": [
+		"ModCore"
+	],
+	"conflicts": [
+
+	],
+	"github-url": ""
+}
