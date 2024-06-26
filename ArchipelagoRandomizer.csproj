@@ -28,6 +28,17 @@
 		<Reference Include="$(GameInstallPath)\ID2_Data\Managed\Assembly-CSharp.dll" Publicize="true">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="$(GameDataPath)\BepInEx\plugins\ModCore\ModCore.dll">
+			<Private>false</Private>
+		</Reference>
+
+		<None Update="Data\itemData.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+		<None Update="Data\locationData.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="manifest.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
