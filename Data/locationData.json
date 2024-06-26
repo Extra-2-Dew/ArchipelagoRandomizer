@@ -1,0 +1,154 @@
+{
+	"locations": [
+		{
+			"location": "Fluffy Fields Caves - Goldbun Combat Chest",
+			"offset": 0,
+			"flag": "Dungeon_EnemyChest-21--2"
+		},
+		{
+			"location": "Fluffy Fields Caves - Portal Room Chest",
+			"offset": 1,
+			"flag": "Dungeon_Chest-36--3"
+		},
+		{
+			"location": "Fluffy Fields Caves - Timed Bridge Chest",
+			"offset": 2,
+			"flag": "Dungeon_Chest-71--8"
+		},
+		{
+			"location": "Fluffy Fields Caves - Hermit Hint Chest",
+			"offset": 3,
+			"flag": "Dungeon_Chest-82--4"
+		},
+		{
+			"location": "Fluffy Fields Caves - Laser Chest",
+			"offset": 4,
+			"flag": "Dungeon_PuzzleChest-99--4"
+		},
+		{
+			"location": "Fluffy Fields Caves - Number Blocks Chest",
+			"offset": 5,
+			"flag": "Dungeon_Chest-33--15"
+		},
+		{
+			"location": "Fluffy Fields Caves - Ice Blockade Chest",
+			"offset": 6,
+			"flag": "Dungeon_Chest-48--18"
+		},
+		{
+			"location": "Fluffy Fields Caves - Double Spikebun Combat Chest",
+			"offset": 7,
+			"flag": "Dungeon_EnemyChest-82--16"
+		},
+		{
+			"location": "Fluffy Fields Caves - Potion Bar Chest",
+			"offset": 8,
+			"flag": "Dungeon_Chest-25--28"
+		},
+		{
+			"location": "Fluffy Fields Caves - Six Buns Combat Chest",
+			"offset": 9,
+			"flag": "Dungeon_EnemyChest-40--29"
+		},
+		{
+			"location": "Fluffy Fields Caves - Artist Backroom Chest",
+			"offset": 10,
+			"flag": "Dungeon_Chest-24--52"
+		},
+		{
+			"location": "Sweetwater Coast Caves - White Gates Combat Chest",
+			"offset": 100,
+			"flag": "Dungeon_Chest-19--3"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Feral Gates Combat Chest",
+			"offset": 101,
+			"flag": "Dungeon_Chest-93--3"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Three Teleporters Chest",
+			"offset": 102,
+			"flag": "Dungeon_Chest-3--16"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Four Candy Snakes Combat Chest",
+			"offset": 103,
+			"flag": "Dungeon_EnemyChest-25--17"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Portal Spikes Chest",
+			"offset": 104,
+			"flag": "Dungeon_Chest-68--27"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Hint Hermit Chest",
+			"offset": 105,
+			"flag": "Dungeon_Chest-54--17"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Fake Chest Cave Chest",
+			"offset": 106,
+			"flag": "Dungeon_Chest-67--15"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Wooden Balls Spike Floor Chest",
+			"offset": 107,
+			"flag": "Dungeon_Chest-78--15"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Kung Fu Jenny Chest",
+			"offset": 108,
+			"flag": "Dungeon_Chest-94--16"
+		},
+		{
+			"location": "Pillow Fort - Treasure Chest",
+			"offset": 800,
+			"flag": "Dungeon_PuzzleChest-39--28"
+		},
+		{
+			"location": "Pillow Fort - Shellbun Nest Key",
+			"offset": 801,
+			"flag": "KeyChest-7--44"
+		},
+		{
+			"location": "Pillow Fort - Crayon Chest",
+			"offset": 802,
+			"flag": "Dungeon_EnemyChest-3--29"
+		},
+		{
+			"location": "Pillow Fort - Safety Jenny Gate Key",
+			"offset": 803,
+			"flag": "KeyChest-17--17"
+		},
+		{
+			"location": "Pillow Fort - Boss Reward Chest",
+			"offset": 804,
+			"flag": "Dungeon_Chest-37--4"
+		},
+		{
+			"location": "Sand Castle - Crayon Chest",
+			"offset": 900,
+			"flag": "Dungeon_Chest-37--15"
+		},
+		{
+			"location": "Sand Castle - Orbiting Balls Key",
+			"offset": 901,
+			"flag": "KeyChest-11--36"
+		},
+		{
+			"location": "Sand Castle - Spikebun Dunes Key",
+			"offset": 902,
+			"flag": "KeyChest-69--3"
+		},
+		{
+			"location": "Sand Castle - Treasure Chest",
+			"offset": 903,
+			"flag": "Dungeon_Chest-53--44"
+		},
+		{
+			"location": "Sand Castle - Boss Reward Chest",
+			"offset": 904,
+			"flag": "Dungeon_Chest-7--4"
+		}
+	]
+}
