@@ -21,5 +21,10 @@ namespace ArchipelagoRandomizer
 			DebugMenuManager.AddCommands();
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 		}
+
+		private void Start()
+		{
+			DebugMenuManager.Instance.OnDebugMenuInitialized += () => DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}");
+		}
 	}
 }

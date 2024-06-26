@@ -16,7 +16,6 @@ namespace ArchipelagoRandomizer
         [DebugMenuCommand(commandName: "archipelago", commandAliases: ["ap"], caseSensitive:true)]
         private void SendAPCommand(string[] args)
         {
-            Debug.Log("Ok this ran");
             if (args.Length == 0)
             {
                 DebugMenuManager.LogToConsole("USAGE:\n" +
