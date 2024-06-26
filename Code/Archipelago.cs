@@ -15,8 +15,19 @@ namespace ArchipelagoRandomizer
 
         public static bool TryCreateSession(string url, string slot, string password, out string message)
         {
-            Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
-            Session = ArchipelagoSessionFactory.CreateSession(url);
+            if (Session != null)
+            {
+                Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
+            }
+            try
+            {
+                Session = ArchipelagoSessionFactory.CreateSession(url);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return false;
+            }
 
             LoginResult result;
 
@@ -53,7 +64,7 @@ namespace ArchipelagoRandomizer
 
         private static void OnReceiveMessage(LogMessage message)
         {
-            DebugMenuManager.Instance.UpdateOutput(message.ToString());
+            DebugMenuManager.LogToConsole(message.ToString());
         }
     }
 }

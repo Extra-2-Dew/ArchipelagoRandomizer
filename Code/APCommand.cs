@@ -13,29 +13,42 @@ namespace ArchipelagoRandomizer
     
     public class APCommand : Attribute
     {
-        [AP(commandName: "archipelago", commandAliases: ["ap"])]
+        [DebugMenuCommand(commandName: "archipelago", commandAliases: ["ap"], caseSensitive:true)]
         private void SendAPCommand(string[] args)
         {
             Debug.Log("Ok this ran");
             if (args.Length == 0)
             {
-                DebugMenuManager.Instance.UpdateOutput("<color=#d94343>USAGE:\n" +
-                    "  /connect {server:port} {slot} {password}: Connect to an Archipelago server" +
-                    "  !hint {item}: Hint the location of an item" +
-                    "  !release: Release all items remaining in your world to other worlds (if you have permission)" +
-                    "  !collect: Receive all items that belong to your world (if you have permission)" +
-                    "You can also simply type to chat with other players.</color>");
+                DebugMenuManager.LogToConsole("USAGE:\n" +
+                    "  ap /connect {server:port} {slot} {password}: Connect to an Archipelago server\n" +
+                    "  ap !hint {item}: Hint the location of an item\n" +
+                    "  ap !release: Release all items remaining in your world to other worlds (if you have permission)\n" +
+                    "  ap !collect: Receive all items that belong to your world (if you have permission)\n" +
+                    "You can also simply type to chat with other players.", DebugMenuManager.TextColor.Error);
                 return;
             }
             if (args[0] == "/connect")
             {
-                if (Archipelago.TryCreateSession(args[1], args[2], args[3], out string message))
+                if (args.Length < 3)
                 {
-                    DebugMenuManager.Instance.UpdateOutput($"<color=#539a39>{message}</color>");
+                    DebugMenuManager.LogToConsole("USAGE:\n" +
+                        "  ap /connect {server:port} {slot} {password (if needed)}\n" +
+                        "Examples:" +
+                        "ap /connect localhost:38281 PlayerIttle\n" +
+                        "ap /connect archipelago.gg:12345 PlayerIttle mYPassWord", DebugMenuManager.TextColor.Error);
+                    return;
+                }
+                string server = args[1];
+                string slot = args[2];
+                string password = "";
+                if (args.Length >= 4) password = args[3];
+                if (Archipelago.TryCreateSession(server, slot, password, out string message))
+                {
+                    DebugMenuManager.LogToConsole(message, DebugMenuManager.TextColor.Success);
                 }
                 else
                 {
-                    DebugMenuManager.Instance.UpdateOutput($"<color=#d94343>{message}</color>");
+                    DebugMenuManager.LogToConsole(message, DebugMenuManager.TextColor.Error);
                 }
 
                 return;
