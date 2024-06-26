@@ -58,7 +58,8 @@ namespace ArchipelagoRandomizer
 
             var loginSuccess = (LoginSuccessful)result;
             Session.MessageLog.OnMessageReceived += OnReceiveMessage;
-            message = "Successfully connected!";
+            message = "Successfully connected!\n" +
+                "Now that you are connected, you can use !help to list commands to run via the server.";
             return true;
         }
 

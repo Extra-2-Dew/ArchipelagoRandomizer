@@ -54,6 +54,11 @@ namespace ArchipelagoRandomizer
                 return;
             }
             
+            if (Archipelago.Session == null)
+            {
+                DebugMenuManager.LogToConsole("No session active. Please connect with 'ap /connect' first.", DebugMenuManager.TextColor.Error);
+                return;
+            }
 
             string combinedArgs = string.Join(" ", args).TrimEnd();
 
