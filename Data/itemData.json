@@ -1,0 +1,62 @@
+{
+	"items": [
+		{
+			"item": "Stick",
+			"offset": 0,
+			"flag": "melee",
+			"value": "1"
+		},
+		{
+			"item": "Forcewand I",
+			"offset": 1,
+			"flag": "forcewand",
+			"value": "1"
+		},
+		{
+			"item": "Dynamite I",
+			"offset": 2,
+			"flag": "dynamite",
+			"value": "1"
+		},
+		{
+			"item": "Icering I",
+			"offset": 3,
+			"flag": "icering",
+			"value": "1"
+		},
+		{
+			"item": "Chain I",
+			"offset": 4,
+			"flag": "chain",
+			"value": "1"
+		},
+		{
+			"item": "Forcewand Upgrade",
+			"offset": 5,
+			"flag": "forcewand",
+			"value": "+1"
+		},
+		{
+			"item": "Dynamite Upgrade",
+			"offset": 6,
+			"flag": "dynamite",
+			"value": "+1"
+		},
+		{
+			"item": "Icering Upgrade",
+			"offset": 7,
+			"flag": "icering",
+			"value": "+1"
+		},
+		{
+			"item": "Chain Upgrade",
+			"offset": 8,
+			"flag": "chain",
+			"value": "+1"
+		},
+		{
+			"item": "Roll",
+			"offset": 9
+		}
+	]
+}
