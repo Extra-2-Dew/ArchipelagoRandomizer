@@ -11,7 +11,7 @@ using UnityEngine;
 namespace ArchipelagoRandomizer
 {
     
-    public class APCommand : Attribute
+    public class APCommand
     {
         [DebugMenuCommand(commandName: "archipelago", commandAliases: ["ap"], caseSensitive:true)]
         private void SendAPCommand(string[] args)
@@ -53,7 +53,7 @@ namespace ArchipelagoRandomizer
                 return;
             }
             
-            if (Archipelago.Session == null)
+            if (Archipelago.session == null)
             {
                 DebugMenuManager.LogToConsole("No session active. Please connect with 'ap /connect' first.", DebugMenuManager.TextColor.Error);
                 return;
@@ -63,7 +63,7 @@ namespace ArchipelagoRandomizer
 
             if (combinedArgs == "") return;
 
-            Archipelago.Session.Socket.SendPacket(new SayPacket() { Text = combinedArgs });
+            Archipelago.session.Socket.SendPacket(new SayPacket() { Text = combinedArgs });
         }
         
     }

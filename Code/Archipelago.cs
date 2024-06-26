@@ -11,17 +11,17 @@ namespace ArchipelagoRandomizer
 {
     public class Archipelago
     {
-        public static ArchipelagoSession Session;
+        public static ArchipelagoSession session;
 
         public static bool TryCreateSession(string url, string slot, string password, out string message)
         {
-            if (Session != null)
+            if (session != null)
             {
-                Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
+                session.MessageLog.OnMessageReceived -= OnReceiveMessage;
             }
             try
             {
-                Session = ArchipelagoSessionFactory.CreateSession(url);
+                session = ArchipelagoSessionFactory.CreateSession(url);
             }
             catch (Exception ex)
             {
@@ -33,7 +33,7 @@ namespace ArchipelagoRandomizer
 
             try
             {
-                result = Session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password);
+                result = session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password);
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace ArchipelagoRandomizer
             }
 
             var loginSuccess = (LoginSuccessful)result;
-            Session.MessageLog.OnMessageReceived += OnReceiveMessage;
+            session.MessageLog.OnMessageReceived += OnReceiveMessage;
             message = "Successfully connected!\n" +
                 "Now that you are connected, you can use !help to list commands to run via the server.";
             return true;
