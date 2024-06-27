@@ -1,10 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using System;
-using System.Linq;
-using System.Reflection;
 using ModCore;
+using System.Reflection;
 
 namespace ArchipelagoRandomizer
 {
@@ -18,13 +16,15 @@ namespace ArchipelagoRandomizer
 		{
 			Log = Logger;
 			Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
-			DebugMenuManager.AddCommands();
-			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-		}
 
-		private void Start()
-		{
-			DebugMenuManager.Instance.OnDebugMenuInitialized += () => DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}");
+			Events.OnFileStart += (newFile) =>
+			{
+				new APHandler();
+				new APCommand();
+				new ItemRandomizer(newFile);
+				Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+				DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
+			};
 		}
 	}
 }

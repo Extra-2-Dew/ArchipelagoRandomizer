@@ -8,40 +8,31 @@ namespace ArchipelagoRandomizer
 	public class ItemRandomizer
 	{
 		private const int baseId = 238492834;
+		private static ItemRandomizer instance;
 		private readonly List<LocationData> locationData;
 		private readonly List<ItemData> itemData;
 
+		public static ItemRandomizer Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 
-		public ItemRandomizer()
+		public ItemRandomizer(bool newFile)
 		{
+			instance = this;
+
 			// Parse data JSON
 			locationData = ParseLocationJson();
 			itemData = ParseItemJson();
 			HasInitialized = locationData != null && itemData != null;
-			Debug.Log(HasInitialized);
 
-			if (HasInitialized)
-			{
-				// Subscriptions
-				Events.OnFileStart += SetupNewFile;
-			}
-		}
-
-		internal void SetupNewFile(bool newFile)
-		{
 			if (newFile && HasInitialized)
-			{
-				SaverOwner saver = ModCore.Plugin.MainSaver;
-				saver.LocalStorage.GetLocalSaver("settings").SaveInt("hideCutscenes", 1);
-				saver.SaveAll();
-			}
+				SetupNewFile();
 		}
 
-		[ModCore.DebugMenuCommand(commandName: "test", commandAliases: ["t"])]
-		private void Test(string[] args)
+		internal void SetupNewFile()
 		{
-			Archipelago.LocationChecked();
+			SaverOwner saver = ModCore.Plugin.MainSaver;
+			saver.LocalStorage.GetLocalSaver("settings").SaveInt("hideCutscenes", 1);
+			saver.SaveAll();
 		}
 
 		public void HandleItemReplacement(RandomizedItemData itemData)

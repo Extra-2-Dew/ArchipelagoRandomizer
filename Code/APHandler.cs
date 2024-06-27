@@ -7,11 +7,20 @@ using System;
 
 namespace ArchipelagoRandomizer
 {
-	public class Archipelago
+	public class APHandler
 	{
-		public static ArchipelagoSession session;
+		private static APHandler instance;
+		private ArchipelagoSession session;
 
-		public static bool TryCreateSession(string url, string slot, string password, out string message)
+		public static APHandler Instance { get { return instance; } }
+		public static ArchipelagoSession Session { get { return instance.session; } }
+
+		public APHandler()
+		{
+			instance = this;
+		}
+
+		public bool TryCreateSession(string url, string slot, string password, out string message)
 		{
 			if (session != null)
 			{
@@ -62,19 +71,19 @@ namespace ArchipelagoRandomizer
 			return true;
 		}
 
-		private static void OnReceivedItemFromAP(ReceivedItemsHelper helper)
+		private void OnReceivedItemFromAP(ReceivedItemsHelper helper)
 		{
 			string itemName = helper.PeekItem().ItemName;
 			Plugin.Log.LogInfo("Received item: " + itemName);
 		}
 
-		public static void LocationChecked()
+		public void LocationChecked()
 		{
-			session.Locations.CompleteLocationChecks(238493634);
+			session.Locations.CompleteLocationChecks(238493734);
 			Plugin.Log.LogInfo("Location checked!");
 		}
 
-		private static void OnReceiveMessage(LogMessage message)
+		private void OnReceiveMessage(LogMessage message)
 		{
 			DebugMenuManager.LogToConsole(message.ToString());
 		}
