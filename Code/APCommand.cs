@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net.Packets;
 using ModCore;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -9,6 +10,16 @@ namespace ArchipelagoRandomizer
 		public APCommand()
 		{
 			DebugMenuManager.AddCommands(this);
+		}
+
+		[DebugMenuCommand("test")]
+		private void Test(string[] args)
+		{
+			Entity entity = GameObject.Find("PlayerEnt").GetComponent<Entity>();
+			Debug.Log(entity == null);
+			Item item = GameObject.Find("Dungeon_Chest").GetComponent<SpawnItemEventObserver>()._itemPrefab;
+			Debug.Log(item == null);
+			EntityHUD.GetCurrentHUD().GotItem(entity, item);
 		}
 
 		[DebugMenuCommand(commandName: "archipelago", commandAliases: ["ap"], caseSensitive: true)]

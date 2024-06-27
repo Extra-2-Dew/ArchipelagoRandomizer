@@ -2,10 +2,10 @@
 
 namespace ArchipelagoRandomizer
 {
-	public class RandomizedItemData : MonoBehaviour
+	public class ItemDataForRandomizer : MonoBehaviour
 	{
-		public ItemId ItemId { get; set; }
 		public Entity Entity { get; set; }
+		public Item Item { get; set; }
 		public string SaveFlag { get; set; }
 	}
 }

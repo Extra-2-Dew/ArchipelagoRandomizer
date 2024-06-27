@@ -1,19 +1,18 @@
 ﻿using SmallJson;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer
 	{
-		private const int baseId = 238492834;
 		private static ItemRandomizer instance;
 		private readonly List<LocationData> locationData;
 		private readonly List<ItemData> itemData;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
+		public bool IsActive { get; private set; }
 
 		public ItemRandomizer(bool newFile)
 		{
@@ -26,6 +25,8 @@ namespace ArchipelagoRandomizer
 
 			if (newFile && HasInitialized)
 				SetupNewFile();
+
+			IsActive = true;
 		}
 
 		internal void SetupNewFile()
@@ -35,42 +36,69 @@ namespace ArchipelagoRandomizer
 			saver.SaveAll();
 		}
 
-		public void HandleItemReplacement(RandomizedItemData itemData)
+		public void LocationChecked(ItemDataForRandomizer itemData)
 		{
-			if (!HasInitialized || itemData.ItemId == null || itemData.Entity == null)
+			if (itemData.Entity == null)
+				itemData.Entity = EntityTag.GetEntityByName("PlayerEnt");
+
+			if (string.IsNullOrEmpty(itemData.SaveFlag) || itemData.Entity == null || itemData.Item == null)
 				return;
 
-			Plugin.Log.LogInfo($"Obtained {itemData.ItemId.name}! Holy crud!!");
+			LocationData location = locationData.Find(x => x.Flag == itemData.SaveFlag);
 
-			ItemData randomItem = this.itemData[Random.Range(0, this.itemData.Count - 1)];
+			if (location == null)
+			{
+				Plugin.Log.LogError($"No location with save flag {itemData.SaveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
+				return;
+			}
 
-			int currentValue = itemData.Entity.GetStateVariable(randomItem.Flag);
-			itemData.Entity.SetStateVariable(randomItem.Flag, randomItem.Value.StartsWith("+") ? currentValue++ : int.Parse(randomItem.Value));
-			itemData.ItemId._itemGetPic = $"Items/ItemIcon_{char.ToUpper(randomItem.Flag[0]) + randomItem.Flag.Substring(1)}";
-			itemData.ItemId._itemGetString = $"You got {randomItem.Item}! Holy crud!!";
-			itemData.ItemId._showMode = ItemId.ShowMode.Normal;
+			APHandler.Instance.LocationChecked(location.Offset);
 		}
 
-		//public Item HandleItemReplacement(Item item, Entity entity)
-		//{
-		//	if (!HasInitialized || item == null || entity == null)
-		//		return item;
-
-		//	Plugin.Log.LogInfo($"Obtained {item.name}! Holy crud!!");
-
-		//	ItemData randomItem = itemData[Random.Range(0, itemData.Count - 1)];
-
-		//	int currentValue = entity.GetStateVariable(randomItem.Flag);
-		//	entity.SetStateVariable(randomItem.Flag, randomItem.Value.StartsWith("+") ? currentValue++ : int.Parse(randomItem.Value));
-		//	item.ItemId._itemGetPic = $"Items/ItemIcon_{char.ToUpper(randomItem.Flag[0]) + randomItem.Flag.Substring(1)}";
-		//	item.ItemId._itemGetString = $"You got {randomItem.Item}! Holy crud!!";
-		//	item.ItemId._showMode = ItemId.ShowMode.Normal;
-		//	return item;
-		//}
-
-		private ItemData GetItemForLocation(LocationData location)
+		public void ItemSent(string itemName, string playerName)
 		{
-			return null;
+			ShowItemSentHud(itemName, playerName);
+		}
+
+		public void ItemReceived(int offset)
+		{
+			ItemData item = itemData.Find(x => x.Offset == offset);
+
+			if (item == null)
+				return;
+
+			ShowItemGetHud(item);
+		}
+
+		private void ShowItemSentHud(string itemName, string playerName)
+		{
+			ItemId itemId = new();
+			itemId._itemGetString = $"You found {itemName} for {playerName}!";
+			itemId._itemGetPic = "ArchipelagoIcon";
+			itemId._showMode = ItemId.ShowMode.Normal;
+
+			ShowHud(itemId);
+		}
+
+		private void ShowItemGetHud(ItemData itemData)
+		{
+			ItemId itemId = new();
+			itemId._itemGetString = $"Someone sent you {itemData.Item}!";
+			itemId._itemGetPic = "ItemPic";
+			itemId._showMode = ItemId.ShowMode.Normal;
+
+			ShowHud(itemId);
+		}
+
+		private void ShowHud(ItemId itemId)
+		{
+			EntityHUD currentHud = EntityHUD.GetCurrentHUD();
+
+			if (currentHud.currentMsgBox != null && currentHud.currentMsgBox.IsActive)
+				currentHud.currentMsgBox.Hide(true);
+
+			currentHud.currentMsgBox = OverlayWindow.GetPooledWindow<ItemMessageBox>(currentHud._data.GetItemBox);
+			currentHud.currentMsgBox.Show(itemId);
 		}
 
 		private List<LocationData> ParseLocationJson()

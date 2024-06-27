@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.Models;
 using ModCore;
 using System;
 
@@ -10,6 +11,7 @@ namespace ArchipelagoRandomizer
 	public class APHandler
 	{
 		private static APHandler instance;
+		private const int baseId = 238492834;
 		private ArchipelagoSession session;
 
 		public static APHandler Instance { get { return instance; } }
@@ -67,20 +69,45 @@ namespace ArchipelagoRandomizer
 			session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			message = "Successfully connected!\n" +
 				"Now that you are connected, you can use !help to list commands to run via the server.";
-			session.Items.ItemReceived += OnReceivedItemFromAP;
+			session.Items.ItemReceived += OnReceivedItem;
 			return true;
 		}
 
-		private void OnReceivedItemFromAP(ReceivedItemsHelper helper)
+		private void OnReceivedItem(ReceivedItemsHelper helper)
 		{
-			string itemName = helper.PeekItem().ItemName;
-			Plugin.Log.LogInfo("Received item: " + itemName);
+			ItemInfo mostRecentItem = session.Items.AllItemsReceived[session.Items.AllItemsReceived.Count - 1];
+			PlayerInfo playerInfo = session.Players.GetPlayerInfo(session.ConnectionInfo.Slot);
+			int itemOffset = (int)mostRecentItem.ItemId - baseId;
+
+			if (mostRecentItem.Player.Name == playerInfo.Name || mostRecentItem.Player.Alias == playerInfo.Alias)
+			{
+				ItemRandomizer.Instance.ItemReceived(itemOffset);
+				Plugin.Log.LogInfo($"Received item {mostRecentItem.ItemDisplayName}!");
+			}
+			else
+			{
+				ItemRandomizer.Instance.ItemSent(mostRecentItem.ItemDisplayName, mostRecentItem.Player.Name);
+				Plugin.Log.LogInfo($"Sent {mostRecentItem.ItemDisplayName} to {mostRecentItem.Player.Name}!");
+			}
 		}
 
-		public void LocationChecked()
+		public void LocationChecked(int offset)
 		{
-			session.Locations.CompleteLocationChecks(238493734);
-			Plugin.Log.LogInfo("Location checked!");
+			if (session == null)
+			{
+				Plugin.Log.LogError("Attempted to interact with Archipelago server, but no session has been started yet!");
+				return;
+			}
+
+			int id = baseId + offset;
+			session.Locations.CompleteLocationChecksAsync((completed) =>
+			{
+				if (completed)
+				{
+					string locationName = session.Locations.GetLocationNameFromId(id);
+					Plugin.Log.LogInfo($"Checked location: {locationName} ({offset})");
+				}
+			}, id);
 		}
 
 		private void OnReceiveMessage(LogMessage message)
