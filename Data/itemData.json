@@ -57,6 +57,94 @@
 		{
 			"item": "Roll",
 			"offset": 9
+		},
+		{
+			"item": "Tracker",
+			"offset": 10,
+			"flag": "tracker",
+			"value": "+1"
+		},
+		{
+			"item": "Headband",
+			"offset": 11,
+			"flag": "headband",
+			"value": "+1"
+		},
+		{
+			"item": "Amulet",
+			"offset": 12,
+			"flag": "amulet",
+			"value": "+1"
+		},
+		{
+			"item": "Tome",
+			"offset": 13,
+			"flag": "tome",
+			"value": "+1"
+		},
+		{
+			"item": "Secret Shard",
+			"offset": 14,
+			"flag": "shard",
+			"value": "+1"
+		},
+		{
+			"item": "Forbidden Key",
+			"offset": 15,
+			"flag": "evilKeys",
+			"value": "+1"
+		},
+		{
+			"item": "Lockpick",
+			"offset": 16,
+			"flag": "keys",
+			"value": "+1"
+		},
+		{
+			"item": "Crayon",
+			"offset": 17,
+			"flag": "hpcs",
+			"value": "+1"
+		},
+		{
+			"item": "Cave Scroll",
+			"offset": 18,
+			"flag": "",
+			"value": ""
+		},
+		{
+			"item": "Portal World Scroll",
+			"offset": 19,
+			"flag": "",
+			"value": ""
+		},
+		{
+			"item": "Yellow Heart",
+			"offset": 20
+		},
+		{
+			"item": "Pillow Fort Key",
+			"offset": 22,
+			"flag": "",
+			"value": ""
+		},
+		{
+			"item": "Pillow Fort Key Ring",
+			"offset": 23,
+			"flag": "",
+			"value": ""
+		},
+		{
+			"item": "Sand Castle Key",
+			"offset": 24,
+			"flag": "",
+			"value": ""
+		},
+		{
+			"item": "Sand Castle Key Ring",
+			"offset": 25,
+			"flag": "",
+			"value": ""
 		}
 	]
 }

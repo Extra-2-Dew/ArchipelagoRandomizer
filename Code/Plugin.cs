@@ -17,15 +17,16 @@ namespace ArchipelagoRandomizer
 			Log = Logger;
 			Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
+			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
 			Events.OnFileStart += (newFile) =>
 			{
+				new APHandler();
 				new ItemRandomizer(newFile);
 
 				if (ItemRandomizer.Instance.IsActive)
 				{
-					new APHandler();
 					new APCommand();
-					Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 					DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
 				}
 			};

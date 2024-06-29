@@ -14,6 +14,8 @@ namespace ArchipelagoRandomizer
 		public bool HasInitialized { get; private set; }
 		public bool IsActive { get; private set; }
 
+		//ap /connect localhost:38281 WyrmID
+
 		public ItemRandomizer(bool newFile)
 		{
 			instance = this;
@@ -22,6 +24,14 @@ namespace ArchipelagoRandomizer
 			locationData = ParseLocationJson();
 			itemData = ParseItemJson();
 			HasInitialized = locationData != null && itemData != null;
+
+			// TEMP
+			string server = "localhost:38281";
+			string slot = "WyrmID";
+			if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
+				Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
+			else
+				Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
 
 			if (newFile && HasInitialized)
 				SetupNewFile();
@@ -72,33 +82,29 @@ namespace ArchipelagoRandomizer
 
 		private void ShowItemSentHud(string itemName, string playerName)
 		{
-			ItemId itemId = new();
-			itemId._itemGetString = $"You found {itemName} for {playerName}!";
-			itemId._itemGetPic = "ArchipelagoIcon";
-			itemId._showMode = ItemId.ShowMode.Normal;
+			string message = $"You found {itemName} for {playerName}!";
+			string picPath = "ArchipelagoIcon";
 
-			ShowHud(itemId);
+			ShowHud(message, picPath);
 		}
 
 		private void ShowItemGetHud(ItemData itemData)
 		{
-			ItemId itemId = new();
-			itemId._itemGetString = $"Someone sent you {itemData.Item}!";
-			itemId._itemGetPic = "ItemPic";
-			itemId._showMode = ItemId.ShowMode.Normal;
+			string message = $"Someone sent you {itemData.Item}!";
+			string picPath = "ItemPic";
 
-			ShowHud(itemId);
+			ShowHud(message, picPath);
 		}
 
-		private void ShowHud(ItemId itemId)
+		private void ShowHud(string message, string picPath)
 		{
 			EntityHUD currentHud = EntityHUD.GetCurrentHUD();
 
 			if (currentHud.currentMsgBox != null && currentHud.currentMsgBox.IsActive)
 				currentHud.currentMsgBox.Hide(true);
 
-			currentHud.currentMsgBox = OverlayWindow.GetPooledWindow<ItemMessageBox>(currentHud._data.GetItemBox);
-			currentHud.currentMsgBox.Show(itemId);
+			currentHud.currentMsgBox = OverlayWindow.GetPooledWindow(currentHud._data.GetItemBox);
+			currentHud.currentMsgBox.Show(picPath, new StringHolder.OutString(message));
 		}
 
 		private List<LocationData> ParseLocationJson()
