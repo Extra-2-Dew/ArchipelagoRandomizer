@@ -9,7 +9,7 @@ namespace ArchipelagoRandomizer
 		private static APCommand instance;
 		public static APCommand Instance { get { return instance; } }
 
-		private APCommand()
+		public APCommand()
 		{
 			instance = this;
 			DebugMenuManager.AddCommands(this);

@@ -30,19 +30,22 @@ namespace ArchipelagoRandomizer
 
 				if (ItemRandomizer.Instance.IsActive)
 				{
-					//new APCommand();
+					new APCommand();
 					DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
 				}
 			};
 		}
 
 		public static IEnumerator Test(string message)
-		{
+        {
+			yield return new WaitForEndOfFrame();
 			EntityHUD hud = EntityHUD.GetCurrentHUD();
 			ItemMessageBox messageBox = EntityHUD.GetCurrentHUD().currentMsgBox;
 
 			if (messageBox != null && messageBox.IsActive)
 				messageBox.Hide(true);
+
+            Debug.Log($"Yo you reached me at frame {Time.frameCount}");
 
 			messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
 
@@ -51,14 +54,20 @@ namespace ArchipelagoRandomizer
 			else
 				messageBox.gameObject.SetActive(true);
 
-			yield return new WaitForEndOfFrame();
+            Debug.Log($"Yo ho you reached me at frame {Time.frameCount}");
+            yield return new WaitForEndOfFrame();
+            Debug.Log($"And then you reached me at frame {Time.frameCount}, hud is {hud.name}, message box is {messageBox.name}");
+            yield return new WaitForEndOfFrame();
+            Debug.Log($"And then you reached me at frame {Time.frameCount}");
+            yield return new WaitForEndOfFrame();
 
-			// SEEMS TO IMPROVE IT??
-			//messageBox._text.Text = args[0];
-			messageBox._text.StringText = new StringHolder.OutString(message);
+            // SEEMS TO IMPROVE IT??
+            //messageBox._text.Text = args[0];
+            messageBox._text.StringText = new StringHolder.OutString(message);
 
 			messageBox.timer = messageBox._showTime;
 			messageBox.countdown = messageBox._showTime > 0;
+			Debug.Log($"And now it's {Time.frameCount}");
 		}
 	}
 }
