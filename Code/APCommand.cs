@@ -1,25 +1,39 @@
 ﻿using Archipelago.MultiClient.Net.Packets;
 using ModCore;
-using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
 
 	public class APCommand
 	{
-		public APCommand()
+		private static APCommand instance;
+		public static APCommand Instance { get { return instance; } }
+
+		private APCommand()
 		{
+			instance = this;
 			DebugMenuManager.AddCommands(this);
 		}
 
 		[DebugMenuCommand("test")]
-		private void Test(string[] args)
+		public void Test(string[] args)
 		{
-			Entity entity = GameObject.Find("PlayerEnt").GetComponent<Entity>();
-			Debug.Log(entity == null);
-			Item item = GameObject.Find("Dungeon_Chest").GetComponent<SpawnItemEventObserver>()._itemPrefab;
-			Debug.Log(item == null);
-			EntityHUD.GetCurrentHUD().GotItem(entity, item);
+			Plugin.Instance.StartCoroutine(Plugin.Test(args[0]));
+			//Entity entity = GameObject.Find("PlayerEnt").GetComponent<Entity>();
+			//Debug.Log(entity == null);
+			//Item item = GameObject.Find("Dungeon_Chest").GetComponent<SpawnItemEventObserver>()._itemPrefab;
+			//Debug.Log(item == null);
+			//item.ItemId._itemGetPic = "ArchipelagoIcon";
+			//item.ItemId._itemGetString = args[0];
+			//item.ItemId._showMode = ItemId.ShowMode.Normal;
+
+
+			//currentHud.currentMsgBox.Show(item.ItemId);
+			//currentHud.currentMsgBox.Show("Items/ItemIcon_Fullpaper", currentHud.currentMsgBox._textLoader.GetStrings().GetFullString("item_PieceOfPaper_get"));
+			//currentHud.currentMsgBox._text.Text = args[0];
+			//EntityHUD.GetCurrentHUD().currentMsgBox.Show(item.ItemId);
+			//currentHud.currentMsgBox.Show(item.ItemId.ItemGetPic, new StringHolder.OutString(item.ItemId.ItemGetString));
+			//currentHud.GotItem(entity, item);
 		}
 
 		[DebugMenuCommand(commandName: "archipelago", commandAliases: ["ap"], caseSensitive: true)]

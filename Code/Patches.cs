@@ -9,6 +9,32 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(ItemMessageBox), nameof(ItemMessageBox.Show), argumentTypes: new[] { typeof(string), typeof(StringHolder.OutString) })]
+		public static void ItemMessageBox_Show_Patch(ItemMessageBox __instance, string itemPicRes)
+		{
+			if (__instance._tweener != null)
+				__instance._tweener.Show(true);
+			else
+				__instance.gameObject.SetActive(true);
+
+			Texture2D y = Resources.Load(itemPicRes) as Texture2D;
+
+			if (__instance.texture != y)
+				Resources.UnloadAsset(__instance.texture);
+
+			__instance.texture = y;
+			__instance.mat.mainTexture = __instance.texture;
+			Vector2 scaledTextSize = __instance._text.ScaledTextSize;
+			Vector3 vector = __instance._text.transform.localPosition - __instance.backOrigin;
+			scaledTextSize.y += Mathf.Abs(vector.y) + __instance._border;
+			scaledTextSize.y = Mathf.Max(__instance.minSize.y, scaledTextSize.y);
+			scaledTextSize.x = __instance._background.ScaledSize.x;
+			__instance._background.ScaledSize = scaledTextSize;
+			__instance.timer = __instance._showTime;
+			__instance.countdown = __instance._showTime > 0;
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(Item), "Pickup")]
 		public static bool Item_Pickup_Patch(Item __instance, Entity ent, bool fast)
 		{

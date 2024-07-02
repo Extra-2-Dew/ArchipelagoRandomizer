@@ -182,13 +182,16 @@ namespace ArchipelagoRandomizer
 
 		private void ShowHud(string message, string picPath)
 		{
-			EntityHUD currentHud = EntityHUD.GetCurrentHUD();
+			//EntityHUD currentHud = EntityHUD.GetCurrentHUD();
 
-			if (currentHud.currentMsgBox != null && currentHud.currentMsgBox.IsActive)
-				currentHud.currentMsgBox.Hide(true);
+			//if (currentHud.currentMsgBox != null && currentHud.currentMsgBox.IsActive)
+			//	currentHud.currentMsgBox.Hide(true);
 
-			currentHud.currentMsgBox = OverlayWindow.GetPooledWindow(currentHud._data.GetItemBox);
-			currentHud.currentMsgBox.Show(picPath, new StringHolder.OutString(message));
+			//currentHud.currentMsgBox = OverlayWindow.GetPooledWindow(currentHud._data.GetItemBox);
+			//currentHud.currentMsgBox.Show(picPath, new StringHolder.OutString(message));
+			//APCommand.Test(new[] { "test3" });
+
+			//
 		}
 
 		private List<LocationData> ParseLocationJson()
