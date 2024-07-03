@@ -4,59 +4,170 @@
 			"item": "Stick",
 			"offset": 0,
 			"flag": "melee",
-			"value": "1"
+			"value": "1",
+			"picName": "Stick"
 		},
 		{
 			"item": "Forcewand I",
 			"offset": 1,
 			"flag": "forcewand",
-			"value": "1"
+			"value": "1",
+			"picName": "Forcewand1"
 		},
 		{
 			"item": "Dynamite I",
 			"offset": 2,
 			"flag": "dynamite",
-			"value": "1"
+			"value": "1",
+			"picName": "Dynamite1"
 		},
 		{
 			"item": "Icering I",
 			"offset": 3,
 			"flag": "icering",
-			"value": "1"
+			"value": "1",
+			"picName": "Icering1"
 		},
 		{
 			"item": "Chain I",
 			"offset": 4,
 			"flag": "chain",
-			"value": "1"
+			"value": "1",
+			"picName": "chain"
 		},
 		{
 			"item": "Forcewand Upgrade",
 			"offset": 5,
 			"flag": "forcewand",
-			"value": "+1"
+			"value": "+1",
+			"picName": "Forcewand1"
 		},
 		{
 			"item": "Dynamite Upgrade",
 			"offset": 6,
 			"flag": "dynamite",
-			"value": "+1"
+			"value": "+1",
+			"picName": "Dynamite1"
 		},
 		{
 			"item": "Icering Upgrade",
 			"offset": 7,
 			"flag": "icering",
-			"value": "+1"
+			"value": "+1",
+			"picName": "Icering1"
 		},
 		{
 			"item": "Chain Upgrade",
 			"offset": 8,
 			"flag": "chain",
-			"value": "+1"
+			"value": "+1",
+			"picName": "chain"
 		},
 		{
 			"item": "Roll",
-			"offset": 9
+			"offset": 9,
+			"picName": "Roll"
+		},
+		{
+			"item": "Tracker",
+			"offset": 10,
+			"flag": "tracker",
+			"value": "+1",
+			"picName": "Tracker"
+		},
+		{
+			"item": "Headband",
+			"offset": 11,
+			"flag": "headband",
+			"value": "+1",
+			"picName": "BlueHeadBand"
+		},
+		{
+			"item": "Amulet",
+			"offset": 12,
+			"flag": "amulet",
+			"value": "+1",
+			"picName": "Amulet"
+		},
+		{
+			"item": "Tome",
+			"offset": 13,
+			"flag": "tome",
+			"value": "+1",
+			"picName": "Tome"
+		},
+		{
+			"item": "Secret Shard",
+			"offset": 14,
+			"flag": "shard",
+			"value": "+1",
+			"picName": "SecretShard"
+		},
+		{
+			"item": "Forbidden Key",
+			"offset": 15,
+			"flag": "evilKeys",
+			"value": "+1",
+			"picName": "ForbiddenKey"
+		},
+		{
+			"item": "Lockpick",
+			"offset": 16,
+			"flag": "keys",
+			"value": "+1",
+			"picName": "MasterKey"
+		},
+		{
+			"item": "Crayon",
+			"offset": 17,
+			"flag": "hpcs",
+			"value": "+1",
+			"picName": "Fullpaper"
+		},
+		{
+			"item": "Cave Scroll",
+			"offset": 18,
+			"flag": "",
+			"value": "",
+			"picName": "CaveScroll"
+		},
+		{
+			"item": "Portal World Scroll",
+			"offset": 19,
+			"flag": "",
+			"value": "",
+			"picName": "CaveScrollDeep"
+		},
+		{
+			"item": "Yellow Heart",
+			"offset": 20,
+			"picName": "ChestHeart"
+		},
+		{
+			"item": "Pillow Fort Key",
+			"offset": 22,
+			"flag": "",
+			"value": "",
+			"picName": "Key"
+		},
+		{
+			"item": "Pillow Fort Key Ring",
+			"offset": 23,
+			"flag": "",
+			"value": "Keyring"
+		},
+		{
+			"item": "Sand Castle Key",
+			"offset": 24,
+			"flag": "",
+			"value": "",
+			"picName": "Key"
+		},
+		{
+			"item": "Sand Castle Key Ring",
+			"offset": 25,
+			"flag": "",
+			"value": "Keyring"
 		}
 	]
 }
