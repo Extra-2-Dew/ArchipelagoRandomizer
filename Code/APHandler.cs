@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.Models;
 using ModCore;
 using System;
 
@@ -12,9 +13,11 @@ namespace ArchipelagoRandomizer
 		private static APHandler instance;
 		private const int baseId = 238492834;
 		private ArchipelagoSession session;
+		private PlayerInfo currentPlayer;
 
 		public static APHandler Instance { get { return instance; } }
 		public static ArchipelagoSession Session { get { return instance.session; } }
+		public PlayerInfo CurrentPlayer { get { return currentPlayer; } }
 
 		public APHandler()
 		{
@@ -65,6 +68,7 @@ namespace ArchipelagoRandomizer
 			}
 
 			var loginSuccess = (LoginSuccessful)result;
+			currentPlayer = session.Players.GetPlayerInfo(session.ConnectionInfo.Slot);
 			session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			message = "Successfully connected!\n" +
 				"Now that you are connected, you can use !help to list commands to run via the server.";
@@ -74,23 +78,9 @@ namespace ArchipelagoRandomizer
 
 		private void OnReceivedItem(ReceivedItemsHelper helper)
 		{
-			//APCommand.Instance.Test(new[] { "test message" });
-			APCommand.Instance.Test(new[] { "test message" });
-			//ItemInfo mostRecentItem = session.Items.AllItemsReceived[session.Items.AllItemsReceived.Count - 1];
-			//PlayerInfo playerInfo = session.Players.GetPlayerInfo(session.ConnectionInfo.Slot);
-			//int itemOffset = (int)mostRecentItem.ItemId - baseId;
-
-			//if (mostRecentItem.Player.Name == playerInfo.Name || mostRecentItem.Player.Alias == playerInfo.Alias)
-			//{
-			//	//ItemRandomizer.Instance.ItemReceived(itemOffset);
-			//	APCommand.Instance.Test(new[] { "test message" });
-			//	Plugin.Log.LogInfo($"Received item {mostRecentItem.ItemDisplayName}!");
-			//}
-			//else
-			//{
-			//	ItemRandomizer.Instance.ItemSent(mostRecentItem.ItemDisplayName, mostRecentItem.Player.Name);
-			//	Plugin.Log.LogInfo($"Sent {mostRecentItem.ItemDisplayName} to {mostRecentItem.Player.Name}!");
-			//}
+			ItemInfo receivedItem = session.Items.AllItemsReceived[session.Items.AllItemsReceived.Count - 1];
+			int itemOffset = (int)receivedItem.ItemId - baseId;
+			ItemRandomizer.Instance.ItemReceived(itemOffset, receivedItem.Player.Name);
 		}
 
 		public void LocationChecked(int offset)
@@ -102,17 +92,14 @@ namespace ArchipelagoRandomizer
 			}
 
 			int id = baseId + offset;
-			session.Locations.CompleteLocationChecks(id);
-			string locationName = session.Locations.GetLocationNameFromId(id);
-			Plugin.Log.LogInfo($"Checked location: {locationName} ({offset})");
-			//session.Locations.CompleteLocationChecksAsync((completed) =>
-			//{
-			//	if (completed)
-			//	{
-			//		string locationName = session.Locations.GetLocationNameFromId(id);
-			//		Plugin.Log.LogInfo($"Checked location: {locationName} ({offset})");
-			//	}
-			//}, id);
+			session.Locations.CompleteLocationChecksAsync((completed) =>
+			{
+				if (completed)
+				{
+					string locationName = session.Locations.GetLocationNameFromId(id);
+					Plugin.Log.LogInfo($"Checked location: {locationName} ({offset})");
+				}
+			}, id);
 		}
 
 		private void OnReceiveMessage(LogMessage message)

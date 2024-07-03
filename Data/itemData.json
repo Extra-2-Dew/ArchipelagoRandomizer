@@ -10,7 +10,8 @@
 			"item": "Forcewand I",
 			"offset": 1,
 			"flag": "forcewand",
-			"value": "1"
+			"value": "1",
+			"picName": "Forcewand1"
 		},
 		{
 			"item": "Dynamite I",
@@ -126,7 +127,8 @@
 			"item": "Pillow Fort Key",
 			"offset": 22,
 			"flag": "",
-			"value": ""
+			"value": "",
+			"picName": "Key"
 		},
 		{
 			"item": "Pillow Fort Key Ring",
@@ -138,7 +140,8 @@
 			"item": "Sand Castle Key",
 			"offset": 24,
 			"flag": "",
-			"value": ""
+			"value": "",
+			"picName": "Key"
 		},
 		{
 			"item": "Sand Castle Key Ring",

@@ -1,6 +1,8 @@
 ﻿using SmallJson;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -151,47 +153,89 @@ namespace ArchipelagoRandomizer
 
 		public void ItemSent(string itemName, string playerName)
 		{
-			ShowItemSentHud(itemName, playerName);
+			ItemData item = itemData.Find(x => x.Item == itemName);
+
+			if (item == null)
+				return;
+
+			ShowItemSentHud(item, playerName);
 		}
 
-		public void ItemReceived(int offset)
+		public void ItemReceived(int offset, string sentFromPlayer)
 		{
 			ItemData item = itemData.Find(x => x.Offset == offset);
 
 			if (item == null)
 				return;
 
-			ShowItemGetHud(item);
+			ShowItemGetHud(item, sentFromPlayer);
 		}
 
-		private void ShowItemSentHud(string itemName, string playerName)
+		private void ShowItemSentHud(ItemData itemData, string playerName)
 		{
-			string message = $"You found {itemName} for {playerName}!";
-			string picPath = "ArchipelagoIcon";
+			string message = $"You found {itemData.Item} for {playerName}!";
+			string picPath = $"Items/ItemIcon_{itemData.PicName}";
 
-			ShowHud(message, picPath);
+			Plugin.StartRoutine(ShowHud(message, picPath));
 		}
 
-		private void ShowItemGetHud(ItemData itemData)
+		private void ShowItemGetHud(ItemData itemData, string sentFromPlayer)
 		{
-			string message = $"Someone sent you {itemData.Item}!";
-			string picPath = "ItemPic";
+			string message = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
+				$"You found your own {itemData.Item}! It can be used in this dungeon only. More text, blah blah blah. Lorem ipsum. Let's see how large these boxes can get! Can it get even bigger? The question is, how large can it get? The word of the day is: pneumonoultramicroscopicsilicovolcanoconiosis" :
+				$"{sentFromPlayer} found your {itemData.Item}!";
+			string picPath = $"Items/ItemIcon_{itemData.PicName}";
 
-			ShowHud(message, picPath);
+			Plugin.StartRoutine(ShowHud(message, picPath));
 		}
 
-		private void ShowHud(string message, string picPath)
+		private IEnumerator ShowHud(string message, string picPath)
 		{
-			//EntityHUD currentHud = EntityHUD.GetCurrentHUD();
+			EntityHUD hud = EntityHUD.GetCurrentHUD();
+			ItemMessageBox messageBox = EntityHUD.GetCurrentHUD().currentMsgBox;
 
-			//if (currentHud.currentMsgBox != null && currentHud.currentMsgBox.IsActive)
-			//	currentHud.currentMsgBox.Hide(true);
+			// Hides the message box if it's still shown from a prior one
+			if (messageBox != null && messageBox.IsActive)
+				messageBox.Hide(true);
 
-			//currentHud.currentMsgBox = OverlayWindow.GetPooledWindow(currentHud._data.GetItemBox);
-			//currentHud.currentMsgBox.Show(picPath, new StringHolder.OutString(message));
-			//APCommand.Test(new[] { "test3" });
+			// Gets the current message box window
+			messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
 
-			//
+			// Shows the message box
+			if (messageBox._tweener != null)
+				messageBox._tweener.Show(true);
+			else
+				messageBox.gameObject.SetActive(true);
+
+			// Waits for end of frame to avoid random issues with setting icon
+			yield return new WaitForEndOfFrame();
+
+			// Update item icon
+			Texture2D texture = Resources.Load(picPath) as Texture2D;
+
+			if (messageBox.texture != texture)
+				Resources.UnloadAsset(messageBox.texture);
+
+			messageBox.texture = texture;
+			messageBox.mat.mainTexture = texture;
+
+			// Waits for end of frame to avoid random issues with setting text
+			yield return new WaitForEndOfFrame();
+
+			// Updates the text
+			messageBox._text.StringText = new StringHolder.OutString(message);
+
+			// Update sizing
+			Vector2 scaledTextSize = messageBox._text.ScaledTextSize;
+			Vector3 vector = messageBox._text.transform.localPosition - messageBox.backOrigin;
+			scaledTextSize.y += Mathf.Abs(vector.y) + messageBox._border;
+			scaledTextSize.y = Mathf.Max(messageBox.minSize.y, scaledTextSize.y);
+			scaledTextSize.x = messageBox._background.ScaledSize.x;
+			messageBox._background.ScaledSize = scaledTextSize;
+
+			// Sets timer
+			messageBox.timer = messageBox._showTime;
+			messageBox.countdown = messageBox._showTime > 0;
 		}
 
 		private List<LocationData> ParseLocationJson()
@@ -226,8 +270,9 @@ namespace ArchipelagoRandomizer
 				int offset = itemObj.GetInt("offset");
 				string flag = itemObj.GetString("flag");
 				string value = itemObj.GetString("value");
+				string picName = itemObj.GetString("picName");
 
-				items2.Add(new ItemData(itemName, offset, flag, value));
+				items2.Add(new ItemData(itemName, offset, flag, value, picName));
 			}
 
 			return items2;
@@ -253,13 +298,15 @@ namespace ArchipelagoRandomizer
 			public int Offset { get; }
 			public string Flag { get; }
 			public string Value { get; }
+			public string PicName { get; }
 
-			public ItemData(string item, int offset, string flag, string value)
+			public ItemData(string item, int offset, string flag, string value, string picPath)
 			{
 				Item = item;
 				Offset = offset;
 				Flag = flag;
 				Value = value;
+				PicName = picPath;
 			}
 		}
 	}
