@@ -153,7 +153,7 @@ namespace ArchipelagoRandomizer
 
 		public void ItemSent(string itemName, string playerName)
 		{
-			ItemData item = itemData.Find(x => x.Item == itemName);
+			ItemData item = itemData.Find(x => x.ItemName == itemName);
 
 			if (item == null)
 				return;
@@ -173,8 +173,8 @@ namespace ArchipelagoRandomizer
 
 		private void ShowItemSentHud(ItemData itemData, string playerName)
 		{
-			string message = $"You found {itemData.Item} for {playerName}!";
-			string picPath = $"Items/ItemIcon_{itemData.PicName}";
+			string message = $"You found {itemData.ItemName} for {playerName}!";
+			string picPath = $"Items/ItemIcon_{itemData.IconName}";
 
 			Plugin.StartRoutine(ShowHud(message, picPath));
 		}
@@ -182,9 +182,9 @@ namespace ArchipelagoRandomizer
 		private void ShowItemGetHud(ItemData itemData, string sentFromPlayer)
 		{
 			string message = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
-				$"You found your own {itemData.Item}!" :
-				$"{sentFromPlayer} found your {itemData.Item}!";
-			string picPath = $"Items/ItemIcon_{itemData.PicName}";
+				$"You found your own {itemData.ItemName}!" :
+				$"{sentFromPlayer} found your {itemData.ItemName}!";
+			string picPath = $"Items/ItemIcon_{itemData.IconName}";
 
 			Plugin.StartRoutine(ShowHud(message, picPath));
 		}
@@ -262,20 +262,20 @@ namespace ArchipelagoRandomizer
 			if (!ModCore.Utility.TryParseJson(PluginInfo.PLUGIN_NAME, "Data", "itemData.json", out JsonObject rootObj))
 				return null;
 
-			List<ItemData> items2 = new();
+			List<ItemData> items = new();
 
 			foreach (JsonObject itemObj in rootObj.GetArray("items").objects.Cast<JsonObject>())
 			{
-				string itemName = itemObj.GetString("item");
+				string itemName = itemObj.GetString("itemName");
+				string iconName = itemObj.GetString("iconName");
 				int offset = itemObj.GetInt("offset");
 				string flag = itemObj.GetString("flag");
 				string value = itemObj.GetString("value");
-				string picName = itemObj.GetString("picName");
 
-				items2.Add(new ItemData(itemName, offset, flag, value, picName));
+				items.Add(new ItemData(itemName, iconName, offset, flag, value));
 			}
 
-			return items2;
+			return items;
 		}
 
 		private class LocationData
@@ -294,19 +294,19 @@ namespace ArchipelagoRandomizer
 
 		private class ItemData
 		{
-			public string Item { get; }
+			public string ItemName { get; }
+			public string IconName { get; }
 			public int Offset { get; }
 			public string Flag { get; }
 			public string Value { get; }
-			public string PicName { get; }
 
-			public ItemData(string item, int offset, string flag, string value, string picPath)
+			public ItemData(string itemName, string iconName, int offset, string flag, string value)
 			{
-				Item = item;
+				ItemName = itemName;
+				IconName = iconName;
 				Offset = offset;
 				Flag = flag;
 				Value = value;
-				PicName = picPath;
 			}
 		}
 	}
