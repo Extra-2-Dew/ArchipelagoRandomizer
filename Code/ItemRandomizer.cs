@@ -182,7 +182,7 @@ namespace ArchipelagoRandomizer
 		private void ShowItemGetHud(ItemData itemData, string sentFromPlayer)
 		{
 			string message = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
-				$"You found your own {itemData.Item}! It can be used in this dungeon only. More text, blah blah blah. Lorem ipsum. Let's see how large these boxes can get! Can it get even bigger? The question is, how large can it get? The word of the day is: pneumonoultramicroscopicsilicovolcanoconiosis" :
+				$"You found your own {itemData.Item}!" :
 				$"{sentFromPlayer} found your {itemData.Item}!";
 			string picPath = $"Items/ItemIcon_{itemData.PicName}";
 

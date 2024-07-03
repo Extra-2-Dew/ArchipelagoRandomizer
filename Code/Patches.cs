@@ -100,6 +100,8 @@ namespace ArchipelagoRandomizer
 			return false;
 		}
 
+		// KEPT AS REFERENCE SINCE THIS WAS PAIN
+
 		//[HarmonyPatch(typeof(SpawnItemEventObserver))]
 		//[HarmonyPatch("SpawnItem")]
 		//public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
