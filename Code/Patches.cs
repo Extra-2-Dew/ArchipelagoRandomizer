@@ -24,7 +24,7 @@ namespace ArchipelagoRandomizer
 
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(EntityAction), nameof(EntityAction.CanDoAction))]
-		public static bool AttackAction_CanDoAction_Patch(EntityAction __instance)
+		public static bool EntityAction_CanDoAction_Patch(EntityAction __instance)
 		{
 			// Disable roll if you don't have it
 			if (ItemRandomizer.Instance.IsActive && __instance.ActionName == "roll")
