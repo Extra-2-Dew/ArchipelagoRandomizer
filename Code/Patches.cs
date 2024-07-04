@@ -51,10 +51,25 @@ namespace ArchipelagoRandomizer
 
 			// ---------- END CUSTOM CODE ---------- \\
 
+			// Saves Entity state
 			if (__instance._important)
 				ent.SaveState();
 
+			// Saves pickup as picked up
+			Item.OnPickedUpFunc onPickedUpFunc = __instance.onPickedUp;
+			__instance.onPickedUp = null;
+
+			if (onPickedUpFunc != null)
+				onPickedUpFunc(__instance, ent);
+
+			// Deactivates pickup
 			__instance.Deactivate();
+
+			// ---------- START CUSTOM CODE ---------- \\
+
+			ModCore.Plugin.MainSaver.SaveLocal();
+
+			// ---------- END CUSTOM CODE ---------- \\
 
 			return false;
 		}
