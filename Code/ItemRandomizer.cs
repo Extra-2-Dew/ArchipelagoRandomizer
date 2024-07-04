@@ -160,10 +160,7 @@ namespace ArchipelagoRandomizer
 
 		public void LocationChecked(ItemDataForRandomizer itemData)
 		{
-			if (itemData.Entity == null)
-				itemData.Entity = EntityTag.GetEntityByName("PlayerEnt");
-
-			if (string.IsNullOrEmpty(itemData.SaveFlag) || itemData.Entity == null || itemData.Item == null)
+			if (string.IsNullOrEmpty(itemData.SaveFlag))
 				return;
 
 			LocationData location = locationData.Find(x => x.Flag == itemData.SaveFlag);
@@ -201,10 +198,7 @@ namespace ArchipelagoRandomizer
 
 		private void ShowItemSentHud(ItemData itemData, string playerName)
 		{
-			// If raft
 			Entity player = EntityTag.GetEntityByName("PlayerEnt");
-			int raftCount = player.GetStateVariable("raft");
-			// Text = raftCount + 1
 
 			string message = $"You found {itemData.ItemName} for {playerName}!";
 			string picPath = $"Items/ItemIcon_{itemData.IconName}";
@@ -260,6 +254,8 @@ namespace ArchipelagoRandomizer
 					}
 
 					break;
+
+				// TODO: D8 BK chest + S2 bee chest
 				case ItemData.ItemType.Outfit:
 					// Sets world flag for outfit in changing tent + equips outfit
 					Plugin.Log.LogWarning("Obtained outfit, but this is not implemented yet, so nothing happens!");
