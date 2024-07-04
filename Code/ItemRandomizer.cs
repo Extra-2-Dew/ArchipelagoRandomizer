@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
@@ -49,7 +48,7 @@ namespace ArchipelagoRandomizer
 
 			// TEMP
 			string server = "localhost:38281";
-			string slot = "WyrmID";
+			string slot = "ChrisID2";
 			if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
 				Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
 			else
@@ -202,6 +201,11 @@ namespace ArchipelagoRandomizer
 
 		private void ShowItemSentHud(ItemData itemData, string playerName)
 		{
+			// If raft
+			Entity player = EntityTag.GetEntityByName("PlayerEnt");
+			int raftCount = player.GetStateVariable("raft");
+			// Text = raftCount + 1
+
 			string message = $"You found {itemData.ItemName} for {playerName}!";
 			string picPath = $"Items/ItemIcon_{itemData.IconName}";
 
@@ -220,7 +224,7 @@ namespace ArchipelagoRandomizer
 
 		private IEnumerator GiveItem(ItemData item)
 		{
-			yield return new WaitForEndOfFrame();
+			//yield return new WaitForEndOfFrame();
 			SaverOwner saver = ModCore.Plugin.MainSaver;
 			Entity player = EntityTag.GetEntityByName("PlayerEnt");
 			Dictionary<string, int> flagsToSet = new();
@@ -237,16 +241,42 @@ namespace ArchipelagoRandomizer
 					killable.MaxHp += 1;
 					killable.CurrentHp = killable.MaxHp;
 					break;
+				case ItemData.ItemType.Key:
+					// Increment key count for scene
+					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1);
+					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
+					int currentKeyCount = keySaver.LoadInt("localKeys");
+					keySaver.SaveInt("localKeys", currentKeyCount + 1);
+
+					break;
 				case ItemData.ItemType.Keyring:
 					// Set max key count for scene
-					if (dungeonKeyCounts.TryGetValue(SceneManager.GetActiveScene().name, out int maxKeyCount))
-						flagsToSet.Add("localKeys", maxKeyCount);
+					string dungeonName2 = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
+
+					if (dungeonKeyCounts.TryGetValue(dungeonName2, out int maxKeyCount))
+					{
+						IDataSaver keySaver2 = saver.GetSaver($"/local/levels/{dungeonName2}/player/vars");
+						keySaver2.SaveInt("localKeys", maxKeyCount);
+					}
+
+					break;
+				case ItemData.ItemType.Outfit:
+					// Sets world flag for outfit in changing tent + equips outfit
+					Plugin.Log.LogWarning("Obtained outfit, but this is not implemented yet, so nothing happens!");
 					break;
 				case ItemData.ItemType.CaveScroll:
 					Plugin.Log.LogWarning("Obtained Cave Scroll, but this is not implemented yet, so nothing happens!");
 					break;
 				case ItemData.ItemType.PortalWorldScroll:
 					Plugin.Log.LogWarning("Obtained Portal World Scroll, but this is not implemented yet, so nothing happens!");
+					break;
+				case ItemData.ItemType.EFCS:
+					// Sets the flags for the couple EFCS gates/doors that are EFCS only
+					Plugin.Log.LogWarning("Obtained Fake EFCS, but this is not implemented yet, so nothing happens!");
+					break;
+				case ItemData.ItemType.Card:
+					// Sets card flag
+					Plugin.Log.LogWarning("Obtained a card, but this is not implemented yet, so nothing happens!");
 					break;
 				default:
 					// Increment level/count by 1
@@ -264,8 +294,8 @@ namespace ArchipelagoRandomizer
 				Plugin.Log.LogInfo($"Set flag {flag.Key} to {flag.Value}!");
 			}
 
-			if (flagsToSet.Count > 0)
-				saver.SaveLocal();
+			saver.SaveLocal();
+			yield return new WaitForEndOfFrame();
 		}
 
 		private IEnumerator ShowHud(string message, string picPath)
@@ -351,7 +381,7 @@ namespace ArchipelagoRandomizer
 				string flag = itemObj.GetString("flag");
 				string typeStr = itemObj.GetString("type");
 
-				ItemData.ItemType type = (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), typeStr);
+				ItemData.ItemType type = !String.IsNullOrEmpty(typeStr) ? (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), typeStr) : ItemData.ItemType.None;
 
 				items.Add(new ItemData(itemName, iconName, offset, flag, type));
 			}
@@ -383,15 +413,17 @@ namespace ArchipelagoRandomizer
 
 			public enum ItemType
 			{
-				None,
-				Key,
-				Roll,
-				Crayon,
-				Keyring,
+				None, // Default
+				Card,
 				CaveScroll,
-				PortalWorldScroll,
+				Crayon,
+				EFCS,
 				Heart,
-				Stick
+				Key,
+				Keyring,
+				Outfit,
+				PortalWorldScroll,
+				Roll
 			}
 
 			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type)
