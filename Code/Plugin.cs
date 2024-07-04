@@ -15,22 +15,29 @@ namespace ArchipelagoRandomizer
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
 
+		private APHandler apHandler;
+		private ItemRandomizer itemRandomizer;
+		private APCommand apCommandHandler;
+
 		private void Awake()
 		{
 			Instance = this;
 			Log = Logger;
 			Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
+			apHandler = new APHandler();
+			itemRandomizer = new ItemRandomizer();
+			apCommandHandler = new APCommand();
+
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
 			Events.OnFileStart += (newFile) =>
 			{
-				new APHandler();
-				new ItemRandomizer(newFile);
+				itemRandomizer.SetupNewFile(newFile);
 
-				if (ItemRandomizer.Instance.IsActive)
+				if (itemRandomizer.IsActive)
 				{
-					new APCommand();
+					apCommandHandler.AddCommands();
 					DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
 				}
 			};

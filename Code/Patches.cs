@@ -9,7 +9,35 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
-		[HarmonyPatch(typeof(Item), "Pickup")]
+		[HarmonyPatch(typeof(AttackAction), nameof(AttackAction.CanDoAction))]
+		public static bool AttackAction_CanDoAction_Patch(AttackAction __instance)
+		{
+			// Disable stick if you don't have it
+			if (ItemRandomizer.Instance.IsActive && __instance.ActionName == "firesword")
+			{
+				Entity playerEnt = EntityTag.GetEntityByName("PlayerEnt");
+				return playerEnt.GetStateVariable("melee") >= 0;
+			}
+
+			return true;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(EntityAction), nameof(EntityAction.CanDoAction))]
+		public static bool AttackAction_CanDoAction_Patch(EntityAction __instance)
+		{
+			// Disable roll if you don't have it
+			if (ItemRandomizer.Instance.IsActive && __instance.ActionName == "roll")
+			{
+				Entity playerEnt = EntityTag.GetEntityByName("PlayerEnt");
+				return playerEnt.GetStateVariable("canRoll") == 1;
+			}
+
+			return true;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(Item), nameof(Item.Pickup))]
 		public static bool Item_Pickup_Patch(Item __instance, Entity ent, bool fast)
 		{
 			// ---------- START CUSTOM CODE ---------- \\
@@ -32,7 +60,7 @@ namespace ArchipelagoRandomizer
 		}
 
 		[HarmonyPrefix]
-		[HarmonyPatch(typeof(SpawnItemEventObserver), "SpawnItem")]
+		[HarmonyPatch(typeof(SpawnItemEventObserver), nameof(SpawnItemEventObserver.SpawnItem))]
 		public static bool SpawnItemEventObserver_SpawnItem_Patch(SpawnItemEventObserver __instance)
 		{
 			// ---------- START CUSTOM CODE ---------- \\

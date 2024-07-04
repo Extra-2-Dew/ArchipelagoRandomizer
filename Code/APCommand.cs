@@ -12,6 +12,10 @@ namespace ArchipelagoRandomizer
 		public APCommand()
 		{
 			instance = this;
+		}
+
+		public void AddCommands()
+		{
 			DebugMenuManager.AddCommands(this);
 		}
 
