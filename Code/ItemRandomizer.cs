@@ -245,7 +245,7 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemData.ItemType.Key:
 					// Increment key count for scene
-					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1);
+					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
 					int currentKeyCount = keySaver.LoadInt("localKeys");
 					keySaver.SaveInt("localKeys", currentKeyCount + 1);
@@ -262,8 +262,6 @@ namespace ArchipelagoRandomizer
 					}
 
 					break;
-
-				// TODO: D8 BK chest + S2 bee chest
 				case ItemData.ItemType.Outfit:
 					// Sets world flag for outfit in changing tent + equips outfit
 					int outfitNum = int.Parse(Regex.Match(item.Flag, @"\d+").Value);
