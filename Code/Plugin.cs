@@ -28,18 +28,14 @@ namespace ArchipelagoRandomizer
 			apHandler = new APHandler();
 			itemRandomizer = new ItemRandomizer();
 			apCommandHandler = new APCommand();
+			apCommandHandler.AddCommands();
+			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
 			Events.OnFileStart += (newFile) =>
 			{
 				itemRandomizer.SetupNewFile(newFile);
-
-				if (itemRandomizer.IsActive)
-				{
-					apCommandHandler.AddCommands();
-					DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
-				}
 			};
 		}
 

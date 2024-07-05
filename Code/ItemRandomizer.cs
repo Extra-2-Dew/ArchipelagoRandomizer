@@ -38,6 +38,13 @@ namespace ArchipelagoRandomizer
 			{ "DreamAll", 4 },
 		};
 
+		/// <summary>
+		/// TODO:
+		/// Roll opens chests
+		/// Read from settings
+		/// Implement scrolls and Fake EFCS
+		/// </summary>
+
 		public ItemRandomizer()
 		{
 			instance = this;
@@ -48,12 +55,12 @@ namespace ArchipelagoRandomizer
 			HasInitialized = locationData != null && itemData != null;
 
 			// TEMP
-			string server = "localhost:38281";
-			string slot = "ChrisID2";
-			if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
-				Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
-			else
-				Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
+			//string server = "localhost:38281";
+			//string slot = "ChrisID2";
+			//if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
+			//	Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
+			//else
+			//	Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
 		}
 
 		public void SetupNewFile(bool newFile)
