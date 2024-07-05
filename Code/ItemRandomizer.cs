@@ -1,7 +1,9 @@
 ﻿using SmallJson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
@@ -16,7 +18,34 @@ namespace ArchipelagoRandomizer
 		public bool HasInitialized { get; private set; }
 		public bool IsActive { get; private set; }
 
-		public ItemRandomizer(bool newFile)
+		private readonly Dictionary<string, int> dungeonKeyCounts = new()
+		{
+			{ "PillowFort", 2 },
+			{ "SandCastle", 2 },
+			{ "ArtExhibit", 4 },
+			{ "TrashCave", 4 },
+			{ "FloodedBasement", 5 },
+			{ "PotassiumMines", 5 },
+			{ "BoilingGrave", 5 },
+			{ "GrandLibrary", 8 },
+			{ "SunkenLabyrinth", 3 },
+			{ "MachineFortress", 5 },
+			{ "DarkHypostyle", 5 },
+			{ "TombOfSimulacrum", 10 },
+			{ "DreamDynamite", 3 },
+			{ "DreamFireChain", 4 },
+			{ "DreamIce", 4 },
+			{ "DreamAll", 4 },
+		};
+
+		/// <summary>
+		/// TODO:
+		/// Roll opens chests
+		/// Read from settings
+		/// Implement scrolls and Fake EFCS
+		/// </summary>
+
+		public ItemRandomizer()
 		{
 			instance = this;
 
@@ -26,26 +55,31 @@ namespace ArchipelagoRandomizer
 			HasInitialized = locationData != null && itemData != null;
 
 			// TEMP
-			string server = "localhost:38281";
-			string slot = "WyrmID";
-			if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
-				Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
-			else
-				Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
-
-			if (newFile && HasInitialized)
-				SetupNewFile();
-
-			IsActive = true;
+			//string server = "localhost:38281";
+			//string slot = "ChrisID2";
+			//if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
+			//	Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
+			//else
+			//	Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
 		}
 
-		internal void SetupNewFile()
+		public void SetupNewFile(bool newFile)
 		{
-			SaverOwner saver = ModCore.Plugin.MainSaver;
-			saver.LocalStorage.GetLocalSaver("settings").SaveInt("hideCutscenes", 1);
-			saver.SaveAll();
-			UnlockWarpGarden();
-			ObtainedTracker3();
+			if (!HasInitialized)
+				return;
+
+			if (newFile)
+			{
+				SaverOwner saver = ModCore.Plugin.MainSaver;
+				saver.LocalStorage.GetLocalSaver("settings").SaveInt("hideCutscenes", 1);
+				saver.SaveAll();
+
+				UnlockWarpGarden();
+				ObtainedTracker3();
+			}
+
+			IsActive = true;
+			Plugin.Log.LogInfo("Item randomizer is now active!");
 		}
 
 		private void UnlockWarpGarden()
@@ -134,10 +168,7 @@ namespace ArchipelagoRandomizer
 
 		public void LocationChecked(ItemDataForRandomizer itemData)
 		{
-			if (itemData.Entity == null)
-				itemData.Entity = EntityTag.GetEntityByName("PlayerEnt");
-
-			if (string.IsNullOrEmpty(itemData.SaveFlag) || itemData.Entity == null || itemData.Item == null)
+			if (string.IsNullOrEmpty(itemData.SaveFlag))
 				return;
 
 			LocationData location = locationData.Find(x => x.Flag == itemData.SaveFlag);
@@ -168,11 +199,15 @@ namespace ArchipelagoRandomizer
 			if (item == null)
 				return;
 
+			Plugin.Log.LogInfo($"Received item fired for {item.ItemName}!");
+			Plugin.StartRoutine(GiveItem(item));
 			ShowItemGetHud(item, sentFromPlayer);
 		}
 
 		private void ShowItemSentHud(ItemData itemData, string playerName)
 		{
+			Entity player = EntityTag.GetEntityByName("PlayerEnt");
+
 			string message = $"You found {itemData.ItemName} for {playerName}!";
 			string picPath = $"Items/ItemIcon_{itemData.IconName}";
 
@@ -187,6 +222,85 @@ namespace ArchipelagoRandomizer
 			string picPath = $"Items/ItemIcon_{itemData.IconName}";
 
 			Plugin.StartRoutine(ShowHud(message, picPath));
+		}
+
+		private IEnumerator GiveItem(ItemData item)
+		{
+			yield return new WaitForEndOfFrame();
+			SaverOwner saver = ModCore.Plugin.MainSaver;
+			Entity player = EntityTag.GetEntityByName("PlayerEnt");
+			Dictionary<string, int> flagsToSet = new();
+
+			switch (item.Type)
+			{
+				case ItemData.ItemType.Heart:
+					// Heals 20 HP (5 hearts)
+					player.GetEntityComponent<Killable>().CurrentHp += 20;
+					break;
+				case ItemData.ItemType.Crayon:
+					// Increase max HP by 1 and heals
+					Killable killable = player.GetEntityComponent<Killable>();
+					killable.MaxHp += 1;
+					killable.CurrentHp = killable.MaxHp;
+					break;
+				case ItemData.ItemType.Key:
+					// Increment key count for scene
+					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1);
+					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
+					int currentKeyCount = keySaver.LoadInt("localKeys");
+					keySaver.SaveInt("localKeys", currentKeyCount + 1);
+
+					break;
+				case ItemData.ItemType.Keyring:
+					// Set max key count for scene
+					string dungeonName2 = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
+
+					if (dungeonKeyCounts.TryGetValue(dungeonName2, out int maxKeyCount))
+					{
+						IDataSaver keySaver2 = saver.GetSaver($"/local/levels/{dungeonName2}/player/vars");
+						keySaver2.SaveInt("localKeys", maxKeyCount);
+					}
+
+					break;
+
+				// TODO: D8 BK chest + S2 bee chest
+				case ItemData.ItemType.Outfit:
+					// Sets world flag for outfit in changing tent + equips outfit
+					int outfitNum = int.Parse(Regex.Match(item.Flag, @"\d+").Value);
+					flagsToSet.Add(item.Flag.Replace(outfitNum.ToString(), ""), outfitNum);
+					saver.GetSaver("/local/world").SaveInt(item.Flag, 1);
+					break;
+				case ItemData.ItemType.CaveScroll:
+					Plugin.Log.LogWarning("Obtained Cave Scroll, but this is not implemented yet, so nothing happens!");
+					break;
+				case ItemData.ItemType.PortalWorldScroll:
+					Plugin.Log.LogWarning("Obtained Portal World Scroll, but this is not implemented yet, so nothing happens!");
+					break;
+				case ItemData.ItemType.EFCS:
+					// Sets the flags for the couple EFCS gates/doors that are EFCS only
+					Plugin.Log.LogWarning("Obtained Fake EFCS, but this is not implemented yet, so nothing happens!");
+					break;
+				case ItemData.ItemType.Card:
+					// Sets card flag
+					saver.GetSaver("/local/cards").SaveInt(item.Flag, 1);
+					break;
+				default:
+					// Increment level/count by 1
+					if (string.IsNullOrEmpty(item.Flag))
+						break;
+
+					int amount = player.GetStateVariable(item.Flag) + 1;
+					flagsToSet.Add(item.Flag, amount);
+					break;
+			}
+
+			foreach (KeyValuePair<string, int> flag in flagsToSet)
+			{
+				player.SetStateVariable(flag.Key, flag.Value);
+				Plugin.Log.LogInfo($"Set flag {flag.Key} to {flag.Value}!");
+			}
+
+			saver.SaveLocal();
 		}
 
 		private IEnumerator ShowHud(string message, string picPath)
@@ -270,9 +384,11 @@ namespace ArchipelagoRandomizer
 				string iconName = itemObj.GetString("iconName");
 				int offset = itemObj.GetInt("offset");
 				string flag = itemObj.GetString("flag");
-				string value = itemObj.GetString("value");
+				string typeStr = itemObj.GetString("type");
 
-				items.Add(new ItemData(itemName, iconName, offset, flag, value));
+				ItemData.ItemType type = !String.IsNullOrEmpty(typeStr) ? (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), typeStr) : ItemData.ItemType.None;
+
+				items.Add(new ItemData(itemName, iconName, offset, flag, type));
 			}
 
 			return items;
@@ -298,15 +414,30 @@ namespace ArchipelagoRandomizer
 			public string IconName { get; }
 			public int Offset { get; }
 			public string Flag { get; }
-			public string Value { get; }
+			public ItemType Type { get; }
 
-			public ItemData(string itemName, string iconName, int offset, string flag, string value)
+			public enum ItemType
+			{
+				None, // Default
+				Card,
+				CaveScroll,
+				Crayon,
+				EFCS,
+				Heart,
+				Key,
+				Keyring,
+				Outfit,
+				PortalWorldScroll,
+				Roll
+			}
+
+			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type)
 			{
 				ItemName = itemName;
 				IconName = iconName;
 				Offset = offset;
 				Flag = flag;
-				Value = value;
+				Type = type;
 			}
 		}
 	}
