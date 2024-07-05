@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
@@ -13,7 +14,7 @@ namespace ArchipelagoRandomizer
 		public static bool UpdateVarsEventObserver_UpdateVars_Patch(UpdateVarsEventObserver __instance)
 		{
 			// Prevent outfit stands from setting their flags
-			if (ItemRandomizer.Instance.IsActive && __instance.gameObject.name == "Outfit")
+			if (ItemRandomizer.Instance.IsActive && __instance.gameObject.name == "Outfit" && SceneManager.GetActiveScene().name != "CandyCoastCaves")
 			{
 				// Resets world flag for outfit
 				int outfitNum = __instance.GetComponent<ExprVarHolder>()._startValues[0].value;
