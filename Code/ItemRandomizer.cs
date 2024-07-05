@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
@@ -218,7 +219,7 @@ namespace ArchipelagoRandomizer
 
 		private IEnumerator GiveItem(ItemData item)
 		{
-			//yield return new WaitForEndOfFrame();
+			yield return new WaitForEndOfFrame();
 			SaverOwner saver = ModCore.Plugin.MainSaver;
 			Entity player = EntityTag.GetEntityByName("PlayerEnt");
 			Dictionary<string, int> flagsToSet = new();
@@ -258,7 +259,9 @@ namespace ArchipelagoRandomizer
 				// TODO: D8 BK chest + S2 bee chest
 				case ItemData.ItemType.Outfit:
 					// Sets world flag for outfit in changing tent + equips outfit
-					Plugin.Log.LogWarning("Obtained outfit, but this is not implemented yet, so nothing happens!");
+					int outfitNum = int.Parse(Regex.Match(item.Flag, @"\d+").Value);
+					flagsToSet.Add(item.Flag.Replace(outfitNum.ToString(), ""), outfitNum);
+					saver.GetSaver("/local/world").SaveInt(item.Flag, 1);
 					break;
 				case ItemData.ItemType.CaveScroll:
 					Plugin.Log.LogWarning("Obtained Cave Scroll, but this is not implemented yet, so nothing happens!");
@@ -272,7 +275,7 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemData.ItemType.Card:
 					// Sets card flag
-					Plugin.Log.LogWarning("Obtained a card, but this is not implemented yet, so nothing happens!");
+					saver.GetSaver("/local/cards").SaveInt(item.Flag, 1);
 					break;
 				default:
 					// Increment level/count by 1
@@ -291,7 +294,6 @@ namespace ArchipelagoRandomizer
 			}
 
 			saver.SaveLocal();
-			yield return new WaitForEndOfFrame();
 		}
 
 		private IEnumerator ShowHud(string message, string picPath)
