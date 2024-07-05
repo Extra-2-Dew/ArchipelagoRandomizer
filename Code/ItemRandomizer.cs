@@ -10,14 +10,13 @@ namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer
 	{
-		private static ItemRandomizer instance;
-		private readonly List<LocationData> locationData;
-		private readonly List<ItemData> itemData;
-
 		public static ItemRandomizer Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 		public bool IsActive { get; private set; }
 
+		private static ItemRandomizer instance;
+		private readonly List<LocationData> locationData;
+		private readonly List<ItemData> itemData;
 		private readonly Dictionary<string, int> dungeonKeyCounts = new()
 		{
 			{ "PillowFort", 2 },
@@ -37,13 +36,8 @@ namespace ArchipelagoRandomizer
 			{ "DreamIce", 4 },
 			{ "DreamAll", 4 },
 		};
-
-		/// <summary>
-		/// TODO:
-		/// Roll opens chests
-		/// Read from settings
-		/// Implement scrolls and Fake EFCS
-		/// </summary>
+		private List<ItemMsgBox> itemMessageBoxQueue = new();
+		private ItemMsgBox currentMessageBox;
 
 		public ItemRandomizer()
 		{
@@ -54,13 +48,16 @@ namespace ArchipelagoRandomizer
 			itemData = ParseItemJson();
 			HasInitialized = locationData != null && itemData != null;
 
-			// TEMP
-			//string server = "localhost:38281";
-			//string slot = "ChrisID2";
-			//if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
-			//	Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
-			//else
-			//	Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
+			if (Plugin.TestingLocally)
+			{
+				string server = "localhost:38281";
+				//string server = "archipelago.gg:58159";
+				string slot = "ChrisID2";
+				if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
+					Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
+				else
+					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
+			}
 		}
 
 		public void SetupNewFile(bool newFile)
@@ -301,53 +298,27 @@ namespace ArchipelagoRandomizer
 			saver.SaveLocal();
 		}
 
-		private IEnumerator ShowHud(string message, string picPath)
+		private IEnumerator ShowHud(string message, string iconPath)
 		{
-			EntityHUD hud = EntityHUD.GetCurrentHUD();
-			ItemMessageBox messageBox = EntityHUD.GetCurrentHUD().currentMsgBox;
+			// Arbitrary delay due to issues with setting message box text property
+			yield return new WaitForEndOfFrame();
 
-			// Hides the message box if it's still shown from a prior one
-			if (messageBox != null && messageBox.IsActive)
-				messageBox.Hide(true);
-
-			// Gets the current message box window
-			messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
-
-			// Shows the message box
-			if (messageBox._tweener != null)
-				messageBox._tweener.Show(true);
+			if (currentMessageBox == null)
+			{
+				currentMessageBox = new(message, iconPath);
+				currentMessageBox.Show();
+			}
 			else
-				messageBox.gameObject.SetActive(true);
+			{
+				itemMessageBoxQueue.Add(new(message, iconPath));
 
-			// Waits for end of frame to avoid random issues with setting icon
-			yield return new WaitForEndOfFrame();
+				while (currentMessageBox.IsActive)
+					yield return null;
 
-			// Update item icon
-			Texture2D texture = Resources.Load(picPath) as Texture2D;
-
-			if (messageBox.texture != texture)
-				Resources.UnloadAsset(messageBox.texture);
-
-			messageBox.texture = texture;
-			messageBox.mat.mainTexture = texture;
-
-			// Waits for end of frame to avoid random issues with setting text
-			yield return new WaitForEndOfFrame();
-
-			// Updates the text
-			messageBox._text.StringText = new StringHolder.OutString(message);
-
-			// Update sizing
-			Vector2 scaledTextSize = messageBox._text.ScaledTextSize;
-			Vector3 vector = messageBox._text.transform.localPosition - messageBox.backOrigin;
-			scaledTextSize.y += Mathf.Abs(vector.y) + messageBox._border;
-			scaledTextSize.y = Mathf.Max(messageBox.minSize.y, scaledTextSize.y);
-			scaledTextSize.x = messageBox._background.ScaledSize.x;
-			messageBox._background.ScaledSize = scaledTextSize;
-
-			// Sets timer
-			messageBox.timer = messageBox._showTime;
-			messageBox.countdown = messageBox._showTime > 0;
+				itemMessageBoxQueue[0].Show();
+				currentMessageBox = itemMessageBoxQueue[0];
+				itemMessageBoxQueue.RemoveAt(0);
+			}
 		}
 
 		private List<LocationData> ParseLocationJson()
@@ -436,6 +407,77 @@ namespace ArchipelagoRandomizer
 				Offset = offset;
 				Flag = flag;
 				Type = type;
+			}
+		}
+
+		private class ItemMsgBox
+		{
+			public bool IsActive
+			{
+				get
+				{
+					return messageBox != null && messageBox.IsActive;
+				}
+			}
+			private string Message { get; }
+			private string IconPath { get; }
+			private float DisplayTime { get; }
+
+			public ItemMessageBox messageBox;
+
+			public ItemMsgBox(string message, string iconPath, float displayTime = 1.5f)
+			{
+				Message = message;
+				IconPath = iconPath;
+				DisplayTime = displayTime;
+			}
+
+			public void Show()
+			{
+				if (messageBox == null)
+				{
+					EntityHUD hud = EntityHUD.GetCurrentHUD();
+					messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
+					SetIconTexture(IconPath);
+					messageBox._text.StringText = new StringHolder.OutString(Message);
+					ResizeBox();
+					messageBox.timer = DisplayTime;
+					messageBox.countdown = DisplayTime > 0;
+				}
+
+				if (messageBox._tweener != null)
+					messageBox._tweener.Show(true);
+				else
+					messageBox.gameObject.SetActive(true);
+			}
+
+			public void Hide()
+			{
+				if (messageBox._tweener != null)
+					messageBox._tweener.Hide(true);
+				else
+					messageBox.gameObject.SetActive(false);
+			}
+
+			private void SetIconTexture(string iconPath)
+			{
+				Texture2D texture = Resources.Load(iconPath) as Texture2D;
+
+				if (messageBox.texture != texture)
+					Resources.UnloadAsset(messageBox.texture);
+
+				messageBox.texture = texture;
+				messageBox.mat.mainTexture = texture; ;
+			}
+
+			private void ResizeBox()
+			{
+				Vector2 scaledTextSize = messageBox._text.ScaledTextSize;
+				Vector3 vector = messageBox._text.transform.localPosition - messageBox.backOrigin;
+				scaledTextSize.y += Mathf.Abs(vector.y) + messageBox._border;
+				scaledTextSize.y = Mathf.Max(messageBox.minSize.y, scaledTextSize.y);
+				scaledTextSize.x = messageBox._background.ScaledSize.x;
+				messageBox._background.ScaledSize = scaledTextSize;
 			}
 		}
 	}

@@ -14,6 +14,7 @@ namespace ArchipelagoRandomizer
 	{
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
+		internal static bool TestingLocally { get; } = true;
 
 		private APHandler apHandler;
 		private ItemRandomizer itemRandomizer;
