@@ -31,6 +31,9 @@
 		<Reference Include="$(GameDataPath)\BepInEx\plugins\ModCore\ModCore.dll">
 			<Private>false</Private>
 		</Reference>
+		<None Update="c-wspp.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 
 		<None Update="Data\itemData.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -44,6 +47,9 @@
 		</None>
 		<None Update="thumbnail.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="websocket-sharp.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 
 		<Publicize Include="Assembly-CSharp" />
