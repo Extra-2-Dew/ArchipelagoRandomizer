@@ -69,8 +69,8 @@ namespace ArchipelagoRandomizer
 		{
 			// ---------- START CUSTOM CODE ---------- \\
 
-			// If item randomizer is inactive, run original code
-			if (!ItemRandomizer.Instance.IsActive)
+			// If item randomizer is inactive or it's an Entity drop, run original code
+			if (!ItemRandomizer.Instance.IsActive || __instance.ItemId == null)
 				return true;
 
 			ItemDataForRandomizer itemDataForRando = __instance.GetComponent<ItemDataForRandomizer>();
