@@ -2,7 +2,7 @@
 	"items": [
 		{
 			"itemName": "Stick",
-			"iconName": "Stick",
+			"iconName": "Custom/Stick",
 			"offset": 0,
 			"flag": "melee"
 		},
@@ -56,7 +56,7 @@
 		},
 		{
 			"itemName": "Roll",
-			"iconName": "Roll",
+			"iconName": "Custom/Roll",
 			"offset": 9,
 			"flag": "canRoll"
 		},
@@ -142,7 +142,7 @@
 		},
 		{
 			"itemName": "Pillow Fort Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 23,
 			"type": "Keyring"
 		},
@@ -155,7 +155,7 @@
 		},
 		{
 			"itemName": "Sand Castle Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 25,
 			"type": "Keyring"
 		},
@@ -168,7 +168,7 @@
 		},
 		{
 			"itemName": "Art Exhibit Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 27,
 			"type": "Keyring"
 		},
@@ -181,7 +181,7 @@
 		},
 		{
 			"itemName": "Trash Cave Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 29,
 			"type": "Keyring"
 		},
@@ -194,7 +194,7 @@
 		},
 		{
 			"itemName": "Flooded Basement Key Ring",
-			"iconName": "Keyring",
+			"iconName": "CustomKeyring",
 			"offset": 31,
 			"type": "Keyring"
 		},
@@ -207,7 +207,7 @@
 		},
 		{
 			"itemName": "Potassium Mine Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 33,
 			"type": "Keyring"
 		},
@@ -220,7 +220,7 @@
 		},
 		{
 			"itemName": "Boiling Grave Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 35,
 			"type": "Keyring"
 		},
@@ -233,7 +233,7 @@
 		},
 		{
 			"itemName": "Grand Library Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 37,
 			"type": "Keyring"
 		},
@@ -246,7 +246,7 @@
 		},
 		{
 			"itemName": "Sunken Labyrinth Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 39,
 			"type": "Keyring"
 		},
@@ -259,7 +259,7 @@
 		},
 		{
 			"itemName": "Machine Fortress Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 41,
 			"type": "Keyring"
 		},
@@ -272,7 +272,7 @@
 		},
 		{
 			"itemName": "Dark Hypostyle Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 43,
 			"type": "Keyring"
 		},
@@ -285,7 +285,7 @@
 		},
 		{
 			"itemName": "Tomb of Simulacrum Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 45,
 			"type": "Keyring"
 		},
@@ -298,7 +298,7 @@
 		},
 		{
 			"itemName": "Syncope Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 47,
 			"type": "Keyring"
 		},
@@ -311,7 +311,7 @@
 		},
 		{
 			"itemName": "Bottomless Tower Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 49,
 			"type": "Keyring"
 		},
@@ -324,7 +324,7 @@
 		},
 		{
 			"itemName": "Antigram Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 51,
 			"type": "Keyring"
 		},
@@ -337,7 +337,7 @@
 		},
 		{
 			"itemName": "Quietus Key Ring",
-			"iconName": "Keyring",
+			"iconName": "Custom/Keyring",
 			"offset": 53,
 			"type": "Keyring"
 		},
@@ -392,21 +392,21 @@
 		},
 		{
 			"itemName": "Apathetic Frog Outfit",
-			"iconName": "SuitApaFrog",
+			"iconName": "Custom/SuitApaFrog",
 			"offset": 61,
 			"flag": "outfit8",
 			"type": "Outfit"
 		},
 		{
 			"itemName": "Jenny Berry Outfit",
-			"iconName": "SuitJennyBerry",
+			"iconName": "Custom/SuitJennyBerry",
 			"offset": 62,
 			"flag": "outfit10",
 			"type": "Outfit"
 		},
 		{
 			"itemName": "That Guy Outfit",
-			"iconName": "SuitThatGuy",
+			"iconName": "Custom/SuitThatGuy",
 			"offset": 63,
 			"flag": "outfit9",
 			"type": "Outfit"
@@ -419,7 +419,7 @@
 		},
 		{
 			"itemName": "Fake EFCS",
-			"iconName": "FakeEFCS",
+			"iconName": "EFCS",
 			"offset": 65,
 			"type": "EFCS"
 		},

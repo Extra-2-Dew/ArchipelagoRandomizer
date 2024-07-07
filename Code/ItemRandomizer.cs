@@ -189,7 +189,7 @@ namespace ArchipelagoRandomizer
 		public void ItemSent(string itemName, string playerName)
 		{
 			ItemData item = itemData.Find(x => x.ItemName == itemName);
-			string iconName = "ArchipelagoIcon";
+			string iconName = "Custom/APProgression";
 
 			// If item sent is an ID2 item, we can use ID2 icons!
 			if (item != null)

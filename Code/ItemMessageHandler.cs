@@ -30,20 +30,17 @@ namespace ArchipelagoRandomizer
 		{
 			// Arbitrary delay due to issues with setting message box text property
 			yield return new WaitForEndOfFrame();
-			Plugin.Log.LogInfo(iconName);
-
-			string iconPath = $"Items/ItemIcon_{iconName}";
 
 			// Show message box
 			if (currentMessageBox == null)
 			{
-				currentMessageBox = new(messageType, itemName, playerName, iconPath);
+				currentMessageBox = new(messageType, itemName, playerName, iconName);
 				currentMessageBox.Show();
 			}
 			// Queue message box
 			else
 			{
-				MessageBox queuedBox = new(messageType, itemName, playerName, iconPath);
+				MessageBox queuedBox = new(messageType, itemName, playerName, iconName);
 				queuedMessageBoxes.Add(queuedBox);
 
 				// Wait until no message box is shown
@@ -72,7 +69,7 @@ namespace ArchipelagoRandomizer
 				}
 			}
 			private string Message { get; }
-			private string IconPath { get; }
+			private string IconName { get; }
 			private float DisplayTime { get; }
 			private string ItemName { get; }
 			private string PlayerName { get; }
@@ -85,10 +82,10 @@ namespace ArchipelagoRandomizer
 			/// <param name="playerName">The name of the involved player</param>
 			/// <param name="iconPath">The full Resources path to the original icon, or the relative path to the custom icon</param>
 			/// <param name="displayTime">How long should the message stay up for (in seconds)?</param>
-			public MessageBox(MessageType messageType, string itemName, string playerName, string iconPath, float displayTime = 3f)
+			public MessageBox(MessageType messageType, string itemName, string playerName, string iconName, float displayTime = 3f)
 			{
 				Message = GetMessage(messageType, itemName, playerName);
-				IconPath = iconPath;
+				IconName = iconName;
 				DisplayTime = displayTime;
 				ItemName = itemName;
 				PlayerName = playerName;
@@ -160,10 +157,17 @@ namespace ArchipelagoRandomizer
 			/// </summary>
 			private void SetIconTexture()
 			{
-				Texture2D texture = Resources.Load(IconPath) as Texture2D;
+				bool isCustomIcon = IconName.StartsWith("Custom");
+				string iconPath = !isCustomIcon ?
+					$"Items/ItemIcon_{IconName}" :
+					$"{PluginInfo.PLUGIN_NAME}/Assets/{IconName.Substring(IconName.LastIndexOf("/"))}.png";
+				Texture2D texture = !isCustomIcon ? Resources.Load(iconPath) as Texture2D : ModCore.Utility.GetTextureFromFile(iconPath);
 
 				if (messageBox.texture != texture)
 					Resources.UnloadAsset(messageBox.texture);
+
+				if (texture == null)
+					return;
 
 				messageBox.texture = texture;
 				messageBox.mat.mainTexture = texture; ;
