@@ -36,8 +36,7 @@ namespace ArchipelagoRandomizer
 			{ "DreamIce", 4 },
 			{ "DreamAll", 4 },
 		};
-		private List<ItemMsgBox> itemMessageBoxQueue = new();
-		private ItemMsgBox currentMessageBox;
+		private ItemMessageHandler itemMessageHandler;
 
 		public ItemRandomizer()
 		{
@@ -47,6 +46,14 @@ namespace ArchipelagoRandomizer
 			locationData = ParseLocationJson();
 			itemData = ParseItemJson();
 			HasInitialized = locationData != null && itemData != null;
+
+			if (!HasInitialized)
+			{
+				Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
+				return;
+			}
+
+			itemMessageHandler = new();
 
 			if (Plugin.TestingLocally)
 			{
@@ -182,11 +189,13 @@ namespace ArchipelagoRandomizer
 		public void ItemSent(string itemName, string playerName)
 		{
 			ItemData item = itemData.Find(x => x.ItemName == itemName);
+			string iconName = "ArchipelagoIcon";
 
-			if (item == null)
-				return;
+			// If item sent is an ID2 item, we can use ID2 icons!
+			if (item != null)
+				iconName = item.IconName;
 
-			ShowItemSentHud(item, playerName);
+			ShowItemSentHud(itemName, iconName, playerName);
 		}
 
 		public void ItemReceived(int offset, string sentFromPlayer)
@@ -196,19 +205,18 @@ namespace ArchipelagoRandomizer
 			if (item == null)
 				return;
 
-			Plugin.Log.LogInfo($"Received item fired for {item.ItemName}!");
 			Plugin.StartRoutine(GiveItem(item));
 			ShowItemGetHud(item, sentFromPlayer);
 		}
 
-		private void ShowItemSentHud(ItemData itemData, string playerName)
+		private void ShowItemSentHud(string itemName, string iconName, string playerName)
 		{
 			Entity player = EntityTag.GetEntityByName("PlayerEnt");
 
-			string message = $"You found {itemData.ItemName} for {playerName}!";
-			string picPath = $"Items/ItemIcon_{itemData.IconName}";
+			string message = $"You found {itemName} for {playerName}!";
+			string picPath = $"Items/ItemIcon_{iconName}";
 
-			Plugin.StartRoutine(ShowHud(message, picPath));
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, itemName, playerName, iconName));
 		}
 
 		private void ShowItemGetHud(ItemData itemData, string sentFromPlayer)
@@ -218,7 +226,9 @@ namespace ArchipelagoRandomizer
 				$"{sentFromPlayer} found your {itemData.ItemName}!";
 			string picPath = $"Items/ItemIcon_{itemData.IconName}";
 
-			Plugin.StartRoutine(ShowHud(message, picPath));
+			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
+				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, itemData.ItemName, sentFromPlayer, itemData.IconName));
 		}
 
 		private IEnumerator GiveItem(ItemData item)
@@ -298,29 +308,6 @@ namespace ArchipelagoRandomizer
 			saver.SaveLocal();
 		}
 
-		private IEnumerator ShowHud(string message, string iconPath)
-		{
-			// Arbitrary delay due to issues with setting message box text property
-			yield return new WaitForEndOfFrame();
-
-			if (currentMessageBox == null)
-			{
-				currentMessageBox = new(message, iconPath);
-				currentMessageBox.Show();
-			}
-			else
-			{
-				itemMessageBoxQueue.Add(new(message, iconPath));
-
-				while (currentMessageBox.IsActive)
-					yield return null;
-
-				itemMessageBoxQueue[0].Show();
-				currentMessageBox = itemMessageBoxQueue[0];
-				itemMessageBoxQueue.RemoveAt(0);
-			}
-		}
-
 		private List<LocationData> ParseLocationJson()
 		{
 			if (!ModCore.Utility.TryParseJson(PluginInfo.PLUGIN_NAME, "Data", "locationData.json", out JsonObject rootObj))
@@ -363,7 +350,7 @@ namespace ArchipelagoRandomizer
 			return items;
 		}
 
-		private class LocationData
+		public class LocationData
 		{
 			public string Location { get; }
 			public int Offset { get; }
@@ -407,77 +394,6 @@ namespace ArchipelagoRandomizer
 				Offset = offset;
 				Flag = flag;
 				Type = type;
-			}
-		}
-
-		private class ItemMsgBox
-		{
-			public bool IsActive
-			{
-				get
-				{
-					return messageBox != null && messageBox.IsActive;
-				}
-			}
-			private string Message { get; }
-			private string IconPath { get; }
-			private float DisplayTime { get; }
-
-			public ItemMessageBox messageBox;
-
-			public ItemMsgBox(string message, string iconPath, float displayTime = 1.5f)
-			{
-				Message = message;
-				IconPath = iconPath;
-				DisplayTime = displayTime;
-			}
-
-			public void Show()
-			{
-				if (messageBox == null)
-				{
-					EntityHUD hud = EntityHUD.GetCurrentHUD();
-					messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
-					SetIconTexture(IconPath);
-					messageBox._text.StringText = new StringHolder.OutString(Message);
-					ResizeBox();
-					messageBox.timer = DisplayTime;
-					messageBox.countdown = DisplayTime > 0;
-				}
-
-				if (messageBox._tweener != null)
-					messageBox._tweener.Show(true);
-				else
-					messageBox.gameObject.SetActive(true);
-			}
-
-			public void Hide()
-			{
-				if (messageBox._tweener != null)
-					messageBox._tweener.Hide(true);
-				else
-					messageBox.gameObject.SetActive(false);
-			}
-
-			private void SetIconTexture(string iconPath)
-			{
-				Texture2D texture = Resources.Load(iconPath) as Texture2D;
-
-				if (messageBox.texture != texture)
-					Resources.UnloadAsset(messageBox.texture);
-
-				messageBox.texture = texture;
-				messageBox.mat.mainTexture = texture; ;
-			}
-
-			private void ResizeBox()
-			{
-				Vector2 scaledTextSize = messageBox._text.ScaledTextSize;
-				Vector3 vector = messageBox._text.transform.localPosition - messageBox.backOrigin;
-				scaledTextSize.y += Mathf.Abs(vector.y) + messageBox._border;
-				scaledTextSize.y = Mathf.Max(messageBox.minSize.y, scaledTextSize.y);
-				scaledTextSize.x = messageBox._background.ScaledSize.x;
-				messageBox._background.ScaledSize = scaledTextSize;
 			}
 		}
 	}
