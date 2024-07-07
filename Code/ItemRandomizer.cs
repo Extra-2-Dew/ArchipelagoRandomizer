@@ -170,16 +170,16 @@ namespace ArchipelagoRandomizer
 			saver.SaveAll();
 		}
 
-		public void LocationChecked(ItemDataForRandomizer itemData)
+		public void LocationChecked(string saveFlag)
 		{
-			if (string.IsNullOrEmpty(itemData.SaveFlag))
+			if (string.IsNullOrEmpty(saveFlag))
 				return;
 
-			LocationData location = locationData.Find(x => x.Flag == itemData.SaveFlag);
+			LocationData location = locationData.Find(x => x.Flag == saveFlag);
 
 			if (location == null)
 			{
-				Plugin.Log.LogError($"No location with save flag {itemData.SaveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
+				Plugin.Log.LogError($"No location with save flag {saveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
 				return;
 			}
 
@@ -301,6 +301,10 @@ namespace ArchipelagoRandomizer
 
 			foreach (KeyValuePair<string, int> flag in flagsToSet)
 			{
+				// Don't set flag if value is already at max
+				if (flag.Value > item.Max)
+					continue;
+
 				player.SetStateVariable(flag.Key, flag.Value);
 				Plugin.Log.LogInfo($"Set flag {flag.Key} to {flag.Value}!");
 			}
@@ -341,10 +345,11 @@ namespace ArchipelagoRandomizer
 				int offset = itemObj.GetInt("offset");
 				string flag = itemObj.GetString("flag");
 				string typeStr = itemObj.GetString("type");
+				int max = itemObj.GetInt("max");
 
 				ItemData.ItemType type = !String.IsNullOrEmpty(typeStr) ? (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), typeStr) : ItemData.ItemType.None;
 
-				items.Add(new ItemData(itemName, iconName, offset, flag, type));
+				items.Add(new ItemData(itemName, iconName, offset, flag, type, max));
 			}
 
 			return items;
@@ -371,6 +376,7 @@ namespace ArchipelagoRandomizer
 			public int Offset { get; }
 			public string Flag { get; }
 			public ItemType Type { get; }
+			public int Max { get; }
 
 			public enum ItemType
 			{
@@ -387,13 +393,14 @@ namespace ArchipelagoRandomizer
 				Roll
 			}
 
-			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type)
+			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type, int max)
 			{
 				ItemName = itemName;
 				IconName = iconName;
 				Offset = offset;
 				Flag = flag;
 				Type = type;
+				Max = max;
 			}
 		}
 	}
