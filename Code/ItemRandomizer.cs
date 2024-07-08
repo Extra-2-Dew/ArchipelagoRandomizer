@@ -37,6 +37,7 @@ namespace ArchipelagoRandomizer
 			{ "DreamAll", 4 },
 		};
 		private ItemMessageHandler itemMessageHandler;
+		private SoundClip heartSound;
 
 		public ItemRandomizer()
 		{
@@ -243,6 +244,11 @@ namespace ArchipelagoRandomizer
 				case ItemData.ItemType.Heart:
 					// Heals 20 HP (5 hearts)
 					player.GetEntityComponent<Killable>().CurrentHp += 20;
+
+					if (heartSound == null)
+						heartSound = Resources.FindObjectsOfTypeAll<DummyQuickEffect>().FirstOrDefault(x => x.gameObject.name == "PickupHeartEffect")._sound;
+
+					SoundPlayer.instance.PlayPositionedSound(heartSound, player.transform.position);
 					break;
 				case ItemData.ItemType.Crayon:
 					// Increase max HP by 1 and heals
