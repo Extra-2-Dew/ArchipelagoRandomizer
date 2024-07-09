@@ -71,6 +71,7 @@ namespace ArchipelagoRandomizer
 			var loginSuccess = (LoginSuccessful)result;
 			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
+			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
 			Session.Items.ItemReceived += OnReceivedItem;
 			message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
 			ScoutLocations();
@@ -85,21 +86,20 @@ namespace ArchipelagoRandomizer
 				return;
 			}
 
-			int id = baseId + offset;
-			Session.Locations.CompleteLocationChecksAsync((completed) =>
-			{
-				if (completed)
-				{
-					string locationName = Session.Locations.GetLocationNameFromId(id);
-					ScoutedItemInfo item = scoutedItems.FirstOrDefault(x => x.LocationId == id);
+			Session.Locations.CompleteLocationChecks(baseId + offset);
+		}
 
-					// If sending item
-					if (item != null && item.Player.Slot != CurrentPlayer.Slot)
-						ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name);
+		private void OnLocationChecked(System.Collections.ObjectModel.ReadOnlyCollection<long> newCheckedLocations)
+		{
+			long id = newCheckedLocations[newCheckedLocations.Count - 1];
+			string locationName = Session.Locations.GetLocationNameFromId(id);
+			ScoutedItemInfo item = scoutedItems.FirstOrDefault(x => x.LocationId == id);
 
-					Plugin.Log.LogInfo($"Checked location: {locationName} ({offset})");
-				}
-			}, id);
+			// If sending item
+			if (item != null && item.Player.Slot != CurrentPlayer.Slot)
+				ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name);
+
+			Plugin.Log.LogInfo($"Checked location: {locationName}");
 		}
 
 		private void OnReceivedItem(ReceivedItemsHelper helper)
