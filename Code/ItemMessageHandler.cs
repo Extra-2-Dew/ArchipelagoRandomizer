@@ -26,7 +26,7 @@ namespace ArchipelagoRandomizer
 			ColorUtility.TryParseHtmlString("#526294", out itemNameUsefulColor);
 		}
 
-		public IEnumerator ShowMessageBox(MessageType messageType, string itemName, string playerName, string iconName)
+		public IEnumerator ShowMessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string playerName)
 		{
 			// Arbitrary delay due to issues with setting message box text property
 			yield return new WaitForEndOfFrame();
@@ -34,13 +34,13 @@ namespace ArchipelagoRandomizer
 			// Show message box
 			if (currentMessageBox == null)
 			{
-				currentMessageBox = new(messageType, itemName, playerName, iconName);
+				currentMessageBox = new(messageType, itemData, playerName);
 				currentMessageBox.Show();
 			}
 			// Queue message box
 			else
 			{
-				MessageBox queuedBox = new(messageType, itemName, playerName, iconName);
+				MessageBox queuedBox = new(messageType, itemData, playerName);
 				queuedMessageBoxes.Add(queuedBox);
 
 				// Wait until no message box is shown
@@ -68,10 +68,9 @@ namespace ArchipelagoRandomizer
 					return messageBox != null && messageBox.IsActive;
 				}
 			}
+			public ItemRandomizer.ItemData ItemData { get; }
 			private string Message { get; }
-			private string IconName { get; }
 			private float DisplayTime { get; }
-			private string ItemName { get; }
 			private string PlayerName { get; }
 
 			/// <summary>
@@ -82,12 +81,11 @@ namespace ArchipelagoRandomizer
 			/// <param name="playerName">The name of the involved player</param>
 			/// <param name="iconPath">The full Resources path to the original icon, or the relative path to the custom icon</param>
 			/// <param name="displayTime">How long should the message stay up for (in seconds)?</param>
-			public MessageBox(MessageType messageType, string itemName, string playerName, string iconName, float displayTime = 3f)
+			public MessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string playerName, float displayTime = 3f)
 			{
-				Message = GetMessage(messageType, itemName, playerName);
-				IconName = iconName;
+				ItemData = itemData;
+				Message = GetMessage(messageType, itemData.ItemName, playerName);
 				DisplayTime = displayTime;
-				ItemName = itemName;
 				PlayerName = playerName;
 			}
 
@@ -157,10 +155,22 @@ namespace ArchipelagoRandomizer
 			/// </summary>
 			private void SetIconTexture()
 			{
-				bool isCustomIcon = IconName.StartsWith("Custom");
+				string iconName = ItemData.IconName;
+
+				// Increment melee icon from stick
+				if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Melee)
+				{
+					Entity player = EntityTag.GetEntityByName("PlayerEnt");
+					int meleeLevel = player.GetStateVariable("melee");
+
+					if (meleeLevel > 0)
+						iconName = $"Melee{meleeLevel}";
+				}
+
+				bool isCustomIcon = iconName.StartsWith("Custom");
 				string iconPath = !isCustomIcon ?
-					$"Items/ItemIcon_{IconName}" :
-					$"{PluginInfo.PLUGIN_NAME}/Assets/{IconName.Substring(IconName.LastIndexOf("/"))}.png";
+					$"Items/ItemIcon_{iconName}" :
+					$"{PluginInfo.PLUGIN_NAME}/Assets/{iconName.Substring(iconName.LastIndexOf("/"))}.png";
 				Texture2D texture = !isCustomIcon ? Resources.Load(iconPath) as Texture2D : ModCore.Utility.GetTextureFromFile(iconPath);
 
 				if (messageBox.texture != texture)
@@ -184,7 +194,7 @@ namespace ArchipelagoRandomizer
 				// Remove spaces from message so color indices don't get thrown off by them, as
 				// Each space has one index for color
 				string messageWithoutSpaces = Message.Replace(" ", "");
-				string itemNameWithoutSpaces = ItemName.Replace(" ", "");
+				string itemNameWithoutSpaces = ItemData.ItemName.Replace(" ", "");
 				Color[] meshColors = messageBox._text.mesh.colors;
 				int startItemNameIndex = messageWithoutSpaces.IndexOf(itemNameWithoutSpaces);
 
