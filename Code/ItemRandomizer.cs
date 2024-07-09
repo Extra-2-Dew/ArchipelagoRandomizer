@@ -190,13 +190,7 @@ namespace ArchipelagoRandomizer
 		public void ItemSent(string itemName, string playerName)
 		{
 			ItemData item = itemData.Find(x => x.ItemName == itemName);
-			string iconName = "Custom/APProgression";
-
-			// If item sent is an ID2 item, we can use ID2 icons!
-			if (item != null)
-				iconName = item.IconName;
-
-			ShowItemSentHud(itemName, iconName, playerName);
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, playerName));
 		}
 
 		public void ItemReceived(int offset, string sentFromPlayer)
@@ -207,29 +201,9 @@ namespace ArchipelagoRandomizer
 				return;
 
 			Plugin.StartRoutine(GiveItem(item));
-			ShowItemGetHud(item, sentFromPlayer);
-		}
-
-		private void ShowItemSentHud(string itemName, string iconName, string playerName)
-		{
-			Entity player = EntityTag.GetEntityByName("PlayerEnt");
-
-			string message = $"You found {itemName} for {playerName}!";
-			string picPath = $"Items/ItemIcon_{iconName}";
-
-			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, itemName, playerName, iconName));
-		}
-
-		private void ShowItemGetHud(ItemData itemData, string sentFromPlayer)
-		{
-			string message = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
-				$"You found your own {itemData.ItemName}!" :
-				$"{sentFromPlayer} found your {itemData.ItemName}!";
-			string picPath = $"Items/ItemIcon_{itemData.IconName}";
-
 			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
 				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
-			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, itemData.ItemName, sentFromPlayer, itemData.IconName));
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, sentFromPlayer));
 		}
 
 		private IEnumerator GiveItem(ItemData item)
@@ -295,20 +269,31 @@ namespace ArchipelagoRandomizer
 					// Sets card flag
 					saver.GetSaver("/local/cards").SaveInt(item.Flag, 1);
 					break;
+				case ItemData.ItemType.Upgrade:
+					string itemFlag = item.Flag.Substring(0, item.Flag.Length - 7);
+					int upgradeAmount = player.GetStateVariable(item.Flag);
+					int newUpgradeAmount = upgradeAmount == 0 ? 2 : upgradeAmount + 1;
+					flagsToSet.Add(item.Flag, newUpgradeAmount);
+
+					// If upgrade is obtained after item
+					if (player.GetStateVariable(itemFlag) > 0)
+						flagsToSet.Add(itemFlag, newUpgradeAmount);
+					break;
 				default:
 					// Increment level/count by 1
 					if (string.IsNullOrEmpty(item.Flag))
 						break;
 
-					int amount = player.GetStateVariable(item.Flag) + 1;
-					flagsToSet.Add(item.Flag, amount);
+					int upgradeLevel = player.GetStateVariable(item.Flag + "Upgrade");
+					int newAmount = upgradeLevel == 0 ? player.GetStateVariable(item.Flag) + 1 : upgradeLevel;
+					flagsToSet.Add(item.Flag, newAmount);
 					break;
 			}
 
 			foreach (KeyValuePair<string, int> flag in flagsToSet)
 			{
 				// Don't set flag if value is already at max
-				if (flag.Value > item.Max)
+				if (item.Max > 0 && flag.Value > item.Max)
 					continue;
 
 				player.SetStateVariable(flag.Key, flag.Value);
@@ -375,10 +360,10 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		private class ItemData
+		public class ItemData
 		{
 			public string ItemName { get; }
-			public string IconName { get; }
+			public string IconName { get; } = "APProgression"; // Default AP icon
 			public int Offset { get; }
 			public string Flag { get; }
 			public ItemType Type { get; }
@@ -394,9 +379,10 @@ namespace ArchipelagoRandomizer
 				Heart,
 				Key,
 				Keyring,
+				Melee,
 				Outfit,
 				PortalWorldScroll,
-				Roll
+				Upgrade
 			}
 
 			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type, int max)

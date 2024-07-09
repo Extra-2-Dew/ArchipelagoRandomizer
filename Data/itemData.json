@@ -1,35 +1,36 @@
 {
 	"items": [
 		{
-			"itemName": "Stick",
+			"itemName": "Progressive Melee",
 			"iconName": "Custom/Stick",
 			"offset": 0,
 			"flag": "melee",
-			"max": 3
+			"max": 3,
+			"type": "Melee"
 		},
 		{
-			"itemName": "Forcewand I",
+			"itemName": "Progressive Force Wand",
 			"iconName": "Forcewand1",
 			"offset": 1,
 			"flag": "forcewand",
 			"max": 3
 		},
 		{
-			"itemName": "Dynamite I",
+			"itemName": "Progressive Dynamite",
 			"iconName": "Dynamite1",
 			"offset": 2,
 			"flag": "dynamite",
 			"max": 3
 		},
 		{
-			"itemName": "Icering I",
+			"itemName": "Progressive Ice Ring",
 			"iconName": "Icering1",
 			"offset": 3,
 			"flag": "icering",
 			"max": 3
 		},
 		{
-			"itemName": "Chain I",
+			"itemName": "Progressive Chain",
 			"iconName": "chain",
 			"offset": 4,
 			"flag": "chain",
@@ -39,29 +40,33 @@
 			"itemName": "Forcewand Upgrade",
 			"iconName": "Forcewand1",
 			"offset": 5,
-			"flag": "forcewand",
-			"max": 3
+			"flag": "forcewandUpgrade",
+			"max": 3,
+			"type": "Upgrade"
 		},
 		{
 			"itemName": "Dynamite Upgrade",
 			"iconName": "Dynamite1",
 			"offset": 6,
-			"flag": "dynamite",
-			"max": 3
+			"flag": "dynamiteUpgrade",
+			"max": 3,
+			"type": "Upgrade"
 		},
 		{
 			"itemName": "Icering Upgrade",
 			"iconName": "Icering1",
 			"offset": 7,
-			"flag": "icering",
-			"max": 3
+			"flag": "iceringUpgrade",
+			"max": 3,
+			"type": "Upgrade"
 		},
 		{
 			"itemName": "Chain Upgrade",
 			"iconName": "chain",
 			"offset": 8,
-			"flag": "chain",
-			"max": 3
+			"flag": "chainUpgrade",
+			"max": 3,
+			"type": "Upgrade"
 		},
 		{
 			"itemName": "Roll",
