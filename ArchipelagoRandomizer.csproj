@@ -31,6 +31,36 @@
 		<Reference Include="$(GameDataPath)\BepInEx\plugins\ModCore\ModCore.dll">
 			<Private>false</Private>
 		</Reference>
+		<None Update="c-wspp.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\APFiller.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\APProgression.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\APTrap.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\APUseful.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Roll.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\Stick.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\SuitApaFrog.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\SuitJennyBerry.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Assets\SuitThatGuy.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 
 		<None Update="Data\itemData.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -44,6 +74,9 @@
 		</None>
 		<None Update="thumbnail.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="websocket-sharp.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 
 		<Publicize Include="Assembly-CSharp" />

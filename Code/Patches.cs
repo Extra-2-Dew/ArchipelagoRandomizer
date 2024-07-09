@@ -28,7 +28,7 @@ namespace ArchipelagoRandomizer
 				itemDataForRando.SaveFlag = __instance.transform.parent.Find("Activate").GetComponent<DummyAction>()._saveName;
 
 				// Mark location as checked
-				ItemRandomizer.Instance.LocationChecked(itemDataForRando);
+				ItemRandomizer.Instance.LocationChecked(itemDataForRando.SaveFlag);
 				return false;
 			}
 
@@ -69,12 +69,12 @@ namespace ArchipelagoRandomizer
 		{
 			// ---------- START CUSTOM CODE ---------- \\
 
-			// If item randomizer is inactive, run original code
-			if (!ItemRandomizer.Instance.IsActive)
+			// If item randomizer is inactive or it's an Entity drop, run original code
+			if (!ItemRandomizer.Instance.IsActive || __instance.ItemId == null)
 				return true;
 
 			ItemDataForRandomizer itemDataForRando = __instance.GetComponent<ItemDataForRandomizer>();
-			ItemRandomizer.Instance.LocationChecked(itemDataForRando);
+			ItemRandomizer.Instance.LocationChecked(itemDataForRando.SaveFlag);
 
 			// ---------- END CUSTOM CODE ---------- \\
 
@@ -118,6 +118,13 @@ namespace ArchipelagoRandomizer
 
 			if (item == null)
 			{
+				// ---------- START CUSTOM CODE ---------- \\
+
+				// Store reference to save flag
+				ItemRandomizer.Instance.LocationChecked(__instance.GetComponentInParent<DummyAction>()._saveName);
+
+				// ---------- END CUSTOM CODE ---------- \\
+
 				Debug.LogWarning("Attempt to spawn null item - remove spawner instead");
 				return false;
 			}

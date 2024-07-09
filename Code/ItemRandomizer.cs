@@ -10,14 +10,13 @@ namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer
 	{
-		private static ItemRandomizer instance;
-		private readonly List<LocationData> locationData;
-		private readonly List<ItemData> itemData;
-
 		public static ItemRandomizer Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 		public bool IsActive { get; private set; }
 
+		private static ItemRandomizer instance;
+		private readonly List<LocationData> locationData;
+		private readonly List<ItemData> itemData;
 		private readonly Dictionary<string, int> dungeonKeyCounts = new()
 		{
 			{ "PillowFort", 2 },
@@ -37,13 +36,8 @@ namespace ArchipelagoRandomizer
 			{ "DreamIce", 4 },
 			{ "DreamAll", 4 },
 		};
-
-		/// <summary>
-		/// TODO:
-		/// Roll opens chests
-		/// Read from settings
-		/// Implement scrolls and Fake EFCS
-		/// </summary>
+		private ItemMessageHandler itemMessageHandler;
+		private SoundClip heartSound;
 
 		public ItemRandomizer()
 		{
@@ -54,13 +48,24 @@ namespace ArchipelagoRandomizer
 			itemData = ParseItemJson();
 			HasInitialized = locationData != null && itemData != null;
 
-			// TEMP
-			//string server = "localhost:38281";
-			//string slot = "ChrisID2";
-			//if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
-			//	Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
-			//else
-			//	Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
+			if (!HasInitialized)
+			{
+				Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
+				return;
+			}
+
+			itemMessageHandler = new();
+
+			if (Plugin.TestingLocally)
+			{
+				string server = "localhost:38281";
+				//string server = "archipelago.gg:58159";
+				string slot = "ChrisID2";
+				if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
+					Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
+				else
+					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
+			}
 		}
 
 		public void SetupNewFile(bool newFile)
@@ -166,16 +171,16 @@ namespace ArchipelagoRandomizer
 			saver.SaveAll();
 		}
 
-		public void LocationChecked(ItemDataForRandomizer itemData)
+		public void LocationChecked(string saveFlag)
 		{
-			if (string.IsNullOrEmpty(itemData.SaveFlag))
+			if (string.IsNullOrEmpty(saveFlag))
 				return;
 
-			LocationData location = locationData.Find(x => x.Flag == itemData.SaveFlag);
+			LocationData location = locationData.Find(x => x.Flag == saveFlag);
 
 			if (location == null)
 			{
-				Plugin.Log.LogError($"No location with save flag {itemData.SaveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
+				Plugin.Log.LogError($"No location with save flag {saveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
 				return;
 			}
 
@@ -185,43 +190,20 @@ namespace ArchipelagoRandomizer
 		public void ItemSent(string itemName, string playerName)
 		{
 			ItemData item = itemData.Find(x => x.ItemName == itemName);
-
-			if (item == null)
-				return;
-
-			ShowItemSentHud(item, playerName);
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
 		}
 
-		public void ItemReceived(int offset, string sentFromPlayer)
+		public void ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
 			ItemData item = itemData.Find(x => x.Offset == offset);
 
 			if (item == null)
 				return;
 
-			Plugin.Log.LogInfo($"Received item fired for {item.ItemName}!");
 			Plugin.StartRoutine(GiveItem(item));
-			ShowItemGetHud(item, sentFromPlayer);
-		}
-
-		private void ShowItemSentHud(ItemData itemData, string playerName)
-		{
-			Entity player = EntityTag.GetEntityByName("PlayerEnt");
-
-			string message = $"You found {itemData.ItemName} for {playerName}!";
-			string picPath = $"Items/ItemIcon_{itemData.IconName}";
-
-			Plugin.StartRoutine(ShowHud(message, picPath));
-		}
-
-		private void ShowItemGetHud(ItemData itemData, string sentFromPlayer)
-		{
-			string message = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
-				$"You found your own {itemData.ItemName}!" :
-				$"{sentFromPlayer} found your {itemData.ItemName}!";
-			string picPath = $"Items/ItemIcon_{itemData.IconName}";
-
-			Plugin.StartRoutine(ShowHud(message, picPath));
+			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
+				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, itemName, sentFromPlayer));
 		}
 
 		private IEnumerator GiveItem(ItemData item)
@@ -236,6 +218,11 @@ namespace ArchipelagoRandomizer
 				case ItemData.ItemType.Heart:
 					// Heals 20 HP (5 hearts)
 					player.GetEntityComponent<Killable>().CurrentHp += 20;
+
+					if (heartSound == null)
+						heartSound = Resources.FindObjectsOfTypeAll<DummyQuickEffect>().FirstOrDefault(x => x.gameObject.name == "PickupHeartEffect")._sound;
+
+					SoundPlayer.instance.PlayPositionedSound(heartSound, player.transform.position);
 					break;
 				case ItemData.ItemType.Crayon:
 					// Increase max HP by 1 and heals
@@ -245,7 +232,7 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemData.ItemType.Key:
 					// Increment key count for scene
-					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1);
+					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
 					int currentKeyCount = keySaver.LoadInt("localKeys");
 					keySaver.SaveInt("localKeys", currentKeyCount + 1);
@@ -262,8 +249,6 @@ namespace ArchipelagoRandomizer
 					}
 
 					break;
-
-				// TODO: D8 BK chest + S2 bee chest
 				case ItemData.ItemType.Outfit:
 					// Sets world flag for outfit in changing tent + equips outfit
 					int outfitNum = int.Parse(Regex.Match(item.Flag, @"\d+").Value);
@@ -284,72 +269,38 @@ namespace ArchipelagoRandomizer
 					// Sets card flag
 					saver.GetSaver("/local/cards").SaveInt(item.Flag, 1);
 					break;
+				case ItemData.ItemType.Upgrade:
+					string itemFlag = item.Flag.Substring(0, item.Flag.Length - 7);
+					int upgradeAmount = player.GetStateVariable(item.Flag);
+					int newUpgradeAmount = upgradeAmount == 0 ? 2 : upgradeAmount + 1;
+					flagsToSet.Add(item.Flag, newUpgradeAmount);
+
+					// If upgrade is obtained after item
+					if (player.GetStateVariable(itemFlag) > 0)
+						flagsToSet.Add(itemFlag, newUpgradeAmount);
+					break;
 				default:
 					// Increment level/count by 1
 					if (string.IsNullOrEmpty(item.Flag))
 						break;
 
-					int amount = player.GetStateVariable(item.Flag) + 1;
-					flagsToSet.Add(item.Flag, amount);
+					int upgradeLevel = player.GetStateVariable(item.Flag + "Upgrade");
+					int newAmount = upgradeLevel == 0 ? player.GetStateVariable(item.Flag) + 1 : upgradeLevel;
+					flagsToSet.Add(item.Flag, newAmount);
 					break;
 			}
 
 			foreach (KeyValuePair<string, int> flag in flagsToSet)
 			{
+				// Don't set flag if value is already at max
+				if (item.Max > 0 && flag.Value > item.Max)
+					continue;
+
 				player.SetStateVariable(flag.Key, flag.Value);
 				Plugin.Log.LogInfo($"Set flag {flag.Key} to {flag.Value}!");
 			}
 
 			saver.SaveLocal();
-		}
-
-		private IEnumerator ShowHud(string message, string picPath)
-		{
-			EntityHUD hud = EntityHUD.GetCurrentHUD();
-			ItemMessageBox messageBox = EntityHUD.GetCurrentHUD().currentMsgBox;
-
-			// Hides the message box if it's still shown from a prior one
-			if (messageBox != null && messageBox.IsActive)
-				messageBox.Hide(true);
-
-			// Gets the current message box window
-			messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
-
-			// Shows the message box
-			if (messageBox._tweener != null)
-				messageBox._tweener.Show(true);
-			else
-				messageBox.gameObject.SetActive(true);
-
-			// Waits for end of frame to avoid random issues with setting icon
-			yield return new WaitForEndOfFrame();
-
-			// Update item icon
-			Texture2D texture = Resources.Load(picPath) as Texture2D;
-
-			if (messageBox.texture != texture)
-				Resources.UnloadAsset(messageBox.texture);
-
-			messageBox.texture = texture;
-			messageBox.mat.mainTexture = texture;
-
-			// Waits for end of frame to avoid random issues with setting text
-			yield return new WaitForEndOfFrame();
-
-			// Updates the text
-			messageBox._text.StringText = new StringHolder.OutString(message);
-
-			// Update sizing
-			Vector2 scaledTextSize = messageBox._text.ScaledTextSize;
-			Vector3 vector = messageBox._text.transform.localPosition - messageBox.backOrigin;
-			scaledTextSize.y += Mathf.Abs(vector.y) + messageBox._border;
-			scaledTextSize.y = Mathf.Max(messageBox.minSize.y, scaledTextSize.y);
-			scaledTextSize.x = messageBox._background.ScaledSize.x;
-			messageBox._background.ScaledSize = scaledTextSize;
-
-			// Sets timer
-			messageBox.timer = messageBox._showTime;
-			messageBox.countdown = messageBox._showTime > 0;
 		}
 
 		private List<LocationData> ParseLocationJson()
@@ -385,16 +336,17 @@ namespace ArchipelagoRandomizer
 				int offset = itemObj.GetInt("offset");
 				string flag = itemObj.GetString("flag");
 				string typeStr = itemObj.GetString("type");
+				int max = itemObj.GetInt("max");
 
 				ItemData.ItemType type = !String.IsNullOrEmpty(typeStr) ? (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), typeStr) : ItemData.ItemType.None;
 
-				items.Add(new ItemData(itemName, iconName, offset, flag, type));
+				items.Add(new ItemData(itemName, iconName, offset, flag, type, max));
 			}
 
 			return items;
 		}
 
-		private class LocationData
+		public class LocationData
 		{
 			public string Location { get; }
 			public int Offset { get; }
@@ -408,13 +360,14 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		private class ItemData
+		public class ItemData
 		{
 			public string ItemName { get; }
-			public string IconName { get; }
+			public string IconName { get; } = "APProgression"; // Default AP icon
 			public int Offset { get; }
 			public string Flag { get; }
 			public ItemType Type { get; }
+			public int Max { get; }
 
 			public enum ItemType
 			{
@@ -426,18 +379,20 @@ namespace ArchipelagoRandomizer
 				Heart,
 				Key,
 				Keyring,
+				Melee,
 				Outfit,
 				PortalWorldScroll,
-				Roll
+				Upgrade
 			}
 
-			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type)
+			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type, int max)
 			{
 				ItemName = itemName;
 				IconName = iconName;
 				Offset = offset;
 				Flag = flag;
 				Type = type;
+				Max = max;
 			}
 		}
 	}
