@@ -395,31 +395,31 @@
 			"type": "Outfit"
 		},
 		{
-			"itemName": "Original Outfit",
+			"itemName": "Ittle Dew 1 Outfit",
 			"iconName": "SuitIttleOriginal",
 			"offset": 59,
 			"flag": "outfit2",
 			"type": "Outfit"
 		},
 		{
-			"itemName": "Delinquent Outfit",
+			"itemName": "Delinquint Outfit",
 			"iconName": "SuitDelinquent",
 			"offset": 60,
 			"flag": "outfit7",
 			"type": "Outfit"
 		},
 		{
-			"itemName": "Apathetic Frog Outfit",
-			"iconName": "Custom/SuitApaFrog",
+			"itemName": "Jenny Berry Outfit",
+			"iconName": "Custom/SuitJennyBerry",
 			"offset": 61,
-			"flag": "outfit8",
+			"flag": "outfit10",
 			"type": "Outfit"
 		},
 		{
-			"itemName": "Jenny Berry Outfit",
-			"iconName": "Custom/SuitJennyBerry",
+			"itemName": "Apathetic Frog Outfit",
+			"iconName": "Custom/SuitApaFrog",
 			"offset": 62,
-			"flag": "outfit10",
+			"flag": "outfit8",
 			"type": "Outfit"
 		},
 		{
@@ -436,7 +436,7 @@
 			"flag": "loot"
 		},
 		{
-			"itemName": "Fake EFCS",
+			"itemName": "Impossible Gates Pass",
 			"iconName": "EFCS",
 			"offset": 65,
 			"type": "EFCS"
