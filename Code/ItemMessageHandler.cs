@@ -133,18 +133,38 @@ namespace ArchipelagoRandomizer
 			private string GetMessage(MessageType messageType, string itemName, string playerName)
 			{
 				string message = "You shouldn't be seeing this... please report this!";
+				Entity player = EntityTag.GetEntityByName("PlayerEnt");
+				SaverOwner saver = ModCore.Plugin.MainSaver;
 
 				switch (messageType)
 				{
 					case MessageType.ReceivedFromSelf:
-						message = $"You found your own {itemName}!";
+						message = $"You found your own {itemName}";
 						break;
 					case MessageType.ReceivedFromSomeone:
-						message = $"{playerName} found your {itemName}!";
+						message = $"{playerName} found your {itemName}";
 						break;
 					case MessageType.Sent:
-						message = $"You found {itemName} for {playerName}!";
+						message = $"You found {itemName} for {playerName}";
 						break;
+				}
+
+				if (ItemData.Flag == "shards" || ItemData.Flag == "raft" || ItemData.Flag == "evilKeys")
+				{
+					int itemCount = player.GetStateVariable(ItemData.Flag);
+					message += $"! You have {itemCount} {ItemData.ItemName}{(itemCount > 1 ? "s" : "")}.";
+				}
+				else if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Key)
+				{
+					string dungeonName = ItemData.ItemName.Substring(0, ItemData.ItemName.IndexOf("Key") - 1).Replace(" ", "");
+					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
+					int keyCount = keySaver.LoadInt("localKeys");
+					message += $"! You have {keyCount} key{(keyCount > 1 ? "s" : "")} for this dungeon.";
+				}
+				else if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Upgrade && messageType != MessageType.Sent)
+				{
+					int upgradeLevel = player.GetStateVariable(ItemData.Flag);
+					message += $"Lv. {upgradeLevel}!";
 				}
 
 				return message;
