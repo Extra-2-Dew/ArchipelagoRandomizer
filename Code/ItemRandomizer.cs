@@ -190,10 +190,10 @@ namespace ArchipelagoRandomizer
 		public void ItemSent(string itemName, string playerName)
 		{
 			ItemData item = itemData.Find(x => x.ItemName == itemName);
-			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, playerName));
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
 		}
 
-		public void ItemReceived(int offset, string sentFromPlayer)
+		public void ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
 			ItemData item = itemData.Find(x => x.Offset == offset);
 
@@ -203,7 +203,7 @@ namespace ArchipelagoRandomizer
 			Plugin.StartRoutine(GiveItem(item));
 			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
 				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
-			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, sentFromPlayer));
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, itemName, sentFromPlayer));
 		}
 
 		private IEnumerator GiveItem(ItemData item)

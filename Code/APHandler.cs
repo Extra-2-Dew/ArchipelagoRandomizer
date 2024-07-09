@@ -106,7 +106,7 @@ namespace ArchipelagoRandomizer
 		{
 			ItemInfo receivedItem = Session.Items.AllItemsReceived[Session.Items.AllItemsReceived.Count - 1];
 			int itemOffset = (int)receivedItem.ItemId - baseId;
-			ItemRandomizer.Instance.ItemReceived(itemOffset, receivedItem.Player.Name);
+			ItemRandomizer.Instance.ItemReceived(itemOffset, receivedItem.ItemDisplayName, receivedItem.Player.Name);
 		}
 
 		private void ScoutLocations()

@@ -26,7 +26,7 @@ namespace ArchipelagoRandomizer
 			ColorUtility.TryParseHtmlString("#526294", out itemNameUsefulColor);
 		}
 
-		public IEnumerator ShowMessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string playerName)
+		public IEnumerator ShowMessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string itemName, string playerName)
 		{
 			// Arbitrary delay due to issues with setting message box text property
 			yield return new WaitForEndOfFrame();
@@ -34,13 +34,13 @@ namespace ArchipelagoRandomizer
 			// Show message box
 			if (currentMessageBox == null)
 			{
-				currentMessageBox = new(messageType, itemData, playerName);
+				currentMessageBox = new(messageType, itemData, itemName, playerName);
 				currentMessageBox.Show();
 			}
 			// Queue message box
 			else
 			{
-				MessageBox queuedBox = new(messageType, itemData, playerName);
+				MessageBox queuedBox = new(messageType, itemData, itemName, playerName);
 				queuedMessageBoxes.Add(queuedBox);
 
 				// Wait until no message box is shown
@@ -81,10 +81,10 @@ namespace ArchipelagoRandomizer
 			/// <param name="playerName">The name of the involved player</param>
 			/// <param name="iconPath">The full Resources path to the original icon, or the relative path to the custom icon</param>
 			/// <param name="displayTime">How long should the message stay up for (in seconds)?</param>
-			public MessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string playerName, float displayTime = 3f)
+			public MessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string itemName, string playerName, float displayTime = 3f)
 			{
-				ItemData = itemData;
-				Message = GetMessage(messageType, itemData.ItemName, playerName);
+				ItemData = itemData != null ? itemData : new(itemName, "Custom/APUseful", 0, "", ItemRandomizer.ItemData.ItemType.None, 0);
+				Message = GetMessage(messageType, itemName, playerName);
 				DisplayTime = displayTime;
 				PlayerName = playerName;
 			}
@@ -133,8 +133,6 @@ namespace ArchipelagoRandomizer
 			private string GetMessage(MessageType messageType, string itemName, string playerName)
 			{
 				string message = "You shouldn't be seeing this... please report this!";
-				Entity player = EntityTag.GetEntityByName("PlayerEnt");
-				SaverOwner saver = ModCore.Plugin.MainSaver;
 
 				switch (messageType)
 				{
@@ -149,6 +147,12 @@ namespace ArchipelagoRandomizer
 						break;
 				}
 
+				if (messageType == MessageType.Sent)
+					return message + "!";
+
+				Entity player = EntityTag.GetEntityByName("PlayerEnt");
+				SaverOwner saver = ModCore.Plugin.MainSaver;
+
 				if (ItemData.Flag == "shards" || ItemData.Flag == "raft" || ItemData.Flag == "evilKeys")
 				{
 					int itemCount = player.GetStateVariable(ItemData.Flag);
@@ -161,10 +165,10 @@ namespace ArchipelagoRandomizer
 					int keyCount = keySaver.LoadInt("localKeys");
 					message += $"! You have {keyCount} key{(keyCount > 1 ? "s" : "")} for this dungeon.";
 				}
-				else if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Upgrade && messageType != MessageType.Sent)
+				else if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Upgrade)
 				{
 					int upgradeLevel = player.GetStateVariable(ItemData.Flag);
-					message += $"Lv. {upgradeLevel}!";
+					message += $" Lv. {upgradeLevel}!";
 				}
 
 				return message;
@@ -192,9 +196,6 @@ namespace ArchipelagoRandomizer
 					$"Items/ItemIcon_{iconName}" :
 					$"{PluginInfo.PLUGIN_NAME}/Assets/{iconName.Substring(iconName.LastIndexOf("/"))}.png";
 				Texture2D texture = !isCustomIcon ? Resources.Load(iconPath) as Texture2D : ModCore.Utility.GetTextureFromFile(iconPath);
-
-				if (messageBox.texture != texture)
-					Resources.UnloadAsset(messageBox.texture);
 
 				if (texture == null)
 					return;
