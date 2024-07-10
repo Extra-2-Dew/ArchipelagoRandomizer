@@ -289,7 +289,9 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemData.ItemType.EFCS:
 					// Sets the flags for the couple EFCS gates/doors that are EFCS only
-					Plugin.Log.LogWarning("Obtained Fake EFCS, but this is not implemented yet, so nothing happens!");
+					saver.GetSaver("/local/levels/TombOfSimulacrum/N").SaveInt("PuzzleDoor_green-100--22", 1);
+					saver.GetSaver("/local/levels/TombOfSimulacrum/S").SaveInt("PuzzleDoor_green-64--25", 1);
+					saver.GetSaver("/local/levels/Deep17/B").SaveInt("PuzzleGate-23--5", 1);
 					break;
 				case ItemData.ItemType.Card:
 					// Sets card flag
