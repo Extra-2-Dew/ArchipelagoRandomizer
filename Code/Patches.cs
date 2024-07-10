@@ -10,6 +10,17 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(RollAction), nameof(RollAction.DoUpdate))]
+		public static bool RollAction_DoUpdate_PrePatch(RollAction __instance)
+		{
+			if (!ItemRandomizer.Instance.IsActive || !__instance.collisionDetector.IsColliding)
+				return true;
+
+			ItemRandomizer.Instance.RollToOpenChest(__instance.collisionDetector.GetCollisions());
+			return true;
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(UpdateVarsEventObserver), nameof(UpdateVarsEventObserver.UpdateVars))]
 		public static bool UpdateVarsEventObserver_UpdateVars_Patch(UpdateVarsEventObserver __instance)
 		{
