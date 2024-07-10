@@ -171,6 +171,32 @@ namespace ArchipelagoRandomizer
 			saver.SaveAll();
 		}
 
+		public void RollToOpenChest(List<CollisionDetector.CollisionData> collisions)
+		{
+			foreach (CollisionDetector.CollisionData collision in collisions)
+			{
+				bool isChest = collision.gameObject.GetComponentInParent<SpawnItemEventObserver>() != null;
+
+				if (!isChest)
+					continue;
+
+				Transform crystal = collision.transform.parent.Find("crystal");
+				bool isLockedByCrystal = crystal != null && crystal.gameObject.activeSelf;
+
+				if (isLockedByCrystal)
+					continue;
+
+				DummyAction action = crystal == null ?
+					collision.transform.GetComponentInParent<DummyAction>() :
+					collision.transform.parent.GetChild(0).GetComponent<DummyAction>();
+
+				if (action == null || action.hasFired)
+					continue;
+
+				action.Fire(false);
+			}
+		}
+
 		public void LocationChecked(string saveFlag)
 		{
 			if (string.IsNullOrEmpty(saveFlag))
