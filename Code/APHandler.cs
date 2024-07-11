@@ -18,6 +18,7 @@ namespace ArchipelagoRandomizer
 
 		public static APHandler Instance { get { return instance; } }
 		public static ArchipelagoSession Session { get; private set; }
+		public static Dictionary<string, object> slotData;
 		public PlayerInfo CurrentPlayer { get; private set; }
 
 		public APHandler()
@@ -45,7 +46,7 @@ namespace ArchipelagoRandomizer
 
 			try
 			{
-				result = Session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password);
+				result = Session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password, requestSlotData: true);
 			}
 			catch (Exception ex)
 			{
@@ -69,6 +70,7 @@ namespace ArchipelagoRandomizer
 			}
 
 			var loginSuccess = (LoginSuccessful)result;
+			slotData = loginSuccess.SlotData;
 			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
