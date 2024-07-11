@@ -727,6 +727,24 @@
 			"offset": 140,
 			"flag": "NappingFly",
 			"type": "Card"
+		},
+		{
+			"itemName": "Random Buff",
+			"iconName": "Custom/APFiller",
+			"offset": 141,
+			"type": "Buff"
+		},
+		{
+			"itemName": "Random Debuff",
+			"iconName": "Custom/APTrap",
+			"offset": 142,
+			"type": "Trap"
+		},
+		{
+			"itemName": "Bee Trap",
+			"iconName": "Custom/APTrap",
+			"offset": 143,
+			"type": "Trap"
 		}
 	]
 }

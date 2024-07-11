@@ -37,7 +37,7 @@ namespace ArchipelagoRandomizer
 			{ "DreamAll", 4 },
 		};
 		private ItemMessageHandler itemMessageHandler;
-		private SoundClip heartSound;
+		private ReferenceHolder referenceHolder;
 
 		public ItemRandomizer()
 		{
@@ -55,6 +55,7 @@ namespace ArchipelagoRandomizer
 			}
 
 			itemMessageHandler = new();
+			referenceHolder = new();
 
 			if (Plugin.TestingLocally)
 			{
@@ -219,6 +220,17 @@ namespace ArchipelagoRandomizer
 			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
 		}
 
+		IEnumerator SpawnBees(Entity player)
+		{
+			yield return new WaitForEndOfFrame();
+
+			if (referenceHolder.BeeSwarmSpawner != null)
+			{
+				SpawnEntityEventObserver spawner = referenceHolder.BeeSwarmSpawner.GetComponent<SpawnEntityEventObserver>();
+				spawner._entity.DoSpawn(player.transform.position, Vector3.zero, false);
+			}
+		}
+
 		public void ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
 			ItemData item = itemData.Find(x => x.Offset == offset);
@@ -237,6 +249,7 @@ namespace ArchipelagoRandomizer
 			yield return new WaitForEndOfFrame();
 			SaverOwner saver = ModCore.Plugin.MainSaver;
 			Entity player = EntityTag.GetEntityByName("PlayerEnt");
+			EntityStatusable statusable = player.GetEntityComponent<EntityStatusable>();
 			Dictionary<string, int> flagsToSet = new();
 
 			switch (item.Type)
@@ -245,10 +258,10 @@ namespace ArchipelagoRandomizer
 					// Heals 20 HP (5 hearts)
 					player.GetEntityComponent<Killable>().CurrentHp += 20;
 
-					if (heartSound == null)
-						heartSound = Resources.FindObjectsOfTypeAll<DummyQuickEffect>().FirstOrDefault(x => x.gameObject.name == "PickupHeartEffect")._sound;
+					if (referenceHolder.heartSound == null)
+						referenceHolder.heartSound = Resources.FindObjectsOfTypeAll<DummyQuickEffect>().FirstOrDefault(x => x.gameObject.name == "PickupHeartEffect")._sound;
 
-					SoundPlayer.instance.PlayPositionedSound(heartSound, player.transform.position);
+					SoundPlayer.instance.PlayPositionedSound(referenceHolder.heartSound, player.transform.position);
 					break;
 				case ItemData.ItemType.Crayon:
 					// Increase max HP by 1 and heals
@@ -263,6 +276,31 @@ namespace ArchipelagoRandomizer
 					int currentKeyCount = keySaver.LoadInt("localKeys");
 					keySaver.SaveInt("localKeys", currentKeyCount + 1);
 
+					break;
+				case ItemData.ItemType.Buff:
+					// Applies a random buff
+					List<StatusType> buffs = referenceHolder.StatusBuffs;
+					StatusType randomBuff = buffs[UnityEngine.Random.Range(0, buffs.Count - 1)];
+					statusable.AddStatus(randomBuff);
+					Plugin.Log.LogInfo($"Activated {randomBuff.name} buff!");
+
+					break;
+				case ItemData.ItemType.Trap:
+					switch (item.ItemName)
+					{
+						case "Random Debuff":
+							List<StatusType> debuffs = referenceHolder.StatusDebuffs;
+							StatusType randomDebuff = debuffs[UnityEngine.Random.Range(0, debuffs.Count - 1)];
+							statusable.AddStatus(randomDebuff);
+							Plugin.Log.LogInfo($"Activated {randomDebuff.name} debuff!");
+							break;
+						case "Bee Trap":
+							Plugin.StartRoutine(SpawnBees(player));
+							break;
+						default:
+							Plugin.Log.LogWarning($"Obtained trap item {item.ItemName}, but this is not implemented yet, so nothing happens!");
+							break;
+					}
 					break;
 				case ItemData.ItemType.Keyring:
 					// Set max key count for scene
@@ -400,6 +438,7 @@ namespace ArchipelagoRandomizer
 			public enum ItemType
 			{
 				None, // Default
+				Buff,
 				Card,
 				CaveScroll,
 				Crayon,
@@ -410,6 +449,7 @@ namespace ArchipelagoRandomizer
 				Melee,
 				Outfit,
 				PortalWorldScroll,
+				Trap,
 				Upgrade
 			}
 
