@@ -13,31 +13,7 @@ namespace ArchipelagoRandomizer
     {
         public CustomTextHandler()
         {
-            Events.OnSceneLoaded += OnSceneLoaded;
-            Events.OnRoomChanged += OnRoomChanged;
             Events.OnEntitySpawn += OnSpawnEntity;
-        }
-
-        // Hints probably won't make it into initial release,
-        // but figure I can set the groundwork for them.
-        private GameObject levelRoot;
-        private string sceneName;
-        ///<summary>
-        /// First string is the room name.
-        /// Int is the index within the room the Speechbubble appears
-        /// Second string is the text to update it to
-        /// </summary>
-        private Dictionary<string, Dictionary<int, string>> signHints;
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            levelRoot = GameObject.Find("LevelRoot");
-            sceneName = scene.name;
-        }
-
-        private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
-        {
-
         }
 
         private void OnSpawnEntity(Entity entity)
