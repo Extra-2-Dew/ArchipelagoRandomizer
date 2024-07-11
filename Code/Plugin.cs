@@ -14,11 +14,12 @@ namespace ArchipelagoRandomizer
 	{
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
-		internal static bool TestingLocally { get; } = true;
+		internal static bool TestingLocally { get; } = false;
 
 		private APHandler apHandler;
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
+		private CustomTextHandler customTextHandler;
 
 		private void Awake()
 		{
@@ -31,6 +32,7 @@ namespace ArchipelagoRandomizer
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
 			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
+			customTextHandler = new CustomTextHandler();
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
