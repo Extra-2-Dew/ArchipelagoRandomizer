@@ -42,7 +42,7 @@ namespace ArchipelagoRandomizer
 
         private void OnSpawnEntity(Entity entity)
         {
-            if (!ItemRandomizer.Instance.IsActive) return;
+            if (!ItemRandomizer.Instance.IsActive || (long)APHandler.slotData["dungeon_rewards_setting"] == 0) return;
             if (entity.gameObject.name == "NPCJennyMole")
             {
                 Sign dialogue = entity.gameObject.GetComponentInChildren<Sign>();
@@ -56,7 +56,6 @@ namespace ArchipelagoRandomizer
         private string GetDungeonsHint()
         {
             string hint = "Going on an adventure? You should check out\n";
-            Debug.Log(APHandler.slotData["required_dungeons"]);
             List<string> dungeons = ((JArray)APHandler.slotData["required_dungeons"]).ToObject<List<string>>();
             for (int i = 0; i < dungeons.Count; i++)
             {
