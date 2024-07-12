@@ -75,28 +75,28 @@
 			"flag": "canRoll"
 		},
 		{
-			"itemName": "Tracker",
+			"itemName": "Progressive Tracker",
 			"iconName": "Tracker",
 			"offset": 10,
 			"flag": "tracker",
 			"max": 3
 		},
 		{
-			"itemName": "Headband",
+			"itemName": "Progressive Headband",
 			"iconName": "BlueHeadBand",
 			"offset": 11,
 			"flag": "headband",
 			"max": 3
 		},
 		{
-			"itemName": "Amulet",
+			"itemName": "Progressive Amulet",
 			"iconName": "Amulet",
 			"offset": 12,
 			"flag": "amulet",
 			"max": 3
 		},
 		{
-			"itemName": "Tome",
+			"itemName": "Progressive Tome",
 			"iconName": "Tome",
 			"offset": 13,
 			"flag": "tome",
@@ -730,7 +730,7 @@
 		},
 		{
 			"itemName": "Random Buff",
-			"iconName": "Custom/APFiller",
+			"iconName": "Custom/BuffRandom",
 			"offset": 141,
 			"type": "Buff"
 		},
