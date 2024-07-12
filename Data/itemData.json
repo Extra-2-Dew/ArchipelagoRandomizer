@@ -738,13 +738,13 @@
 			"itemName": "Random Debuff",
 			"iconName": "Custom/APTrap",
 			"offset": 142,
-			"type": "Trap"
+			"type": "Debuff"
 		},
 		{
 			"itemName": "Bee Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 143,
-			"type": "Trap"
+			"type": "Bees"
 		}
 	]
 }

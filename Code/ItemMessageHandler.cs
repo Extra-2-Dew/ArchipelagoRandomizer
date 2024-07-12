@@ -26,7 +26,7 @@ namespace ArchipelagoRandomizer
 			ColorUtility.TryParseHtmlString("#526294", out itemNameUsefulColor);
 		}
 
-		public IEnumerator ShowMessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string itemName, string playerName)
+		public IEnumerator ShowMessageBox(MessageType messageType, ItemHandler.ItemData.Item itemData, string itemName, string playerName)
 		{
 			// Arbitrary delay due to issues with setting message box text property
 			yield return new WaitForEndOfFrame();
@@ -68,7 +68,7 @@ namespace ArchipelagoRandomizer
 					return messageBox != null && messageBox.IsActive;
 				}
 			}
-			public ItemRandomizer.ItemData ItemData { get; }
+			public ItemHandler.ItemData.Item ItemData { get; }
 			private string Message { get; }
 			private float DisplayTime { get; }
 			private string PlayerName { get; }
@@ -81,9 +81,9 @@ namespace ArchipelagoRandomizer
 			/// <param name="playerName">The name of the involved player</param>
 			/// <param name="iconPath">The full Resources path to the original icon, or the relative path to the custom icon</param>
 			/// <param name="displayTime">How long should the message stay up for (in seconds)?</param>
-			public MessageBox(MessageType messageType, ItemRandomizer.ItemData itemData, string itemName, string playerName, float displayTime = 3f)
+			public MessageBox(MessageType messageType, ItemHandler.ItemData.Item itemData, string itemName, string playerName, float displayTime = 3f)
 			{
-				ItemData = itemData != null ? itemData : new(itemName, "Custom/APUseful", 0, "", ItemRandomizer.ItemData.ItemType.None, 0);
+				ItemData = itemData;
 				Message = GetMessage(messageType, itemName, playerName);
 				DisplayTime = displayTime;
 				PlayerName = playerName;
@@ -158,18 +158,20 @@ namespace ArchipelagoRandomizer
 					int itemCount = player.GetStateVariable(ItemData.Flag);
 					message += $"! You have {itemCount} {ItemData.ItemName}{(itemCount > 1 ? "s" : "")}.";
 				}
-				else if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Key)
+				else if (ItemData.Type == ItemHandler.ItemType.Key)
 				{
 					string dungeonName = ItemData.ItemName.Substring(0, ItemData.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
 					int keyCount = keySaver.LoadInt("localKeys");
 					message += $"! You have {keyCount} key{(keyCount > 1 ? "s" : "")} for this dungeon.";
 				}
-				else if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Upgrade)
+				else if (ItemData.Type == ItemHandler.ItemType.Upgrade)
 				{
 					int upgradeLevel = player.GetStateVariable(ItemData.Flag);
 					message += $" Lv. {upgradeLevel}!";
 				}
+				else
+					message += "!";
 
 				return message;
 			}
@@ -182,7 +184,7 @@ namespace ArchipelagoRandomizer
 				string iconName = ItemData.IconName;
 
 				// Increment melee icon from stick
-				if (ItemData.Type == ItemRandomizer.ItemData.ItemType.Melee)
+				if (ItemData.Type == ItemHandler.ItemType.Melee)
 				{
 					Entity player = EntityTag.GetEntityByName("PlayerEnt");
 					int meleeLevel = player.GetStateVariable("melee");

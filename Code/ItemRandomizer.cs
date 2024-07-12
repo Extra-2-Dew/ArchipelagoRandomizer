@@ -1,9 +1,5 @@
-﻿using SmallJson;
-using System;
-using System.Collections;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
@@ -11,51 +7,25 @@ namespace ArchipelagoRandomizer
 	public class ItemRandomizer
 	{
 		public static ItemRandomizer Instance { get { return instance; } }
-		public bool HasInitialized { get; private set; }
 		public bool IsActive { get; private set; }
 
 		private static ItemRandomizer instance;
-		private readonly List<LocationData> locationData;
-		private readonly List<ItemData> itemData;
-		private readonly Dictionary<string, int> dungeonKeyCounts = new()
-		{
-			{ "PillowFort", 2 },
-			{ "SandCastle", 2 },
-			{ "ArtExhibit", 4 },
-			{ "TrashCave", 4 },
-			{ "FloodedBasement", 5 },
-			{ "PotassiumMines", 5 },
-			{ "BoilingGrave", 5 },
-			{ "GrandLibrary", 8 },
-			{ "SunkenLabyrinth", 3 },
-			{ "MachineFortress", 5 },
-			{ "DarkHypostyle", 5 },
-			{ "TombOfSimulacrum", 10 },
-			{ "DreamDynamite", 3 },
-			{ "DreamFireChain", 4 },
-			{ "DreamIce", 4 },
-			{ "DreamAll", 4 },
-		};
-		private ItemMessageHandler itemMessageHandler;
-		private ReferenceHolder referenceHolder;
+		private readonly List<LocationData.Location> locations;
+		private readonly ItemMessageHandler itemMessageHandler;
+		private ItemHandler itemHandler;
 
 		public ItemRandomizer()
 		{
-			instance = this;
-
 			// Parse data JSON
-			locationData = ParseLocationJson();
-			itemData = ParseItemJson();
-			HasInitialized = locationData != null && itemData != null;
-
-			if (!HasInitialized)
+			if (!ModCore.Utility.TryParseJson(@$"{PluginInfo.PLUGIN_NAME}\Data\locationData.json", out LocationData? data))
 			{
 				Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
 				return;
 			}
 
+			instance = this;
+			locations = data?.Locations;
 			itemMessageHandler = new();
-			referenceHolder = new();
 
 			if (Plugin.TestingLocally)
 			{
@@ -71,7 +41,7 @@ namespace ArchipelagoRandomizer
 
 		public void SetupNewFile(bool newFile)
 		{
-			if (!HasInitialized)
+			if (locations == null)
 				return;
 
 			if (newFile)
@@ -84,8 +54,8 @@ namespace ArchipelagoRandomizer
 				ObtainedTracker3();
 			}
 
+			itemHandler = new();
 			IsActive = true;
-			Plugin.Log.LogInfo("Item randomizer is now active!");
 		}
 
 		private void UnlockWarpGarden()
@@ -203,7 +173,7 @@ namespace ArchipelagoRandomizer
 			if (string.IsNullOrEmpty(saveFlag))
 				return;
 
-			LocationData location = locationData.Find(x => x.Flag == saveFlag);
+			LocationData.Location location = locations.Find(x => x.Flag == saveFlag);
 
 			if (location == null)
 			{
@@ -216,251 +186,33 @@ namespace ArchipelagoRandomizer
 
 		public void ItemSent(string itemName, string playerName)
 		{
-			ItemData item = itemData.Find(x => x.ItemName == itemName);
+			ItemHandler.ItemData.Item item = itemHandler.GetItemData(itemName);
 			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
-		}
-
-		IEnumerator SpawnBees(Entity player)
-		{
-			yield return new WaitForEndOfFrame();
-
-			if (referenceHolder.BeeSwarmSpawner != null)
-			{
-				SpawnEntityEventObserver spawner = referenceHolder.BeeSwarmSpawner.GetComponent<SpawnEntityEventObserver>();
-				spawner._entity.DoSpawn(player.transform.position, Vector3.zero, false);
-			}
 		}
 
 		public void ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
-			ItemData item = itemData.Find(x => x.Offset == offset);
+			ItemHandler.ItemData.Item item = itemHandler.GetItemData(offset);
 
 			if (item == null)
 				return;
 
-			Plugin.StartRoutine(GiveItem(item));
+			Plugin.StartRoutine(itemHandler.GiveItem(item));
 			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
 				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
 			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, itemName, sentFromPlayer));
 		}
 
-		private IEnumerator GiveItem(ItemData item)
+		public struct LocationData
 		{
-			yield return new WaitForEndOfFrame();
-			SaverOwner saver = ModCore.Plugin.MainSaver;
-			Entity player = EntityTag.GetEntityByName("PlayerEnt");
-			EntityStatusable statusable = player.GetEntityComponent<EntityStatusable>();
-			Dictionary<string, int> flagsToSet = new();
+			public List<Location> Locations { get; set; }
 
-			switch (item.Type)
+			public class Location
 			{
-				case ItemData.ItemType.Heart:
-					// Heals 20 HP (5 hearts)
-					player.GetEntityComponent<Killable>().CurrentHp += 20;
-
-					if (referenceHolder.heartSound == null)
-						referenceHolder.heartSound = Resources.FindObjectsOfTypeAll<DummyQuickEffect>().FirstOrDefault(x => x.gameObject.name == "PickupHeartEffect")._sound;
-
-					SoundPlayer.instance.PlayPositionedSound(referenceHolder.heartSound, player.transform.position);
-					break;
-				case ItemData.ItemType.Crayon:
-					// Increase max HP by 1 and heals
-					Killable killable = player.GetEntityComponent<Killable>();
-					killable.MaxHp += 1;
-					killable.CurrentHp = killable.MaxHp;
-					break;
-				case ItemData.ItemType.Key:
-					// Increment key count for scene
-					string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
-					IDataSaver keySaver = saver.GetSaver($"/local/levels/{dungeonName}/player/vars");
-					int currentKeyCount = keySaver.LoadInt("localKeys");
-					keySaver.SaveInt("localKeys", currentKeyCount + 1);
-
-					break;
-				case ItemData.ItemType.Buff:
-					// Applies a random buff
-					List<StatusType> buffs = referenceHolder.StatusBuffs;
-					StatusType randomBuff = buffs[UnityEngine.Random.Range(0, buffs.Count - 1)];
-					statusable.AddStatus(randomBuff);
-					Plugin.Log.LogInfo($"Activated {randomBuff.name} buff!");
-
-					break;
-				case ItemData.ItemType.Trap:
-					switch (item.ItemName)
-					{
-						case "Random Debuff":
-							List<StatusType> debuffs = referenceHolder.StatusDebuffs;
-							StatusType randomDebuff = debuffs[UnityEngine.Random.Range(0, debuffs.Count - 1)];
-							statusable.AddStatus(randomDebuff);
-							Plugin.Log.LogInfo($"Activated {randomDebuff.name} debuff!");
-							break;
-						case "Bee Trap":
-							Plugin.StartRoutine(SpawnBees(player));
-							break;
-						default:
-							Plugin.Log.LogWarning($"Obtained trap item {item.ItemName}, but this is not implemented yet, so nothing happens!");
-							break;
-					}
-					break;
-				case ItemData.ItemType.Keyring:
-					// Set max key count for scene
-					string dungeonName2 = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
-
-					if (dungeonKeyCounts.TryGetValue(dungeonName2, out int maxKeyCount))
-					{
-						IDataSaver keySaver2 = saver.GetSaver($"/local/levels/{dungeonName2}/player/vars");
-						keySaver2.SaveInt("localKeys", maxKeyCount);
-					}
-
-					break;
-				case ItemData.ItemType.Outfit:
-					// Sets world flag for outfit in changing tent + equips outfit
-					int outfitNum = int.Parse(Regex.Match(item.Flag, @"\d+").Value);
-					flagsToSet.Add(item.Flag.Replace(outfitNum.ToString(), ""), outfitNum);
-					saver.GetSaver("/local/world").SaveInt(item.Flag, 1);
-					break;
-				case ItemData.ItemType.CaveScroll:
-					Plugin.Log.LogWarning("Obtained Cave Scroll, but this is not implemented yet, so nothing happens!");
-					break;
-				case ItemData.ItemType.PortalWorldScroll:
-					Plugin.Log.LogWarning("Obtained Portal World Scroll, but this is not implemented yet, so nothing happens!");
-					break;
-				case ItemData.ItemType.EFCS:
-					// Sets the flags for the couple EFCS gates/doors that are EFCS only
-					saver.GetSaver("/local/levels/TombOfSimulacrum/N").SaveInt("PuzzleDoor_green-100--22", 1);
-					saver.GetSaver("/local/levels/TombOfSimulacrum/S").SaveInt("PuzzleDoor_green-64--25", 1);
-					saver.GetSaver("/local/levels/Deep17/B").SaveInt("PuzzleGate-23--5", 1);
-					break;
-				case ItemData.ItemType.Card:
-					// Sets card flag
-					saver.GetSaver("/local/cards").SaveInt(item.Flag, 1);
-					break;
-				case ItemData.ItemType.Upgrade:
-					string itemFlag = item.Flag.Substring(0, item.Flag.Length - 7);
-					int upgradeAmount = player.GetStateVariable(item.Flag);
-					int newUpgradeAmount = upgradeAmount == 0 ? 2 : upgradeAmount + 1;
-					flagsToSet.Add(item.Flag, newUpgradeAmount);
-
-					// If upgrade is obtained after item
-					if (player.GetStateVariable(itemFlag) > 0)
-						flagsToSet.Add(itemFlag, newUpgradeAmount);
-					break;
-				default:
-					// Increment level/count by 1
-					if (string.IsNullOrEmpty(item.Flag))
-						break;
-
-					int upgradeLevel = player.GetStateVariable(item.Flag + "Upgrade");
-					int newAmount = upgradeLevel == 0 ? player.GetStateVariable(item.Flag) + 1 : upgradeLevel;
-					flagsToSet.Add(item.Flag, newAmount);
-					break;
-			}
-
-			foreach (KeyValuePair<string, int> flag in flagsToSet)
-			{
-				// Don't set flag if value is already at max
-				if (item.Max > 0 && flag.Value > item.Max)
-					continue;
-
-				player.SetStateVariable(flag.Key, flag.Value);
-				Plugin.Log.LogInfo($"Set flag {flag.Key} to {flag.Value}!");
-			}
-
-			saver.SaveLocal();
-		}
-
-		private List<LocationData> ParseLocationJson()
-		{
-			if (!ModCore.Utility.TryParseJson(PluginInfo.PLUGIN_NAME, "Data", "locationData.json", out JsonObject rootObj))
-				return null;
-
-			List<LocationData> locations = new();
-
-			foreach (JsonObject locationObj in rootObj.GetArray("locations").objects.Cast<JsonObject>())
-			{
-				string locationName = locationObj.GetString("location");
-				int offset = locationObj.GetInt("offset");
-				string flag = locationObj.GetString("flag");
-
-				locations.Add(new LocationData(locationName, offset, flag));
-			}
-
-			return locations;
-		}
-
-		private List<ItemData> ParseItemJson()
-		{
-			if (!ModCore.Utility.TryParseJson(PluginInfo.PLUGIN_NAME, "Data", "itemData.json", out JsonObject rootObj))
-				return null;
-
-			List<ItemData> items = new();
-
-			foreach (JsonObject itemObj in rootObj.GetArray("items").objects.Cast<JsonObject>())
-			{
-				string itemName = itemObj.GetString("itemName");
-				string iconName = itemObj.GetString("iconName");
-				int offset = itemObj.GetInt("offset");
-				string flag = itemObj.GetString("flag");
-				string typeStr = itemObj.GetString("type");
-				int max = itemObj.GetInt("max");
-
-				ItemData.ItemType type = !String.IsNullOrEmpty(typeStr) ? (ItemData.ItemType)Enum.Parse(typeof(ItemData.ItemType), typeStr) : ItemData.ItemType.None;
-
-				items.Add(new ItemData(itemName, iconName, offset, flag, type, max));
-			}
-
-			return items;
-		}
-
-		public class LocationData
-		{
-			public string Location { get; }
-			public int Offset { get; }
-			public string Flag { get; }
-
-			public LocationData(string location, int offset, string flag)
-			{
-				Location = location;
-				Offset = offset;
-				Flag = flag;
-			}
-		}
-
-		public class ItemData
-		{
-			public string ItemName { get; }
-			public string IconName { get; } = "APProgression"; // Default AP icon
-			public int Offset { get; }
-			public string Flag { get; }
-			public ItemType Type { get; }
-			public int Max { get; }
-
-			public enum ItemType
-			{
-				None, // Default
-				Buff,
-				Card,
-				CaveScroll,
-				Crayon,
-				EFCS,
-				Heart,
-				Key,
-				Keyring,
-				Melee,
-				Outfit,
-				PortalWorldScroll,
-				Trap,
-				Upgrade
-			}
-
-			public ItemData(string itemName, string iconName, int offset, string flag, ItemType type, int max)
-			{
-				ItemName = itemName;
-				IconName = iconName;
-				Offset = offset;
-				Flag = flag;
-				Type = type;
-				Max = max;
+				[JsonProperty("location")]
+				public string LocationName { get; set; }
+				public int Offset { get; set; }
+				public string Flag { get; set; }
 			}
 		}
 	}
