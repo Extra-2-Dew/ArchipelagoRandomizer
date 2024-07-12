@@ -47,6 +47,12 @@ namespace ArchipelagoRandomizer
 			}
 
 			LoginResult result;
+            if (deathLink)
+            {
+                DeathLinkHandler.deathLinkService = Session.CreateDeathLinkService();
+                DeathLinkHandler.deathLinkService.EnableDeathLink();
+				DeathLinkHandler.deathLinkService.OnDeathLinkReceived += Plugin.Instance.deathLinkHandler.OnDeathLinkReceived;
+            }
 
             try
 			{
