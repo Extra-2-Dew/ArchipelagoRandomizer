@@ -66,6 +66,7 @@ namespace ArchipelagoRandomizer
 				saver.SaveLocal();
 			}
 
+			APHandler.Instance.SyncItemsWithServer();
 			IsActive = true;
 		}
 

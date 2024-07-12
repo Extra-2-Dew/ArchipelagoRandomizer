@@ -103,21 +103,7 @@ namespace ArchipelagoRandomizer
 			Session.Locations.CompleteLocationChecks(baseId + offset);
 		}
 
-		private void OnConnected(LoginSuccessful loginSuccess)
-		{
-			slotData = loginSuccess.SlotData;
-			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
-
-			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
-			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
-			Session.Items.ItemReceived += OnReceivedItem;
-
-			Plugin.Log.LogInfo($"Successfully connected to Archipelago server!");
-			ScoutLocations();
-			SyncItemsWithServer();
-		}
-
-		private void SyncItemsWithServer()
+		public void SyncItemsWithServer()
 		{
 			IDataSaver itemsObtainedSaver = ModCore.Plugin.MainSaver.GetSaver("/local/archipelago/itemsObtained");
 			int itemsObtainedCount = itemsObtainedSaver.LoadInt("count");
@@ -144,6 +130,19 @@ namespace ArchipelagoRandomizer
 					}
 				}
 			}
+		}
+
+		private void OnConnected(LoginSuccessful loginSuccess)
+		{
+			slotData = loginSuccess.SlotData;
+			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
+
+			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
+			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
+			Session.Items.ItemReceived += OnReceivedItem;
+
+			Plugin.Log.LogInfo($"Successfully connected to Archipelago server!");
+			ScoutLocations();
 		}
 
 		private void OnLocationChecked(System.Collections.ObjectModel.ReadOnlyCollection<long> newCheckedLocations)
