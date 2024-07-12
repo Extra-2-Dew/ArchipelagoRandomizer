@@ -12,6 +12,8 @@ namespace ArchipelagoRandomizer
 	[BepInDependency("ModCore")]
 	public class Plugin : BaseUnityPlugin
 	{
+		public DeathLinkHandler deathLinkHandler;
+
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
 		internal static bool TestingLocally { get; } = false;
@@ -20,7 +22,6 @@ namespace ArchipelagoRandomizer
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
 		private CustomTextHandler customTextHandler;
-		private DeathLinkHandler deathLinkHandler;
 
 		private void Awake()
 		{

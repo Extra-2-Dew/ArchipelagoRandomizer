@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
@@ -19,6 +20,7 @@ namespace ArchipelagoRandomizer
 		public static APHandler Instance { get { return instance; } }
 		public static ArchipelagoSession Session { get; private set; }
 		public static Dictionary<string, object> slotData;
+		public static bool deathLink = true;
 		public PlayerInfo CurrentPlayer { get; private set; }
 		public bool IsConnected
 		{
@@ -40,6 +42,7 @@ namespace ArchipelagoRandomizer
 		{
 			if (Session != null)
 			{
+				DeathLinkHandler.deathLinkService?.DisableDeathLink();
 				Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
 			}
 			try
@@ -53,8 +56,14 @@ namespace ArchipelagoRandomizer
 			}
 
 			LoginResult result;
+            if (deathLink)
+            {
+                DeathLinkHandler.deathLinkService = Session.CreateDeathLinkService();
+                DeathLinkHandler.deathLinkService.EnableDeathLink();
+				DeathLinkHandler.deathLinkService.OnDeathLinkReceived += Plugin.Instance.deathLinkHandler.OnDeathLinkReceived;
+            }
 
-			try
+            try
 			{
 				result = Session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password, requestSlotData: true);
 			}
@@ -82,6 +91,7 @@ namespace ArchipelagoRandomizer
 			OnConnected((LoginSuccessful)result);
 			var loginSuccess = (LoginSuccessful)result;
 			message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
+
 			return true;
 		}
 
