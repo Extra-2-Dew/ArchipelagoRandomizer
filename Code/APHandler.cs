@@ -20,6 +20,16 @@ namespace ArchipelagoRandomizer
 		public static ArchipelagoSession Session { get; private set; }
 		public static Dictionary<string, object> slotData;
 		public PlayerInfo CurrentPlayer { get; private set; }
+		public bool IsConnected
+		{
+			get
+			{
+				if (Session == null)
+					Plugin.Log.LogError("Error in APHandler: No session exists yet!");
+
+				return Session != null;
+			}
+		}
 
 		public APHandler()
 		{
@@ -69,26 +79,61 @@ namespace ArchipelagoRandomizer
 				return false;
 			}
 
+			OnConnected((LoginSuccessful)result);
 			var loginSuccess = (LoginSuccessful)result;
-			slotData = loginSuccess.SlotData;
-			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
-			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
-			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
-			Session.Items.ItemReceived += OnReceivedItem;
 			message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
-			ScoutLocations();
 			return true;
 		}
 
 		public void LocationChecked(int offset)
 		{
-			if (Session == null)
-			{
-				Plugin.Log.LogError("Error in APHandler.LocationChecked(): No session exists yet!");
+			if (!IsConnected)
 				return;
-			}
 
 			Session.Locations.CompleteLocationChecks(baseId + offset);
+		}
+
+		private void OnConnected(LoginSuccessful loginSuccess)
+		{
+			slotData = loginSuccess.SlotData;
+			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
+
+			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
+			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
+			Session.Items.ItemReceived += OnReceivedItem;
+
+			Plugin.Log.LogInfo($"Successfully connected to Archipelago server!");
+			ScoutLocations();
+			SyncItemsWithServer();
+		}
+
+		private void SyncItemsWithServer()
+		{
+			IDataSaver itemsObtainedSaver = ModCore.Plugin.MainSaver.GetSaver("/local/archipelago/itemsObtained");
+			int itemsObtainedCount = itemsObtainedSaver.LoadInt("count");
+			var apItemsObtained = Session.Items.AllItemsReceived;
+			List<ItemInfo> itemsAlreadySent = new();
+
+			if (apItemsObtained.Count > itemsObtainedCount)
+			{
+				Plugin.Log.LogInfo($"Save file is out of sync with Archipelago server!\nReceiving {apItemsObtained.Count - itemsObtainedCount} item(s)!");
+
+				foreach (ItemInfo item in apItemsObtained)
+				{
+					if (itemsAlreadySent.Contains(item))
+						continue;
+
+					int countInSaveFile = itemsObtainedSaver.LoadInt(item.ItemDisplayName);
+
+					if (apItemsObtained.Where(x => x.ItemDisplayName == item.ItemDisplayName).ToList().Count > countInSaveFile)
+					{
+						int itemOffset = (int)item.ItemId - baseId;
+						Plugin.StartRoutine(ItemRandomizer.Instance.ItemReceived(itemOffset, item.ItemDisplayName, item.Player.Name));
+						itemsAlreadySent.Add(item);
+						Plugin.Log.LogInfo($"{item.ItemDisplayName} was not synced, but it is now!");
+					}
+				}
+			}
 		}
 
 		private void OnLocationChecked(System.Collections.ObjectModel.ReadOnlyCollection<long> newCheckedLocations)
@@ -113,12 +158,6 @@ namespace ArchipelagoRandomizer
 
 		private void ScoutLocations()
 		{
-			if (Session == null)
-			{
-				Plugin.Log.LogError($"Error in APHandler.ScoutLocations(): No session exists yet!");
-				return;
-			}
-
 			scoutedItems = new();
 
 			Session.Locations.ScoutLocationsAsync((scoutResult) =>

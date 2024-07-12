@@ -22,6 +22,8 @@ namespace ArchipelagoRandomizer
 		private Stopwatch stopwatch;
 		private bool hasStoredRefs;
 
+		public bool HasInitialized { get; private set; }
+
 		public enum ItemType
 		{
 			None, // Default
@@ -80,7 +82,6 @@ namespace ArchipelagoRandomizer
 			};
 
 			Events.OnSceneLoaded += OnSceneLoaded;
-			Events.OnPlayerSpawn += OnPlayerSpawn;
 
 			OverlayFader.StartFade(fadeData, true, delegate ()
 			{
@@ -107,9 +108,6 @@ namespace ArchipelagoRandomizer
 
 		public IEnumerator GiveItem(ItemData.Item item)
 		{
-			if (item == null)
-				yield return null;
-
 			yield return new WaitForEndOfFrame();
 
 			switch (item.Type)
@@ -158,12 +156,40 @@ namespace ArchipelagoRandomizer
 						IncrementItem(item);
 					break;
 			}
+
+			mainSaver?.SaveLocal();
+		}
+
+		public void OnPlayerSpawned(Entity player)
+		{
+			this.player = player;
+
+			if (hasStoredRefs)
+				HasInitialized = true;
+
+			if (statusBuffs.Count > 0 || statusDebuffs.Count > 0)
+				return;
+
+			EntityStatusable statusable = player.GetEntityComponent<EntityStatusable>();
+
+			foreach (StatusType status in statusable._saveable)
+			{
+				// These are not to be used currently
+				if (status.name.EndsWith("Courage") || status.name.EndsWith("Fortune") || status.name.EndsWith("Curse"))
+					continue;
+
+				if (status.name.EndsWith("Fragile") || status.name.EndsWith("Weak"))
+					statusDebuffs.Add(status);
+				else
+					statusBuffs.Add(status);
+
+				Object.DontDestroyOnLoad(status);
+			}
 		}
 
 		private void AddCard(string saveFlag)
 		{
 			mainSaver.GetSaver("/local/cards").SaveInt(saveFlag, 1);
-			SaveLocal();
 		}
 
 		private void AddCrayon()
@@ -171,7 +197,6 @@ namespace ArchipelagoRandomizer
 			Killable killable = player.GetEntityComponent<Killable>();
 			killable.MaxHp += 1;
 			killable.CurrentHp = killable.MaxHp;
-			SaveLocal();
 		}
 
 		private void AddEFCS()
@@ -179,7 +204,6 @@ namespace ArchipelagoRandomizer
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/N").SaveInt("PuzzleDoor_green-100--22", 1);
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/S").SaveInt("PuzzleDoor_green-64--25", 1);
 			mainSaver.GetSaver("/local/levels/Deep17/B").SaveInt("PuzzleGate-23--5", 1);
-			SaveLocal();
 		}
 
 		private void AddHeart()
@@ -203,7 +227,6 @@ namespace ArchipelagoRandomizer
 				if (dungeonKeyCounts.TryGetValue(dungeonName, out int maxKeyCount))
 				{
 					keySaver.SaveInt("localKeys", maxKeyCount);
-					SaveLocal();
 				}
 
 				return;
@@ -211,7 +234,6 @@ namespace ArchipelagoRandomizer
 
 			int currentKeyCount = keySaver.LoadInt("localKeys");
 			keySaver.SaveInt("localKeys", currentKeyCount + 1);
-			SaveLocal();
 			return;
 		}
 
@@ -220,7 +242,6 @@ namespace ArchipelagoRandomizer
 			int outfitNum = int.Parse((Regex.Match(saveFlag, @"\d+").Value));
 			mainSaver.GetSaver("/local/world").SaveInt(saveFlag, 1);
 			player.SetStateVariable(saveFlag.Replace(outfitNum.ToString(), ""), outfitNum);
-			SaveLocal();
 		}
 
 		// TODO
@@ -242,8 +263,6 @@ namespace ArchipelagoRandomizer
 			// If upgrade is obtained after item, set item level directly
 			if (player.GetStateVariable(flagSubstr) > 0)
 				player.SetStateVariable(flagSubstr, newUpgradeAmount);
-
-			SaveLocal();
 		}
 
 		private void ApplyRandomStatus(List<StatusType> statuses)
@@ -264,7 +283,6 @@ namespace ArchipelagoRandomizer
 			// If no upgrade level, increment by 1, otherwise use upgrade level
 			int newLevel = upgradeLevel == 0 ? currentLevel + 1 : upgradeLevel;
 			player.SetStateVariable(item.Flag, newLevel);
-			SaveLocal();
 		}
 
 		private IEnumerator SpawnBees()
@@ -276,11 +294,6 @@ namespace ArchipelagoRandomizer
 
 			SpawnEntityEventObserver spawner = beeSwarmSpawner.GetComponent<SpawnEntityEventObserver>();
 			spawner._entity.DoSpawn(player.transform.position, Vector3.zero, false);
-		}
-
-		private void SaveLocal()
-		{
-			mainSaver?.SaveLocal();
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -308,31 +321,9 @@ namespace ArchipelagoRandomizer
 				hasStoredRefs = true;
 				fadeData._fadeOutTime = 0;
 				IDataSaver startSaver = mainSaver.GetSaver("/local/start");
-				SceneDoor.StartLoad(startSaver.LoadData("level"), startSaver.LoadData("door"), fadeData);
-			}
-		}
-
-		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
-		{
-			this.player = player;
-
-			if (statusBuffs.Count > 0 || statusDebuffs.Count > 0)
-				return;
-
-			EntityStatusable statusable = player.GetEntityComponent<EntityStatusable>();
-
-			foreach (StatusType status in statusable._saveable)
-			{
-				// These are not to be used currently
-				if (status.name.EndsWith("Courage") || status.name.EndsWith("Fortune") || status.name.EndsWith("Curse"))
-					continue;
-
-				if (status.name.EndsWith("Fragile") || status.name.EndsWith("Weak"))
-					statusDebuffs.Add(status);
-				else
-					statusBuffs.Add(status);
-
-				Object.DontDestroyOnLoad(status);
+				string savedScene = startSaver.LoadData("level");
+				string sceneToLoad = string.IsNullOrEmpty(savedScene) ? "Intro" : savedScene;
+				SceneDoor.StartLoad(sceneToLoad, startSaver.LoadData("door"), fadeData);
 			}
 		}
 

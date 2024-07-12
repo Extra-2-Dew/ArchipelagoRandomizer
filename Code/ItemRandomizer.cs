@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace ArchipelagoRandomizer
 		private readonly List<LocationData.Location> locations;
 		private readonly ItemMessageHandler itemMessageHandler;
 		private ItemHandler itemHandler;
+		private Entity player;
 
 		public ItemRandomizer()
 		{
@@ -26,6 +28,15 @@ namespace ArchipelagoRandomizer
 			instance = this;
 			locations = data?.Locations;
 			itemMessageHandler = new();
+		}
+
+		public void SetupNewFile(bool newFile)
+		{
+			if (locations == null)
+				return;
+
+			itemHandler = new();
+			Events.OnPlayerSpawn += OnPlayerSpawn;
 
 			if (Plugin.TestingLocally)
 			{
@@ -37,24 +48,24 @@ namespace ArchipelagoRandomizer
 				else
 					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
 			}
-		}
-
-		public void SetupNewFile(bool newFile)
-		{
-			if (locations == null)
-				return;
 
 			if (newFile)
 			{
 				SaverOwner saver = ModCore.Plugin.MainSaver;
-				saver.LocalStorage.GetLocalSaver("settings").SaveInt("hideCutscenes", 1);
-				saver.SaveAll();
+				IDataSaver apSaver = saver.LocalStorage.GetLocalSaver("archipelago");
+				apSaver.SaveData("server", "localhost:38281");
+				apSaver.SaveData("slot", "ChrisID2");
+				IDataSaver settingsSaver = saver.LocalStorage.GetLocalSaver("settings");
+				settingsSaver.SaveInt("hideMapHint", 1);
+				settingsSaver.SaveInt("hideCutscenes", 1);
+				settingsSaver.SaveInt("easyMode", 1);
 
 				UnlockWarpGarden();
 				ObtainedTracker3();
+
+				saver.SaveLocal();
 			}
 
-			itemHandler = new();
 			IsActive = true;
 		}
 
@@ -70,8 +81,6 @@ namespace ArchipelagoRandomizer
 				saver.WorldStorage.SaveInt(warp, 1);
 				saver.GetSaver("/local/markers").SaveData(warp, warp);
 			}
-
-			saver.SaveAll();
 		}
 
 		private void ObtainedTracker3()
@@ -138,8 +147,6 @@ namespace ArchipelagoRandomizer
 					saver.GetSaver($"/local/levels/{sceneAndRoom.Key}/player/seenrooms").SaveInt(sceneAndRoom.Value[i], 1);
 				}
 			}
-
-			saver.SaveAll();
 		}
 
 		public void RollToOpenChest(List<CollisionDetector.CollisionData> collisions)
@@ -190,17 +197,31 @@ namespace ArchipelagoRandomizer
 			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
 		}
 
-		public void ItemReceived(int offset, string itemName, string sentFromPlayer)
+		public IEnumerator ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
+			SaverOwner mainSaver = ModCore.Plugin.MainSaver;
+
+			while (!itemHandler.HasInitialized)
+				yield return null;
+
 			ItemHandler.ItemData.Item item = itemHandler.GetItemData(offset);
 
 			if (item == null)
-				return;
+				yield return null;
 
 			Plugin.StartRoutine(itemHandler.GiveItem(item));
 			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
 				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
 			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, itemName, sentFromPlayer));
+			IDataSaver itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
+			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
+			itemsObtainedSaver.SaveInt(itemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
+		}
+
+		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
+		{
+			itemHandler.OnPlayerSpawned(player);
+			this.player = player;
 		}
 
 		public struct LocationData
