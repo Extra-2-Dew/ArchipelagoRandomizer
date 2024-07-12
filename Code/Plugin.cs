@@ -20,6 +20,7 @@ namespace ArchipelagoRandomizer
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
 		private CustomTextHandler customTextHandler;
+		private DeathLinkHandler deathLinkHandler;
 
 		private void Awake()
 		{
@@ -33,6 +34,7 @@ namespace ArchipelagoRandomizer
 			apCommandHandler.AddCommands();
 			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
 			customTextHandler = new CustomTextHandler();
+			deathLinkHandler = new DeathLinkHandler();
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
