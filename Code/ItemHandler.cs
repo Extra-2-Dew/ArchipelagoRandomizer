@@ -43,7 +43,7 @@ namespace ArchipelagoRandomizer
 			Upgrade
 		}
 
-		public ItemHandler()
+		public ItemHandler(FadeEffectData fadeData)
 		{
 			if (!ModCore.Utility.TryParseJson($@"{PluginInfo.PLUGIN_NAME}\Data\itemData.json", out ItemData? data))
 			{
@@ -72,14 +72,7 @@ namespace ArchipelagoRandomizer
 				{ "DreamIce", 4 },
 				{ "DreamAll", 4 }
 			};
-			fadeData = new()
-			{
-				_targetColor = Color.black,
-				_fadeOutTime = 0.5f,
-				_fadeInTime = 1.25f,
-				_faderName = "ScreenCircleWipe",
-				_useScreenPos = true
-			};
+			this.fadeData = fadeData;
 
 			Events.OnSceneLoaded += OnSceneLoaded;
 

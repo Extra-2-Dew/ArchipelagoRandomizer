@@ -15,6 +15,7 @@ namespace ArchipelagoRandomizer
 		private readonly ItemMessageHandler itemMessageHandler;
 		private ItemHandler itemHandler;
 		private Entity player;
+		private FadeEffectData fadeData;
 
 		public ItemRandomizer()
 		{
@@ -35,8 +36,17 @@ namespace ArchipelagoRandomizer
 			if (locations == null)
 				return;
 
-			itemHandler = new();
+			fadeData = new()
+			{
+				_targetColor = Color.black,
+				_fadeOutTime = 0.5f,
+				_fadeInTime = 1.25f,
+				_faderName = "ScreenCircleWipe",
+				_useScreenPos = true
+			};
+			itemHandler = new(fadeData);
 			Events.OnPlayerSpawn += OnPlayerSpawn;
+			Events.OnSceneLoaded += OnSceneLoaded;
 
 			if (Plugin.TestingLocally)
 			{
@@ -68,6 +78,83 @@ namespace ArchipelagoRandomizer
 
 			APHandler.Instance.SyncItemsWithServer();
 			IsActive = true;
+		}
+
+		public IEnumerator OnDisconnected()
+		{
+			yield return new WaitForEndOfFrame();
+			ModCore.Plugin.MainSaver.SaveAll();
+			SceneDoor.StartLoad("MainMenu", "", fadeData);
+			Plugin.Log.LogInfo("Lost connection with Archipelago server!");
+		}
+
+		public void RollToOpenChest(List<CollisionDetector.CollisionData> collisions)
+		{
+			foreach (CollisionDetector.CollisionData collision in collisions)
+			{
+				bool isChest = collision.gameObject.GetComponentInParent<SpawnItemEventObserver>() != null;
+
+				if (!isChest)
+					continue;
+
+				Transform crystal = collision.transform.parent.Find("crystal");
+				bool isLockedByCrystal = crystal != null && crystal.gameObject.activeSelf;
+
+				if (isLockedByCrystal)
+					continue;
+
+				DummyAction action = crystal == null ?
+					collision.transform.GetComponentInParent<DummyAction>() :
+					collision.transform.parent.GetChild(0).GetComponent<DummyAction>();
+
+				if (action == null || action.hasFired)
+					continue;
+
+				action.Fire(false);
+			}
+		}
+
+		public void LocationChecked(string saveFlag)
+		{
+			if (string.IsNullOrEmpty(saveFlag))
+				return;
+
+			LocationData.Location location = locations.Find(x => x.Flag == saveFlag);
+
+			if (location == null)
+			{
+				Plugin.Log.LogError($"No location with save flag {saveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
+				return;
+			}
+
+			APHandler.Instance.LocationChecked(location.Offset);
+		}
+
+		public void ItemSent(string itemName, string playerName)
+		{
+			ItemHandler.ItemData.Item item = itemHandler.GetItemData(itemName);
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
+		}
+
+		public IEnumerator ItemReceived(int offset, string itemName, string sentFromPlayer)
+		{
+			SaverOwner mainSaver = ModCore.Plugin.MainSaver;
+
+			while (!itemHandler.HasInitialized)
+				yield return null;
+
+			ItemHandler.ItemData.Item item = itemHandler.GetItemData(offset);
+
+			if (item == null)
+				yield return null;
+
+			Plugin.StartRoutine(itemHandler.GiveItem(item));
+			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
+				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
+			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, itemName, sentFromPlayer));
+			IDataSaver itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
+			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
+			itemsObtainedSaver.SaveInt(itemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
 		}
 
 		private void UnlockWarpGarden()
@@ -150,82 +237,21 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		public void RollToOpenChest(List<CollisionDetector.CollisionData> collisions)
-		{
-			foreach (CollisionDetector.CollisionData collision in collisions)
-			{
-				bool isChest = collision.gameObject.GetComponentInParent<SpawnItemEventObserver>() != null;
-
-				if (!isChest)
-					continue;
-
-				Transform crystal = collision.transform.parent.Find("crystal");
-				bool isLockedByCrystal = crystal != null && crystal.gameObject.activeSelf;
-
-				if (isLockedByCrystal)
-					continue;
-
-				DummyAction action = crystal == null ?
-					collision.transform.GetComponentInParent<DummyAction>() :
-					collision.transform.parent.GetChild(0).GetComponent<DummyAction>();
-
-				if (action == null || action.hasFired)
-					continue;
-
-				action.Fire(false);
-			}
-		}
-
-		public void LocationChecked(string saveFlag)
-		{
-			if (string.IsNullOrEmpty(saveFlag))
-				return;
-
-			LocationData.Location location = locations.Find(x => x.Flag == saveFlag);
-
-			if (location == null)
-			{
-				Plugin.Log.LogError($"No location with save flag {saveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
-				return;
-			}
-
-			APHandler.Instance.LocationChecked(location.Offset);
-		}
-
-		public void ItemSent(string itemName, string playerName)
-		{
-			ItemHandler.ItemData.Item item = itemHandler.GetItemData(itemName);
-			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(ItemMessageHandler.MessageType.Sent, item, itemName, playerName));
-		}
-
-		public IEnumerator ItemReceived(int offset, string itemName, string sentFromPlayer)
-		{
-			SaverOwner mainSaver = ModCore.Plugin.MainSaver;
-
-			while (!itemHandler.HasInitialized)
-				yield return null;
-
-			ItemHandler.ItemData.Item item = itemHandler.GetItemData(offset);
-
-			if (item == null)
-				yield return null;
-
-			Plugin.StartRoutine(itemHandler.GiveItem(item));
-			ItemMessageHandler.MessageType messageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
-				ItemMessageHandler.MessageType.ReceivedFromSelf : ItemMessageHandler.MessageType.ReceivedFromSomeone;
-			Plugin.StartRoutine(itemMessageHandler.ShowMessageBox(messageType, item, itemName, sentFromPlayer));
-			IDataSaver itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
-			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
-			itemsObtainedSaver.SaveInt(itemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
-		}
-
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			itemHandler.OnPlayerSpawned(player);
 			this.player = player;
 		}
 
-		public struct LocationData
+		private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+		{
+			if (!APHandler.IsConnected && scene.name == "MainMenu")
+			{
+				Plugin.Log.LogInfo("Yikes! You were disconnected from the server!");
+			}
+		}
+
+		private struct LocationData
 		{
 			public List<Location> Locations { get; set; }
 
