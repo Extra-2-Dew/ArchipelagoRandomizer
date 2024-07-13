@@ -56,12 +56,6 @@ namespace ArchipelagoRandomizer
 			}
 
 			LoginResult result;
-            if (deathLink)
-            {
-                DeathLinkHandler.deathLinkService = Session.CreateDeathLinkService();
-                DeathLinkHandler.deathLinkService.EnableDeathLink();
-				DeathLinkHandler.deathLinkService.OnDeathLinkReceived += Plugin.Instance.deathLinkHandler.OnDeathLinkReceived;
-            }
 
             try
 			{
@@ -90,7 +84,14 @@ namespace ArchipelagoRandomizer
 
 			OnConnected((LoginSuccessful)result);
 			var loginSuccess = (LoginSuccessful)result;
-			message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
+            message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
+            if (deathLink)
+            {
+                DeathLinkHandler.deathLinkService = Session.CreateDeathLinkService();
+                DeathLinkHandler.deathLinkService.EnableDeathLink();
+                DeathLinkHandler.deathLinkService.OnDeathLinkReceived += Plugin.Instance.deathLinkHandler.OnDeathLinkReceived;
+				message += "\nDeathlink enabled. Have fun! :)";
+            }
 
 			return true;
 		}
@@ -130,6 +131,15 @@ namespace ArchipelagoRandomizer
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Gets the name of this player
+		/// </summary>
+		/// <returns></returns>
+		public static string GetPlayerName()
+		{
+			return Session.Players.GetPlayerAlias(Session.ConnectionInfo.Slot);
 		}
 
 		private void OnConnected(LoginSuccessful loginSuccess)
