@@ -20,16 +20,7 @@ namespace ArchipelagoRandomizer
 		public static ArchipelagoSession Session { get; private set; }
 		public static Dictionary<string, object> slotData;
 		public PlayerInfo CurrentPlayer { get; private set; }
-		public bool IsConnected
-		{
-			get
-			{
-				if (Session == null)
-					Plugin.Log.LogError("Error in APHandler: No session exists yet!");
-
-				return Session != null;
-			}
-		}
+		public static bool IsConnected { get { return Session != null; } }
 
 		public APHandler()
 		{
@@ -130,9 +121,18 @@ namespace ArchipelagoRandomizer
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
 			Session.Items.ItemReceived += OnReceivedItem;
+			Session.Socket.SocketClosed += OnDisconnected;
 
 			Plugin.Log.LogInfo($"Successfully connected to Archipelago server!");
 			ScoutLocations();
+		}
+
+		private void OnDisconnected(string reason)
+		{
+			if (ItemRandomizer.Instance.IsActive)
+				Plugin.StartRoutine(ItemRandomizer.Instance.OnDisconnected());
+
+			Session = null;
 		}
 
 		private void OnLocationChecked(System.Collections.ObjectModel.ReadOnlyCollection<long> newCheckedLocations)
