@@ -129,7 +129,7 @@ namespace ArchipelagoRandomizer
 				}
 			}
 		}
-
+    
 		/// <summary>
 		/// Gets the name of this player
 		/// </summary>
