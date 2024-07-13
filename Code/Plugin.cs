@@ -12,6 +12,8 @@ namespace ArchipelagoRandomizer
 	[BepInDependency("ModCore")]
 	public class Plugin : BaseUnityPlugin
 	{
+		public DeathLinkHandler deathLinkHandler;
+
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
 		internal static bool TestingLocally { get; } = false;
@@ -33,6 +35,7 @@ namespace ArchipelagoRandomizer
 			apCommandHandler.AddCommands();
 			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
 			customTextHandler = new CustomTextHandler();
+			deathLinkHandler = new DeathLinkHandler();
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
