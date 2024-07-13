@@ -21,7 +21,7 @@ namespace ArchipelagoRandomizer
         
         private void OnEntityDied(Entity entity, Killable.DetailedDeathData data)
         {
-            if (!deathSafety && entity.name == "PlayerEnt")
+            if (ItemRandomizer.Instance.IsActive && !deathSafety && entity.name == "PlayerEnt")
             {
                 Plugin.Log.LogMessage("Ittle died! Oh no!");
                 deathLinkService.SendDeathLink(new DeathLink(APHandler.GetPlayerName(), $"{APHandler.GetPlayerName()} {RandomDeathString()}"));
