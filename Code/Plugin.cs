@@ -33,7 +33,7 @@ namespace ArchipelagoRandomizer
 			itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
-			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
+			DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}'");
 			customTextHandler = new CustomTextHandler();
 			deathLinkHandler = new DeathLinkHandler();
 

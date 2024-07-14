@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using ModCore;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,10 @@ namespace ArchipelagoRandomizer
             if (ItemRandomizer.Instance.IsActive && !deathSafety && entity.name == "PlayerEnt")
             {
                 Plugin.Log.LogMessage("Ittle died! Oh no!");
-                deathLinkService.SendDeathLink(new DeathLink(APHandler.GetPlayerName(), $"{APHandler.GetPlayerName()} {RandomDeathString()}"));
+                string deathMessage = $"{APHandler.GetPlayerName()} {RandomDeathString()}";
+                deathLinkService.SendDeathLink(new DeathLink(APHandler.GetPlayerName(), deathMessage));
                 deathSafety = true;
+                DebugMenuManager.LogToConsole(deathMessage);
                 Plugin.Instance.StartCoroutine(DeathSafetyCounter());
             }
         }
@@ -41,6 +44,9 @@ namespace ArchipelagoRandomizer
                 string deathMessage = "";
                 if (deathLink.Cause != null) deathMessage = deathLink.Cause;
                 else deathMessage = $"{deathLink.Source} died!";
+                DebugMenuManager.LogToConsole(deathMessage);
+                deathSafety = true;
+                Plugin.Instance.StartCoroutine(DeathSafetyCounter());
                 Plugin.Log.LogWarning("Chris make an Item Get message for this once you've done the rewrite Mjau");
             }
         }
