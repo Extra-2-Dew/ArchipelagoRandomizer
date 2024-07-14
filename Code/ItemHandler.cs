@@ -8,20 +8,22 @@ using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
-	internal class ItemHandler
+	internal class ItemHandler : MonoBehaviour
 	{
-		private readonly List<ItemData.Item> itemData;
+		private static ItemHandler instance;
 		private readonly List<StatusType> statusBuffs = new();
 		private readonly List<StatusType> statusDebuffs = new();
-		private readonly Dictionary<string, int> dungeonKeyCounts;
-		private readonly FadeEffectData fadeData;
+		private List<ItemData.Item> itemData;
+		private Dictionary<string, int> dungeonKeyCounts;
+		private FadeEffectData fadeData;
+		private Entity player;
+		private SaverOwner mainSaver;
 		private GameObject beeSwarmSpawner;
 		private SoundClip heartSound;
-		private SaverOwner mainSaver;
-		private Entity player;
 		private Stopwatch stopwatch;
 		private bool hasStoredRefs;
 
+		public static ItemHandler Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 
 		public enum ItemType
@@ -43,8 +45,11 @@ namespace ArchipelagoRandomizer
 			Upgrade
 		}
 
-		public ItemHandler(FadeEffectData fadeData)
+		private void Awake()
 		{
+			instance = this;
+
+			// Parse item JSON
 			if (!ModCore.Utility.TryParseJson($@"{PluginInfo.PLUGIN_NAME}\Data\itemData.json", out ItemData? data))
 			{
 				Plugin.Log.LogError($"ItemHandler failed to deserialize item data JSON and will do nothing!");
@@ -72,7 +77,7 @@ namespace ArchipelagoRandomizer
 				{ "DreamIce", 4 },
 				{ "DreamAll", 4 }
 			};
-			this.fadeData = fadeData;
+			fadeData = ItemRandomizer.Instance.FadeData;
 
 			Events.OnSceneLoaded += OnSceneLoaded;
 
@@ -81,6 +86,31 @@ namespace ArchipelagoRandomizer
 				stopwatch = Stopwatch.StartNew();
 				ModCore.Utility.LoadScene("Deep7");
 			}, Vector3.zero);
+		}
+
+		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
+		{
+			isLevelItem = false;
+
+			if (player == null || mainSaver == null)
+				return 0;
+
+			if (item.Type == ItemType.Key)
+			{
+				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
+				IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
+				return keySaver.LoadInt("localKeys");
+			}
+
+			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
+			List<string> countItems = new() { "shards", "raft", "evilKeys" };
+
+			isLevelItem = item.Type == ItemType.Upgrade || levelItems.Contains(item.Flag);
+
+			if (isLevelItem || countItems.Contains(item.Flag))
+				return player.GetStateVariable(item.Flag);
+
+			return 0;
 		}
 
 		public ItemData.Item GetItemData(string itemName)
@@ -155,7 +185,7 @@ namespace ArchipelagoRandomizer
 
 		public void OnPlayerSpawned(Entity player)
 		{
-			this.player = player;
+			Instance.player = player;
 
 			if (hasStoredRefs)
 				HasInitialized = true;

@@ -48,7 +48,7 @@ namespace ArchipelagoRandomizer
 
 			LoginResult result;
 
-            try
+			try
 			{
 				result = Session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password, requestSlotData: true);
 			}
@@ -75,14 +75,14 @@ namespace ArchipelagoRandomizer
 
 			OnConnected((LoginSuccessful)result);
 			var loginSuccess = (LoginSuccessful)result;
-            message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
-            if (deathLink)
-            {
-                DeathLinkHandler.deathLinkService = Session.CreateDeathLinkService();
-                DeathLinkHandler.deathLinkService.EnableDeathLink();
-                DeathLinkHandler.deathLinkService.OnDeathLinkReceived += Plugin.Instance.deathLinkHandler.OnDeathLinkReceived;
+			message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
+			if (deathLink)
+			{
+				DeathLinkHandler.deathLinkService = Session.CreateDeathLinkService();
+				DeathLinkHandler.deathLinkService.EnableDeathLink();
+				DeathLinkHandler.deathLinkService.OnDeathLinkReceived += Plugin.Instance.deathLinkHandler.OnDeathLinkReceived;
 				message += "\nDeathlink enabled. Have fun! :)";
-            }
+			}
 
 			return true;
 		}
@@ -123,7 +123,7 @@ namespace ArchipelagoRandomizer
 				}
 			}
 		}
-    
+
 		/// <summary>
 		/// Gets the name of this player
 		/// </summary>
@@ -163,7 +163,7 @@ namespace ArchipelagoRandomizer
 
 			// If sending item
 			if (item != null && item.Player.Slot != CurrentPlayer.Slot)
-				ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name);
+				Plugin.StartRoutine(ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name));
 
 			Plugin.Log.LogInfo($"Checked location: {locationName}");
 		}
@@ -172,7 +172,7 @@ namespace ArchipelagoRandomizer
 		{
 			ItemInfo receivedItem = Session.Items.AllItemsReceived[Session.Items.AllItemsReceived.Count - 1];
 			int itemOffset = (int)receivedItem.ItemId - baseId;
-			ItemRandomizer.Instance.ItemReceived(itemOffset, receivedItem.ItemDisplayName, receivedItem.Player.Name);
+			Plugin.StartRoutine(ItemRandomizer.Instance.ItemReceived(itemOffset, receivedItem.ItemDisplayName, receivedItem.Player.Name));
 		}
 
 		private void ScoutLocations()

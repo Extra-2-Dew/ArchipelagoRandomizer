@@ -30,7 +30,7 @@ namespace ArchipelagoRandomizer
 			Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
 			apHandler = new APHandler();
-			itemRandomizer = new ItemRandomizer();
+			itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
 			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
@@ -38,11 +38,6 @@ namespace ArchipelagoRandomizer
 			deathLinkHandler = new DeathLinkHandler();
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-
-			Events.OnFileStart += (newFile) =>
-			{
-				itemRandomizer.SetupNewFile(newFile);
-			};
 		}
 
 		public static Coroutine StartRoutine(IEnumerator coroutine)
