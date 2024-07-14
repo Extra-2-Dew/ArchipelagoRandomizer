@@ -160,7 +160,7 @@
 		},
 		{
 			"itemName": "Pillow Fort Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 23,
 			"type": "Keyring"
 		},
@@ -173,7 +173,7 @@
 		},
 		{
 			"itemName": "Sand Castle Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 25,
 			"type": "Keyring"
 		},
@@ -186,7 +186,7 @@
 		},
 		{
 			"itemName": "Art Exhibit Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 27,
 			"type": "Keyring"
 		},
@@ -199,7 +199,7 @@
 		},
 		{
 			"itemName": "Trash Cave Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 29,
 			"type": "Keyring"
 		},
@@ -212,7 +212,7 @@
 		},
 		{
 			"itemName": "Flooded Basement Key Ring",
-			"iconName": "CustomKeyring",
+			"iconName": "Key",
 			"offset": 31,
 			"type": "Keyring"
 		},
@@ -225,7 +225,7 @@
 		},
 		{
 			"itemName": "Potassium Mine Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 33,
 			"type": "Keyring"
 		},
@@ -238,7 +238,7 @@
 		},
 		{
 			"itemName": "Boiling Grave Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 35,
 			"type": "Keyring"
 		},
@@ -251,7 +251,7 @@
 		},
 		{
 			"itemName": "Grand Library Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 37,
 			"type": "Keyring"
 		},
@@ -264,7 +264,7 @@
 		},
 		{
 			"itemName": "Sunken Labyrinth Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 39,
 			"type": "Keyring"
 		},
@@ -277,7 +277,7 @@
 		},
 		{
 			"itemName": "Machine Fortress Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 41,
 			"type": "Keyring"
 		},
@@ -290,7 +290,7 @@
 		},
 		{
 			"itemName": "Dark Hypostyle Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 43,
 			"type": "Keyring"
 		},
@@ -303,7 +303,7 @@
 		},
 		{
 			"itemName": "Tomb of Simulacrum Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 45,
 			"type": "Keyring"
 		},
@@ -316,7 +316,7 @@
 		},
 		{
 			"itemName": "Syncope Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 47,
 			"type": "Keyring"
 		},
@@ -329,7 +329,7 @@
 		},
 		{
 			"itemName": "Bottomless Tower Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 49,
 			"type": "Keyring"
 		},
@@ -342,7 +342,7 @@
 		},
 		{
 			"itemName": "Antigram Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 51,
 			"type": "Keyring"
 		},
@@ -355,7 +355,7 @@
 		},
 		{
 			"itemName": "Quietus Key Ring",
-			"iconName": "Custom/Keyring",
+			"iconName": "Key",
 			"offset": 53,
 			"type": "Keyring"
 		},

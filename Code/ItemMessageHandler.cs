@@ -34,16 +34,7 @@ namespace ArchipelagoRandomizer
 		public void ShowMessageBox(MessageData data)
 		{
 			MessageBox messageBox = new(data);
-
-			// If no message box is active and queue is empty, show message box
-			if (CanShowMessageBox && messageBoxQueue.Count == 0)
-			{
-				currentMessageBox = messageBox;
-				StartCoroutine(currentMessageBox.Show());
-			}
-			// If there is a queue or a message box is already active, add this one to queue
-			else
-				messageBoxQueue.Add(messageBox);
+			messageBoxQueue.Add(messageBox);
 		}
 
 		public void HideMessageBoxes(bool clearQueue = true)
@@ -70,7 +61,7 @@ namespace ArchipelagoRandomizer
 			{
 				// Show oldest message box in the queue (is always at index 0)
 				currentMessageBox = messageBoxQueue[0];
-				StartCoroutine(currentMessageBox.Show());
+				currentMessageBox.Show();
 				messageBoxQueue.RemoveAt(0);
 			}
 		}
@@ -100,10 +91,8 @@ namespace ArchipelagoRandomizer
 				Data = data;
 			}
 
-			public IEnumerator Show()
+			public void Show()
 			{
-				yield return new WaitForEndOfFrame();
-
 				if (messageBox == null)
 				{
 					EntityHUD hud = EntityHUD.GetCurrentHUD();
@@ -132,11 +121,8 @@ namespace ArchipelagoRandomizer
 
 			private string GetMessageForItem(MessageData data)
 			{
-				if (data.Item == null)
-					return string.Empty;
-
 				string message = "You should not be seeing this. Please report!";
-				string itemName = !string.IsNullOrEmpty(data.Item.ItemName) ? data.Item.ItemName : "Unknown Item";
+				string itemName = !string.IsNullOrEmpty(data.ItemName) ? data.ItemName : "Unknown Item";
 				string playerName = !string.IsNullOrEmpty(data.PlayerName) ? data.PlayerName : "Unknown Player";
 
 				switch (data.MessageType)
@@ -145,7 +131,10 @@ namespace ArchipelagoRandomizer
 						message = $"You found your own {itemName}{GetCountText(data.Item)}";
 						break;
 					case MessageType.ReceivedFromSomeone:
-						message = $"{playerName} found your {itemName}{GetCountText(data.Item)}";
+						if (playerName == "Server")
+							message = $"The server gave you {itemName}{GetCountText(data.Item)}";
+						else
+							message = $"{playerName} found your {itemName}{GetCountText(data.Item)}";
 						break;
 					case MessageType.Sent:
 						message = $"You found {itemName} for {playerName}!";
@@ -163,17 +152,17 @@ namespace ArchipelagoRandomizer
 					return "!";
 
 				if (isLevelItem)
-					return $" Lv {count}!";
+					return $"! You're now at level {count}!";
 
-				if (item.Type == ItemHandler.ItemType.Key)
-					return $"! You have {count} key{(count > 0 ? "s" : "")} for this dungeon.";
+				if (item.Type == ItemType.Key)
+					return $"! You have {count} key{(count > 1 ? "s" : "")} for this dungeon.";
 
 				return $"! You have {count} of them.";
 			}
 
 			private void SetIconTexture()
 			{
-				if (Data.Item == null)
+				if (string.IsNullOrEmpty(Data.ItemName))
 				{
 					Texture2D disconnectedTex = ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/Disconnected.png");
 					messageBox.texture = disconnectedTex;
@@ -181,10 +170,10 @@ namespace ArchipelagoRandomizer
 					return;
 				}
 
-				string iconName = Data.Item.IconName;
+				string iconName = Data.Item != null ? Data.Item.IconName : "Custom/APUseful";
 
 				// Increment melee icon from stick
-				if (Data.Item.Type == ItemType.Melee)
+				if (Data.Item != null && Data.Item.Type == ItemType.Melee)
 				{
 					int level = ModCore.Utility.GetPlayer().GetStateVariable("melee");
 
@@ -211,7 +200,7 @@ namespace ArchipelagoRandomizer
 			private IEnumerator SetTextColors()
 			{
 				// If item name isn't in message, do nothing
-				if (Data.Item == null || !Data.Message.Contains(Data.Item.ItemName))
+				if (string.IsNullOrEmpty(Data.ItemName) || !Data.Message.Contains(Data.ItemName))
 					yield break;
 
 				// Arbitrary delay due to issues with setting message box text property
@@ -220,7 +209,7 @@ namespace ArchipelagoRandomizer
 				// Remove spaces from message so color indices don't get thrown off by them, as
 				// Each space has one index for color
 				string messageWithoutSpaces = Data.Message.Replace(" ", "");
-				string itemNameWithoutSpaces = Data.Item.ItemName.Replace(" ", "");
+				string itemNameWithoutSpaces = Data.ItemName.Replace(" ", "");
 				Color[] meshColors = messageBox._text.mesh.colors;
 				int startItemNameIndex = messageWithoutSpaces.IndexOf(itemNameWithoutSpaces);
 
@@ -275,6 +264,7 @@ namespace ArchipelagoRandomizer
 		{
 			public string Message { get; set; }
 			public ItemData.Item Item { get; set; }
+			public string ItemName { get; set; }
 			public string PlayerName { get; set; }
 			public MessageType MessageType { get; set; }
 			public float DisplayTime { get; set; } = 3f;

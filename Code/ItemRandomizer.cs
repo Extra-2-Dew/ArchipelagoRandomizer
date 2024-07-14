@@ -76,6 +76,7 @@ namespace ArchipelagoRandomizer
 			MessageData messageData = new()
 			{
 				Item = itemHandler.GetItemData(itemName),
+				ItemName = itemName,
 				PlayerName = playerName,
 				MessageType = MessageType.Sent
 			};
@@ -99,17 +100,20 @@ namespace ArchipelagoRandomizer
 				yield return null;
 
 			// Assign item
-			StartCoroutine(itemHandler.GiveItem(item));
+			itemHandler.GiveItem(item);
+
+			while (!itemHandler.HasSaved)
+				yield return null;
 
 			// Send item get message
 			MessageData messageData = new()
 			{
 				Item = item,
+				ItemName = itemName,
 				PlayerName = sentFromPlayer,
 				MessageType = sentFromPlayer == APHandler.Instance.CurrentPlayer.Name ?
 					MessageType.ReceivedFromSelf :
-					MessageType.ReceivedFromSomeone,
-				DisplayTime = 20
+					MessageType.ReceivedFromSomeone
 			};
 			itemMessageHandler.ShowMessageBox(messageData);
 
@@ -195,6 +199,8 @@ namespace ArchipelagoRandomizer
 			settingsSaver.SaveInt("hideMapHint", 1);
 			settingsSaver.SaveInt("hideCutscenes", 1);
 			settingsSaver.SaveInt("easyMode", 1);
+			IDataSaver playerVarsSaver = mainSaver.GetSaver("/local/player/vars");
+			playerVarsSaver.SaveInt("melee", -1);
 
 			UnlockWarpGarden();
 			ObtainedTracker3();
@@ -293,6 +299,12 @@ namespace ArchipelagoRandomizer
 			if (scene.name != "MainMenu")
 				return;
 
+			if (IsActive)
+			{
+				IsActive = false;
+				OnDeactivated?.Invoke();
+			}
+
 			if (!APHandler.IsConnected)
 			{
 				MessageData messageData = new()
@@ -300,12 +312,6 @@ namespace ArchipelagoRandomizer
 					Message = "Oh no! You were disconnected from the server!"
 				};
 				itemMessageHandler.ShowMessageBox(messageData);
-			}
-
-			if (IsActive)
-			{
-				IsActive = false;
-				OnDeactivated?.Invoke();
 			}
 		}
 

@@ -11,20 +11,24 @@ namespace ArchipelagoRandomizer
 	internal class ItemHandler : MonoBehaviour
 	{
 		private static ItemHandler instance;
+		private readonly List<ItemData.Item> itemsInQueue = new();
 		private readonly List<StatusType> statusBuffs = new();
 		private readonly List<StatusType> statusDebuffs = new();
 		private List<ItemData.Item> itemData;
 		private Dictionary<string, int> dungeonKeyCounts;
 		private FadeEffectData fadeData;
 		private Entity player;
+		private EntityStatusable playerStatusable;
 		private SaverOwner mainSaver;
 		private GameObject beeSwarmSpawner;
 		private SoundClip heartSound;
 		private Stopwatch stopwatch;
 		private bool hasStoredRefs;
+		private bool needsToSave;
 
 		public static ItemHandler Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
+		public bool HasSaved { get; private set; }
 
 		public enum ItemType
 		{
@@ -129,10 +133,35 @@ namespace ArchipelagoRandomizer
 			return itemData.Find(item => item.Offset == offset);
 		}
 
-		public IEnumerator GiveItem(ItemData.Item item)
+		public void GiveItem(ItemData.Item item)
 		{
-			yield return new WaitForEndOfFrame();
+			itemsInQueue.Add(item);
+		}
 
+		private void Update()
+		{
+			if (player == null)
+				return;
+
+			if (itemsInQueue.Count == 1)
+				needsToSave = true;
+
+			if (itemsInQueue.Count > 0)
+			{
+				DoGiveItem(itemsInQueue[0]);
+				itemsInQueue.RemoveAt(0);
+			}
+
+			if (needsToSave)
+			{
+				mainSaver?.SaveLocal(false, false);
+				HasSaved = true;
+				needsToSave = false;
+			}
+		}
+
+		public void DoGiveItem(ItemData.Item item)
+		{
 			switch (item.Type)
 			{
 				case ItemType.Bees:
@@ -179,35 +208,15 @@ namespace ArchipelagoRandomizer
 						IncrementItem(item);
 					break;
 			}
-
-			mainSaver?.SaveLocal();
 		}
 
 		public void OnPlayerSpawned(Entity player)
 		{
-			Instance.player = player;
+			this.player = player;
+			playerStatusable = player.GetEntityComponent<EntityStatusable>();
 
 			if (hasStoredRefs)
 				HasInitialized = true;
-
-			if (statusBuffs.Count > 0 || statusDebuffs.Count > 0)
-				return;
-
-			EntityStatusable statusable = player.GetEntityComponent<EntityStatusable>();
-
-			foreach (StatusType status in statusable._saveable)
-			{
-				// These are not to be used currently
-				if (status.name.EndsWith("Courage") || status.name.EndsWith("Fortune") || status.name.EndsWith("Curse"))
-					continue;
-
-				if (status.name.EndsWith("Fragile") || status.name.EndsWith("Weak"))
-					statusDebuffs.Add(status);
-				else
-					statusBuffs.Add(status);
-
-				Object.DontDestroyOnLoad(status);
-			}
 		}
 
 		private void AddCard(string saveFlag)
@@ -273,25 +282,25 @@ namespace ArchipelagoRandomizer
 			LogNotImplementedMessage(cave ? "Cave Scroll" : "Portal World Scroll");
 		}
 
-		private void AddUpgrade(string saveFlag)
+		private void AddUpgrade(string upgradeFlag)
 		{
 			// Remove word "Upgrade" from saveFlag
-			string flagSubstr = saveFlag.Substring(0, saveFlag.Length - 7);
-			int upgradeAmount = player.GetStateVariable(saveFlag);
+			string itemFlag = upgradeFlag.Substring(0, upgradeFlag.Length - 7);
+			int upgradeAmount = player.GetStateVariable(upgradeFlag);
 			// If upgrade has already been obtained, increment by 1, otherwise start at level 2
 			int newUpgradeAmount = upgradeAmount == 0 ? 2 : upgradeAmount + 1;
 			// Set new upgrade level
-			player.SetStateVariable(flagSubstr, newUpgradeAmount);
+			player.SetStateVariable(upgradeFlag, newUpgradeAmount);
 
 			// If upgrade is obtained after item, set item level directly
-			if (player.GetStateVariable(flagSubstr) > 0)
-				player.SetStateVariable(flagSubstr, newUpgradeAmount);
+			if (player.GetStateVariable(itemFlag) > 0)
+				player.SetStateVariable(itemFlag, newUpgradeAmount);
 		}
 
 		private void ApplyRandomStatus(List<StatusType> statuses)
 		{
-			StatusType randomStatus = statuses[Random.Range(0, statuses.Count - 1)];
-			player.GetEntityComponent<EntityStatusable>().AddStatus(randomStatus);
+			StatusType randomStatus = statuses[Random.Range(0, statuses.Count)];
+			playerStatusable.AddStatus(randomStatus);
 		}
 
 		private void IncrementItem(ItemData.Item item)
@@ -315,8 +324,8 @@ namespace ArchipelagoRandomizer
 			if (beeSwarmSpawner == null)
 				yield return null;
 
-			SpawnEntityEventObserver spawner = beeSwarmSpawner.GetComponent<SpawnEntityEventObserver>();
-			spawner._entity.DoSpawn(player.transform.position, Vector3.zero, false);
+			beeSwarmSpawner.transform.position = player.transform.position;
+			beeSwarmSpawner.GetComponent<SpawnEntityEventObserver>().OnFire(false);
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -329,18 +338,26 @@ namespace ArchipelagoRandomizer
 				return;
 			}
 
+			StatusType[] statuses = Resources.FindObjectsOfTypeAll<StatusType>();
+
 			// Former Colossus
 			if (scene.name == "Deep7")
 			{
-				StoreStatus("Cold");
+				StoreStatus(statuses, true, "DireHit");
+				StoreStatus(statuses, true, "Hearty");
+				StoreStatus(statuses, true, "Tough");
+				StoreStatus(statuses, true, "Mighty");
+				StoreStatus(statuses, false, "Cold");
+				StoreStatus(statuses, false, "Fragile");
+				StoreStatus(statuses, false, "Weak");
 				ModCore.Utility.LoadScene("MachineFortress");
 			}
 			else if (scene.name == "MachineFortress")
 			{
-				StoreStatus("Fear");
+				StoreStatus(statuses, false, "Fear");
 				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
-				Object.DontDestroyOnLoad(beeSwarmSpawner);
+				DontDestroyOnLoad(beeSwarmSpawner);
 				hasStoredRefs = true;
 				fadeData._fadeOutTime = 0;
 				IDataSaver startSaver = mainSaver.GetSaver("/local/start");
@@ -350,14 +367,20 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		private void StoreStatus(string name)
+		private void StoreStatus(StatusType[] loadedStatuses, bool isBuff, string name)
 		{
-			StatusType status = Resources.FindObjectsOfTypeAll<StatusType>().FirstOrDefault(status => status.name.EndsWith(name));
+			StatusType status = loadedStatuses.FirstOrDefault(status => status.name.EndsWith(name));
 
 			if (status != null)
 			{
-				statusDebuffs.Add(status);
-				Object.DontDestroyOnLoad(status);
+				status._overrides = [];
+
+				if (isBuff)
+					statusBuffs.Add(status);
+				else
+					statusDebuffs.Add(status);
+
+				DontDestroyOnLoad(status);
 			}
 		}
 
