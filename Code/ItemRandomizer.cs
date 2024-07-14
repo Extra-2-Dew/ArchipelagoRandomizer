@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace ArchipelagoRandomizer
 		private List<LocationData.Location> locations;
 		private ItemMessageHandler itemMessageHandler;
 		private ItemHandler itemHandler;
+		private DeathLinkHandler deathLinkHandler;
 		private Entity player;
 		private FadeEffectData fadeData;
 		private SaverOwner mainSaver;
@@ -24,6 +26,69 @@ namespace ArchipelagoRandomizer
 		public FadeEffectData FadeData { get { return fadeData; } }
 
 		public delegate void OnDeactivatedFunc();
+
+		public void OnFileStart(bool newFile, bool deathLink = true)
+		{
+			APFileData apFileData = new()
+			{
+				Server = "localhost",
+				Port = 38281,
+				PlayerName = "ChrisID2",
+				Password = "",
+				DeathLink = deathLink
+			};
+
+			// TEMP: Auto-connect to AP
+			if (Plugin.TestingLocally)
+			{
+				string server = $"{apFileData.Server}:{apFileData.Port}";
+				//string server = "archipelago.gg:58159";
+				string slot = apFileData.PlayerName;
+
+				if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
+					Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
+				else
+					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
+			}
+
+			// If not initialized
+			if (!hasInitialized)
+			{
+				// Parse data JSON
+				if (!ModCore.Utility.TryParseJson(@$"{PluginInfo.PLUGIN_NAME}\Data\locationData.json", out LocationData? data))
+				{
+					Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
+					return;
+				}
+
+				locations = data?.Locations;
+				mainSaver = ModCore.Plugin.MainSaver;
+				fadeData = new()
+				{
+					_targetColor = Color.black,
+					_fadeOutTime = 0.5f,
+					_fadeInTime = 1.25f,
+					_faderName = "ScreenCircleWipe",
+					_useScreenPos = true
+				};
+				itemHandler = gameObject.AddComponent<ItemHandler>();
+				itemMessageHandler = gameObject.AddComponent<ItemMessageHandler>();
+				deathLinkHandler = deathLink ? gameObject.AddComponent<DeathLinkHandler>() : null;
+
+				Events.OnPlayerSpawn += OnPlayerSpawn;
+				Events.OnSceneLoaded += OnSceneLoaded;
+
+				hasInitialized = true;
+			}
+
+			// Once initialized
+
+			if (newFile)
+				SetupNewFile(apFileData);
+
+			APHandler.Instance.SyncItemsWithServer();
+			IsActive = true;
+		}
 
 		public void RollToOpenChest(List<CollisionDetector.CollisionData> collisions)
 		{
@@ -135,66 +200,17 @@ namespace ArchipelagoRandomizer
 		private void Awake()
 		{
 			instance = this;
-			Events.OnFileStart += OnFileStart;
 			DontDestroyOnLoad(this);
 		}
 
-		private void OnFileStart(bool newFile)
-		{
-			// If not initialized
-			if (!hasInitialized)
-			{
-				// Parse data JSON
-				if (!ModCore.Utility.TryParseJson(@$"{PluginInfo.PLUGIN_NAME}\Data\locationData.json", out LocationData? data))
-				{
-					Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
-					return;
-				}
-
-				locations = data?.Locations;
-				mainSaver = ModCore.Plugin.MainSaver;
-				fadeData = new()
-				{
-					_targetColor = Color.black,
-					_fadeOutTime = 0.5f,
-					_fadeInTime = 1.25f,
-					_faderName = "ScreenCircleWipe",
-					_useScreenPos = true
-				};
-				itemHandler = gameObject.AddComponent<ItemHandler>();
-				itemMessageHandler = gameObject.AddComponent<ItemMessageHandler>();
-				Events.OnPlayerSpawn += OnPlayerSpawn;
-				Events.OnSceneLoaded += OnSceneLoaded;
-				hasInitialized = true;
-			}
-
-			// Once initialized
-
-			// TEMP: Auto-connect to AP
-			if (Plugin.TestingLocally)
-			{
-				string server = "localhost:38281";
-				//string server = "archipelago.gg:58159";
-				string slot = "ChrisID2";
-
-				if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
-					Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
-				else
-					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
-			}
-
-			if (newFile)
-				SetupNewFile();
-
-			APHandler.Instance.SyncItemsWithServer();
-			IsActive = true;
-		}
-
-		private void SetupNewFile()
+		private void SetupNewFile(APFileData apFileData)
 		{
 			IDataSaver apSaver = mainSaver.LocalStorage.GetLocalSaver("archipelago");
-			apSaver.SaveData("server", "localhost:38281");
-			apSaver.SaveData("slot", "ChrisID2");
+			apSaver.SaveData("server", $"{apFileData.Server}:{apFileData.Port}");
+			apSaver.SaveData("slot", apFileData.PlayerName);
+			if (!string.IsNullOrEmpty(apFileData.Password))
+				apSaver.SaveData("pass", apFileData.Password);
+			apSaver.SaveInt("deathLink", Convert.ToInt32(apFileData.DeathLink));
 			IDataSaver settingsSaver = mainSaver.LocalStorage.GetLocalSaver("settings");
 			settingsSaver.SaveInt("hideMapHint", 1);
 			settingsSaver.SaveInt("hideCutscenes", 1);
@@ -326,6 +342,15 @@ namespace ArchipelagoRandomizer
 				public int Offset { get; set; }
 				public string Flag { get; set; }
 			}
+		}
+
+		private struct APFileData
+		{
+			public string Server { get; set; }
+			public int Port { get; set; }
+			public string PlayerName { get; set; }
+			public string Password { get; set; }
+			public bool DeathLink { get; set; }
 		}
 	}
 }

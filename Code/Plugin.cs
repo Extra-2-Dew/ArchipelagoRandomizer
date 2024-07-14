@@ -12,11 +12,9 @@ namespace ArchipelagoRandomizer
 	[BepInDependency("ModCore")]
 	public class Plugin : BaseUnityPlugin
 	{
-		public DeathLinkHandler deathLinkHandler;
-
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
-		internal static bool TestingLocally { get; } = true;
+		internal static bool TestingLocally { get; } = false;
 
 		private APHandler apHandler;
 		private ItemRandomizer itemRandomizer;
@@ -30,12 +28,16 @@ namespace ArchipelagoRandomizer
 			Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
 
 			apHandler = new APHandler();
-			itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
-			DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}'");
 			customTextHandler = new CustomTextHandler();
-			deathLinkHandler = new DeathLinkHandler();
+			DebugMenuManager.LogToConsole("To connect to an ArchipelagoHandler server, use 'ap /connect {server:port} {slot} {password}");
+
+			Events.OnFileStart += (bool newFile) =>
+			{
+				itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
+				itemRandomizer.OnFileStart(newFile);
+			};
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 		}
