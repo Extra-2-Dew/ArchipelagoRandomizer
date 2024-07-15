@@ -11,11 +11,7 @@ namespace ArchipelagoRandomizer
 
 		private void Awake()
 		{
-			//dungeonRewardSetting = (long)APHandler.slotData["dungeon_rewards_setting"];
 			dungeonRewardSetting = APHandler.GetSlotData<long>("dungeon_rewards_setting");
-			//requiredDungeons = dungeonRewardSetting != 0 ?
-			//	((JArray)APHandler.slotData["required_dungeons"]).ToObject<List<string>>() :
-			//	null;
 			requiredDungeons = dungeonRewardSetting != 0 ?
 				APHandler.GetSlotData<JArray>("required_dungeons").ToObject<List<string>>() :
 				null;
