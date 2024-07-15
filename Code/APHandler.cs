@@ -13,18 +13,38 @@ namespace ArchipelagoRandomizer
 	public class APHandler
 	{
 		private static APHandler instance;
+		private static List<ScoutedItemInfo> scoutedItems;
+		private static Dictionary<string, object> slotData;
 		private const int baseId = 238492834;
-		private List<ScoutedItemInfo> scoutedItems;
 
 		public static APHandler Instance { get { return instance; } }
-		public static ArchipelagoSession Session { get; private set; }
-		public static Dictionary<string, object> slotData;
-		public PlayerInfo CurrentPlayer { get; private set; }
-		public static bool IsConnected { get { return Session != null; } }
+		public PlayerInfo CurrentPlayer
+		{
+			get
+			{
+				if (Session == null)
+					return null;
+
+				return Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
+			}
+		}
+		public bool IsConnected { get { return Session != null; } }
+		public ArchipelagoSession Session { get; private set; }
 
 		public APHandler()
 		{
 			instance = this;
+		}
+
+		public static T GetSlotData<T>(string key)
+		{
+			if (slotData == null || !slotData.TryGetValue(key, out object value))
+			{
+				Plugin.Log.LogError($"No slot data with key '{key}' was found. Returning null!");
+				return default(T);
+			}
+
+			return (T)value;
 		}
 
 		public bool TryCreateSession(string url, string slot, string password, out string message)
@@ -90,7 +110,6 @@ namespace ArchipelagoRandomizer
 			IDataSaver itemsObtainedSaver = ModCore.Plugin.MainSaver.GetSaver("/local/archipelago/itemsObtained");
 			int itemsObtainedCount = itemsObtainedSaver.LoadInt("count");
 			var apItemsObtained = Session.Items.AllItemsReceived;
-			List<ItemInfo> itemsAlreadySent = new();
 
 			if (apItemsObtained.Count > itemsObtainedCount)
 			{
@@ -98,16 +117,12 @@ namespace ArchipelagoRandomizer
 
 				foreach (ItemInfo item in apItemsObtained)
 				{
-					if (itemsAlreadySent.Contains(item))
-						continue;
-
 					int countInSaveFile = itemsObtainedSaver.LoadInt(item.ItemDisplayName);
 
 					if (apItemsObtained.Where(x => x.ItemDisplayName == item.ItemDisplayName).ToList().Count > countInSaveFile)
 					{
 						int itemOffset = (int)item.ItemId - baseId;
 						Plugin.StartRoutine(ItemRandomizer.Instance.ItemReceived(itemOffset, item.ItemDisplayName, item.Player.Name));
-						itemsAlreadySent.Add(item);
 						Plugin.Log.LogInfo($"{item.ItemDisplayName} was not synced, but it is now!");
 					}
 				}
@@ -116,8 +131,8 @@ namespace ArchipelagoRandomizer
 
 		private void OnConnected(LoginSuccessful loginSuccess)
 		{
-			slotData = loginSuccess.SlotData;
-			CurrentPlayer = Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
+			if (slotData == null)
+				slotData = loginSuccess.SlotData;
 
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
@@ -125,7 +140,9 @@ namespace ArchipelagoRandomizer
 			Session.Socket.SocketClosed += OnDisconnected;
 
 			Plugin.Log.LogInfo($"Successfully connected to Archipelago server!");
-			ScoutLocations();
+
+			if (scoutedItems == null)
+				ScoutLocations();
 		}
 
 		private void OnDisconnected(string reason)
@@ -134,6 +151,12 @@ namespace ArchipelagoRandomizer
 				Plugin.StartRoutine(ItemRandomizer.Instance.OnDisconnected());
 
 			Session = null;
+			Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
+			Session.Locations.CheckedLocationsUpdated -= OnLocationChecked;
+			Session.Items.ItemReceived -= OnReceivedItem;
+			Session.Socket.SocketClosed -= OnDisconnected;
+
+			Plugin.Log.LogInfo("Disconnected from Archipelago server!");
 		}
 
 		private void OnLocationChecked(System.Collections.ObjectModel.ReadOnlyCollection<long> newCheckedLocations)

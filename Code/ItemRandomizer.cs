@@ -3,29 +3,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ArchipelagoRandomizer.ItemMessageHandler;
+using static ArchipelagoRandomizer.MessageBoxHandler;
 
 namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer : MonoBehaviour
 	{
 		private static ItemRandomizer instance;
+		private static List<LocationData.Location> locations;
+		private static FadeEffectData fadeData;
 
-		public event OnDeactivatedFunc OnDeactivated;
-		private List<LocationData.Location> locations;
-		private ItemMessageHandler itemMessageHandler;
+		private MessageBoxHandler itemMessageHandler;
 		private ItemHandler itemHandler;
 		private DeathLinkHandler deathLinkHandler;
+		private HintHandler hintHandler;
+		private GoalHandler goalHandler;
 		private Entity player;
-		private FadeEffectData fadeData;
 		private SaverOwner mainSaver;
-		private bool hasInitialized;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public bool IsActive { get; private set; }
 		public FadeEffectData FadeData { get { return fadeData; } }
-
-		public delegate void OnDeactivatedFunc();
 
 		public void OnFileStart(bool newFile, bool deathLink = true)
 		{
@@ -51,43 +49,24 @@ namespace ArchipelagoRandomizer
 					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
 			}
 
-			// If not initialized
-			if (!hasInitialized)
-			{
-				// Parse data JSON
-				if (!ModCore.Utility.TryParseJson(@$"{PluginInfo.PLUGIN_NAME}\Data\locationData.json", out LocationData? data))
-				{
-					Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
-					return;
-				}
+			mainSaver = ModCore.Plugin.MainSaver;
+			itemHandler = gameObject.AddComponent<ItemHandler>();
+			itemMessageHandler = MessageBoxHandler.Instance == null ?
+				new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>()
+				: MessageBoxHandler.Instance;
+			deathLinkHandler = deathLink ? gameObject.AddComponent<DeathLinkHandler>() : null;
+			hintHandler = gameObject.AddComponent<HintHandler>();
+			goalHandler = gameObject.AddComponent<GoalHandler>();
 
-				locations = data?.Locations;
-				mainSaver = ModCore.Plugin.MainSaver;
-				fadeData = new()
-				{
-					_targetColor = Color.black,
-					_fadeOutTime = 0.5f,
-					_fadeInTime = 1.25f,
-					_faderName = "ScreenCircleWipe",
-					_useScreenPos = true
-				};
-				itemHandler = gameObject.AddComponent<ItemHandler>();
-				itemMessageHandler = gameObject.AddComponent<ItemMessageHandler>();
-				deathLinkHandler = deathLink ? gameObject.AddComponent<DeathLinkHandler>() : null;
-
-				Events.OnPlayerSpawn += OnPlayerSpawn;
-				Events.OnSceneLoaded += OnSceneLoaded;
-
-				hasInitialized = true;
-			}
-
-			// Once initialized
+			Events.OnPlayerSpawn += OnPlayerSpawn;
+			Events.OnSceneLoaded += OnSceneLoaded;
 
 			if (newFile)
 				SetupNewFile(apFileData);
 
 			APHandler.Instance.SyncItemsWithServer();
 			IsActive = true;
+			Plugin.Log.LogInfo("ItemRandomizer is enabled!");
 		}
 
 		public void RollToOpenChest(List<CollisionDetector.CollisionData> collisions)
@@ -167,6 +146,7 @@ namespace ArchipelagoRandomizer
 			// Assign item
 			itemHandler.GiveItem(item);
 
+			// Wait for items to save
 			while (!itemHandler.HasSaved)
 				yield return null;
 
@@ -181,26 +161,69 @@ namespace ArchipelagoRandomizer
 					MessageType.ReceivedFromSomeone
 			};
 			itemMessageHandler.ShowMessageBox(messageData);
-
-			// Saves obtained flag (used for AP sync when connecting)
-			IDataSaver itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
-			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
-			itemsObtainedSaver.SaveInt(itemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
 		}
 
 		public IEnumerator OnDisconnected()
 		{
 			yield return new WaitForEndOfFrame();
 			mainSaver.SaveAll();
-			itemMessageHandler.HideMessageBoxes();
 			SceneDoor.StartLoad("MainMenu", "", fadeData);
-			Plugin.Log.LogInfo("Lost connection with Archipelago server!");
 		}
 
 		private void Awake()
 		{
 			instance = this;
+
+			// Parse data JSON
+			if (locations == null)
+			{
+				if (!ModCore.Utility.TryParseJson(@$"{PluginInfo.PLUGIN_NAME}\Data\locationData.json", out LocationData? data))
+				{
+					Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
+					Destroy(this);
+					return;
+				}
+
+				locations = data?.Locations;
+			}
+
+			// Setup fade data
+			if (fadeData == null)
+			{
+				fadeData = new()
+				{
+					_targetColor = Color.black,
+					_fadeOutTime = 0.5f,
+					_fadeInTime = 1.25f,
+					_faderName = "ScreenCircleWipe",
+					_useScreenPos = true
+				};
+			}
+
 			DontDestroyOnLoad(this);
+		}
+
+		private void OnDisable()
+		{
+			IsActive = false;
+
+			Events.OnPlayerSpawn -= OnPlayerSpawn;
+			Events.OnSceneLoaded -= OnSceneLoaded;
+
+			// If disconnected, show message
+			if (!APHandler.Instance.IsConnected)
+			{
+				MessageData messageData = new()
+				{
+					Message = "Oh no! You were disconnected from the server!"
+				};
+				itemMessageHandler.ShowMessageBox(messageData);
+			}
+
+			if (APHandler.Instance.IsConnected)
+				APHandler.Instance.Session.Socket.Disconnect();
+
+			Plugin.Log.LogInfo("ItemRandomizer is disabled!");
 		}
 
 		private void SetupNewFile(APFileData apFileData)
@@ -306,7 +329,6 @@ namespace ArchipelagoRandomizer
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
-			itemHandler.OnPlayerSpawned(player);
 			this.player = player;
 		}
 
@@ -315,20 +337,8 @@ namespace ArchipelagoRandomizer
 			if (scene.name != "MainMenu")
 				return;
 
-			if (IsActive)
-			{
-				IsActive = false;
-				OnDeactivated?.Invoke();
-			}
-
-			if (!APHandler.IsConnected)
-			{
-				MessageData messageData = new()
-				{
-					Message = "Oh no! You were disconnected from the server!"
-				};
-				itemMessageHandler.ShowMessageBox(messageData);
-			}
+			itemMessageHandler.HideMessageBoxes();
+			Destroy(gameObject);
 		}
 
 		private struct LocationData

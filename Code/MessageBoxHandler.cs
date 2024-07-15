@@ -5,16 +5,17 @@ using static ArchipelagoRandomizer.ItemHandler;
 
 namespace ArchipelagoRandomizer
 {
-	internal class ItemMessageHandler : MonoBehaviour
+	internal class MessageBoxHandler : MonoBehaviour
 	{
-		private static ItemMessageHandler instance;
+		private static MessageBoxHandler instance;
+		private static Color playerNameColor;
+		private static Color itemNameProgressiveColor;
+		private static Color itemNameUsefulColor;
+
 		private readonly List<MessageBox> messageBoxQueue = new();
-		private Color playerNameColor;
-		private Color itemNameProgressiveColor;
-		private Color itemNameUsefulColor;
 		private MessageBox currentMessageBox;
 
-		public static ItemMessageHandler Instance { get { return instance; } }
+		public static MessageBoxHandler Instance { get { return instance; } }
 		private bool CanShowMessageBox
 		{
 			get
@@ -51,8 +52,7 @@ namespace ArchipelagoRandomizer
 			ColorUtility.TryParseHtmlString("#fafad2", out playerNameColor);
 			ColorUtility.TryParseHtmlString("#5e5674", out itemNameProgressiveColor);
 			ColorUtility.TryParseHtmlString("#526294", out itemNameUsefulColor);
-
-			ItemRandomizer.Instance.OnDeactivated += OnRandoDeactivated;
+			DontDestroyOnLoad(gameObject);
 		}
 
 		private void Update()
@@ -64,12 +64,6 @@ namespace ArchipelagoRandomizer
 				currentMessageBox.Show();
 				messageBoxQueue.RemoveAt(0);
 			}
-		}
-
-		private void OnRandoDeactivated()
-		{
-			messageBoxQueue.Clear();
-			currentMessageBox = null;
 		}
 
 		private class MessageBox
@@ -113,6 +107,9 @@ namespace ArchipelagoRandomizer
 
 			public void Hide()
 			{
+				if (messageBox == null)
+					return;
+
 				if (messageBox._tweener != null)
 					messageBox._tweener.Hide(true);
 				else
@@ -214,7 +211,7 @@ namespace ArchipelagoRandomizer
 				int startItemNameIndex = messageWithoutSpaces.IndexOf(itemNameWithoutSpaces);
 
 				// Multiply index by 4 as each character has 4 color indices
-				ReplaceMeshColors(meshColors, startItemNameIndex * 4, itemNameWithoutSpaces.Length * 4, Instance.itemNameProgressiveColor);
+				ReplaceMeshColors(meshColors, startItemNameIndex * 4, itemNameWithoutSpaces.Length * 4, itemNameProgressiveColor);
 
 				// If a player's name is in message
 				if (Data.Message.Contains(Data.PlayerName))
@@ -225,7 +222,7 @@ namespace ArchipelagoRandomizer
 					int startPlayerNameIndex = messageWithoutSpaces.IndexOf(playerNameWithoutSpaces);
 
 					// Multiply index by 4 as each character has 4 color indices
-					ReplaceMeshColors(meshColors, startPlayerNameIndex * 4, playerNameWithoutSpaces.Length * 4, Instance.playerNameColor);
+					ReplaceMeshColors(meshColors, startPlayerNameIndex * 4, playerNameWithoutSpaces.Length * 4, playerNameColor);
 				}
 
 				messageBox._text.mesh.colors = meshColors;

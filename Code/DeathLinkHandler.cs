@@ -7,6 +7,7 @@ namespace ArchipelagoRandomizer
 	public class DeathLinkHandler : MonoBehaviour
 	{
 		private static DeathLinkHandler instance;
+
 		private readonly string[] deathMessages =
 		{
 			"didn't dew.",
@@ -23,43 +24,24 @@ namespace ArchipelagoRandomizer
 		private bool lastDeathFromDeathLink;
 
 		public static DeathLinkHandler Instance { get { return instance; } }
-		private DeathLinkService DeathLinkService { get; set; }
+		private static DeathLinkService DeathLinkService { get; set; }
 
 		private void Awake()
 		{
 			instance = this;
-			HandleSubscriptions(true);
-			StartService();
+
+			DeathLinkService = APHandler.Instance.Session.CreateDeathLinkService();
+			DeathLinkService?.EnableDeathLink();
+			DeathLinkService.OnDeathLinkReceived += OnDeathLinkReceived;
+			Events.OnPlayerSpawn += OnPlayerSpawn;
+			Events.OnEntityDied += OnEntityDied;
 		}
 
-		private void HandleSubscriptions(bool subscribe)
+		private void OnDisable()
 		{
-			if (subscribe)
-			{
-				ItemRandomizer.Instance.OnDeactivated += DisableService;
-				Events.OnPlayerSpawn += OnPlayerSpawn;
-				Events.OnEntityDied += OnEntityDied;
-				return;
-			}
-
-			ItemRandomizer.Instance.OnDeactivated -= DisableService;
+			DeathLinkService.OnDeathLinkReceived -= OnDeathLinkReceived;
 			Events.OnPlayerSpawn -= OnPlayerSpawn;
 			Events.OnEntityDied -= OnEntityDied;
-		}
-
-		private void StartService()
-		{
-			DeathLinkService = APHandler.Session.CreateDeathLinkService();
-			DeathLinkService.EnableDeathLink();
-			DeathLinkService.OnDeathLinkReceived += OnDeathLinkReceived;
-			Plugin.Log.LogInfo("Deathlink enabled. Have fun! :)");
-		}
-
-		private void DisableService()
-		{
-			DeathLinkService?.DisableDeathLink();
-			HandleSubscriptions(false);
-			Plugin.Log.LogInfo("Deathlink disabled.");
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
@@ -133,12 +115,12 @@ namespace ArchipelagoRandomizer
 			// If death sent from another player
 			if (deathLink.Source != APHandler.Instance.CurrentPlayer.Name)
 			{
-				ItemMessageHandler.MessageData messageData = new()
+				MessageBoxHandler.MessageData messageData = new()
 				{
 					Message = deathMessage,
 					DisplayTime = 5
 				};
-				ItemMessageHandler.Instance.ShowMessageBox(messageData);
+				MessageBoxHandler.Instance.ShowMessageBox(messageData);
 			}
 
 			StartCoroutine(DeathSafetyCounter());

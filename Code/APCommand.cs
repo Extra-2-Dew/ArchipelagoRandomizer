@@ -59,7 +59,7 @@ namespace ArchipelagoRandomizer
 				return;
 			}
 
-			if (APHandler.Session == null)
+			if (!APHandler.Instance.IsConnected)
 			{
 				DebugMenuManager.LogToConsole("No session active. Please connect with 'ap /connect' first.", DebugMenuManager.TextColor.Error);
 				return;
@@ -69,7 +69,7 @@ namespace ArchipelagoRandomizer
 
 			if (combinedArgs == "") return;
 
-			APHandler.Session.Socket.SendPacket(new SayPacket() { Text = combinedArgs });
+			APHandler.Instance.Session.Socket.SendPacket(new SayPacket() { Text = combinedArgs });
 		}
 
 	}

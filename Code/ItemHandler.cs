@@ -11,11 +11,14 @@ namespace ArchipelagoRandomizer
 	internal class ItemHandler : MonoBehaviour
 	{
 		private static ItemHandler instance;
+		private static List<ItemData.Item> itemData;
+		private static Dictionary<string, int> dungeonKeyCounts;
+		private static bool hasInitialized;
+
 		private readonly List<ItemData.Item> itemsInQueue = new();
 		private readonly List<StatusType> statusBuffs = new();
 		private readonly List<StatusType> statusDebuffs = new();
-		private List<ItemData.Item> itemData;
-		private Dictionary<string, int> dungeonKeyCounts;
+		private IDataSaver itemsObtainedSaver;
 		private FadeEffectData fadeData;
 		private Entity player;
 		private EntityStatusable playerStatusable;
@@ -47,49 +50,6 @@ namespace ArchipelagoRandomizer
 			Outfit,
 			PortalWorldScroll,
 			Upgrade
-		}
-
-		private void Awake()
-		{
-			instance = this;
-
-			// Parse item JSON
-			if (!ModCore.Utility.TryParseJson($@"{PluginInfo.PLUGIN_NAME}\Data\itemData.json", out ItemData? data))
-			{
-				Plugin.Log.LogError($"ItemHandler failed to deserialize item data JSON and will do nothing!");
-				return;
-			}
-
-			itemData = data?.Items;
-			mainSaver = ModCore.Plugin.MainSaver;
-			dungeonKeyCounts = new()
-			{
-				{ "PillowFort", 2 },
-				{ "SandCastle", 2 },
-				{ "ArtExhibit", 4 },
-				{ "TrashCave", 4 },
-				{ "FloodedBasement", 5 },
-				{ "PotassiumMines", 5 },
-				{ "BoilingGrave", 5 },
-				{ "GrandLibrary", 8 },
-				{ "SunkenLabyrinth", 3 },
-				{ "MachineFortress", 5 },
-				{ "DarkHypostyle", 5 },
-				{ "TombOfSimulacrum", 10 },
-				{ "DreamDynamite", 3 },
-				{ "DreamFireChain", 4 },
-				{ "DreamIce", 4 },
-				{ "DreamAll", 4 }
-			};
-			fadeData = ItemRandomizer.Instance.FadeData;
-
-			Events.OnSceneLoaded += OnSceneLoaded;
-
-			OverlayFader.StartFade(fadeData, true, delegate ()
-			{
-				stopwatch = Stopwatch.StartNew();
-				ModCore.Utility.LoadScene("Deep7");
-			}, Vector3.zero);
 		}
 
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
@@ -138,18 +98,69 @@ namespace ArchipelagoRandomizer
 			itemsInQueue.Add(item);
 		}
 
+		private void Awake()
+		{
+			instance = this;
+
+			if (!hasInitialized)
+			{
+				// Parse item JSON
+				if (!ModCore.Utility.TryParseJson($@"{PluginInfo.PLUGIN_NAME}\Data\itemData.json", out ItemData? data))
+				{
+					Plugin.Log.LogError($"ItemHandler failed to deserialize item data JSON and will do nothing!");
+					Destroy(this);
+					return;
+				}
+
+				itemData = data?.Items;
+				dungeonKeyCounts = new()
+				{
+					{ "PillowFort", 2 },
+					{ "SandCastle", 2 },
+					{ "ArtExhibit", 4 },
+					{ "TrashCave", 4 },
+					{ "FloodedBasement", 5 },
+					{ "PotassiumMines", 5 },
+					{ "BoilingGrave", 5 },
+					{ "GrandLibrary", 8 },
+					{ "SunkenLabyrinth", 3 },
+					{ "MachineFortress", 5 },
+					{ "DarkHypostyle", 5 },
+					{ "TombOfSimulacrum", 10 },
+					{ "DreamDynamite", 3 },
+					{ "DreamFireChain", 4 },
+					{ "DreamIce", 4 },
+					{ "DreamAll", 4 }
+				};
+				hasInitialized = true;
+			}
+
+			mainSaver = ModCore.Plugin.MainSaver;
+			itemsObtainedSaver = itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
+			fadeData = ItemRandomizer.Instance.FadeData;
+
+			Events.OnSceneLoaded += OnSceneLoaded;
+			Events.OnPlayerSpawn += OnPlayerSpawn;
+
+			OverlayFader.StartFade(fadeData, true, delegate ()
+			{
+				stopwatch = Stopwatch.StartNew();
+				ModCore.Utility.LoadScene("Deep7");
+			}, Vector3.zero);
+		}
+
 		private void Update()
 		{
 			if (player == null)
 				return;
 
-			if (itemsInQueue.Count == 1)
-				needsToSave = true;
-
 			if (itemsInQueue.Count > 0)
 			{
-				DoGiveItem(itemsInQueue[0]);
-				itemsInQueue.RemoveAt(0);
+				for (int i = 0; i < itemsInQueue.Count; i++)
+					DoGiveItem(itemsInQueue[i]);
+
+				itemsInQueue.Clear();
+				needsToSave = true;
 			}
 
 			if (needsToSave)
@@ -160,7 +171,13 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		public void DoGiveItem(ItemData.Item item)
+		private void OnDisable()
+		{
+			Events.OnSceneLoaded -= OnSceneLoaded;
+			Events.OnPlayerSpawn -= OnPlayerSpawn;
+		}
+
+		private void DoGiveItem(ItemData.Item item)
 		{
 			switch (item.Type)
 			{
@@ -208,15 +225,10 @@ namespace ArchipelagoRandomizer
 						IncrementItem(item);
 					break;
 			}
-		}
 
-		public void OnPlayerSpawned(Entity player)
-		{
-			this.player = player;
-			playerStatusable = player.GetEntityComponent<EntityStatusable>();
-
-			if (hasStoredRefs)
-				HasInitialized = true;
+			// Saves obtained flag (used for AP sync when connecting)
+			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
+			itemsObtainedSaver.SaveInt(item.ItemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
 		}
 
 		private void AddCard(string saveFlag)
@@ -365,6 +377,15 @@ namespace ArchipelagoRandomizer
 				string sceneToLoad = string.IsNullOrEmpty(savedScene) ? "Intro" : savedScene;
 				SceneDoor.StartLoad(sceneToLoad, startSaver.LoadData("door"), fadeData);
 			}
+		}
+
+		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
+		{
+			this.player = player;
+			playerStatusable = player.GetEntityComponent<EntityStatusable>();
+
+			if (hasStoredRefs)
+				HasInitialized = true;
 		}
 
 		private void StoreStatus(StatusType[] loadedStatuses, bool isBuff, string name)
