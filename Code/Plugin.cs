@@ -20,6 +20,7 @@ namespace ArchipelagoRandomizer
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
 		private CustomTextHandler customTextHandler;
+		private GoalHandler goalHandler;
 
 		private void Awake()
 		{
@@ -31,6 +32,7 @@ namespace ArchipelagoRandomizer
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
 			customTextHandler = new CustomTextHandler();
+			goalHandler = new GoalHandler();
 			DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}");
 
 			Events.OnFileStart += (bool newFile) =>
