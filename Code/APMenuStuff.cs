@@ -55,6 +55,10 @@ namespace ArchipelagoRandomizer
 			apButtonRectTrans = apButtonAnim.transform.GetChild(0).GetComponent<RectTransform>();
 			apMenuInputFields = apMenuObj.GetComponentsInChildren<InputField>();
 			apMenuToggles = apMenuObj.GetComponentsInChildren<Toggle>();
+			foreach (Selectable selectable in menuRoot.transform.GetChild(1).GetComponentsInChildren<Selectable>())
+			{
+				selectable.gameObject.AddComponent<Tabbable>();
+			}
 		}
 
 		private void OnEnable()
@@ -98,13 +102,13 @@ namespace ArchipelagoRandomizer
 		public void HideAPButton()
 		{
 			// Hide AP button
-			Animate(apButtonAnim, 2);
+			Animate(apButtonAnim, 0);
 		}
 
 		private void HideAPMenu()
 		{
 			// Hide AP menu
-			Animate(apMenuAnim, 2);
+			Animate(apMenuAnim, 0);
 
 			// Set AP data
 			APFileData apFileData = GetAPFileData();
