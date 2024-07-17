@@ -438,6 +438,7 @@
 		{
 			"location": "Pillow Fort - Boss Reward Chest",
 			"offset": 804,
+			"scene": "PillowFort",
 			"flag": "Dungeon_Chest-37--4"
 		},
 		{
@@ -533,6 +534,7 @@
 		{
 			"location": "Trash Cave - Boss Reward Chest",
 			"offset": 1106,
+			"scene": "TrashCave",
 			"flag": "Dungeon_Chest-37--4"
 		},
 		{
@@ -573,6 +575,7 @@
 		{
 			"location": "Flooded Basement - Boss Reward Chest",
 			"offset": 1207,
+			"scene": "FloodedBasement",
 			"flag": "Dungeon_Chest-67--4"
 		},
 		{
@@ -613,6 +616,7 @@
 		{
 			"location": "Potassium Mine - Boss Reward Chest",
 			"offset": 1307,
+			"scene": "PotassiumMine",
 			"flag": "Dungeon_Chest-37--4"
 		},
 		{
@@ -653,6 +657,7 @@
 		{
 			"location": "Boiling Grave - Boss Reward Chest",
 			"offset": 1407,
+			"scene": "BoilingGrave",
 			"flag": "Dungeon_Chest-67--4"
 		},
 		{

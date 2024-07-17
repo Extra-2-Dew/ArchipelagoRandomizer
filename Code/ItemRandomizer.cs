@@ -30,9 +30,7 @@ namespace ArchipelagoRandomizer
 		{
 			mainSaver = ModCore.Plugin.MainSaver;
 			itemHandler = gameObject.AddComponent<ItemHandler>();
-			itemMessageHandler = MessageBoxHandler.Instance == null ?
-				new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>()
-				: MessageBoxHandler.Instance;
+			itemMessageHandler = MessageBoxHandler.Instance;
 			deathLinkHandler = apFileData.Deathlink ? gameObject.AddComponent<DeathLinkHandler>() : null;
 			hintHandler = gameObject.AddComponent<HintHandler>();
 			goalHandler = gameObject.AddComponent<GoalHandler>();
@@ -77,16 +75,16 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		public void LocationChecked(string saveFlag)
+		public void LocationChecked(string saveFlag, string sceneName)
 		{
 			if (string.IsNullOrEmpty(saveFlag))
 				return;
 
-			LocationData.Location location = locations.Find(x => x.Flag == saveFlag);
+			LocationData.Location location = locations.Find(x => (string.IsNullOrEmpty(x.SceneName) || x.SceneName == sceneName) && x.Flag == saveFlag);
 
 			if (location == null)
 			{
-				Plugin.Log.LogError($"No location with save flag {saveFlag} was found in JSON data, so location will not be marked on Archipelago server!");
+				Plugin.Log.LogError($"No location with save flag {saveFlag} in {sceneName} was found in JSON data, so location will not be marked on Archipelago server!");
 				return;
 			}
 
@@ -517,6 +515,8 @@ namespace ArchipelagoRandomizer
 				[JsonProperty("location")]
 				public string LocationName { get; set; }
 				public int Offset { get; set; }
+				[JsonProperty("scene")]
+				public string SceneName { get; set; }
 				public string Flag { get; set; }
 			}
 		}
