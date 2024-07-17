@@ -23,7 +23,7 @@ namespace ArchipelagoRandomizer
 		private bool rollOpensChests;
 
 		public static ItemRandomizer Instance { get { return instance; } }
-		public bool IsActive { get; private set; }
+		public static bool IsActive { get; private set; }
 		public FadeEffectData FadeData { get { return fadeData; } }
 
 		public void OnFileStart(bool newFile, APFileData apFileData)
@@ -128,9 +128,7 @@ namespace ArchipelagoRandomizer
 			// Assign item
 			itemHandler.GiveItem(item);
 
-			// Wait for items to save
-			while (!itemHandler.HasSaved)
-				yield return null;
+			yield return new WaitForEndOfFrame();
 
 			// Send item get message
 			MessageData messageData = new()
@@ -211,11 +209,13 @@ namespace ArchipelagoRandomizer
 		private void SetupNewFile(APFileData apFileData)
 		{
 			IDataSaver apSaver = mainSaver.LocalStorage.GetLocalSaver("archipelago");
-			apSaver.SaveData("server", $"{apFileData.Server}:{apFileData.Port}");
-			apSaver.SaveData("slot", apFileData.SlotName);
+			apSaver.SaveData("server", apFileData.Server);
+			apSaver.SaveInt("port", apFileData.Port);
+			apSaver.SaveData("slotName", apFileData.SlotName);
 			if (!string.IsNullOrEmpty(apFileData.Password))
-				apSaver.SaveData("pass", apFileData.Password);
-			apSaver.SaveInt("deathLink", Convert.ToInt32(apFileData.Deathlink));
+				apSaver.SaveData("password", apFileData.Password);
+			apSaver.SaveInt("deathlink", Convert.ToInt32(apFileData.Deathlink));
+			apSaver.SaveInt("autoEquipOutfits", Convert.ToInt32(apFileData.AutoEquipOutfits));
 			IDataSaver settingsSaver = mainSaver.LocalStorage.GetLocalSaver("settings");
 			settingsSaver.SaveInt("hideMapHint", 1);
 			settingsSaver.SaveInt("hideCutscenes", 1);

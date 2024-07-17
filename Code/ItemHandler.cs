@@ -15,7 +15,6 @@ namespace ArchipelagoRandomizer
 		private static Dictionary<string, int> dungeonKeyCounts;
 		private static bool hasInitialized;
 
-		private readonly List<ItemData.Item> itemsInQueue = new();
 		private readonly List<StatusType> statusBuffs = new();
 		private readonly List<StatusType> statusDebuffs = new();
 		private IDataSaver itemsObtainedSaver;
@@ -27,11 +26,9 @@ namespace ArchipelagoRandomizer
 		private SoundClip heartSound;
 		private Stopwatch stopwatch;
 		private bool hasStoredRefs;
-		private bool needsToSave;
 
 		public static ItemHandler Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
-		public bool HasSaved { get; private set; }
 
 		public enum ItemType
 		{
@@ -63,7 +60,12 @@ namespace ArchipelagoRandomizer
 			{
 				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 				IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
-				return keySaver.LoadInt("localKeys");
+				int keyCount = keySaver.LoadInt("localKeys");
+
+				if (keyCount < 2)
+					return 0;
+
+				return keyCount;
 			}
 
 			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
@@ -95,7 +97,68 @@ namespace ArchipelagoRandomizer
 
 		public void GiveItem(ItemData.Item item)
 		{
-			itemsInQueue.Add(item);
+			StartCoroutine(DoGiveItem(item));
+		}
+
+		private IEnumerator DoGiveItem(ItemData.Item item)
+		{
+			yield return new WaitForEndOfFrame();
+
+			switch (item.Type)
+			{
+				case ItemType.Bees:
+					Plugin.StartRoutine(SpawnBees());
+					break;
+				case ItemType.Buff:
+					ApplyRandomStatus(statusBuffs);
+					break;
+				case ItemType.Card:
+					AddCard(item.Flag);
+					break;
+				case ItemType.CaveScroll:
+					AddScroll(true);
+					break;
+				case ItemType.Crayon:
+					AddCrayon();
+					break;
+				case ItemType.Debuff:
+					ApplyRandomStatus(statusDebuffs);
+					break;
+				case ItemType.EFCS:
+					AddEFCS();
+					break;
+				case ItemType.Heart:
+					AddHeart();
+					break;
+				case ItemType.Key:
+					AddKeys(item.ItemName, false);
+					break;
+				case ItemType.Keyring:
+					AddKeys(item.ItemName, true);
+					break;
+				case ItemType.Outfit:
+					AddOutfit(item.Flag);
+					break;
+				case ItemType.PortalWorldScroll:
+					AddScroll(false);
+					break;
+				case ItemType.Upgrade:
+					AddUpgrade(item.Flag);
+					break;
+				default:
+					if (!string.IsNullOrEmpty(item.Flag))
+						IncrementItem(item);
+					break;
+			}
+
+			// Saves obtained flag (used for AP sync when connecting)
+			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
+			itemsObtainedSaver.SaveInt(item.ItemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
+
+			// Yes, this saves after every item assignment instead of batchng it
+			// This is because Ludo's save system sucks and can't be read when I need it to
+			// If I batch save, so I don't care
+			mainSaver.SaveLocal(false, false);
 		}
 
 		private void Awake()
@@ -149,86 +212,10 @@ namespace ArchipelagoRandomizer
 			}, Vector3.zero);
 		}
 
-		private void Update()
-		{
-			if (player == null)
-				return;
-
-			if (itemsInQueue.Count > 0)
-			{
-				for (int i = 0; i < itemsInQueue.Count; i++)
-					DoGiveItem(itemsInQueue[i]);
-
-				itemsInQueue.Clear();
-				needsToSave = true;
-			}
-
-			if (needsToSave)
-			{
-				mainSaver?.SaveLocal(false, false);
-				HasSaved = true;
-				needsToSave = false;
-			}
-		}
-
 		private void OnDisable()
 		{
 			Events.OnSceneLoaded -= OnSceneLoaded;
 			Events.OnPlayerSpawn -= OnPlayerSpawn;
-		}
-
-		private void DoGiveItem(ItemData.Item item)
-		{
-			switch (item.Type)
-			{
-				case ItemType.Bees:
-					Plugin.StartRoutine(SpawnBees());
-					break;
-				case ItemType.Buff:
-					ApplyRandomStatus(statusBuffs);
-					break;
-				case ItemType.Card:
-					AddCard(item.Flag);
-					break;
-				case ItemType.CaveScroll:
-					AddScroll(true);
-					break;
-				case ItemType.Crayon:
-					AddCrayon();
-					break;
-				case ItemType.Debuff:
-					ApplyRandomStatus(statusDebuffs);
-					break;
-				case ItemType.EFCS:
-					AddEFCS();
-					break;
-				case ItemType.Heart:
-					AddHeart();
-					break;
-				case ItemType.Key:
-					AddKeys(item.ItemName, false);
-					break;
-				case ItemType.Keyring:
-					AddKeys(item.ItemName, true);
-					break;
-				case ItemType.Outfit:
-					AddOutfit(item.Flag);
-					break;
-				case ItemType.PortalWorldScroll:
-					AddScroll(false);
-					break;
-				case ItemType.Upgrade:
-					AddUpgrade(item.Flag);
-					break;
-				default:
-					if (!string.IsNullOrEmpty(item.Flag))
-						IncrementItem(item);
-					break;
-			}
-
-			// Saves obtained flag (used for AP sync when connecting)
-			itemsObtainedSaver.SaveInt("count", itemsObtainedSaver.LoadInt("count") + 1);
-			itemsObtainedSaver.SaveInt(item.ItemName, itemsObtainedSaver.LoadInt(item.ItemName) + 1);
 		}
 
 		private void AddCard(string saveFlag)
