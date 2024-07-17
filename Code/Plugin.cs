@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using ModCore;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
@@ -12,13 +11,23 @@ namespace ArchipelagoRandomizer
 	[BepInDependency("ModCore")]
 	public class Plugin : BaseUnityPlugin
 	{
-		internal static Plugin Instance { get; private set; }
-		internal static ManualLogSource Log { get; private set; }
-		internal static bool TestingLocally { get; } = false;
-
 		private APHandler apHandler;
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
+
+		internal static Plugin Instance { get; private set; }
+		internal static ManualLogSource Log { get; private set; }
+		internal ItemRandomizer.APFileData APFileData { get; private set; }
+
+		public static Coroutine StartRoutine(IEnumerator coroutine)
+		{
+			return Instance.StartCoroutine(coroutine);
+		}
+
+		public void SetAPFileData(ItemRandomizer.APFileData apFileData)
+		{
+			APFileData = apFileData;
+		}
 
 		private void Awake()
 		{
@@ -29,20 +38,20 @@ namespace ArchipelagoRandomizer
 			apHandler = new APHandler();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
-			DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}");
+
+			Events.OnSceneLoaded += (UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode) =>
+			{
+				if (scene.name == "MainMenu")
+					new GameObject("APMenuStuff").AddComponent<APMenuStuff>();
+			};
 
 			Events.OnFileStart += (bool newFile) =>
 			{
 				itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
-				itemRandomizer.OnFileStart(newFile);
+				itemRandomizer.OnFileStart(newFile, APFileData);
 			};
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-		}
-
-		public static Coroutine StartRoutine(IEnumerator coroutine)
-		{
-			return Instance.StartCoroutine(coroutine);
 		}
 	}
 }

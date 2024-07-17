@@ -47,22 +47,45 @@ namespace ArchipelagoRandomizer
 			return (T)value;
 		}
 
-		public bool TryCreateSession(string url, string slot, string password, out string message)
+		public bool TryCreateSessionAndConnect(ItemRandomizer.APFileData apFileData)
+		{
+			if (apFileData == null)
+				return false;
+
+			string url = $"{apFileData.Server}:{apFileData.Port}";
+
+			return
+				TryCreateSession(url) &&
+				TryConnect(url, apFileData.SlotName, apFileData.Password);
+		}
+
+		public bool TryCreateSessionAndConnect(string url, string slot, string password)
+		{
+			return
+				TryCreateSession(url) &&
+				TryConnect(url, slot, password);
+		}
+
+		private bool TryCreateSession(string url)
 		{
 			if (Session != null)
-			{
 				Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
-			}
+
 			try
 			{
 				Session = ArchipelagoSessionFactory.CreateSession(url);
 			}
 			catch (Exception ex)
 			{
-				message = ex.Message;
+				Plugin.Log.LogError($"Failed to create Archipelago session!\nError: {ex.Message}");
 				return false;
 			}
 
+			return true;
+		}
+
+		private bool TryConnect(string url, string slot, string password)
+		{
 			LoginResult result;
 
 			try
@@ -74,28 +97,77 @@ namespace ArchipelagoRandomizer
 				result = new LoginFailure(ex.GetBaseException().Message);
 			}
 
+			// If failed to connect
 			if (!result.Successful)
 			{
 				LoginFailure failure = (LoginFailure)result;
 				string errorMessage = $"Failed to connect to {url} as {slot}:";
+
 				foreach (string error in failure.Errors)
-				{
 					errorMessage += $"\n    {error}";
-				}
 				foreach (ConnectionRefusedError error in failure.ErrorCodes)
-				{
 					errorMessage += $"\n    {error}";
-				}
-				message = errorMessage;
+
+				Plugin.Log.LogError(errorMessage);
 				return false;
 			}
 
-			OnConnected((LoginSuccessful)result);
-			var loginSuccess = (LoginSuccessful)result;
-			message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
-
+			// If connection successful
+			LoginSuccessful success = (LoginSuccessful)result;
+			Plugin.Log.LogInfo($"Connected to {url} as {slot} on team {success.Team}! Have fun!");
+			OnConnected(success);
 			return true;
 		}
+
+		//public bool TryCreateSession(string url, string slot, string password, out string message)
+		//{
+		//	if (Session != null)
+		//	{
+		//		Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
+		//	}
+		//	try
+		//	{
+		//		Session = ArchipelagoSessionFactory.CreateSession(url);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		message = ex.Message;
+		//		return false;
+		//	}
+
+		//	LoginResult result;
+
+		//	try
+		//	{
+		//		result = Session.TryConnectAndLogin("Ittle Dew 2", slot, ItemsHandlingFlags.AllItems, password: password, requestSlotData: true);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		result = new LoginFailure(ex.GetBaseException().Message);
+		//	}
+
+		//	if (!result.Successful)
+		//	{
+		//		LoginFailure failure = (LoginFailure)result;
+		//		string errorMessage = $"Failed to connect to {url} as {slot}:";
+		//		foreach (string error in failure.Errors)
+		//		{
+		//			errorMessage += $"\n    {error}";
+		//		}
+		//		foreach (ConnectionRefusedError error in failure.ErrorCodes)
+		//		{
+		//			errorMessage += $"\n    {error}";
+		//		}
+		//		message = errorMessage;
+		//		return false;
+		//	}
+
+		//	OnConnected((LoginSuccessful)result);
+		//	var loginSuccess = (LoginSuccessful)result;
+		//	message = "Successfully connected!\nNow that you are connected, you can use !help to list commands to run via the server.";
+
+		//	return true;
+		//}
 
 		public void LocationChecked(int offset)
 		{
@@ -138,8 +210,6 @@ namespace ArchipelagoRandomizer
 			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
 			Session.Items.ItemReceived += OnReceivedItem;
 			Session.Socket.SocketClosed += OnDisconnected;
-
-			Plugin.Log.LogInfo($"Successfully connected to Archipelago server!");
 
 			if (scoutedItems == null)
 				ScoutLocations();

@@ -10,6 +10,89 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MainMenu), nameof(MainMenu.DoStartMenu))]
+		public static bool MainMenu_DoStartMenu_Patch(MainMenu __instance)
+		{
+			StartMenu.InitGame(__instance._saver, __instance._input, __instance._texts);
+			GuiBindInData inData = new(null, null);
+			GuiBindData guiBindData;
+
+			if (__instance._layoutIsPrefab)
+				guiBindData = GuiNode.CreateAndConnect(__instance._layout, inData);
+			else
+				guiBindData = GuiNode.Connect(__instance._layout, inData);
+
+			__instance.menuImpl = new MenuImpl<MainMenu>(__instance);
+			__instance.menuImpl.AddScreen(new MainMenu.MainScreen(__instance, "startRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.OptionsScreen(__instance, "optionRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.FileSelectScreen(__instance, "fileSelectRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.FileStartScreen(__instance, "fileStartRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.NewGameScreen(__instance, "enterNameRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.DeleteConfirmScreen(__instance, "deleteRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.ExtrasScreen(__instance, "extrasRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.LangScreen(__instance, "langRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.SoundTestScreen(__instance, "soundTestRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.GalleryScreen(__instance, "galleryRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.SaveWarnScreen(__instance, "savewarnRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.RecordsScreen(__instance, "recordsRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.CardsScreen(__instance, "cardsRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new APMenuStuff.APSettingsScreen(__instance, "apRoot", guiBindData));
+			__instance.menuImpl.ShowFirst();
+
+			__instance._onStart?.FireOnActivate(true);
+
+			return false;
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MenuScreen<MainMenu>), nameof(MenuScreen<MainMenu>.Show))]
+		public static void MenuScreen_MainMenu_Show_Patch(MenuScreen<MainMenu> __instance)
+		{
+			if (__instance.Name == "enterNameRoot" || __instance.Name == "fileStartRoot")
+				APMenuStuff.Instance.ShowAPButton();
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MenuScreen<MainMenu>), nameof(MenuScreen<MainMenu>.Hide))]
+		public static void MenuScreen_MainMenu_Hide_Patch(MenuScreen<MainMenu> __instance)
+		{
+			if (__instance.Name == "enterNameRoot" || __instance.Name == "fileStartRoot")
+				APMenuStuff.Instance.HideAPButton();
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MainMenu.NewGameScreen), nameof(MainMenu.NewGameScreen.EnterNameDone))]
+		public static bool MainMenu_NewGameScreen_EnterNameDone_Patch(MainMenu.NewGameScreen __instance, bool success, string value)
+		{
+			if (!success || string.IsNullOrEmpty(value))
+			{
+				__instance.SwitchToBack();
+				return false;
+			}
+
+			if (Plugin.Instance.APFileData == null || !APHandler.Instance.TryCreateSessionAndConnect(Plugin.Instance.APFileData))
+			{
+				__instance.SwitchToBack();
+				return false;
+			}
+
+			DataIOBase currentIO = DataFileIO.GetCurrentIO();
+			RealDataSaver realDataSaver = new(value);
+			DataSaverData.DebugAddData[] code = __instance.Owner.GetCode(value);
+
+			if (code != null)
+				DataSaverData.AddDebugData(realDataSaver, code);
+
+			string uniqueLocalSavePath = __instance.Owner._saver.GetUniqueLocalSavePath();
+			currentIO.WriteFile(uniqueLocalSavePath, realDataSaver.GetSaveData());
+			Debug.Log($"Created file {uniqueLocalSavePath}");
+			__instance.Owner._saver.LoadLocalFromFile(uniqueLocalSavePath);
+			__instance.Owner.StartGame();
+
+			return false;
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(RollAction), nameof(RollAction.DoUpdate))]
 		public static bool RollAction_DoUpdate_PrePatch(RollAction __instance)
 		{

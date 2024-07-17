@@ -26,36 +26,14 @@ namespace ArchipelagoRandomizer
 		public bool IsActive { get; private set; }
 		public FadeEffectData FadeData { get { return fadeData; } }
 
-		public void OnFileStart(bool newFile, bool deathLink = true)
+		public void OnFileStart(bool newFile, APFileData apFileData)
 		{
-			APFileData apFileData = new()
-			{
-				Server = "localhost",
-				Port = 38281,
-				PlayerName = "ChrisID2",
-				Password = "",
-				DeathLink = deathLink
-			};
-
-			// TEMP: Auto-connect to AP
-			if (Plugin.TestingLocally)
-			{
-				string server = $"{apFileData.Server}:{apFileData.Port}";
-				//string server = "archipelago.gg:58159";
-				string slot = apFileData.PlayerName;
-
-				if (APHandler.Instance.TryCreateSession(server, slot, "", out string message))
-					Plugin.Log.LogInfo($"Successfully connected to Archipelago server '{server}' as '{slot}'!");
-				else
-					Plugin.Log.LogInfo($"Failed to connect to Archipelago server '{server}'!");
-			}
-
 			mainSaver = ModCore.Plugin.MainSaver;
 			itemHandler = gameObject.AddComponent<ItemHandler>();
 			itemMessageHandler = MessageBoxHandler.Instance == null ?
 				new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>()
 				: MessageBoxHandler.Instance;
-			deathLinkHandler = deathLink ? gameObject.AddComponent<DeathLinkHandler>() : null;
+			deathLinkHandler = apFileData.Deathlink ? gameObject.AddComponent<DeathLinkHandler>() : null;
 			hintHandler = gameObject.AddComponent<HintHandler>();
 			goalHandler = gameObject.AddComponent<GoalHandler>();
 
@@ -234,10 +212,10 @@ namespace ArchipelagoRandomizer
 		{
 			IDataSaver apSaver = mainSaver.LocalStorage.GetLocalSaver("archipelago");
 			apSaver.SaveData("server", $"{apFileData.Server}:{apFileData.Port}");
-			apSaver.SaveData("slot", apFileData.PlayerName);
+			apSaver.SaveData("slot", apFileData.SlotName);
 			if (!string.IsNullOrEmpty(apFileData.Password))
 				apSaver.SaveData("pass", apFileData.Password);
-			apSaver.SaveInt("deathLink", Convert.ToInt32(apFileData.DeathLink));
+			apSaver.SaveInt("deathLink", Convert.ToInt32(apFileData.Deathlink));
 			IDataSaver settingsSaver = mainSaver.LocalStorage.GetLocalSaver("settings");
 			settingsSaver.SaveInt("hideMapHint", 1);
 			settingsSaver.SaveInt("hideCutscenes", 1);
@@ -505,7 +483,6 @@ namespace ArchipelagoRandomizer
 				{ "DreamIce", new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "AA", "Z", "AB", "AC", "AD", "AE" } },
 				{ "DreamAll", new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD" } },
 			};
-			int count = 0;
 
 			// Mark all rooms as visited
 			foreach (KeyValuePair<string, string[]> sceneAndRoom in scenesAndRooms)
@@ -513,11 +490,8 @@ namespace ArchipelagoRandomizer
 				for (int i = 0; i < sceneAndRoom.Value.Length; i++)
 				{
 					mainSaver.GetSaver($"/local/levels/{sceneAndRoom.Key}/player/seenrooms").SaveInt(sceneAndRoom.Value[i], 1);
-					count++;
 				}
 			}
-
-			Plugin.Log.LogInfo("test: " + count);
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
@@ -547,13 +521,14 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
-		private struct APFileData
+		public class APFileData
 		{
 			public string Server { get; set; }
 			public int Port { get; set; }
-			public string PlayerName { get; set; }
+			public string SlotName { get; set; }
 			public string Password { get; set; }
-			public bool DeathLink { get; set; }
+			public bool Deathlink { get; set; }
+			public bool AutoEquipOutfits { get; set; }
 		}
 	}
 }
