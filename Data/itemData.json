@@ -37,7 +37,7 @@
 			"max": 3
 		},
 		{
-			"itemName": "Forcewand Upgrade",
+			"itemName": "Force Wand Upgrade",
 			"iconName": "Forcewand1",
 			"offset": 5,
 			"flag": "forcewandUpgrade",
