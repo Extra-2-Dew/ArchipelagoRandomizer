@@ -39,6 +39,7 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 
 			SaveAPDataToFile(apFileData);
+			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
 
 			if (newFile)
 				SetupNewFile(apFileData);
@@ -215,7 +216,6 @@ namespace ArchipelagoRandomizer
 			playerVarsSaver.SaveInt("melee", -1);
 
 			// Read slot data
-			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
 			bool keysey = APHandler.GetSlotData<long>("key_settings") == 2;
 			bool openD8 = Convert.ToBoolean(APHandler.GetSlotData<long>("open_d8"));
 			bool openS4 = Convert.ToBoolean(APHandler.GetSlotData<long>("open_s4"));
