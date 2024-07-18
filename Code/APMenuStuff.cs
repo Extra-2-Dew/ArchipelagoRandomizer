@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static ArchipelagoRandomizer.ItemRandomizer;
@@ -23,6 +24,7 @@ namespace ArchipelagoRandomizer
 		private RectTransform apButtonRectTrans;
 		private InputField[] apMenuInputFields;
 		private Toggle[] apMenuToggles;
+		private bool isInFileSelectMenu;
 
 		private MenuScreen<MainMenu> mainScreen;
 		private MenuScreen<MainMenu> fileStartScreen;
@@ -55,6 +57,7 @@ namespace ArchipelagoRandomizer
 			apButtonRectTrans = apButtonAnim.transform.GetChild(0).GetComponent<RectTransform>();
 			apMenuInputFields = apMenuObj.GetComponentsInChildren<InputField>();
 			apMenuToggles = apMenuObj.GetComponentsInChildren<Toggle>();
+
 			foreach (Selectable selectable in menuRoot.transform.GetChild(1).GetComponentsInChildren<Selectable>())
 			{
 				selectable.gameObject.AddComponent<Tabbable>();
@@ -75,8 +78,19 @@ namespace ArchipelagoRandomizer
 				HideAPMenu();
 			});
 
-			apButtonActiveImageObj.SetActive(false);
-			apButtonInactiveImageObj.SetActive(true);
+			APHandler.Instance.OnDisconnect += () =>
+			{
+				ToggleAPConnectedIcon(false);
+				Plugin.Instance.SetAPFileData(null);
+				MessageBoxHandler.MessageData messageData = new()
+				{
+					Message = "You lost connection with the Archipelago server!"
+				};
+				MessageBoxHandler.Instance.ShowMessageBox(messageData);
+				Plugin.Log.LogInfo("TEST: DISCONNECTED!");
+			};
+
+			ToggleAPConnectedIcon(false);
 		}
 
 		private void OnDisable()
@@ -85,16 +99,55 @@ namespace ArchipelagoRandomizer
 			apMenuBackBtn.onClick.RemoveAllListeners();
 		}
 
-		public void ShowAPButton()
+		public void ShowAPButton(bool isConnectedToAP = false, bool isInFileSelectMenu = false)
 		{
+			this.isInFileSelectMenu = isInFileSelectMenu;
+
+			if (isInFileSelectMenu)
+			{
+				if (Plugin.Instance.APFileData == null)
+				{
+					APFileData apFileData = ReadAPFileDataFromSaveFile();
+					Plugin.Instance.SetAPFileData(apFileData);
+
+					// If selected file is not an AP file, don't show button
+					if (apFileData == null)
+						return;
+				}
+
+				// Switch button icon
+				ToggleAPConnectedIcon(true);
+			}
+			else
+			{
+				ToggleAPConnectedIcon(isConnectedToAP);
+			}
+
 			// Position button differently based on if on new game or file start screen
 			apButtonRectTrans.anchoredPosition = GetPositionForAPButton();
 			Animate(apButtonAnim, 1);
 		}
 
+		public void ShowMessage(string message)
+		{
+			if (string.IsNullOrEmpty(message))
+				return;
+
+			MessageBoxHandler.MessageData messageData = new()
+			{
+				Message = message
+			};
+			MessageBoxHandler.Instance.ShowMessageBox(messageData);
+		}
+
 		private void ShowAPMenu()
 		{
 			HideAPButton();
+
+			// Prefill fields in AP menu
+			if (isInFileSelectMenu)
+				PrefillAPMenuFields();
+
 			// Show AP menu
 			Animate(apMenuAnim, 1);
 		}
@@ -114,9 +167,9 @@ namespace ArchipelagoRandomizer
 			APFileData apFileData = GetAPFileData();
 			Plugin.Instance.SetAPFileData(apFileData);
 
-			// Switch button icon
-			apButtonActiveImageObj.SetActive(apFileData != null);
-			apButtonInactiveImageObj.SetActive(apFileData == null);
+			string errorMessage = string.Empty;
+			bool connected = APHandler.Instance.IsConnected || APHandler.Instance.TryCreateSessionAndConnect(apFileData, out errorMessage);
+			ShowMessage(errorMessage);
 
 			if (mainScreen == null)
 				mainScreen = GetMainMenuScreen("startRoot");
@@ -127,7 +180,13 @@ namespace ArchipelagoRandomizer
 			apMenu.SwitchToBack();
 
 			// Show AP button
-			ShowAPButton();
+			ShowAPButton(connected);
+		}
+
+		private void ToggleAPConnectedIcon(bool active)
+		{
+			apButtonActiveImageObj.SetActive(active);
+			apButtonInactiveImageObj.SetActive(!active);
 		}
 
 		/// <summary>
@@ -172,6 +231,66 @@ namespace ArchipelagoRandomizer
 				Deathlink = deathlink,
 				AutoEquipOutfits = autoEquipOutfits
 			};
+		}
+
+		private APFileData ReadAPFileDataFromSaveFile()
+		{
+			IDataSaver apSaver = ModCore.Plugin.MainSaver.LocalStorage.GetLocalSaver("archipelago");
+			string server = apSaver.LoadData("server");
+
+			if (string.IsNullOrEmpty(server))
+				return null;
+
+			return new APFileData()
+			{
+				Server = server,
+				Port = apSaver.LoadInt("port"),
+				SlotName = apSaver.LoadData("slotName"),
+				Password = apSaver.LoadData("password"),
+				Deathlink = Convert.ToBoolean(apSaver.LoadInt("deathlink")),
+				AutoEquipOutfits = Convert.ToBoolean(apSaver.LoadInt("autoEquipOutfits")),
+			};
+		}
+
+		private void PrefillAPMenuFields()
+		{
+			APFileData apFileData = Plugin.Instance.APFileData;
+
+			for (int i = 0; i < apMenuInputFields.Length; i++)
+			{
+				InputField field = apMenuInputFields[i];
+
+				switch (field.name)
+				{
+					case "Server":
+						field.text = apFileData.Server;
+						break;
+					case "Port":
+						field.text = apFileData.Port.ToString();
+						break;
+					case "Slot Name":
+						field.text = apFileData.SlotName;
+						break;
+					case "Password":
+						field.text = apFileData.Password;
+						break;
+				}
+			}
+
+			for (int i = 0; i < apMenuToggles.Length; i++)
+			{
+				Toggle toggle = apMenuToggles[i];
+
+				switch (toggle.name)
+				{
+					case "DeathlinkToggle":
+						toggle.isOn = apFileData.Deathlink;
+						break;
+					case "OutfitToggle":
+						toggle.isOn = apFileData.AutoEquipOutfits;
+						break;
+				}
+			}
 		}
 
 		private string GetInputFieldText(string nameOfInputFieldObj)

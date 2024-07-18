@@ -11,6 +11,7 @@ namespace ArchipelagoRandomizer
 		private static Color playerNameColor;
 		private static Color itemNameProgressiveColor;
 		private static Color itemNameUsefulColor;
+		private static EntityHUDData hudData;
 
 		private readonly List<MessageBox> messageBoxQueue = new();
 		private MessageBox currentMessageBox;
@@ -52,6 +53,10 @@ namespace ArchipelagoRandomizer
 			ColorUtility.TryParseHtmlString("#fafad2", out playerNameColor);
 			ColorUtility.TryParseHtmlString("#5e5674", out itemNameProgressiveColor);
 			ColorUtility.TryParseHtmlString("#526294", out itemNameUsefulColor);
+
+			if (hudData == null)
+				hudData = Resources.Load<EntityHUDData>("HUDs/XboneHUDData");
+
 			DontDestroyOnLoad(gameObject);
 		}
 
@@ -89,8 +94,7 @@ namespace ArchipelagoRandomizer
 			{
 				if (messageBox == null)
 				{
-					EntityHUD hud = EntityHUD.GetCurrentHUD();
-					messageBox = OverlayWindow.GetPooledWindow(hud._data.GetItemBox);
+					messageBox = OverlayWindow.GetPooledWindow(hudData.GetItemBox);
 					SetIconTexture();
 					messageBox._text.StringText = new StringHolder.OutString(Data.Message);
 					Plugin.StartRoutine(SetTextColors());

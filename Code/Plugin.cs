@@ -38,6 +38,7 @@ namespace ArchipelagoRandomizer
 			apHandler = new APHandler();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
+			new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>();
 
 			Events.OnSceneLoaded += (UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode) =>
 			{
@@ -47,8 +48,11 @@ namespace ArchipelagoRandomizer
 
 			Events.OnFileStart += (bool newFile) =>
 			{
-				itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
-				itemRandomizer.OnFileStart(newFile, APFileData);
+				if (APHandler.Instance.IsConnected && APFileData != null)
+				{
+					itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
+					itemRandomizer.OnFileStart(newFile, APFileData);
+				}
 			};
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());

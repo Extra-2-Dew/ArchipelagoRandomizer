@@ -38,6 +38,8 @@ namespace ArchipelagoRandomizer
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 			Events.OnSceneLoaded += OnSceneLoaded;
 
+			SaveAPDataToFile(apFileData);
+
 			if (newFile)
 				SetupNewFile(apFileData);
 
@@ -198,22 +200,13 @@ namespace ArchipelagoRandomizer
 				itemMessageHandler.ShowMessageBox(messageData);
 			}
 
-			if (APHandler.Instance.IsConnected)
-				APHandler.Instance.Session.Socket.Disconnect();
+			APHandler.Instance.Disconnect();
 
 			Plugin.Log.LogInfo("ItemRandomizer is disabled!");
 		}
 
 		private void SetupNewFile(APFileData apFileData)
 		{
-			IDataSaver apSaver = mainSaver.LocalStorage.GetLocalSaver("archipelago");
-			apSaver.SaveData("server", apFileData.Server);
-			apSaver.SaveInt("port", apFileData.Port);
-			apSaver.SaveData("slotName", apFileData.SlotName);
-			if (!string.IsNullOrEmpty(apFileData.Password))
-				apSaver.SaveData("password", apFileData.Password);
-			apSaver.SaveInt("deathlink", Convert.ToInt32(apFileData.Deathlink));
-			apSaver.SaveInt("autoEquipOutfits", Convert.ToInt32(apFileData.AutoEquipOutfits));
 			IDataSaver settingsSaver = mainSaver.LocalStorage.GetLocalSaver("settings");
 			settingsSaver.SaveInt("hideMapHint", 1);
 			settingsSaver.SaveInt("hideCutscenes", 1);
@@ -250,6 +243,18 @@ namespace ArchipelagoRandomizer
 				UnlockWarpGarden();
 
 			mainSaver.SaveLocal();
+		}
+
+		private void SaveAPDataToFile(APFileData apFileData)
+		{
+			IDataSaver apSaver = mainSaver.LocalStorage.GetLocalSaver("archipelago");
+			apSaver.SaveData("server", apFileData.Server);
+			apSaver.SaveInt("port", apFileData.Port);
+			apSaver.SaveData("slotName", apFileData.SlotName);
+			if (!string.IsNullOrEmpty(apFileData.Password))
+				apSaver.SaveData("password", apFileData.Password);
+			apSaver.SaveInt("deathlink", Convert.ToInt32(apFileData.Deathlink));
+			apSaver.SaveInt("autoEquipOutfits", Convert.ToInt32(apFileData.AutoEquipOutfits));
 		}
 
 		private void UnlockDoors()
