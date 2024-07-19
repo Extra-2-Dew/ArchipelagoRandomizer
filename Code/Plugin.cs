@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using ModCore;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
@@ -39,6 +40,7 @@ namespace ArchipelagoRandomizer
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
 			new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>();
+			DebugMenuManager.LogToConsole("To send commands or chat to the Archipelago server, use the \"ap\" command followed by the text you want to send.");
 
 			Events.OnSceneLoaded += (UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode) =>
 			{
