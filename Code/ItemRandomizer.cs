@@ -25,6 +25,7 @@ namespace ArchipelagoRandomizer
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
 		public FadeEffectData FadeData { get { return fadeData; } }
+		public bool StackStatuses { get; private set; }
 
 		public void OnFileStart(bool newFile, APFileData apFileData)
 		{
@@ -39,6 +40,7 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 
 			SaveAPDataToFile(apFileData);
+			StackStatuses = apFileData.StackStatuses;
 			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
 
 			if (newFile)
@@ -255,6 +257,7 @@ namespace ArchipelagoRandomizer
 				apSaver.SaveData("password", apFileData.Password);
 			apSaver.SaveInt("deathlink", Convert.ToInt32(apFileData.Deathlink));
 			apSaver.SaveInt("autoEquipOutfits", Convert.ToInt32(apFileData.AutoEquipOutfits));
+			apSaver.SaveInt("stackStatuses", Convert.ToInt32(apFileData.StackStatuses));
 		}
 
 		private void UnlockDoors()
@@ -534,6 +537,7 @@ namespace ArchipelagoRandomizer
 			public string Password { get; set; }
 			public bool Deathlink { get; set; }
 			public bool AutoEquipOutfits { get; set; }
+			public bool StackStatuses { get; set; }
 		}
 	}
 }

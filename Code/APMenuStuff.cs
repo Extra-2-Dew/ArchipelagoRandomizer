@@ -212,6 +212,7 @@ namespace ArchipelagoRandomizer
 			string password = GetInputFieldText("Password");
 			bool deathlink = GetToggleValue("DeathlinkToggle");
 			bool autoEquipOutfits = GetToggleValue("OutfitToggle");
+			bool stackStatuses = GetToggleValue("StackStatuses");
 
 			if (string.IsNullOrEmpty(server) || string.IsNullOrEmpty(portStr) || string.IsNullOrEmpty(slotName))
 				return null;
@@ -229,7 +230,8 @@ namespace ArchipelagoRandomizer
 				SlotName = slotName,
 				Password = password,
 				Deathlink = deathlink,
-				AutoEquipOutfits = autoEquipOutfits
+				AutoEquipOutfits = autoEquipOutfits,
+				StackStatuses = stackStatuses
 			};
 		}
 
@@ -288,6 +290,9 @@ namespace ArchipelagoRandomizer
 						break;
 					case "OutfitToggle":
 						toggle.isOn = apFileData.AutoEquipOutfits;
+						break;
+					case "StackStatuses":
+						toggle.isOn = apFileData.StackStatuses;
 						break;
 				}
 			}

@@ -381,7 +381,8 @@ namespace ArchipelagoRandomizer
 
 			if (status != null)
 			{
-				status._overrides = [];
+				if (ItemRandomizer.Instance.StackStatuses)
+					status._overrides = [];
 
 				if (isBuff)
 					statusBuffs.Add(status);
