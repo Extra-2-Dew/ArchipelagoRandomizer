@@ -91,6 +91,7 @@ namespace ArchipelagoRandomizer
 			IDataSaver itemsObtainedSaver = ModCore.Plugin.MainSaver.GetSaver("/local/archipelago/itemsObtained");
 			int itemsObtainedCount = itemsObtainedSaver.LoadInt("count");
 			var apItemsObtained = Session.Items.AllItemsReceived;
+			var itemsLeftToSync = apItemsObtained.ToList();
 
 			if (apItemsObtained.Count > itemsObtainedCount)
 			{
@@ -98,12 +99,14 @@ namespace ArchipelagoRandomizer
 
 				foreach (ItemInfo item in apItemsObtained)
 				{
-					int countInSaveFile = itemsObtainedSaver.LoadInt(item.ItemDisplayName);
+					int countInSaveFile = itemsObtainedSaver.LoadInt(item.ItemDisplayName); // THIS STAYS THE SAME FOR ENTIRE LOOP
+					int countInServer = itemsLeftToSync.Where(x => x.ItemDisplayName == item.ItemDisplayName).Count() - countInSaveFile;
 
-					if (apItemsObtained.Where(x => x.ItemDisplayName == item.ItemDisplayName).ToList().Count > countInSaveFile)
+					if (countInServer > 0)
 					{
 						int itemOffset = (int)item.ItemId - baseId;
 						Plugin.StartRoutine(ItemRandomizer.Instance.ItemReceived(itemOffset, item.ItemDisplayName, item.Player.Name));
+						itemsLeftToSync.Remove(item);
 						Plugin.Log.LogInfo($"{item.ItemDisplayName} was not synced, but it is now!");
 					}
 				}

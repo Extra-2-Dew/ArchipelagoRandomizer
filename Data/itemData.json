@@ -41,7 +41,7 @@
 			"iconName": "Forcewand1",
 			"offset": 5,
 			"flag": "forcewandUpgrade",
-			"max": 3,
+			"max": 2,
 			"type": "Upgrade"
 		},
 		{
@@ -49,15 +49,15 @@
 			"iconName": "Dynamite1",
 			"offset": 6,
 			"flag": "dynamiteUpgrade",
-			"max": 3,
+			"max": 2,
 			"type": "Upgrade"
 		},
 		{
-			"itemName": "Icering Upgrade",
+			"itemName": "Ice Ring Upgrade",
 			"iconName": "Icering1",
 			"offset": 7,
 			"flag": "iceringUpgrade",
-			"max": 3,
+			"max": 2,
 			"type": "Upgrade"
 		},
 		{
@@ -65,7 +65,7 @@
 			"iconName": "chain",
 			"offset": 8,
 			"flag": "chainUpgrade",
-			"max": 3,
+			"max": 2,
 			"type": "Upgrade"
 		},
 		{
