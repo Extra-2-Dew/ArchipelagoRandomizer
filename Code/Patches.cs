@@ -10,10 +10,88 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MainMenu), nameof(MainMenu.DoStartMenu))]
+		public static bool MainMenu_DoStartMenu_Patch(MainMenu __instance)
+		{
+			StartMenu.InitGame(__instance._saver, __instance._input, __instance._texts);
+			GuiBindInData inData = new(null, null);
+			GuiBindData guiBindData;
+
+			if (__instance._layoutIsPrefab)
+				guiBindData = GuiNode.CreateAndConnect(__instance._layout, inData);
+			else
+				guiBindData = GuiNode.Connect(__instance._layout, inData);
+
+			__instance.menuImpl = new MenuImpl<MainMenu>(__instance);
+			__instance.menuImpl.AddScreen(new MainMenu.MainScreen(__instance, "startRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.OptionsScreen(__instance, "optionRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.FileSelectScreen(__instance, "fileSelectRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.FileStartScreen(__instance, "fileStartRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.NewGameScreen(__instance, "enterNameRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.DeleteConfirmScreen(__instance, "deleteRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.ExtrasScreen(__instance, "extrasRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.LangScreen(__instance, "langRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.SoundTestScreen(__instance, "soundTestRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.GalleryScreen(__instance, "galleryRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.SaveWarnScreen(__instance, "savewarnRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.RecordsScreen(__instance, "recordsRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new MainMenu.CardsScreen(__instance, "cardsRoot", guiBindData));
+			__instance.menuImpl.AddScreen(new APMenuStuff.APSettingsScreen(__instance, "apRoot", guiBindData));
+			__instance.menuImpl.ShowFirst();
+
+			__instance._onStart?.FireOnActivate(true);
+
+			return false;
+		}
+
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(MenuScreen<MainMenu>), nameof(MenuScreen<MainMenu>.Show))]
+		public static void MenuScreen_MainMenu_Show_Patch(MenuScreen<MainMenu> __instance)
+		{
+			switch (__instance.Name.Substring(0, __instance.Name.Length - 4))
+			{
+				// New game screen
+				case "enterName":
+					APMenuStuff.Instance.ShowAPButton();
+					break;
+				// File selected screen
+				case "fileStart":
+					APMenuStuff.Instance.ShowAPButton(false, true);
+					break;
+				// File list screen
+				case "fileSelect":
+					APHandler.Instance.Disconnect();
+					break;
+			}
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MenuScreen<MainMenu>), nameof(MenuScreen<MainMenu>.Hide))]
+		public static void MenuScreen_MainMenu_Hide_Patch(MenuScreen<MainMenu> __instance)
+		{
+			if (__instance.Name == "enterNameRoot" || __instance.Name == "fileStartRoot")
+				APMenuStuff.Instance.HideAPButton();
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MainMenu.FileStartScreen), nameof(MainMenu.FileStartScreen.ClickedStart))]
+		public static bool MainMenu_FileStartScreen_ClickedStart_Patch()
+		{
+			if (Plugin.Instance.APFileData == null)
+				return true;
+
+			string errorMessage = string.Empty;
+			bool connected = APHandler.Instance.IsConnected || APHandler.Instance.TryCreateSessionAndConnect(Plugin.Instance.APFileData, out errorMessage);
+			APMenuStuff.Instance.ShowMessage(errorMessage);
+
+			return connected;
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(RollAction), nameof(RollAction.DoUpdate))]
 		public static bool RollAction_DoUpdate_PrePatch(RollAction __instance)
 		{
-			if (!ItemRandomizer.Instance.IsActive || !__instance.collisionDetector.IsColliding)
+			if (!ItemRandomizer.IsActive || !__instance.collisionDetector.IsColliding)
 				return true;
 
 			ItemRandomizer.Instance.RollToOpenChest(__instance.collisionDetector.GetCollisions());
@@ -25,7 +103,7 @@ namespace ArchipelagoRandomizer
 		public static bool UpdateVarsEventObserver_UpdateVars_Patch(UpdateVarsEventObserver __instance)
 		{
 			// Prevent outfit stands from setting their flags
-			if (ItemRandomizer.Instance.IsActive && __instance.gameObject.name == "Outfit" && SceneManager.GetActiveScene().name != "CandyCoastCaves")
+			if (ItemRandomizer.IsActive && __instance.gameObject.name == "Outfit" && SceneManager.GetActiveScene().name != "CandyCoastCaves")
 			{
 				// Resets world flag for outfit
 				int outfitNum = __instance.GetComponent<ExprVarHolder>()._startValues[0].value;
@@ -36,10 +114,11 @@ namespace ArchipelagoRandomizer
 				ItemDataForRandomizer itemDataForRando = __instance.gameObject.GetComponent<ItemDataForRandomizer>();
 				if (itemDataForRando == null)
 					itemDataForRando = __instance.gameObject.AddComponent<ItemDataForRandomizer>();
+				itemDataForRando.SceneName = SceneManager.GetActiveScene().name;
 				itemDataForRando.SaveFlag = __instance.transform.parent.Find("Activate").GetComponent<DummyAction>()._saveName;
 
 				// Mark location as checked
-				ItemRandomizer.Instance.LocationChecked(itemDataForRando.SaveFlag);
+				ItemRandomizer.Instance.LocationChecked(itemDataForRando.SaveFlag, itemDataForRando.SceneName);
 				return false;
 			}
 
@@ -51,7 +130,7 @@ namespace ArchipelagoRandomizer
 		public static bool AttackAction_CanDoAction_Patch(AttackAction __instance)
 		{
 			// Disable stick if you don't have it
-			if (ItemRandomizer.Instance.IsActive && __instance.ActionName == "firesword")
+			if (ItemRandomizer.IsActive && __instance.ActionName == "firesword")
 			{
 				Entity playerEnt = EntityTag.GetEntityByName("PlayerEnt");
 				return playerEnt.GetStateVariable("melee") >= 0;
@@ -65,7 +144,7 @@ namespace ArchipelagoRandomizer
 		public static bool EntityAction_CanDoAction_Patch(EntityAction __instance)
 		{
 			// Disable roll if you don't have it
-			if (ItemRandomizer.Instance.IsActive && __instance.ActionName == "roll")
+			if (ItemRandomizer.IsActive && __instance.ActionName == "roll")
 			{
 				Entity playerEnt = EntityTag.GetEntityByName("PlayerEnt");
 				return playerEnt.GetStateVariable("canRoll") == 1;
@@ -81,11 +160,11 @@ namespace ArchipelagoRandomizer
 			// ---------- START CUSTOM CODE ---------- \\
 
 			// If item randomizer is inactive or it's an Entity drop, run original code
-			if (!ItemRandomizer.Instance.IsActive || __instance.ItemId == null)
+			if (!ItemRandomizer.IsActive || __instance.ItemId == null)
 				return true;
 
 			ItemDataForRandomizer itemDataForRando = __instance.GetComponent<ItemDataForRandomizer>();
-			ItemRandomizer.Instance.LocationChecked(itemDataForRando.SaveFlag);
+			ItemRandomizer.Instance.LocationChecked(itemDataForRando.SaveFlag, SceneManager.GetActiveScene().name);
 
 			// ---------- END CUSTOM CODE ---------- \\
 
@@ -119,7 +198,7 @@ namespace ArchipelagoRandomizer
 			// ---------- START CUSTOM CODE ---------- \\
 
 			// If item randomizer is inactive, run original code
-			if (!ItemRandomizer.Instance.IsActive)
+			if (!ItemRandomizer.IsActive)
 				return true;
 
 			// ---------- END CUSTOM CODE ---------- \\
@@ -132,7 +211,7 @@ namespace ArchipelagoRandomizer
 				// ---------- START CUSTOM CODE ---------- \\
 
 				// Store reference to save flag
-				ItemRandomizer.Instance.LocationChecked(__instance.GetComponentInParent<DummyAction>()._saveName);
+				ItemRandomizer.Instance.LocationChecked(__instance.GetComponentInParent<DummyAction>()._saveName, SceneManager.GetActiveScene().name);
 
 				// ---------- END CUSTOM CODE ---------- \\
 

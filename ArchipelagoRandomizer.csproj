@@ -31,6 +31,9 @@
 		<Reference Include="$(GameDataPath)\BepInEx\plugins\ModCore\ModCore.dll">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>$(GameInstallPath)\ID2_Data\\Managed\UnityEngine.UI.dll</HintPath>
+		</Reference>
 		<None Update="Assets\apmenus">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

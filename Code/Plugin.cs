@@ -12,13 +12,23 @@ namespace ArchipelagoRandomizer
 	[BepInDependency("ModCore")]
 	public class Plugin : BaseUnityPlugin
 	{
-		internal static Plugin Instance { get; private set; }
-		internal static ManualLogSource Log { get; private set; }
-		internal static bool TestingLocally { get; } = false;
-
 		private APHandler apHandler;
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
+
+		internal static Plugin Instance { get; private set; }
+		internal static ManualLogSource Log { get; private set; }
+		internal ItemRandomizer.APFileData APFileData { get; private set; }
+
+		public static Coroutine StartRoutine(IEnumerator coroutine)
+		{
+			return Instance.StartCoroutine(coroutine);
+		}
+
+		public void SetAPFileData(ItemRandomizer.APFileData apFileData)
+		{
+			APFileData = apFileData;
+		}
 
 		private void Awake()
 		{
@@ -29,20 +39,25 @@ namespace ArchipelagoRandomizer
 			apHandler = new APHandler();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
-			DebugMenuManager.LogToConsole("To connect to an Archipelago server, use 'ap /connect {server:port} {slot} {password}");
+			new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>();
+			DebugMenuManager.LogToConsole("To send commands or chat to the Archipelago server, use the \"ap\" command followed by the text you want to send.");
+
+			Events.OnSceneLoaded += (UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode) =>
+			{
+				if (scene.name == "MainMenu")
+					new GameObject("APMenuStuff").AddComponent<APMenuStuff>();
+			};
 
 			Events.OnFileStart += (bool newFile) =>
 			{
-				itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
-				itemRandomizer.OnFileStart(newFile);
+				if (APHandler.Instance.IsConnected && APFileData != null)
+				{
+					itemRandomizer = new GameObject("ItemRandomizer").AddComponent<ItemRandomizer>();
+					itemRandomizer.OnFileStart(newFile, APFileData);
+				}
 			};
 
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-		}
-
-		public static Coroutine StartRoutine(IEnumerator coroutine)
-		{
-			return Instance.StartCoroutine(coroutine);
 		}
 	}
 }

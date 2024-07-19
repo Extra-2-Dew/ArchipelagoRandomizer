@@ -3,81 +3,97 @@
 		{
 			"location": "Fluffy Fields Caves - Goldbun Combat Chest",
 			"offset": 0,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_EnemyChest-21--2"
 		},
 		{
 			"location": "Fluffy Fields Caves - Portal Room Chest",
 			"offset": 1,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-36--3"
 		},
 		{
 			"location": "Fluffy Fields Caves - Timed Bridge Chest",
 			"offset": 2,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-71--8"
 		},
 		{
 			"location": "Fluffy Fields Caves - Hermit Hint Chest",
 			"offset": 3,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-82--4"
 		},
 		{
 			"location": "Fluffy Fields Caves - Laser Chest",
 			"offset": 4,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_PuzzleChest-99--4"
 		},
 		{
 			"location": "Fluffy Fields Caves - Number Blocks Chest",
 			"offset": 5,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-33--15"
 		},
 		{
 			"location": "Fluffy Fields Caves - Ice Blockade Chest",
 			"offset": 6,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-48--18"
 		},
 		{
 			"location": "Fluffy Fields Caves - Double Spikebun Combat Chest",
 			"offset": 7,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_EnemyChest-82--16"
 		},
 		{
 			"location": "Fluffy Fields Caves - Potion Bar Chest",
 			"offset": 8,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-25--28"
 		},
 		{
 			"location": "Fluffy Fields Caves - Six Buns Combat Chest",
 			"offset": 9,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_EnemyChest-40--29"
 		},
 		{
 			"location": "Fluffy Fields Caves - Artist Backroom Chest",
 			"offset": 10,
+			"scene": "FluffyFieldsCaves",
 			"flag": "Dungeon_Chest-24--52"
 		},
 		{
 			"location": "Fluffy Fields Caves - Jenny Berry House Outfit",
 			"offset": 11,
+			"scene": "FluffyFieldsCaves",
 			"flag": "outfit10"
 		},
 		{
 			"location": "Sweetwater Coast Caves - White Gates Combat Chest",
 			"offset": 100,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-19--3"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Feral Gates Combat Chest",
 			"offset": 101,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-93--3"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Three Teleporters Chest",
 			"offset": 102,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-3--16"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Four Candy Snakes Combat Chest",
 			"offset": 103,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_EnemyChest-25--17"
 		},
 		{
@@ -88,721 +104,865 @@
 		{
 			"location": "Sweetwater Coast Caves - Hint Hermit Chest",
 			"offset": 105,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-54--17"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Fake Chest Cave Chest",
 			"offset": 106,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-67--15"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Wooden Balls Spike Floor Chest",
 			"offset": 107,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-78--15"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Kung Fu Jenny Chest",
 			"offset": 108,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-94--16"
 		},
 		{
 			"location": "Fancy Ruins Caves - Two Torches Chest",
 			"offset": 200,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_Chest-6--4"
 		},
 		{
 			"location": "Fancy Ruins Caves - Numbered Torches Chest",
 			"offset": 201,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_Chest-20--3"
 		},
 		{
 			"location": "Fancy Ruins Caves - Two Crystals Chest",
 			"offset": 202,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_Chest-37--3"
 		},
 		{
 			"location": "Fancy Ruins Caves - Big Ogler Combat Chest",
 			"offset": 203,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_EnemyChest-47--6"
 		},
 		{
 			"location": "Fancy Ruins Caves - Hint Turnip Chest",
 			"offset": 204,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_Chest-102--5"
 		},
 		{
 			"location": "Fancy Ruins Caves - Rhythm Pillars Chest",
 			"offset": 205,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_PuzzleChest-9--17"
 		},
 		{
 			"location": "Fancy Ruins Caves - Teleporter Puzzle Chest",
 			"offset": 206,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_Chest-23--16"
 		},
 		{
 			"location": "Fancy Ruins Caves - Four Oglers Combat Chest",
 			"offset": 207,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_EnemyChest-37--14"
 		},
 		{
 			"location": "Fancy Ruins Caves - Spike Path Chest",
 			"offset": 208,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_PuzzleChest-51--18"
 		},
 		{
 			"location": "Fancy Ruins Caves - Hiding Hermit Chest",
 			"offset": 209,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_Chest-67--16"
 		},
 		{
 			"location": "Fancy Ruins Caves - Ice and Torch Chest",
 			"offset": 210,
+			"scene": "FancyRuinsCaves",
 			"flag": "Dungeon_PuzzleChest-80--16"
 		},
 		{
-			"location": "Star Woods - Turnip Combat Chest",
+			"location": "Star Woods Caves - Turnip Combat Chest",
 			"offset": 300,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_EnemyChest-3--3"
 		},
 		{
-			"location": "Star Woods - Barrel Blast Chest",
+			"location": "Star Woods Caves - Barrel Blast Chest",
 			"offset": 301,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_PuzzleChest-22--5"
 		},
 		{
-			"location": "Star Woods - Four Crystals Chest",
+			"location": "Star Woods Caves - Four Crystals Chest",
 			"offset": 302,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_PuzzleChest-36--4"
 		},
 		{
-			"location": "Star Woods - Sleeping Safety Jenny Chest",
+			"location": "Star Woods Caves - Sleeping Safety Jenny Chest",
 			"offset": 303,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-56--4"
 		},
 		{
-			"location": "Star Woods - Rotating Spikes Chest",
+			"location": "Star Woods Caves - Rotating Spikes Chest",
 			"offset": 304,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-82--2"
 		},
 		{
-			"location": "Star Woods - Number Tiles Chest",
+			"location": "Star Woods Caves - Number Tiles Chest",
 			"offset": 305,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_PuzzleChest-94--3"
 		},
 		{
-			"location": "Star Woods - Whirlwind Chest",
+			"location": "Star Woods Caves - Whirlwind Chest",
 			"offset": 306,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-12--15"
 		},
 		{
-			"location": "Star Woods - Magic Crystal Chest",
+			"location": "Star Woods Caves - Magic Crystal Chest",
 			"offset": 307,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-24--15"
 		},
 		{
-			"location": "Star Woods - Artist Turnip Chest",
+			"location": "Star Woods Caves - Artist Turnip Chest",
 			"offset": 308,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-41--15"
 		},
 		{
-			"location": "Star Woods - Hint Bee Chest",
+			"location": "Star Woods Caves - Hint Bee Chest",
 			"offset": 309,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-50--15"
 		},
 		{
-			"location": "Star Woods - Extinguish Flames Chest",
+			"location": "Star Woods Caves - Extinguish Flames Chest",
 			"offset": 310,
+			"scene": "StarWoodsCaves",
 			"flag": "Dungeon_Chest-96--15"
 		},
 		{
-			"location": "Slippery Slope - Volcanic Path Chest",
+			"location": "Slippery Slope Caves - Volcanic Path Chest",
 			"offset": 400,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_PuzzleChest-3--5"
 		},
 		{
-			"location": "Slippery Slope - Ice and Barrels Chest",
+			"location": "Slippery Slope Caves - Ice and Barrels Chest",
 			"offset": 401,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_Chest-26--4"
 		},
 		{
-			"location": "Slippery Slope - Eight Crystals Chest",
+			"location": "Slippery Slope Caves - Eight Crystals Chest",
 			"offset": 402,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_PuzzleChest-50--3"
 		},
 		{
-			"location": "Slippery Slope - Forgetful Jennies Chest",
+			"location": "Slippery Slope Caves - Forgetful Jennies Chest",
 			"offset": 403,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_Chest-64--3"
 		},
 		{
-			"location": "Slippery Slope - Push the Crystals Chest",
+			"location": "Slippery Slope Caves - Push the Crystals Chest",
 			"offset": 404,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_PuzzleChest-82--3"
 		},
 		{
-			"location": "Slippery Slope - Exhausted Turnip Chest",
+			"location": "Slippery Slope Caves - Exhausted Turnip Chest",
 			"offset": 405,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_Chest-98--3"
 		},
 		{
-			"location": "Slippery Slope - Bee Nest Combat Chest",
+			"location": "Slippery Slope Caves - Bee Nest Combat Chest",
 			"offset": 406,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_EnemyChest-25--15"
 		},
 		{
-			"location": "Slippery Slope - Pushable Fan Chest",
+			"location": "Slippery Slope Caves - Pushable Fan Chest",
 			"offset": 407,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_Chest-39--16"
 		},
 		{
-			"location": "Slippery Slope - Moving Crystals Chest",
+			"location": "Slippery Slope Caves - Moving Crystals Chest",
 			"offset": 408,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_PuzzleChest-53--16"
 		},
 		{
-			"location": "Slippery Slope - Shark House",
+			"location": "Slippery Slope Caves - Shark House",
 			"offset": 409,
+			"scene": "SlipperySlopeCaves",
 			"flag": "Dungeon_Chest-70--17"
 		},
 		{
 			"location": "Pepperpain Caves - Cowbun Combat Chest",
 			"offset": 500,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_EnemyChest-7--5"
 		},
 		{
 			"location": "Pepperpain Caves - Brutus Combat Chest",
 			"offset": 501,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-17--4"
 		},
 		{
 			"location": "Pepperpain Caves - Torch Disappearing Path Chest",
 			"offset": 502,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-92--3"
 		},
 		{
 			"location": "Pepperpain Caves - Spiky Hint Bee Chest",
 			"offset": 503,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-107--4"
 		},
 		{
 			"location": "Pepperpain Caves - Cannon Path Chest",
 			"offset": 504,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-10--18"
 		},
 		{
 			"location": "Pepperpain Caves - Volcano Trail Chest",
 			"offset": 505,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-31--15"
 		},
 		{
 			"location": "Pepperpain Caves - Barrel Hint Bee Chest",
 			"offset": 506,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-52--15"
 		},
 		{
 			"location": "Pepperpain Caves - Haunted Guns Chest",
 			"offset": 507,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-86--15"
 		},
 		{
 			"location": "Pepperpain Caves - Buzzsaw Path Chest",
 			"offset": 508,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-11--27"
 		},
 		{
 			"location": "Pepperpain Caves - Number Tiles Chest",
 			"offset": 509,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_PuzzleChest-18--27"
 		},
 		{
 			"location": "Pepperpain Caves - Pacifist Brute Chest",
 			"offset": 510,
+			"scene": "VitaminHillsCaves",
 			"flag": "Dungeon_Chest-82--27"
 		},
 		{
 			"location": "Frozen Court Caves - Bushfire Chest",
 			"offset": 600,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_PuzzleChest-7--9"
 		},
 		{
 			"location": "Frozen Court Caves - Cannon Spinner Chest",
 			"offset": 601,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_PuzzleChest-20--2"
 		},
 		{
 			"location": "Frozen Court Caves - Mimicbuns Combat Chest",
 			"offset": 602,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_EnemyChest-37--5"
 		},
 		{
 			"location": "Frozen Court Caves - Teleporter Maze Chest",
 			"offset": 603,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_PuzzleChest-63--3"
 		},
 		{
 			"location": "Frozen Court Caves - Chilly Roger Combat Chest",
 			"offset": 604,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_EnemyChest-84--5"
 		},
 		{
 			"location": "Frozen Court Caves - Rickety Bridge Chest",
 			"offset": 605,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_PuzzleChest-6--15"
 		},
 		{
 			"location": "Frozen Court Caves - Titans Combat Chest",
 			"offset": 606,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_Chest-17--30"
 		},
 		{
 			"location": "Frozen Court Caves - Crystal Path Chest",
 			"offset": 607,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_Chest-40--15"
 		},
 		{
 			"location": "Frozen Court Caves - Teleporter Grate Chest",
 			"offset": 608,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_Chest-50--14"
 		},
 		{
 			"location": "Frozen Court Caves - Hint Hermit Chest",
 			"offset": 609,
+			"scene": "FrozenCourtCaves",
 			"flag": "Dungeon_Chest-63--15"
 		},
 		{
 			"location": "Lonely Road Caves - Timed Platforms Chest",
 			"offset": 700,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_PuzzleChest-18--6"
 		},
 		{
 			"location": "Lonely Road Caves - Timed Number Tiles Chest",
 			"offset": 701,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_Chest-33--4"
 		},
 		{
 			"location": "Lonely Road Caves - Volcano Chest",
 			"offset": 702,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_Chest-54--5"
 		},
 		{
 			"location": "Lonely Road Caves - Lava Fans Chest",
 			"offset": 703,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_PuzzleChest-52--17"
 		},
 		{
 			"location": "Lonely Road Caves - Force Turrets Chest",
 			"offset": 704,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_PuzzleChest-80--15"
 		},
 		{
 			"location": "Lonely Road Caves - Hint Shark Chest",
 			"offset": 705,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_Chest-27--29"
 		},
 		{
 			"location": "Lonely Road Caves - Teleporter Cube Chest",
 			"offset": 706,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_Chest-56--28"
 		},
 		{
 			"location": "Lonely Road Caves - Dark Maze Chest",
 			"offset": 707,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_PuzzleChest-87--32"
 		},
 		{
 			"location": "Lonely Road Caves - Block Factory",
 			"offset": 708,
+			"scene": "LonelyRoadCaves",
 			"flag": "Dungeon_PuzzleChest-67--32"
 		},
 		{
 			"location": "Pillow Fort - Treasure Chest",
 			"offset": 800,
+			"scene": "PillowFort",
 			"flag": "Dungeon_PuzzleChest-39--28"
 		},
 		{
 			"location": "Pillow Fort - Shellbun Nest Key",
 			"offset": 801,
+			"scene": "PillowFort",
 			"flag": "KeyChest-7--44"
 		},
 		{
 			"location": "Pillow Fort - Crayon Chest",
 			"offset": 802,
+			"scene": "PillowFort",
 			"flag": "Dungeon_EnemyChest-3--29"
 		},
 		{
 			"location": "Pillow Fort - Safety Jenny Gate Key",
 			"offset": 803,
+			"scene": "PillowFort",
 			"flag": "KeyChest-17--17"
 		},
 		{
 			"location": "Pillow Fort - Boss Reward Chest",
 			"offset": 804,
+			"scene": "PillowFort",
 			"flag": "Dungeon_Chest-37--4"
 		},
 		{
 			"location": "Sand Castle - Crayon Chest",
 			"offset": 900,
+			"scene": "SandCastle",
 			"flag": "Dungeon_Chest-37--15"
 		},
 		{
 			"location": "Sand Castle - Orbiting Balls Key",
 			"offset": 901,
+			"scene": "SandCastle",
 			"flag": "KeyChest-11--36"
 		},
 		{
 			"location": "Sand Castle - Spikebun Dunes Key",
 			"offset": 902,
+			"scene": "SandCastle",
 			"flag": "KeyChest-69--3"
 		},
 		{
 			"location": "Sand Castle - Treasure Chest",
 			"offset": 904,
+			"scene": "SandCastle",
 			"flag": "Dungeon_Chest-53--44"
 		},
 		{
 			"location": "Sand Castle - Boss Reward Chest",
 			"offset": 905,
+			"scene": "SandCastle",
 			"flag": "Dungeon_Chest-7--4"
 		},
 		{
 			"location": "Art Exhibit - Entry Combat Key",
 			"offset": 1000,
+			"scene": "ArtExhibit",
 			"flag": "KeyChest-38--78"
 		},
 		{
 			"location": "Art Exhibit - Evil Easels Key",
 			"offset": 1001,
+			"scene": "ArtExhibit",
 			"flag": "KeyChest-56--53"
 		},
 		{
 			"location": "Art Exhibit - Treasure Chest",
 			"offset": 1002,
+			"scene": "ArtExhibit",
 			"flag": "Dungeon_Chest-3--54"
 		},
 		{
 			"location": "Art Exhibit - Crayon Chest",
 			"offset": 1003,
+			"scene": "ArtExhibit",
 			"flag": "Dungeon_Chest-2--27"
 		},
 		{
 			"location": "Art Exhibit - Spike Floor Key",
 			"offset": 1004,
+			"scene": "ArtExhibit",
 			"flag": "KeyChest-42--20"
 		},
 		{
 			"location": "Art Exhibit - Business Casual Man Key",
 			"offset": 1005,
+			"scene": "ArtExhibit",
 			"flag": "KeyChest-3--8"
 		},
 		{
 			"location": "Art Exhibit - Boss Reward Chest",
 			"offset": 1006,
+			"scene": "ArtExhibit",
 			"flag": "Dungeon_Chest-52--4"
 		},
 		{
 			"location": "Trash Cave - Crayon Chest",
 			"offset": 1100,
+			"scene": "TrashCave",
 			"flag": "Dungeon_PuzzleChest-65--39"
 		},
 		{
 			"location": "Trash Cave - Ice Barricade Key",
 			"offset": 1101,
+			"scene": "TrashCave",
 			"flag": "KeyChest-37--51"
 		},
 		{
 			"location": "Trash Cave - Rotnip Combat Key",
 			"offset": 1102,
+			"scene": "TrashCave",
 			"flag": "KeyChest-93--18"
 		},
 		{
 			"location": "Trash Cave - Treasure Chest",
 			"offset": 1103,
+			"scene": "TrashCave",
 			"flag": "Dungeon_Chest-81--3"
 		},
 		{
 			"location": "Trash Cave - Mimic Combat Key",
 			"offset": 1104,
+			"scene": "TrashCave",
 			"flag": "KeyChest-41--26"
 		},
 		{
 			"location": "Trash Cave - Block Maze Key",
 			"offset": 1105,
+			"scene": "TrashCave",
 			"flag": "KeyChest-19--25"
 		},
 		{
 			"location": "Trash Cave - Boss Reward Chest",
 			"offset": 1106,
+			"scene": "TrashCave",
 			"flag": "Dungeon_Chest-37--4"
 		},
 		{
 			"location": "Flooded Basement - Portal Cube Key",
 			"offset": 1200,
+			"scene": "FloodedBasement",
 			"flag": "KeyChest-20--7"
 		},
 		{
 			"location": "Flooded Basement - Crossway Combat Key",
 			"offset": 1201,
+			"scene": "FloodedBasement",
 			"flag": "KeyChest-48--27"
 		},
 		{
 			"location": "Flooded Basement - Land Sharks Key",
 			"offset": 1202,
+			"scene": "FloodedBasement",
 			"flag": "KeyChest-49--63"
 		},
 		{
 			"location": "Flooded Basement - Treasure Chest",
 			"offset": 1203,
+			"scene": "FloodedBasement",
 			"flag": "Dungeon_Chest-74--20"
 		},
 		{
 			"location": "Flooded Basement - Crayon Chest",
 			"offset": 1204,
+			"scene": "FloodedBasement",
 			"flag": "Dungeon_Chest-51--15"
 		},
 		{
 			"location": "Flooded Basement - Keeled Fishbun Key",
 			"offset": 1205,
+			"scene": "FloodedBasement",
 			"flag": "KeyChest-83--41"
 		},
 		{
 			"location": "Flooded Basement - Number Blocks Key",
 			"offset": 1206,
+			"scene": "FloodedBasement",
 			"flag": "KeyChest-101--28"
 		},
 		{
 			"location": "Flooded Basement - Boss Reward Chest",
 			"offset": 1207,
+			"scene": "FloodedBasement",
 			"flag": "Dungeon_Chest-67--4"
 		},
 		{
 			"location": "Potassium Mine - Hub Room Key",
 			"offset": 1300,
+			"scene": "PotassiumMine",
 			"flag": "KeyChest-45--51"
 		},
 		{
 			"location": "Potassium Mine - South conveyor Key",
 			"offset": 1301,
+			"scene": "PotassiumMine",
 			"flag": "KeyChest-34--74"
 		},
 		{
 			"location": "Potassium Mine - Crayon Chest",
 			"offset": 1302,
+			"scene": "PotassiumMine",
 			"flag": "Dungeon_Chest-7--29"
 		},
 		{
 			"location": "Potassium Mine - West Minecart Track Key",
 			"offset": 1303,
+			"scene": "PotassiumMine",
 			"flag": "KeyChest-24--40"
 		},
 		{
 			"location": "Potassium Mine - Number Tiles Key",
 			"offset": 1304,
+			"scene": "PotassiumMine",
 			"flag": "KeyChest-62--44"
 		},
 		{
 			"location": "Potassium Mine - Treasure Chest",
 			"offset": 1305,
+			"scene": "PotassiumMine",
 			"flag": "Dungeon_Chest-63--27"
 		},
 		{
 			"location": "Potassium Mine - Ice Tutorial Key",
 			"offset": 1306,
+			"scene": "PotassiumMine",
 			"flag": "KeyChest-41--14"
 		},
 		{
 			"location": "Potassium Mine - Boss Reward Chest",
 			"offset": 1307,
+			"scene": "PotassiumMine",
 			"flag": "Dungeon_Chest-37--4"
 		},
 		{
 			"location": "Boiling Grave - Skullnips Combat Key",
 			"offset": 1400,
+			"scene": "BoilingGrave",
 			"flag": "KeyChest-49--62"
 		},
 		{
 			"location": "Boiling Grave - Titans Combat Key",
 			"offset": 1401,
+			"scene": "BoilingGrave",
 			"flag": "KeyChest-64--74"
 		},
 		{
 			"location": "Boiling Grave - Treasure Chest",
 			"offset": 1402,
+			"scene": "BoilingGrave",
 			"flag": "Dungeon_Chest-18--75"
 		},
 		{
 			"location": "Boiling Grave - Roll Pillars Key",
 			"offset": 1403,
+			"scene": "BoilingGrave",
 			"flag": "KeyChest-42--53"
 		},
 		{
 			"location": "Boiling Grave - Royal Tomb Key",
 			"offset": 1404,
+			"scene": "BoilingGrave",
 			"flag": "KeyChest-27--32"
 		},
 		{
 			"location": "Boiling Grave - Crayon Chest",
 			"offset": 1405,
+			"scene": "BoilingGrave",
 			"flag": "Dungeon_Chest-22--8"
 		},
 		{
 			"location": "Boiling Grave - Chilly Roger Combat Key",
 			"offset": 1406,
+			"scene": "BoilingGrave",
 			"flag": "KeyChest-57--2"
 		},
 		{
 			"location": "Boiling Grave - Boss Reward Chest",
 			"offset": 1407,
+			"scene": "BoilingGrave",
 			"flag": "Dungeon_Chest-67--4"
 		},
 		{
 			"location": "Grand Library - Treasure Chest",
 			"offset": 1500,
+			"scene": "GrandLibrary",
 			"flag": "Dungeon_Chest-54--15"
 		},
 		{
 			"location": "Grand Library - Crayon Chest",
 			"offset": 1501,
+			"scene": "GrandLibrary",
 			"flag": "Dungeon_Chest-5--65"
 		},
 		{
 			"location": "Grand Library - Patient Key",
 			"offset": 1502,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-62--63"
 		},
 		{
 			"location": "Grand Library - Hidden Key",
 			"offset": 1503,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-86--44"
 		},
 		{
 			"location": "Grand Library - Fighter's Combat Key",
 			"offset": 1504,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-87--62"
 		},
 		{
 			"location": "Grand Library - Storied Key",
 			"offset": 1505,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-93--63"
 		},
 		{
 			"location": "Grand Library - Delayed Key",
 			"offset": 1506,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-92--45"
 		},
 		{
 			"location": "Grand Library - Carrot Lobotomy Key",
 			"offset": 1507,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-37--69"
 		},
 		{
 			"location": "Grand Library - Crystals and Buttons Key",
 			"offset": 1508,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-27--41"
 		},
 		{
 			"location": "Grand Library - Hexrot Combat Key",
 			"offset": 1509,
+			"scene": "GrandLibrary",
 			"flag": "KeyChest-6--5"
 		},
 		{
 			"location": "Grand Library - Boss Key Chest",
 			"offset": 1510,
+			"scene": "GrandLibrary",
 			"flag": "Dungeon_Chest-22--15"
 		},
 		{
 			"location": "Grand Library - Boss Reward Chest",
 			"offset": 1511,
+			"scene": "GrandLibrary2",
 			"flag": "Dungeon_Chest-9--5"
 		},
 		{
 			"location": "Grand Library - Extra Boss Reward Chest",
 			"offset": 1512,
+			"scene": "GrandLibrary2",
 			"flag": "Dungeon_Chest-5--5"
 		},
 		{
 			"location": "Autumn Climb - Chest",
 			"offset": 2500,
+			"scene": "Deep1",
 			"flag": "Dungeon_Chest-6-5"
 		},
 		{
 			"location": "The Vault - Chest",
 			"offset": 2501,
+			"scene": "Deep2",
 			"flag": "Dungeon_Chest-22--3"
 		},
 		{
 			"location": "Painful Plain - Chest",
 			"offset": 2502,
+			"scene": "Deep3",
 			"flag": "Dungeon_Chest--10--4"
 		},
 		{
 			"location": "Farthest Shore - Chest",
 			"offset": 2503,
+			"scene": "Deep4",
 			"flag": "Dungeon_Chest-11-9"
 		},
 		{
 			"location": "Scrap Yard - Chest",
 			"offset": 2504,
+			"scene": "Deep5",
 			"flag": "Dungeon_EnemyChest-18--3"
 		},
 		{
 			"location": "Brutal Oasis - Chest",
 			"offset": 2505,
+			"scene": "Deep6",
 			"flag": "Dungeon_Chest--7-5"
 		},
 		{
 			"location": "Former Colossus - Chest",
 			"offset": 2506,
+			"scene": "Deep7",
 			"flag": "Dungeon_Chest-0-6"
 		},
 		{
 			"location": "Sand Crucible - Chest",
 			"offset": 2507,
+			"scene": "Deep8",
 			"flag": "Dungeon_Chest-7--3"
 		},
 		{
 			"location": "Ocean Castle - Chest",
 			"offset": 2508,
+			"scene": "Deep9",
 			"flag": "Dungeon_Chest--6-8"
 		},
 		{
 			"location": "Promenade Path - Chest",
 			"offset": 2509,
+			"scene": "Deep10",
 			"flag": "Dungeon_Chest--5--14"
 		},
 		{
 			"location": "Maze of Steel - Chest",
 			"offset": 2510,
+			"scene": "Deep11",
 			"flag": "Dungeon_Chest-41--16"
 		},
 		{
 			"location": "Wall of Text - Chest",
 			"offset": 2511,
+			"scene": "Deep12",
 			"flag": "Dungeon_Chest-56--3"
 		},
 		{
 			"location": "Lost City of Avlopp - Chest",
 			"offset": 2512,
+			"scene": "Deep13",
 			"flag": "Dungeon_Chest-8--16"
 		},
 		{
 			"location": "Northern End - Chest",
 			"offset": 2513,
+			"scene": "Deep14",
 			"flag": "Dungeon_Chest-5--65"
 		},
 		{
 			"location": "Moon Garden - Chest",
 			"offset": 2514,
+			"scene": "Deep15",
 			"flag": "Dungeon_Chest-0-8"
 		},
 		{
 			"location": "Ludo City - Chest",
 			"offset": 2600,
+			"scene": "Deep20",
 			"flag": "Dungeon_Chest-17--7"
 		},
 		{
 			"location": "Bad Dream - Card",
 			"offset": 2602,
+			"scene": "Deep26",
 			"flag": "CardChest-0-6"
 		}
 	]
