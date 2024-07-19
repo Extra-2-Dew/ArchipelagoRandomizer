@@ -70,6 +70,7 @@ namespace ArchipelagoRandomizer
 			{
 				// Show AP menu
 				mainMenu.menuImpl.SwitchToScreen(apMenu);
+				mainMenu._enterNameMenu.ClearListeners();
 			});
 
 			apMenuBackBtn.onClick.AddListener(() =>
