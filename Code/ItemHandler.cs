@@ -272,7 +272,9 @@ namespace ArchipelagoRandomizer
 		{
 			int outfitNum = int.Parse((Regex.Match(saveFlag, @"\d+").Value));
 			mainSaver.GetSaver("/local/world").SaveInt(saveFlag, 1);
-			player.SetStateVariable(saveFlag.Replace(outfitNum.ToString(), ""), outfitNum);
+
+			if (Plugin.Instance.APFileData.AutoEquipOutfits)
+				player.SetStateVariable(saveFlag.Replace(outfitNum.ToString(), ""), outfitNum);
 		}
 
 		// TODO
@@ -381,7 +383,7 @@ namespace ArchipelagoRandomizer
 
 			if (status != null)
 			{
-				if (ItemRandomizer.Instance.StackStatuses)
+				if (Plugin.Instance.APFileData.StackStatuses)
 					status._overrides = [];
 
 				if (isBuff)

@@ -25,7 +25,6 @@ namespace ArchipelagoRandomizer
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
 		public FadeEffectData FadeData { get { return fadeData; } }
-		public bool StackStatuses { get; private set; }
 
 		public void OnFileStart(bool newFile, APFileData apFileData)
 		{
@@ -40,7 +39,6 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 
 			SaveAPDataToFile(apFileData);
-			StackStatuses = apFileData.StackStatuses;
 			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
 
 			if (newFile)
