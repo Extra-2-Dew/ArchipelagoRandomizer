@@ -81,14 +81,10 @@ namespace ArchipelagoRandomizer
 
 			APHandler.Instance.OnDisconnect += () =>
 			{
-				ToggleAPConnectedIcon(false);
+				if (apButtonActiveImageObj != null)
+					ToggleAPConnectedIcon(false);
+
 				Plugin.Instance.SetAPFileData(null);
-				MessageBoxHandler.MessageData messageData = new()
-				{
-					Message = "You lost connection with the Archipelago server!"
-				};
-				MessageBoxHandler.Instance.ShowMessageBox(messageData);
-				Plugin.Log.LogInfo("TEST: DISCONNECTED!");
 			};
 
 			ToggleAPConnectedIcon(false);

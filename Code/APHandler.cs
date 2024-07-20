@@ -76,6 +76,7 @@ namespace ArchipelagoRandomizer
 				return;
 
 			Session.Socket.Disconnect();
+			OnDisconnected("Manual disconnection");
 		}
 
 		public void LocationChecked(int offset)
