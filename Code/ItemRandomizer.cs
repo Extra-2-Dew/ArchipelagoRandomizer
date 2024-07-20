@@ -158,7 +158,9 @@ namespace ArchipelagoRandomizer
 			// Parse data JSON
 			if (locations == null)
 			{
-				if (!ModCore.Utility.TryParseJson(@$"{PluginInfo.PLUGIN_NAME}\Data\locationData.json", out LocationData? data))
+				string path = BepInEx.Utility.CombinePaths(PluginInfo.PLUGIN_NAME, "Data", "locationData.json");
+
+				if (!ModCore.Utility.TryParseJson(path, out LocationData? data))
 				{
 					Plugin.Log.LogError("ItemRandomizer JSON data has failed to load! The randomizer will not start!");
 					Destroy(this);

@@ -168,7 +168,9 @@ namespace ArchipelagoRandomizer
 			if (!hasInitialized)
 			{
 				// Parse item JSON
-				if (!ModCore.Utility.TryParseJson($@"{PluginInfo.PLUGIN_NAME}\Data\itemData.json", out ItemData? data))
+				string path = BepInEx.Utility.CombinePaths(PluginInfo.PLUGIN_NAME, "Data", "itemData.json");
+
+				if (!ModCore.Utility.TryParseJson(path, out ItemData? data))
 				{
 					Plugin.Log.LogError($"ItemHandler failed to deserialize item data JSON and will do nothing!");
 					Destroy(this);
