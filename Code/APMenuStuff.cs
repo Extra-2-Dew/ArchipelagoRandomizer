@@ -141,6 +141,8 @@ namespace ArchipelagoRandomizer
 		{
 			HideAPButton();
 
+			APHandler.Instance.Disconnect();
+
 			// Prefill fields in AP menu
 			if (isInFileSelectMenu)
 				PrefillAPMenuFields();

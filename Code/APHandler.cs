@@ -29,7 +29,7 @@ namespace ArchipelagoRandomizer
 				return Session.Players.GetPlayerInfo(Session.ConnectionInfo.Slot);
 			}
 		}
-		public bool IsConnected { get { return Session != null; } }
+		public bool IsConnected { get { return Session != null && Session.Socket.Connected; } }
 		public ArchipelagoSession Session { get; private set; }
 
 		public APHandler()
