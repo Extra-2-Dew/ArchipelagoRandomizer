@@ -2,7 +2,7 @@
 
 ## What's an Archipelago Randomizer?
 
-A randomizer is software that rearranges the items in a game, increasing replayability by ensuring you get items in a different order ever playthrough. In the case of Ittle Dew 2, your Raft Pieces could be hidden in some random caves, your dynamite could be locked behind a boss fight, and a yellow heart could be your reward for Northern End.
+A randomizer is software that rearranges the items in a game, increasing replayability by ensuring you get items in a different order every playthrough. In the case of Ittle Dew 2, your Raft Pieces could be hidden in some random caves, your dynamite could be locked behind a boss fight, and a yellow heart could be your reward for Northern End.
 
 [Archipelago](https://archipelago.gg) is a multiworld framework, allowing multiple games to combine their randomizers and send items between players. For example, I could play Ittle Dew 2 while a friend plays Tunic. I find the Tunic player's stick, which allows them to defeat some enemies and find my dynamite. We continue exploring our islands whacking enemies with our sticks and blowing stuff up until we find enough items for us to both beat our games.
 
@@ -31,7 +31,7 @@ Currently, the following locations are randomized:
 * All chests in the 15 main Portal Worlds (optional)
 * Certain SUPER SECRET LOCATIONS (optional)
 
-## What is the goal of the randomizere?
+## What is the goal of the randomizer?
 
 Currently, the only goal is Raft Quest, which requires that you obtain all eight Raft Pieces and return to Fluffy Fields to escape the island. Other goals will be added in the future.
 
