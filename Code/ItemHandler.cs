@@ -185,7 +185,7 @@ namespace ArchipelagoRandomizer
 					{ "ArtExhibit", 4 },
 					{ "TrashCave", 4 },
 					{ "FloodedBasement", 5 },
-					{ "PotassiumMines", 5 },
+					{ "PotassiumMine", 5 },
 					{ "BoilingGrave", 5 },
 					{ "GrandLibrary", 8 },
 					{ "SunkenLabyrinth", 3 },
