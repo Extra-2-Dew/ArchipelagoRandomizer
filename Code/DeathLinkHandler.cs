@@ -110,7 +110,7 @@ namespace ArchipelagoRandomizer
 			lastDeathFromDeathLink = true;
 			playerKillable.SignalDeath();
 			lastDeathFromDeathLink = false;
-			string deathMessage = deathLink.Cause != null ? deathLink.Cause : $"{deathLink.Source} died!";
+			string deathMessage = !string.IsNullOrEmpty(deathLink.Cause) ? deathLink.Cause : $"{deathLink.Source} died!";
 
 			// If death sent from another player
 			if (deathLink.Source != APHandler.Instance.CurrentPlayer.Name)
