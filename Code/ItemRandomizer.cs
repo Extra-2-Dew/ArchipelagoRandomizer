@@ -38,7 +38,6 @@ namespace ArchipelagoRandomizer
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 			Events.OnSceneLoaded += OnSceneLoaded;
 
-			SaveAPDataToFile(apFileData);
 			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
 
 			if (newFile)
@@ -158,7 +157,7 @@ namespace ArchipelagoRandomizer
 			// Parse data JSON
 			if (locations == null)
 			{
-				string path = BepInEx.Utility.CombinePaths(PluginInfo.PLUGIN_NAME, "Data", "locationData.json");
+				string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "locationData.json");
 
 				if (!ModCore.Utility.TryParseJson(path, out LocationData? data))
 				{
@@ -210,6 +209,8 @@ namespace ArchipelagoRandomizer
 
 		private void SetupNewFile(APFileData apFileData)
 		{
+			APMenuStuff.Instance.SaveAPDataToFile(apFileData);
+
 			IDataSaver settingsSaver = mainSaver.LocalStorage.GetLocalSaver("settings");
 			settingsSaver.SaveInt("hideMapHint", 1);
 			settingsSaver.SaveInt("hideCutscenes", 1);
@@ -245,19 +246,6 @@ namespace ArchipelagoRandomizer
 				UnlockWarpGarden();
 
 			mainSaver.SaveLocal();
-		}
-
-		private void SaveAPDataToFile(APFileData apFileData)
-		{
-			IDataSaver apSaver = mainSaver.LocalStorage.GetLocalSaver("archipelago");
-			apSaver.SaveData("server", apFileData.Server);
-			apSaver.SaveInt("port", apFileData.Port);
-			apSaver.SaveData("slotName", apFileData.SlotName);
-			if (!string.IsNullOrEmpty(apFileData.Password))
-				apSaver.SaveData("password", apFileData.Password);
-			apSaver.SaveInt("deathlink", Convert.ToInt32(apFileData.Deathlink));
-			apSaver.SaveInt("autoEquipOutfits", Convert.ToInt32(apFileData.AutoEquipOutfits));
-			apSaver.SaveInt("stackStatuses", Convert.ToInt32(apFileData.StackStatuses));
 		}
 
 		private void UnlockDoors()

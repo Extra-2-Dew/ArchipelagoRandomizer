@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -102,15 +102,12 @@ namespace ArchipelagoRandomizer
 
 			if (isInFileSelectMenu)
 			{
-				if (Plugin.Instance.APFileData == null)
-				{
-					APFileData apFileData = ReadAPFileDataFromSaveFile();
-					Plugin.Instance.SetAPFileData(apFileData);
+				APFileData apFileData = ReadAPFileDataFromSaveFile();
+				Plugin.Instance.SetAPFileData(apFileData);
 
-					// If selected file is not an AP file, don't show button
-					if (apFileData == null)
-						return;
-				}
+				// If selected file is not an AP file, don't show button
+				if (apFileData == null)
+					return;
 
 				// Switch button icon
 				ToggleAPConnectedIcon(true);
@@ -137,6 +134,32 @@ namespace ArchipelagoRandomizer
 			MessageBoxHandler.Instance.ShowMessageBox(messageData);
 		}
 
+		public void HideAPButton()
+		{
+			// Hide AP button
+			Animate(apButtonAnim, 0);
+		}
+
+		public void SaveAPDataToFile(APFileData apFileData)
+		{
+			string path = GetAPDataFilePath(false);
+
+			if (string.IsNullOrEmpty(path))
+				return;
+
+			ModCore.Utility.WriteJsonToFile(apFileData, path);
+		}
+
+		public void DuplicateAPDataFile()
+		{
+			File.Copy(GetAPDataFilePath(false), GetAPDataFilePath(true), true);
+		}
+
+		public void DeleteAPDataFile()
+		{
+			File.Delete(GetAPDataFilePath(false));
+		}
+
 		private void ShowAPMenu()
 		{
 			HideAPButton();
@@ -151,12 +174,6 @@ namespace ArchipelagoRandomizer
 			Animate(apMenuAnim, 1);
 		}
 
-		public void HideAPButton()
-		{
-			// Hide AP button
-			Animate(apButtonAnim, 0);
-		}
-
 		private void HideAPMenu()
 		{
 			// Hide AP menu
@@ -164,6 +181,10 @@ namespace ArchipelagoRandomizer
 
 			// Set AP data
 			APFileData apFileData = GetAPFileData();
+
+			if (apFileData != null && ModCore.Plugin.MainSaver != null)
+				SaveAPDataToFile(apFileData);
+
 			Plugin.Instance.SetAPFileData(apFileData);
 
 			string errorMessage = string.Empty;
@@ -236,21 +257,14 @@ namespace ArchipelagoRandomizer
 
 		private APFileData ReadAPFileDataFromSaveFile()
 		{
-			IDataSaver apSaver = ModCore.Plugin.MainSaver.LocalStorage.GetLocalSaver("archipelago");
-			string server = apSaver.LoadData("server");
+			string fileName = ModCore.Plugin.MainSaver._localStorage.GetSaverPath();
+			fileName = fileName.Substring(0, fileName.Length - 4);
+			string path = BepInEx.Utility.CombinePaths(Application.persistentDataPath, "steam", $"{fileName}_apData.json");
 
-			if (string.IsNullOrEmpty(server))
+			if (!ModCore.Utility.TryParseJson(path, out APFileData apFileData))
 				return null;
 
-			return new APFileData()
-			{
-				Server = server,
-				Port = apSaver.LoadInt("port"),
-				SlotName = apSaver.LoadData("slotName"),
-				Password = apSaver.LoadData("password"),
-				Deathlink = Convert.ToBoolean(apSaver.LoadInt("deathlink")),
-				AutoEquipOutfits = Convert.ToBoolean(apSaver.LoadInt("autoEquipOutfits")),
-			};
+			return apFileData;
 		}
 
 		private void PrefillAPMenuFields()
@@ -315,6 +329,18 @@ namespace ArchipelagoRandomizer
 				fileStartScreen = GetMainMenuScreen("fileStartRoot");
 
 			return mainMenu.menuImpl.currScreen != fileStartScreen ? new Vector2(0, -150) : new Vector2(77, -250);
+		}
+
+		private string GetAPDataFilePath(bool duplicating)
+		{
+			SaverOwner mainSaver = ModCore.Plugin.MainSaver;
+			string fileName = !duplicating ? mainSaver._localStorage.GetSaverPath() : mainSaver.GetUniqueLocalSavePath();
+			fileName = fileName.Substring(0, fileName.Length - 4);
+
+			if (fileName == "default")
+				return string.Empty;
+
+			return BepInEx.Utility.CombinePaths(Application.persistentDataPath, "steam", $"{fileName}_apData.json");
 		}
 
 		public class APSettingsScreen : MenuScreen<MainMenu>

@@ -168,7 +168,7 @@ namespace ArchipelagoRandomizer
 			if (!hasInitialized)
 			{
 				// Parse item JSON
-				string path = BepInEx.Utility.CombinePaths(PluginInfo.PLUGIN_NAME, "Data", "itemData.json");
+				string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "itemData.json");
 
 				if (!ModCore.Utility.TryParseJson(path, out ItemData? data))
 				{

@@ -88,6 +88,20 @@ namespace ArchipelagoRandomizer
 		}
 
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MainMenu.FileStartScreen), nameof(MainMenu.FileStartScreen.ClickedDuplicate))]
+		public static void MainMenu_FileStartScreen_ClickedDuplicate_Patch()
+		{
+			APMenuStuff.Instance.DuplicateAPDataFile();
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MainMenu.DeleteConfirmScreen), nameof(MainMenu.DeleteConfirmScreen.ClickedConfirm))]
+		public static void MainMenu_DeleteConfirmScreen_ClickedConfirm_Patch()
+		{
+			APMenuStuff.Instance.DeleteAPDataFile();
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(RollAction), nameof(RollAction.DoUpdate))]
 		public static bool RollAction_DoUpdate_PrePatch(RollAction __instance)
 		{
