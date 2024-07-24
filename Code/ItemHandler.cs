@@ -253,21 +253,24 @@ namespace ArchipelagoRandomizer
 		private void AddKeys(string itemName, bool giveAll)
 		{
 			string dungeonName = itemName.Substring(0, itemName.IndexOf("Key") - 1).Replace(" ", "");
-			IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
+			string flagName = "localKeys";
+			int keysToGive = 0;
 
-			if (giveAll)
+			if (giveAll && !dungeonKeyCounts.TryGetValue(dungeonName, out keysToGive))
+				return;
+
+			// If not in the dungeon the key is for
+			if (dungeonName != SceneManager.GetActiveScene().name)
 			{
-				if (dungeonKeyCounts.TryGetValue(dungeonName, out int maxKeyCount))
-				{
-					keySaver.SaveInt("localKeys", maxKeyCount);
-				}
-
+				IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
+				keysToGive = giveAll ? keysToGive : keySaver.LoadInt(flagName) + 1;
+				keySaver.SaveInt(flagName, keysToGive);
 				return;
 			}
 
-			int currentKeyCount = keySaver.LoadInt("localKeys");
-			keySaver.SaveInt("localKeys", currentKeyCount + 1);
-			return;
+			// If in the dungeon the key is for
+			keysToGive = giveAll ? keysToGive : player.GetStateVariable(flagName) + 1;
+			player.SetStateVariable(flagName, keysToGive);
 		}
 
 		private void AddOutfit(string saveFlag)
