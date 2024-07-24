@@ -143,7 +143,7 @@ namespace ArchipelagoRandomizer
 					AddScroll(false);
 					break;
 				case ItemType.Upgrade:
-					AddUpgrade(item.Flag);
+					AddUpgrade(item);
 					break;
 				default:
 					if (!string.IsNullOrEmpty(item.Flag))
@@ -288,11 +288,16 @@ namespace ArchipelagoRandomizer
 			LogNotImplementedMessage(cave ? "Cave Scroll" : "Portal World Scroll");
 		}
 
-		private void AddUpgrade(string upgradeFlag)
+		private void AddUpgrade(ItemData.Item item)
 		{
 			// Remove word "Upgrade" from saveFlag
+			string upgradeFlag = item.Flag;
 			string itemFlag = upgradeFlag.Substring(0, upgradeFlag.Length - 7);
 			int upgradeAmount = player.GetStateVariable(upgradeFlag);
+
+			if (item.Max > 0 && upgradeAmount >= item.Max)
+				return;
+
 			// If upgrade has already been obtained, increment by 1, otherwise start at level 2
 			int newUpgradeAmount = upgradeAmount == 0 ? 2 : upgradeAmount + 1;
 			// Set new upgrade level

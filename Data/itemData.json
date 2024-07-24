@@ -5,7 +5,7 @@
 			"iconName": "Custom/Stick",
 			"offset": 0,
 			"flag": "melee",
-			"max": 3,
+			"max": 2,
 			"type": "Melee"
 		},
 		{
@@ -41,7 +41,7 @@
 			"iconName": "Forcewand1",
 			"offset": 5,
 			"flag": "forcewandUpgrade",
-			"max": 2,
+			"max": 3,
 			"type": "Upgrade"
 		},
 		{
@@ -49,7 +49,7 @@
 			"iconName": "Dynamite1",
 			"offset": 6,
 			"flag": "dynamiteUpgrade",
-			"max": 2,
+			"max": 3,
 			"type": "Upgrade"
 		},
 		{
@@ -57,7 +57,7 @@
 			"iconName": "Icering1",
 			"offset": 7,
 			"flag": "iceringUpgrade",
-			"max": 2,
+			"max": 3,
 			"type": "Upgrade"
 		},
 		{
@@ -65,7 +65,7 @@
 			"iconName": "chain",
 			"offset": 8,
 			"flag": "chainUpgrade",
-			"max": 2,
+			"max": 3,
 			"type": "Upgrade"
 		},
 		{
