@@ -152,7 +152,10 @@ namespace ArchipelagoRandomizer
 
 		public void DuplicateAPDataFile()
 		{
-			File.Copy(GetAPDataFilePath(false), GetAPDataFilePath(true), true);
+			string path = GetAPDataFilePath(false);
+
+			if (File.Exists(path))
+				File.Copy(path, GetAPDataFilePath(true), true);
 		}
 
 		public void DeleteAPDataFile()
