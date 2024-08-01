@@ -10,6 +10,14 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(EntityLocalVarOverrider), nameof(EntityLocalVarOverrider.Apply))]
+		// Prevents dream dungeons from overriding items if the setting is on
+		public static bool EntityLocalVarOverrider_Apply_Patch()
+		{
+			return !Convert.ToBoolean(APHandler.GetSlotData<long>("dream_dungeons_do_not_change_items"));
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(MainMenu), nameof(MainMenu.DoStartMenu))]
 		public static bool MainMenu_DoStartMenu_Patch(MainMenu __instance)
 		{
