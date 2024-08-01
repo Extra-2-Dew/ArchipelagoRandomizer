@@ -505,6 +505,9 @@ namespace ArchipelagoRandomizer
 				case "DreamWorld":
 					door = SceneDoor.GetDoorForName("DreamWorldInside");
 					break;
+				case "GrandLibrary":
+					door = SceneDoor.GetDoorForName("GrandLibraryInside");
+					break;
 				case "Deep7":
 					SceneDoor.GetDoorForName("Deep17")._saveStartPos = false;
 					return;
@@ -538,6 +541,7 @@ namespace ArchipelagoRandomizer
 		{
 			if (scene.name == "MainMenu")
 			{
+				// Disable rando
 				itemMessageHandler.HideMessageBoxes();
 				Destroy(gameObject);
 				return;
