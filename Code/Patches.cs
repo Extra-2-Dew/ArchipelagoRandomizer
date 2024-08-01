@@ -196,12 +196,6 @@ namespace ArchipelagoRandomizer
 			// Deactivates pickup
 			__instance.Deactivate();
 
-			// ---------- START CUSTOM CODE ---------- \\
-
-			ModCore.Plugin.MainSaver.SaveLocal();
-
-			// ---------- END CUSTOM CODE ---------- \\
-
 			return false;
 		}
 
@@ -270,7 +264,6 @@ namespace ArchipelagoRandomizer
 				if (entity != null)
 				{
 					__instance.showItem.Pickup(entity, true);
-					__instance.showItem.ActivateGraphics();
 				}
 				else
 					Debug.Log($"No entity found to spawn the item for {__instance.name}");
