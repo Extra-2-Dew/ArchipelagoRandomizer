@@ -488,6 +488,47 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
+		// Helps prevent softlocks or near-softlocks when phasing by
+		// resetting your spawn point to the point from before the
+		// softlock. This applies to cases of entering Tomb of
+		// Simulacrum, the dream dungeons, or Cave of Mystery/Ludo City
+		// early and being unable/having difficulty escaping
+		private void OverrideSpawnPoints(string scene)
+		{
+			SceneDoor door = null;
+
+			switch (scene)
+			{
+				case "LonelyRoad2":
+					door = SceneDoor.GetDoorForName("RestorePt1");
+					break;
+				case "DreamWorld":
+					door = SceneDoor.GetDoorForName("DreamWorldInside");
+					break;
+				case "Deep7":
+					SceneDoor.GetDoorForName("Deep17")._saveStartPos = false;
+					return;
+				case "Deep17":
+					SceneDoor.GetDoorForName("Deep18")._saveStartPos = false;
+					return;
+				case "Deep18":
+					SceneDoor.GetDoorForName("Deep18")._saveStartPos = false;
+					SceneDoor.GetDoorForName("Deep20")._saveStartPos = false;
+					return;
+				case "Deep20":
+					SceneDoor.GetDoorForName("Deep20")._saveStartPos = false;
+					SceneDoor.GetDoorForName("Deep20_2")._saveStartPos = false;
+					return;
+			}
+
+			if (door == null)
+				return;
+
+			Vector3 pos = door.transform.TransformPoint(door._spawnOffset);
+			Vector3 dir = -door.transform.forward;
+			PlayerRespawner.GetActiveInstance().UpdateSpawnPoint(pos, dir, door, false);
+		}
+
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
@@ -495,11 +536,14 @@ namespace ArchipelagoRandomizer
 
 		private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
 		{
-			if (scene.name != "MainMenu")
+			if (scene.name == "MainMenu")
+			{
+				itemMessageHandler.HideMessageBoxes();
+				Destroy(gameObject);
 				return;
+			}
 
-			itemMessageHandler.HideMessageBoxes();
-			Destroy(gameObject);
+			OverrideSpawnPoints(scene.name);
 		}
 
 		private struct LocationData
