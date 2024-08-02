@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer
 		// Prevents dream dungeons from overriding items if the setting is on
 		public static bool EntityLocalVarOverrider_Apply_Patch()
 		{
-			return !Convert.ToBoolean(APHandler.GetSlotData<long>("dream_dungeons_do_not_change_items"));
+			return !ItemRandomizer.IsActive || !Convert.ToBoolean(APHandler.GetSlotData<long>("dream_dungeons_do_not_change_items"));
 		}
 
 		[HarmonyPrefix]
