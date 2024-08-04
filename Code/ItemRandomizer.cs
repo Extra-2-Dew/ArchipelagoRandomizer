@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ArchipelagoRandomizer.MessageBoxHandler;
 
 namespace ArchipelagoRandomizer
@@ -21,6 +22,7 @@ namespace ArchipelagoRandomizer
 		private Entity player;
 		private SaverOwner mainSaver;
 		private bool rollOpensChests;
+		private string syncopePianoPuzzle;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -37,8 +39,10 @@ namespace ArchipelagoRandomizer
 
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 			Events.OnSceneLoaded += OnSceneLoaded;
+			Events.OnRoomChanged += OnRoomChanged;
 
 			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
+			syncopePianoPuzzle = APHandler.GetSlotData<string>("piano_puzzle");
 
 			if (newFile)
 				SetupNewFile(apFileData);
@@ -191,6 +195,7 @@ namespace ArchipelagoRandomizer
 
 			Events.OnPlayerSpawn -= OnPlayerSpawn;
 			Events.OnSceneLoaded -= OnSceneLoaded;
+			Events.OnRoomChanged -= OnRoomChanged;
 
 			// If disconnected, show message
 			if (!APHandler.Instance.IsConnected)
@@ -532,6 +537,83 @@ namespace ArchipelagoRandomizer
 			PlayerRespawner.GetActiveInstance().UpdateSpawnPoint(pos, dir, door, false);
 		}
 
+		private void RandomizeSyncopePianoTilePuzzle(LevelRoom room)
+		{
+			Transform doodads = room.transform.Find("Doodads");
+
+			// Hint note room
+			if (room.RoomName == "W")
+			{
+				Sign noteSign = doodads.transform.Find("GrandLibrary_Bookpile7").GetComponentInChildren<Sign>();
+				string puzzleWithSharps = "";
+
+				foreach (char c in syncopePianoPuzzle)
+				{
+					if (char.IsLower(c))
+					{
+						puzzleWithSharps += char.ToUpper(c) + "#";
+						continue;
+					}
+
+					puzzleWithSharps += c;
+				}
+
+				noteSign._configString = null;
+				noteSign._text = $"\"{puzzleWithSharps}...\"\nThe word is repeated\non every page. It's\ngotta be important.";
+				return;
+			}
+
+			// Piano tile room
+
+			// Destroy sequence stop objects
+			foreach (TimerChangeEventObserver stopSeqence in doodads.GetComponentsInChildren<TimerChangeEventObserver>())
+			{
+				Destroy(stopSeqence.gameObject);
+			}
+
+			SequenceTrigger sequenceTrigger = doodads.Find("Sequence").GetComponent<SequenceTrigger>();
+			List<TouchTrigger> buttonTriggers = new(doodads.GetComponentsInChildren<TouchTrigger>());
+			List<TouchTrigger> whiteKeys = new();
+			List<TouchTrigger> blackKeys = new();
+			List<TouchTrigger> randomizedKeys = new();
+			sequenceTrigger.UnregEvents();
+			sequenceTrigger._sequence = buttonTriggers.ToArray();
+			sequenceTrigger.RegEvents();
+
+			// Separates white keys and black keys
+			foreach (TouchTrigger trigger in buttonTriggers)
+			{
+				string key = trigger.name.Substring(trigger.name.IndexOf('(') + 1, (trigger.name.Length == 18 ? 1 : 2));
+
+				// If white key
+				if (!key.EndsWith("#"))
+				{
+					whiteKeys.Add(trigger);
+					continue;
+				}
+
+				// If black key (#)
+				blackKeys.Add(trigger);
+			}
+
+			// Gets the keys
+			foreach (char c in syncopePianoPuzzle)
+			{
+				// Gets white key
+				if (char.IsUpper(c))
+				{
+					randomizedKeys.Add(whiteKeys.Find(x => x.name.EndsWith($"({c})")));
+					continue;
+				}
+
+				// Gets black (#) key
+				randomizedKeys.Add(blackKeys.Find(x => x.name.EndsWith($"({char.ToUpper(c)}#)")));
+			}
+
+			// Replaces the sequence
+			sequenceTrigger._sequence = randomizedKeys.ToArray();
+		}
+
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
@@ -548,6 +630,15 @@ namespace ArchipelagoRandomizer
 			}
 
 			OverrideSpawnPoints(scene.name);
+		}
+
+		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
+		{
+			if (syncopePianoPuzzle == "DEAD" || SceneManager.GetActiveScene().name != "DreamDynamite" || toRoom == null)
+				return;
+
+			if (toRoom.RoomName == "K" || toRoom.RoomName == "W")
+				RandomizeSyncopePianoTilePuzzle(toRoom);
 		}
 
 		private struct LocationData
