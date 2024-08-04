@@ -614,6 +614,22 @@ namespace ArchipelagoRandomizer
 			sequenceTrigger._sequence = randomizedKeys.ToArray();
 		}
 
+		private void FixSyncopeKeyDupe(LevelRoom room)
+		{
+			Transform doodads = room.transform.Find("Doodads");
+
+			if (room.RoomName == "AF")
+			{
+				if (mainSaver.LevelStorage.GetLocalSaver("AG").LoadInt("KeyChest-71--51") > 0)
+					doodads.transform.Find("KeyParent").gameObject.SetActive(false);
+
+				return;
+			}
+
+			if (mainSaver.LevelStorage.GetLocalSaver("AF").LoadInt("KeyChest-56--51") > 0)
+				doodads.transform.Find("KeyParent").gameObject.SetActive(false);
+		}
+
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
@@ -639,6 +655,8 @@ namespace ArchipelagoRandomizer
 
 			if (toRoom.RoomName == "K" || toRoom.RoomName == "W")
 				RandomizeSyncopePianoTilePuzzle(toRoom);
+			else if (toRoom.RoomName == "AF" || toRoom.RoomName == "AG")
+				FixSyncopeKeyDupe(toRoom);
 		}
 
 		private struct LocationData
