@@ -864,6 +864,342 @@
 			"flag": "Dungeon_Chest-5--5"
 		},
 		{
+			"Location": "Syncope - Shifting Chamber Key",
+			"Offset": 2000,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-56--51"
+		},
+		{
+			"Location": "Syncope - Shifting Chamber Key",
+			"Offset": 2000,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-71--51"
+		},
+		{
+			"Location": "Syncope - Switch Chamber Card",
+			"Offset": 2001,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-55--65"
+		},
+		{
+			"Location": "Syncope - Foyer Card",
+			"Offset": 2002,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-68--39"
+		},
+		{
+			"Location": "Syncope - Garden Key",
+			"Offset": 2003,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-97--24"
+		},
+		{
+			"Location": "Syncope - Piano Card",
+			"Offset": 2004,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-52--15"
+		},
+		{
+			"Location": "Syncope - Knights Hint Card",
+			"Offset": 2005,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-37--4"
+		},
+		{
+			"Location": "Syncope - Shadow Walker Key",
+			"Offset": 2006,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-48--2"
+		},
+		{
+			"Location": "Syncope - Force Turret Maze Card",
+			"Offset": 2007,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-5--42"
+		},
+		{
+			"Location": "Syncope - Reward Card A",
+			"Offset": 2008,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-81--63"
+		},
+		{
+			"Location": "Syncope - Reward Card B",
+			"Offset": 2009,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-82--65"
+		},
+		{
+			"Location": "Syncope - Reward Card C",
+			"Offset": 2010,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-83--63"
+		},
+		{
+			"Location": "Wizardry Lab - Entrance Card",
+			"Offset": 2100,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-54--73"
+		},
+		{
+			"Location": "Wizardry Lab - West Energy Source Card",
+			"Offset": 2101,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-18--41"
+		},
+		{
+			"Location": "Wizardry Lab - Cannon Card",
+			"Offset": 2102,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-37--3"
+		},
+		{
+			"Location": "Wizardry Lab - East Mirrors Card",
+			"Offset": 2103,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-77--34"
+		},
+		{
+			"Location": "Wizardry Lab - East Energy Source Card",
+			"Offset": 2104,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-77--47"
+		},
+		{
+			"Location": "Wizardry Lab - Reward Card A",
+			"Offset": 2105,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-82--55"
+		},
+		{
+			"Location": "Wizardry Lab - Reward Card B",
+			"Offset": 2106,
+			"Scene": "DreamForce",
+			"Flag": "CardChest (1)-84--55"
+		},
+		{
+			"Location": "Wizardry Lab - Reward Card C",
+			"Offset": 2107,
+			"Scene": "DreamForce",
+			"Flag": "CardChest (2)-80--55"
+		},
+		{
+			"Location": "Antigram - Free Key",
+			"Offset": 2200,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-54--57"
+		},
+		{
+			"Location": "Antigram - West Light Bridge Card",
+			"Offset": 2201,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-24--61"
+		},
+		{
+			"Location": "Antigram - East Light Bridge Card",
+			"Offset": 2202,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-50--61"
+		},
+		{
+			"Location": "Antigram - West Ice Card",
+			"Offset": 2203,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-7--49"
+		},
+		{
+			"Location": "Antigram - East Ice Card",
+			"Offset": 2204,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-67--49"
+		},
+		{
+			"Location": "Antigram - West Bombs Key",
+			"Offset": 2205,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-12--18"
+		},
+		{
+			"Location": "Antigram - East Bombs Key",
+			"Offset": 2206,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-62--18"
+		},
+		{
+			"Location": "Antigram - End East Bridge Card",
+			"Offset": 2207,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-42--16"
+		},
+		{
+			"Location": "Antigram - End West Bridge Key",
+			"Offset": 2208,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-33--16"
+		},
+		{
+			"Location": "Antigram - Reward Card A",
+			"Offset": 2209,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-37-7"
+		},
+		{
+			"Location": "Antigram - Reward Card B",
+			"Offset": 2210,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-35-7"
+		},
+		{
+			"Location": "Antigram - Reward Card C",
+			"Offset": 2211,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-39-7"
+		},
+		{
+			"Location": "Bottomless Tower - First Floor Card",
+			"Offset": 2300,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-5--14"
+		},
+		{
+			"Location": "Bottomless Tower - First Floor Key",
+			"Offset": 2301,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-35--8"
+		},
+		{
+			"Location": "Bottomless Tower - Second Floor Card",
+			"Offset": 2302,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-71--5"
+		},
+		{
+			"Location": "Bottomless Tower - Second Floor Key",
+			"Offset": 2303,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-99--2"
+		},
+		{
+			"Location": "Bottomless Tower - Blue Portal Card",
+			"Offset": 2304,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-6--5"
+		},
+		{
+			"Location": "Bottomless Tower - Third Floor Spike Gates Card",
+			"Offset": 2305,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-4--63"
+		},
+		{
+			"Location": "Bottomless Tower - Third Floor Key",
+			"Offset": 2306,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-42--77"
+		},
+		{
+			"Location": "Bottomless Tower - Third Floor Ice Square Card",
+			"Offset": 2307,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-42--67"
+		},
+		{
+			"Location": "Bottomless Tower - Fourth Floor Key",
+			"Offset": 2308,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-92--57"
+		},
+		{
+			"Location": "Bottomless Tower - Reward Card A",
+			"Offset": 2309,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-99--65"
+		},
+		{
+			"Location": "Bottomless Tower - Reward Card B",
+			"Offset": 2310,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-95--65"
+		},
+		{
+			"Location": "Bottomless Tower - Reward Card C",
+			"Offset": 2311,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-97--65"
+		},
+		{
+			"Location": "Quietus - Center Card",
+			"Offset": 2400,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-37--21"
+		},
+		{
+			"Location": "Quietus - Alternating Floors Key",
+			"Offset": 2401,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-3--3"
+		},
+		{
+			"Location": "Quietus - Tangled Wires Key",
+			"Offset": 2402,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-70--6"
+		},
+		{
+			"Location": "Quietus - Push the Coil Key",
+			"Offset": 2403,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-7--33"
+		},
+		{
+			"Location": "Quietus - Giant Mess Key",
+			"Offset": 2404,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-62--29"
+		},
+		{
+			"Location": "Quietus - Northwest Vault Card",
+			"Offset": 2405,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-17--9"
+		},
+		{
+			"Location": "Quietus - Northeast Vault Card",
+			"Offset": 2406,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-48--7"
+		},
+		{
+			"Location": "Quietus - Southwest Vault Card",
+			"Offset": 2407,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-26--33"
+		},
+		{
+			"Location": "Quietus - Southeast Vault Card",
+			"Offset": 2408,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-55--34"
+		},
+		{
+			"Location": "Quietus - Reward Card A",
+			"Offset": 2409,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-17--56"
+		},
+		{
+			"Location": "Quietus - Reward Card B",
+			"Offset": 2410,
+			"Scene": "DreamAll",
+			"Flag": "CardChest (1)-25--56"
+		},
+		{
+			"Location": "Quietus - Reward Card C",
+			"Offset": 2411,
+			"Scene": "DreamAll",
+			"Flag": "CardChest (2)-22--61"
+		},
+		{
 			"location": "Autumn Climb - Chest",
 			"offset": 2500,
 			"scene": "Deep1",
