@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
-	internal class ItemHandler : MonoBehaviour
+	public class ItemHandler : MonoBehaviour
 	{
 		private static ItemHandler instance;
 		private static List<ItemData.Item> itemData;
@@ -369,6 +369,10 @@ namespace ArchipelagoRandomizer
 				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
 				DontDestroyOnLoad(beeSwarmSpawner);
+				//WinGameTriggerEffect.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
+				//DontDestroyOnLoad(WinGameTriggerEffect.effectRef);
+				GoalHandler.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
+				DontDestroyOnLoad(GoalHandler.effectRef);
 				hasStoredRefs = true;
 				fadeData._fadeOutTime = 0;
 				IDataSaver startSaver = mainSaver.GetSaver("/local/start");

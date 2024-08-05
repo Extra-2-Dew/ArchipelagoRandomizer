@@ -10,6 +10,7 @@ namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer : MonoBehaviour
 	{
+		public static OnItemReceievedFunc OnItemReceived;
 		private static ItemRandomizer instance;
 		private static List<LocationData.Location> locations;
 		private static FadeEffectData fadeData;
@@ -145,6 +146,8 @@ namespace ArchipelagoRandomizer
 					MessageType.ReceivedFromSomeone
 			};
 			itemMessageHandler.ShowMessageBox(messageData);
+
+			OnItemReceived?.Invoke(item, sentFromPlayer);
 		}
 
 		public IEnumerator OnDisconnected()
@@ -544,88 +547,7 @@ namespace ArchipelagoRandomizer
 			// Hint note room
 			if (room.RoomName == "W")
 			{
-				Sign noteSign = doodads.transform.Find("GrandLibrary_Bookpile7").GetComponentInChildren<Sign>();
-				string puzzleWithSharps = "";
-
-				foreach (char c in syncopePianoPuzzle)
-				{
-					if (char.IsLower(c))
-					{
-						puzzleWithSharps += char.ToUpper(c) + "#";
-						continue;
-					}
-
-					puzzleWithSharps += c;
-				}
-
-				noteSign._configString = null;
-
-				string ittleComment = "";
-
-				switch (syncopePianoPuzzle.ToLower())
-				{
-					case "add": 
-						ittleComment = "Don't tell me I'm going to have to do math...";
-						break;
-                    case "age":
-                        ittleComment = "Good thing I'm forever young.";
-                        break;
-                    case "aged":
-                        ittleComment = "Good thing I'm forever young.";
-                        break;
-                    case "baa":
-                        ittleComment = "Is there a Jenny Lamb around here?";
-                        break;
-                    case "bad":
-                        ittleComment = "Harsh critic.";
-                        break;
-                    case "bed":
-                        ittleComment = "Yeah, those Deadbeets could probably use some sleep.";
-                        break;
-                    case "bee":
-                        ittleComment = "I've had enough of those, thank you.";
-                        break;
-                    case "beef":
-                        ittleComment = "I could use a good hamburger.";
-                        break;
-                    case "cab":
-                        ittleComment = "It would be nice not to have to walk around everywhere.";
-                        break;
-                    case "cafe":
-                        ittleComment = "Do they serve health potions?";
-                        break;
-                    case "cabbage":
-                        ittleComment = "Cabbage cabbage cabbage.";
-                        break;
-                    case "dab":
-                        ittleComment = "Cringe.";
-                        break;
-                    case "dace":
-                        ittleComment = "Apparently the author loved fish?";
-                        break;
-                    case "decaf":
-                        ittleComment = "What's the point of health potion without the buzz though?";
-                        break;
-                    case "dabbed":
-                        ittleComment = "Cringe.";
-                        break;
-                    case "egg":
-                        ittleComment = "Egg.";
-                        break;
-                    case "edge":
-                        ittleComment = "I'm more of a Firefox fan though.";
-                        break;
-                    case "fad":
-                        ittleComment = "I agree. Haunted mansions are so 1996.";
-                        break;
-                    case "fee":
-                        ittleComment = "You aren't getting any treasure out of me.";
-                        break;
-					default:
-						ittleComment = "It's gotta be important.";
-						break;
-                }
-				noteSign._text = $"\"{puzzleWithSharps}...\"\nThe word is repeated on every page.\n{ittleComment}";
+				hintHandler.ShowSyncopePianoPuzzleHint(doodads, syncopePianoPuzzle);
 				return;
 			}
 
@@ -750,5 +672,7 @@ namespace ArchipelagoRandomizer
 			public bool AutoEquipOutfits { get; set; }
 			public bool StackStatuses { get; set; }
 		}
+
+		public delegate void OnItemReceievedFunc(ItemHandler.ItemData.Item item, string sentFromPlayerName);
 	}
 }
