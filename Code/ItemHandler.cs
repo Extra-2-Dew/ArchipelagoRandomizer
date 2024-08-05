@@ -369,8 +369,6 @@ namespace ArchipelagoRandomizer
 				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
 				DontDestroyOnLoad(beeSwarmSpawner);
-				//WinGameTriggerEffect.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
-				//DontDestroyOnLoad(WinGameTriggerEffect.effectRef);
 				GoalHandler.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
 				DontDestroyOnLoad(GoalHandler.effectRef);
 				hasStoredRefs = true;
