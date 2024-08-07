@@ -15,6 +15,7 @@ namespace ArchipelagoRandomizer
 		private APHandler apHandler;
 		private ItemRandomizer itemRandomizer;
 		private APCommand apCommandHandler;
+		private TestCommand testCommandHandler;
 
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
@@ -39,6 +40,8 @@ namespace ArchipelagoRandomizer
 			apHandler = new APHandler();
 			apCommandHandler = new APCommand();
 			apCommandHandler.AddCommands();
+			testCommandHandler = new TestCommand();
+			testCommandHandler.AddCommands();
 			new GameObject("MessageBoxHandler").AddComponent<MessageBoxHandler>();
 			DebugMenuManager.LogToConsole("To send commands or chat to the Archipelago server, use the \"ap\" command followed by the text you want to send.");
 
