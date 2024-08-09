@@ -24,6 +24,7 @@ namespace ArchipelagoRandomizer
 		private SaverOwner mainSaver;
 		private bool rollOpensChests;
 		private string syncopePianoPuzzle;
+		private bool openDW;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -44,6 +45,8 @@ namespace ArchipelagoRandomizer
 
 			rollOpensChests = Convert.ToBoolean(APHandler.GetSlotData<long>("roll_opens_chests"));
 			syncopePianoPuzzle = APHandler.GetSlotData<string>("piano_puzzle");
+			openDW = Convert.ToBoolean(APHandler.GetSlotData<long>("include_dream_dungeons")) &&
+				Convert.ToBoolean(APHandler.GetSlotData<long>("open_dreamworld"));
 
 			if (newFile)
 				SetupNewFile(apFileData);
@@ -230,7 +233,6 @@ namespace ArchipelagoRandomizer
 			bool keysey = APHandler.GetSlotData<long>("key_settings") == 2;
 			bool openD8 = Convert.ToBoolean(APHandler.GetSlotData<long>("open_d8"));
 			bool openS4 = Convert.ToBoolean(APHandler.GetSlotData<long>("open_s4"));
-			//bool openDW = Convert.ToBoolean(APHandler.GetSlotData<long>("open_dreamworld"));
 			bool startWithTracker = Convert.ToBoolean(APHandler.GetSlotData<long>("start_with_tracker"));
 			bool startWithWarps = Convert.ToBoolean(APHandler.GetSlotData<long>("start_with_all_warps"));
 
@@ -632,6 +634,10 @@ namespace ArchipelagoRandomizer
 				Destroy(gameObject);
 				return;
 			}
+
+			// Open Dream World
+			if (scene.name == "FluffyFields" && openDW)
+				GameObject.Find("ShowIt").transform.GetChild(0).GetComponent<EntityExprInhibitor>()._data._inhibitIf = "true";
 
 			OverrideSpawnPoints(scene.name);
 		}
