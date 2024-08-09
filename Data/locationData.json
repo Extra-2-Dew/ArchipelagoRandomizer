@@ -864,6 +864,228 @@
 			"flag": "Dungeon_Chest-5--5"
 		},
 		{
+			"Location": "Sunken Labyrinth - Gold Titan Combat Key",
+			"Offset": 1600,
+			"Scene": "SunkenLabyrinth",
+			"Flag": ""
+		},
+		{
+			"Location": "Sunken Labyrinth - Death Ogler Combat Key",
+			"Offset": 1601,
+			"Scene": "SunkenLabyrinth",
+			"Flag": ""
+		},
+		{
+			"Location": "Sunken Labyrinth - Treasure Chest",
+			"Offset": 1602,
+			"Scene": "SunkenLabyrinth",
+			"Flag": ""
+		},
+		{
+			"Location": "Sunken Labyrinth - Mimic Combat Key",
+			"Offset": 1603,
+			"Scene": "SunkenLabyrinth",
+			"Flag": ""
+		},
+		{
+			"Location": "Sunken Labyrinth - Crayon Chest",
+			"Offset": 1604,
+			"Scene": "SunkenLabyrinth",
+			"Flag": ""
+		},
+		{
+			"Location": "Sunken Labyrinth - Boss Reward Chest",
+			"Offset": 1605,
+			"Scene": "SunkenLabyrinth",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Hyperdusa conveyor Key",
+			"Offset": 1700,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Bee Chest",
+			"Offset": 1701,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Crayon Chest",
+			"Offset": 1702,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Number Tiles Key",
+			"Offset": 1703,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Cannon conveyors Key",
+			"Offset": 1704,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Light Bridge Key",
+			"Offset": 1705,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Steel Skullnip Combat Key",
+			"Offset": 1706,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Treasure Chest",
+			"Offset": 1707,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Machine Fortress - Boss Reward Chest",
+			"Offset": 1708,
+			"Scene": "MachineFortress",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Initial Key",
+			"Offset": 1800,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Crayon Chest",
+			"Offset": 1801,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Blue Path Key",
+			"Offset": 1802,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Yellow Path Monochrome Key",
+			"Offset": 1803,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Treasure Chest",
+			"Offset": 1804,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Yellow Path Key",
+			"Offset": 1805,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Red Path Cannon Key",
+			"Offset": 1806,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Red Path Key",
+			"Offset": 1807,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Dark Hypostyle - Boss Reward Chest",
+			"Offset": 1808,
+			"Scene": "DarkHypostyle",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Mercury Jello Number Tiles Key",
+			"Offset": 1900,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Self Locked Tile Key",
+			"Offset": 1901,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Eight Tile Key",
+			"Offset": 1902,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Roundabout Crystal Key",
+			"Offset": 1903,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Corner Torch Key",
+			"Offset": 1904,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Crayon Chest",
+			"Offset": 1905,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Death Ogler Combat Key",
+			"Offset": 1906,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - EFCS Door Key",
+			"Offset": 1907,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Large Chasm Key",
+			"Offset": 1908,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Spiked Orbitals Key",
+			"Offset": 1909,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Molten Conveyors Key",
+			"Offset": 1910,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Treasure Chest",
+			"Offset": 1911,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
+			"Location": "Tomb of Simulacrum - Boss Reward Chest",
+			"Offset": 1912,
+			"Scene": "TombOfSimulacrum",
+			"Flag": ""
+		},
+		{
 			"Location": "Syncope - Shifting Chamber Key",
 			"Offset": 2000,
 			"Scene": "DreamDynamite",
