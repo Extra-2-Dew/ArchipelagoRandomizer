@@ -867,223 +867,223 @@
 			"Location": "Sunken Labyrinth - Gold Titan Combat Key",
 			"Offset": 1600,
 			"Scene": "SunkenLabyrinth",
-			"Flag": ""
+			"Flag": "KeyChest-40--17"
 		},
 		{
 			"Location": "Sunken Labyrinth - Death Ogler Combat Key",
 			"Offset": 1601,
 			"Scene": "SunkenLabyrinth",
-			"Flag": ""
+			"Flag": "KeyChest-2--18"
 		},
 		{
 			"Location": "Sunken Labyrinth - Treasure Chest",
 			"Offset": 1602,
 			"Scene": "SunkenLabyrinth",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-8--41"
 		},
 		{
 			"Location": "Sunken Labyrinth - Mimic Combat Key",
 			"Offset": 1603,
 			"Scene": "SunkenLabyrinth",
-			"Flag": ""
+			"Flag": "KeyChest-3--50"
 		},
 		{
 			"Location": "Sunken Labyrinth - Crayon Chest",
 			"Offset": 1604,
 			"Scene": "SunkenLabyrinth",
-			"Flag": ""
+			"Flag": "Dungeon_PuzzleChest-41--80"
 		},
 		{
 			"Location": "Sunken Labyrinth - Boss Reward Chest",
 			"Offset": 1605,
 			"Scene": "SunkenLabyrinth",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-67--16"
 		},
 		{
 			"Location": "Machine Fortress - Hyperdusa conveyor Key",
 			"Offset": 1700,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "KeyChest-21--65"
 		},
 		{
 			"Location": "Machine Fortress - Bee Chest",
 			"Offset": 1701,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "Dungeon_ChestBees-83--65"
 		},
 		{
 			"Location": "Machine Fortress - Crayon Chest",
 			"Offset": 1702,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-50--68"
 		},
 		{
 			"Location": "Machine Fortress - Number Tiles Key",
 			"Offset": 1703,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "KeyChest-13--51"
 		},
 		{
 			"Location": "Machine Fortress - Cannon conveyors Key",
 			"Offset": 1704,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "KeyChest-42--41"
 		},
 		{
 			"Location": "Machine Fortress - Light Bridge Key",
 			"Offset": 1705,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "KeyChest-31--29"
 		},
 		{
 			"Location": "Machine Fortress - Steel Skullnip Combat Key",
 			"Offset": 1706,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "KeyChest-6--16"
 		},
 		{
 			"Location": "Machine Fortress - Treasure Chest",
 			"Offset": 1707,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-37--3"
 		},
 		{
 			"Location": "Machine Fortress - Boss Reward Chest",
 			"Offset": 1708,
 			"Scene": "MachineFortress",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-82--40"
 		},
 		{
 			"Location": "Dark Hypostyle - Initial Key",
 			"Offset": 1800,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "KeyChest-27--8"
 		},
 		{
 			"Location": "Dark Hypostyle - Crayon Chest",
 			"Offset": 1801,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-38--67"
 		},
 		{
 			"Location": "Dark Hypostyle - Blue Path Key",
 			"Offset": 1802,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "KeyChest-42--53"
 		},
 		{
 			"Location": "Dark Hypostyle - Yellow Path Monochrome Key",
 			"Offset": 1803,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "KeyChest-52--45"
 		},
 		{
 			"Location": "Dark Hypostyle - Treasure Chest",
 			"Offset": 1804,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-63--44"
 		},
 		{
 			"Location": "Dark Hypostyle - Yellow Path Key",
 			"Offset": 1805,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "KeyChest-33--28"
 		},
 		{
 			"Location": "Dark Hypostyle - Red Path Cannon Key",
 			"Offset": 1806,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "KeyChest-54--17"
 		},
 		{
 			"Location": "Dark Hypostyle - Red Path Key",
 			"Offset": 1807,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "KeyChest-33--19"
 		},
 		{
 			"Location": "Dark Hypostyle - Boss Reward Chest",
 			"Offset": 1808,
 			"Scene": "DarkHypostyle",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-67--4"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Mercury Jello Number Tiles Key",
 			"Offset": 1900,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-3--78"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Self Locked Tile Key",
 			"Offset": 1901,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-23--65"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Eight Tile Key",
 			"Offset": 1902,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-42--51"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Roundabout Crystal Key",
 			"Offset": 1903,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-11--38"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Corner Torch Key",
 			"Offset": 1904,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-33--26"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Crayon Chest",
 			"Offset": 1905,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-48--52"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Death Ogler Combat Key",
 			"Offset": 1906,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-83--65"
 		},
 		{
 			"Location": "Tomb of Simulacrum - EFCS Door Key",
 			"Offset": 1907,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-71--27"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Large Chasm Key",
 			"Offset": 1908,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-99--50"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Spiked Orbitals Key",
 			"Offset": 1909,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-102--32"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Molten Conveyors Key",
 			"Offset": 1910,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "KeyChest-101--74"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Treasure Chest",
 			"Offset": 1911,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-22--15"
 		},
 		{
 			"Location": "Tomb of Simulacrum - Boss Reward Chest",
 			"Offset": 1912,
 			"Scene": "TombOfSimulacrum",
-			"Flag": ""
+			"Flag": "Dungeon_Chest-99--3"
 		},
 		{
 			"Location": "Syncope - Shifting Chamber Key",
@@ -1522,6 +1522,12 @@
 			"offset": 2602,
 			"scene": "Deep26",
 			"flag": "CardChest-0-6"
+		},
+		{
+			"location": "Promised Remedy - That Guy Outfit",
+			"offset": 2603,
+			"scene": "Deep19s",
+			"flag": "outfit9"
 		}
 	]
 }
