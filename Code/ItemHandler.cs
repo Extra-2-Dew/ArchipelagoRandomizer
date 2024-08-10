@@ -256,6 +256,26 @@ namespace ArchipelagoRandomizer
 			string flagName = "localKeys";
 			int keysToGive = 0;
 
+			// Handle dungeon names with different names than what is in item name
+			switch (dungeonName)
+			{
+				case "TombofSimulacrum":
+					dungeonName = "TombOfSimulacrum";
+					break;
+				case "Syncope":
+					dungeonName = "DreamDynamite";
+					break;
+				case "Antigram":
+					dungeonName = "DreamFireChain";
+					break;
+				case "BottomlessTower":
+					dungeonName = "DreamIce";
+					break;
+				case "Quietus":
+					dungeonName = "DreamAll";
+					break;
+			}
+
 			if (giveAll && !dungeonKeyCounts.TryGetValue(dungeonName, out keysToGive))
 				return;
 
