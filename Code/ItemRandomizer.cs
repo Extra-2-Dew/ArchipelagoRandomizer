@@ -25,6 +25,7 @@ namespace ArchipelagoRandomizer
 		private bool rollOpensChests;
 		private string syncopePianoPuzzle;
 		private bool openDW;
+		private long shardsRequired;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -47,6 +48,7 @@ namespace ArchipelagoRandomizer
 			syncopePianoPuzzle = APHandler.GetSlotData<string>("piano_puzzle");
 			openDW = Convert.ToBoolean(APHandler.GetSlotData<long>("include_dream_dungeons")) &&
 				Convert.ToBoolean(APHandler.GetSlotData<long>("open_dreamworld"));
+			shardsRequired = APHandler.GetSlotData<long>("shard_settings");
 
 			if (newFile)
 				SetupNewFile(apFileData);
@@ -235,9 +237,16 @@ namespace ArchipelagoRandomizer
 			bool openS4 = Convert.ToBoolean(APHandler.GetSlotData<long>("open_s4"));
 			bool startWithTracker = Convert.ToBoolean(APHandler.GetSlotData<long>("start_with_tracker"));
 			bool startWithWarps = Convert.ToBoolean(APHandler.GetSlotData<long>("start_with_all_warps"));
+			bool openShardDungeons = shardsRequired < 1;
 
 			if (openD8)
 				mainSaver.GetSaver("/local/levels/LonelyRoad/A").SaveInt("PasselDoorYes", 1);
+			if (openShardDungeons)
+			{
+				mainSaver.GetSaver("/local/levels/FluffyFields/B").SaveInt("Cavelogic_trigger-27--45", 1);
+				mainSaver.GetSaver("/local/levels/FancyRuins/A").SaveInt("Cavelogic_trigger-45--5", 1);
+				mainSaver.GetSaver("/local/levels/StarWoods/C").SaveInt("Cavelogic_trigger-149--45", 1);
+			}
 			if (openS4)
 			{
 				IDataSaver lr2Saver = mainSaver.GetSaver("/local/levels/LonelyRoad2/A");
@@ -620,6 +629,36 @@ namespace ArchipelagoRandomizer
 				doodads.transform.Find("KeyParent").gameObject.SetActive(false);
 		}
 
+		private void ModifyShardDungeonReqs(string scene)
+		{
+			// Do nothing if vanilla
+			if (shardsRequired == 2)
+				return;
+
+			// If not in scene with secret dungeon obelisk, do nothing
+			if (scene != "FluffyFields" && scene != "FancyRuins" && scene != "StarWoods")
+				return;
+
+			ExprVarHolder varHolder = GameObject.Find("SecretDungeonDoor").GetComponent<ExprVarHolder>();
+			string key = "shardTarget";
+
+			// If half
+			if (shardsRequired == 1)
+				varHolder.SetValue(key, varHolder.GetValue(key) / 2);
+			// If lockdown
+			else if (shardsRequired == 3)
+			{
+				int shardCount = 36;
+
+				if (scene == "FluffyFields")
+					shardCount = 12;
+				else if (scene == "FancyRuins")
+					shardCount = 24;
+
+				varHolder.SetValue(key, shardCount);
+			}
+		}
+
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
@@ -640,6 +679,9 @@ namespace ArchipelagoRandomizer
 				GameObject.Find("ShowIt").transform.GetChild(0).GetComponent<EntityExprInhibitor>()._data._inhibitIf = "true";
 
 			OverrideSpawnPoints(scene.name);
+
+			if (shardsRequired > 0)
+				ModifyShardDungeonReqs(scene.name);
 		}
 
 		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
