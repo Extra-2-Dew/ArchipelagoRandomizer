@@ -8,16 +8,9 @@ namespace ArchipelagoRandomizer
 	public class GoalHandler : MonoBehaviour
 	{
 		public static EffectEventObserver effectRef;
-		private GoalType currentGoal;
+		private GoalSettings currentGoal;
 		private SaverOwner mainSaver;
 		private Entity player;
-
-		private enum GoalType
-		{
-			RaftQuest,
-			QueenOfAdventure,
-			QueenOfDreams
-		}
 
 		private bool HasCompletedRaftQuest
 		{
@@ -46,12 +39,12 @@ namespace ArchipelagoRandomizer
 		private void Awake()
 		{
 			mainSaver = ModCore.Plugin.MainSaver;
-			currentGoal = (GoalType)APHandler.GetSlotData<long>("goal");
+			currentGoal = RandomizerSettings.Instance.GoalSetting;
 		}
 
 		private void OnEnable()
 		{
-			if (currentGoal == GoalType.RaftQuest)
+			if (currentGoal == GoalSettings.RaftQuest)
 				ItemRandomizer.OnItemReceived += OnItemGet;
 
 			Events.OnSceneLoaded += OnSceneLoaded;
@@ -61,7 +54,7 @@ namespace ArchipelagoRandomizer
 
 		private void OnDisable()
 		{
-			if (currentGoal == GoalType.RaftQuest)
+			if (currentGoal == GoalSettings.RaftQuest)
 				ItemRandomizer.OnItemReceived -= OnItemGet;
 
 			Events.OnSceneLoaded -= OnSceneLoaded;
@@ -104,9 +97,9 @@ namespace ArchipelagoRandomizer
 				return;
 
 			// If completed other goals, activate credits trigger
-			if (currentGoal == GoalType.QueenOfDreams && HasCompletedQueenOfDreams)
+			if (currentGoal == GoalSettings.QueenOfDreams && HasCompletedQueenOfDreams)
 				ActivateCreditsTrigger();
-			else if (currentGoal == GoalType.QueenOfAdventure && HasCompletedQueenOfAdventure)
+			else if (currentGoal == GoalSettings.QueenOfAdventure && HasCompletedQueenOfAdventure)
 				ActivateCreditsTrigger();
 		}
 
