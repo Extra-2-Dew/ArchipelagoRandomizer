@@ -26,6 +26,7 @@ namespace ArchipelagoRandomizer
 		private string syncopePianoPuzzle;
 		private bool openDW;
 		private long shardsRequired;
+		private bool includeSuperSecrets;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -49,6 +50,7 @@ namespace ArchipelagoRandomizer
 			openDW = Convert.ToBoolean(APHandler.GetSlotData<long>("include_dream_dungeons")) &&
 				Convert.ToBoolean(APHandler.GetSlotData<long>("open_dreamworld"));
 			shardsRequired = APHandler.GetSlotData<long>("shard_settings");
+			includeSuperSecrets = Convert.ToBoolean(APHandler.GetSlotData<long>("include_super_secrets"));
 
 			if (newFile)
 				SetupNewFile(apFileData);
@@ -151,6 +153,8 @@ namespace ArchipelagoRandomizer
 					MessageType.ReceivedFromSomeone
 			};
 			itemMessageHandler.ShowMessageBox(messageData);
+
+			GiveEFCSForRemedy();
 
 			OnItemReceived?.Invoke(item, sentFromPlayer);
 		}
@@ -659,12 +663,28 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
+		private void ModifyRemedyAccess()
+		{
+			GameObject spawner = GameObject.Find("LevelRoot").transform.Find("E/Doodads/TimedWarperSpawner").gameObject;
+			spawner.GetComponent<SpawnObjectEventObserver>()._object.GetComponentInChildren<TimedTouchTrigger>()._time = 0;
+			spawner.transform.GetChild(0).GetComponent<EntityExprInhibitor>()._data._inhibitIf = "true";
+		}
+
+		private void GiveEFCSForRemedy()
+		{
+			if (!includeSuperSecrets || SceneManager.GetActiveScene().name != "Deep19s" || player.GetStateVariable("melee") < 2 || player.GetStateVariable("fakeEFCS") < 1)
+				return;
+
+			player.AddLocalTempVar("melee");
+			player.SetStateVariable("melee", 3);
+		}
+
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
 		}
 
-		private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
 			if (scene.name == "MainMenu")
 			{
@@ -682,6 +702,15 @@ namespace ArchipelagoRandomizer
 
 			if (shardsRequired > 0)
 				ModifyShardDungeonReqs(scene.name);
+
+			if (includeSuperSecrets)
+			{
+				// Lost Avlopp
+				if (scene.name == "Deep13")
+					ModifyRemedyAccess();
+				else
+					GiveEFCSForRemedy();
+			}
 		}
 
 		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)

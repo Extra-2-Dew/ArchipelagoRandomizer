@@ -237,6 +237,7 @@ namespace ArchipelagoRandomizer
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/N").SaveInt("PuzzleDoor_green-100--22", 1);
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/S").SaveInt("PuzzleDoor_green-64--25", 1);
 			mainSaver.GetSaver("/local/levels/Deep17/B").SaveInt("PuzzleGate-23--5", 1);
+			player.SetStateVariable("fakeEFCS", 1);
 		}
 
 		private void AddHeart()
