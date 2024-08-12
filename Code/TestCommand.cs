@@ -9,28 +9,6 @@ namespace ArchipelagoRandomizer
         private static TestCommand instance;
         public static TestCommand Instance { get { return instance; } }
 
-        private string[] crystalEdgeRimRamps =
-        {
-            "ChestCrystalRimGold",
-            "ChestCrystalRimGold",
-            "ChestCrystalRimSilver",
-            "ChestCrystalRimSilver",
-            "ChestCrystalRimSilver",
-            "ChestCrystalRimGold",
-            "ChestCrystalRimSilver",
-            "ChestCrystalRimGold"
-        };
-        private string[] crystalEdgeRims =
-        {
-            "ChestJewelGold",
-            "ChestJewelGold",
-            "ChestJewelSilver",
-            "ChestJewelSilver",
-            "ChestJewelSilver",
-            "ChestJewelGold",
-            "ChestJewelSilver",
-            "ChestJewelGold"
-        };
         private string[] crystalFaceRamps =
         {
             "ChestJewelGreen",
@@ -94,8 +72,6 @@ namespace ArchipelagoRandomizer
                 {
                     edgeMaterial.shader = Shader.Find("Unlit/Texture");
                     edgeMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalEdgeColors[id]}.png"));
-                    edgeMaterial.SetTexture("_RampTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalEdgeRims[id]}.png"));
-                    edgeMaterial.SetTexture("_RimRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalEdgeRimRamps[id]}.png"));
 
                     // rimMaterial.SetTexture("_RimRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimColors[id]}.png"));
                     faceMaterial.SetTexture("_SpecularRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalFaceRims[id]}.png"));
