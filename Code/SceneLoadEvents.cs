@@ -146,6 +146,33 @@ namespace ArchipelagoRandomizer
 			GameObject.Find("ShowIt").transform.GetChild(0).GetComponent<EntityExprInhibitor>()._data._inhibitIf = "true";
 		}
 
+		/// <summary>
+		/// Creates signs with text in Promised Remedy
+		/// </summary>
+		private void CreateRemedySigns()
+		{
+			GameObject signBase = GameObject.Find("LevelRoot").transform.Find("F").GetChild(9).gameObject;
+			GameObject speechBase = GameObject.Find("LevelRoot").transform.Find("F/Doodads/SpeechBubble").gameObject;
+			GameObject reqsSign = GameObject.Instantiate(signBase);
+			reqsSign.name = "Requirements Sign";
+			GameObject reqsSpeech = GameObject.Instantiate(speechBase);
+			reqsSpeech.name = "Speech Bubble";
+			reqsSpeech.GetComponent<Sign>()._configString = null;
+			reqsSpeech.GetComponent<Sign>()._text = "Only the one who can pass the\nimpossible gates and wields the\nflaming mace may proceed.";
+			reqsSpeech.transform.SetParent(reqsSign.transform);
+			reqsSpeech.transform.localPosition = Vector3.up * 0.5f;
+			reqsSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
+			reqsSign.transform.position = new Vector3(49, 0, - 78);
+			reqsSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
+			GameObject hintSign = GameObject.Instantiate(reqsSign);
+			hintSign.name = "Hint Sign";
+			string hintPlayer = "";
+			string hintItem = "";
+			hintSign.GetComponentInChildren<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {hintPlayer}'s {hintItem}\nawaits.";
+			hintSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
+			hintSign.transform.position = new Vector3(55, 0, -78);
+		}
+
 		private void DisableRando()
 		{
 			MessageBoxHandler.Instance.HideMessageBoxes();
@@ -168,6 +195,9 @@ namespace ArchipelagoRandomizer
 			// Hide message boxes when in credits
 			if (scene.name == "Outro")
 				MessageBoxHandler.Instance.HideMessageBoxes();
+
+			if (settings.IncludeSuperSecrets && scene.name == "Deep19s")
+				CreateRemedySigns();
 
 			OverrideSpawnPoints();
 
