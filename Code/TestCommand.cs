@@ -33,13 +33,13 @@ namespace ArchipelagoRandomizer
         };
         private string[] crystalEdgeColors =
         {
-            "ChestYellow",
-            "ChestYellow",
+            "ChestTealGreen",
+            "ChestBurgundy",
             "ChestLightGrey",
             "ChestLightGrey",
-            "ChestLightGrey",
-            "ChestYellow",
-            "ChestLightGrey",
+            "ChestDarkYellow",
+            "ChestBlue",
+            "ChestOrange",
             "ChestYellow"
         };
         // Crystal edges
