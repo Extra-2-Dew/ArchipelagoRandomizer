@@ -1,20 +1,24 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
 	public class HintHandler : MonoBehaviour
 	{
-		private long dungeonRewardSetting;
 		private List<string> requiredDungeons;
+
+		public static HintHandler Instance { get; private set; }
 
 		private void Awake()
 		{
+			Instance = this;
+			/*
 			dungeonRewardSetting = APHandler.GetSlotData<long>("dungeon_rewards_setting");
 			requiredDungeons = dungeonRewardSetting != 0 ?
 				APHandler.GetSlotData<JArray>("required_dungeons").ToObject<List<string>>() :
 				null;
+			*/
+			requiredDungeons = RandomizerSettings.Instance.RequiredDungeons;
 		}
 
 		private void OnEnable()

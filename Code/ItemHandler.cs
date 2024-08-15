@@ -30,9 +30,32 @@ namespace ArchipelagoRandomizer
 		public static ItemHandler Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 
-		public enum ItemType
+		//[System.Flags]
+		//public enum ItemTypes
+		//{
+		//	None = 0, // 0
+		//	Major = 1, // 1
+		//	Useful = 2, // 2
+		//	Minor = 4, // 3
+		//	Bees = 8, // 4
+		//	Buff = 16, // 5
+		//	Card = 32, // 6
+		//	CaveScroll = 64, // 7
+		//	Crayon = 128, // 8
+		//	Debuff = 256, // 9
+		//	EFCS = 512, // 10
+		//	Heart = 1024, // 11
+		//	Key = 2048, // 12
+		//	Keyring = 4096, // 13
+		//	Melee = 8192, // 14
+		//	Outfit = 16384, // 15
+		//	PortalWorldScroll = 32768, // 16
+		//	Upgrade = 65536, // 17
+		//	Shard = 131072 // 18
+		//}
+
+		public enum ItemTypes
 		{
-			None, // Default
 			Bees,
 			Buff,
 			Card,
@@ -40,13 +63,24 @@ namespace ArchipelagoRandomizer
 			Crayon,
 			Debuff,
 			EFCS,
+			EvilKey,
 			Heart,
 			Key,
 			Keyring,
 			Melee,
 			Outfit,
 			PortalWorldScroll,
+			Shard,
 			Upgrade
+		}
+
+		[System.Flags]
+		public enum ItemFlags
+		{
+			None = 0,
+			Major = 1,
+			Useful = 2,
+			Minor = 4
 		}
 
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
@@ -56,7 +90,7 @@ namespace ArchipelagoRandomizer
 			if (player == null || mainSaver == null)
 				return 0;
 
-			if (item.Type == ItemType.Key)
+			if (item.Type == ItemTypes.Key)
 			{
 				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 				IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
@@ -71,10 +105,10 @@ namespace ArchipelagoRandomizer
 			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
 			List<string> countItems = new() { "shards", "raft", "evilKeys" };
 
-			isLevelItem = item.Type == ItemType.Upgrade || levelItems.Contains(item.Flag);
+			isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
 
-			if (isLevelItem || countItems.Contains(item.Flag))
-				return player.GetStateVariable(item.Flag);
+			if (isLevelItem || countItems.Contains(item.SaveFlag))
+				return player.GetStateVariable(item.SaveFlag);
 
 			return 0;
 		}
@@ -106,47 +140,47 @@ namespace ArchipelagoRandomizer
 
 			switch (item.Type)
 			{
-				case ItemType.Bees:
+				case ItemTypes.Bees:
 					Plugin.StartRoutine(SpawnBees());
 					break;
-				case ItemType.Buff:
+				case ItemTypes.Buff:
 					ApplyRandomStatus(statusBuffs);
 					break;
-				case ItemType.Card:
-					AddCard(item.Flag);
+				case ItemTypes.Card:
+					AddCard(item.SaveFlag);
 					break;
-				case ItemType.CaveScroll:
+				case ItemTypes.CaveScroll:
 					AddScroll(true);
 					break;
-				case ItemType.Crayon:
+				case ItemTypes.Crayon:
 					AddCrayon();
 					break;
-				case ItemType.Debuff:
+				case ItemTypes.Debuff:
 					ApplyRandomStatus(statusDebuffs);
 					break;
-				case ItemType.EFCS:
+				case ItemTypes.EFCS:
 					AddEFCS();
 					break;
-				case ItemType.Heart:
+				case ItemTypes.Heart:
 					AddHeart();
 					break;
-				case ItemType.Key:
+				case ItemTypes.Key:
 					AddKeys(item.ItemName, false);
 					break;
-				case ItemType.Keyring:
+				case ItemTypes.Keyring:
 					AddKeys(item.ItemName, true);
 					break;
-				case ItemType.Outfit:
-					AddOutfit(item.Flag);
+				case ItemTypes.Outfit:
+					AddOutfit(item.SaveFlag);
 					break;
-				case ItemType.PortalWorldScroll:
+				case ItemTypes.PortalWorldScroll:
 					AddScroll(false);
 					break;
-				case ItemType.Upgrade:
+				case ItemTypes.Upgrade:
 					AddUpgrade(item);
 					break;
 				default:
-					if (!string.IsNullOrEmpty(item.Flag))
+					if (!string.IsNullOrEmpty(item.SaveFlag))
 						IncrementItem(item);
 					break;
 			}
@@ -312,7 +346,7 @@ namespace ArchipelagoRandomizer
 		private void AddUpgrade(ItemData.Item item)
 		{
 			// Remove word "Upgrade" from saveFlag
-			string upgradeFlag = item.Flag;
+			string upgradeFlag = item.SaveFlag;
 			string itemFlag = upgradeFlag.Substring(0, upgradeFlag.Length - 7);
 			int upgradeAmount = player.GetStateVariable(upgradeFlag);
 
@@ -337,16 +371,16 @@ namespace ArchipelagoRandomizer
 
 		private void IncrementItem(ItemData.Item item)
 		{
-			int currentLevel = player.GetStateVariable(item.Flag);
+			int currentLevel = player.GetStateVariable(item.SaveFlag);
 
 			// If at max level already, don't do anything
 			if (item.Max > 0 && currentLevel >= item.Max)
 				return;
 
-			int upgradeLevel = player.GetStateVariable(item.Flag + "Upgrade");
+			int upgradeLevel = player.GetStateVariable(item.SaveFlag + "Upgrade");
 			// If no upgrade level, increment by 1, otherwise use upgrade level
 			int newLevel = upgradeLevel == 0 ? currentLevel + 1 : upgradeLevel;
-			player.SetStateVariable(item.Flag, newLevel);
+			player.SetStateVariable(item.SaveFlag, newLevel);
 		}
 
 		private IEnumerator SpawnBees()
@@ -442,8 +476,9 @@ namespace ArchipelagoRandomizer
 				public string ItemName { get; set; }
 				public string IconName { get; set; } = "APProgression"; // Default AP icon
 				public int Offset { get; set; }
-				public string Flag { get; set; }
-				public ItemType Type { get; set; }
+				public string SaveFlag { get; set; }
+				public ItemTypes Type { get; set; }
+				public ItemFlags Flag { get; set; }
 				public int Max { get; set; }
 			}
 		}

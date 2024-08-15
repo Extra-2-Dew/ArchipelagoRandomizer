@@ -10,11 +10,36 @@ namespace ArchipelagoRandomizer
 	internal class Patches
 	{
 		[HarmonyPrefix]
+		[HarmonyPatch(typeof(RoomObject), nameof(RoomObject.Start))]
+		public static void RoomObject_Start_Patch(RoomObject __instance)
+		{
+			if (!ItemRandomizer.IsActive || !Plugin.Instance.APFileData.ChestAppearanceMatchesContents)
+				return;
+
+			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
+			Transform chest = null;
+
+			if (__instance.name.StartsWith("Dungeon_") && (__instance.name.EndsWith("Chest") || __instance.name.EndsWith("Bees")))
+				chest = __instance.transform;
+			else if (__instance.name.StartsWith("SecretChest"))
+				chest = __instance.transform.Find("Dungeon_Chest");
+
+			if (chest == null)
+				return;
+
+			DummyAction dummyAction = chest.GetComponent<DummyAction>();
+			SkinnedMeshRenderer mesh = chest.GetComponentInChildren<SkinnedMeshRenderer>();
+			ChestReplacer.Instance.ReplaceChestTextures(dummyAction, mesh);
+			sw.Stop();
+			Plugin.Log.LogInfo($"{sw.ElapsedMilliseconds}ms ({sw.ElapsedTicks} ticks)");
+		}
+
+		[HarmonyPrefix]
 		[HarmonyPatch(typeof(EntityLocalVarOverrider), nameof(EntityLocalVarOverrider.Apply))]
 		// Prevents dream dungeons from overriding items if the setting is on
 		public static bool EntityLocalVarOverrider_Apply_Patch()
 		{
-			return !ItemRandomizer.IsActive || !Convert.ToBoolean(APHandler.GetSlotData<long>("dream_dungeons_do_not_change_items"));
+			return !ItemRandomizer.IsActive || !RandomizerSettings.Instance.KeepItemsInDreamDungeons;
 		}
 
 		[HarmonyPrefix]

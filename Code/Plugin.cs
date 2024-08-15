@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using ModCore;
 using System.Collections;
+using System.Diagnostics;
 using System.Reflection;
 using UnityEngine;
 
@@ -20,6 +21,18 @@ namespace ArchipelagoRandomizer
 		internal static Plugin Instance { get; private set; }
 		internal static ManualLogSource Log { get; private set; }
 		internal ItemRandomizer.APFileData APFileData { get; private set; }
+		internal static bool IsDebug { get; } = true;
+
+		public static void LogDebugMessage(string message)
+		{
+			if (IsDebug)
+			{
+				StackFrame stack = new StackTrace().GetFrame(1);
+				string callingClassName = stack.GetMethod().DeclaringType?.Name;
+				string callingMethodName = stack.GetMethod().Name;
+				Log.LogMessage($"[{callingClassName}.{callingMethodName}]\n" + message);
+			}
+		}
 
 		public static Coroutine StartRoutine(IEnumerator coroutine)
 		{

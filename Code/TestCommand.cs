@@ -9,41 +9,43 @@ namespace ArchipelagoRandomizer
         private static TestCommand instance;
         public static TestCommand Instance { get { return instance; } }
 
-        private string[] rimColors =
+        private string[] crystalFaceRamps =
         {
-            "ChestDarkYellow",
-            "ChestDarkYellow",
-            "ChestGrey",
-            "ChestGrey",
-            "ChestGrey",
-            "ChestDarkYellow",
-            "ChestGrey",
-            "ChestDarkYellow"
+            "ChestJewelGreen",
+            "ChestJewelBrown",
+            "ChestJewelBurgundy",
+            "ChestJewelDarkGrey",
+            "ChestJewelGreen",
+            "ChestJewelBlue",
+            "ChestJewelOrange",
+            "ChestJewelOrange"
         };
-        private string[] rimShines =
+        private string[] crystalFaceRims =
         {
-            "ChestRimGold",
-            "ChestRimGold",
-            "ChestRimGrey",
-            "ChestRimGrey",
-            "ChestRimGrey",
-            "ChestRimGold",
-            "ChestRimGrey",
-            "ChestRimGold"
+            "ChestCrystalRimGreen",
+            "ChestCrystalRimBrown",
+            "ChestCrystalRimBurgundy",
+            "ChestCrystalRimDarkGrey",
+            "ChestCrystalRimGreen",
+            "ChestCrystalRimBlue",
+            "ChestCrystalRimOrange",
+            "ChestCrystalRimOrange"
         };
-        private string[] chestColors =
+        private string[] crystalEdgeColors =
         {
             "ChestTealGreen",
-            "ChestBrown",
             "ChestBurgundy",
-            "ChestDarkGrey",
-            "ChestTealGreen",
+            "ChestLightGrey",
+            "ChestLightGrey",
+            "ChestDarkYellow",
             "ChestBlue",
             "ChestOrange",
-            "ChestOrange"
+            "ChestYellow"
         };
-        private Material rimMaterial;
-        private Material chestMaterial;
+        // Crystal edges
+        private Material edgeMaterial;
+        // Crystal faces
+        private Material faceMaterial;
 
         public TestCommand()
         {
@@ -58,19 +60,24 @@ namespace ArchipelagoRandomizer
         [DebugMenuCommand(commandName:"test")]
         private void SendTestCommand(string[] args)
         {
-            if (rimMaterial == null)
+            if (edgeMaterial == null)
             {
-                Renderer chestRenderer = GameObject.Find("Dungeon_Chest").GetComponentInChildren<Renderer>();
-                rimMaterial = chestRenderer.sharedMaterials[1];
-                chestMaterial = chestRenderer.sharedMaterials[2];
+                Renderer chestRenderer = GameObject.Find("Dungeon_PuzzleChest").transform.Find("crystal").GetComponent<Renderer>();
+                edgeMaterial = chestRenderer.sharedMaterials[1];
+                faceMaterial = chestRenderer.sharedMaterials[0];
             }
             if (args.Length > 0)
             {
                 if (int.TryParse(args[0], out int id))
                 {
-                    rimMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimColors[id]}.png"));
-                    rimMaterial.SetTexture("_SpecularRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimShines[id]}.png"));
-                    chestMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{chestColors[id]}.png"));
+                    edgeMaterial.shader = Shader.Find("Unlit/Texture");
+                    edgeMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalEdgeColors[id]}.png"));
+
+                    // rimMaterial.SetTexture("_RimRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimColors[id]}.png"));
+                    faceMaterial.SetTexture("_SpecularRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalFaceRims[id]}.png"));
+                    faceMaterial.SetTexture("_RimRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalFaceRamps[id]}.png"));
+                    //rimMaterial.SetTexture("_SpecularRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimShines[id]}.png"));
+                    //chestMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{chestColors[id]}.png"));
                 }
             }
         }
