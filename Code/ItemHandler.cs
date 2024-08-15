@@ -30,30 +30,6 @@ namespace ArchipelagoRandomizer
 		public static ItemHandler Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 
-		//[System.Flags]
-		//public enum ItemTypes
-		//{
-		//	None = 0, // 0
-		//	Major = 1, // 1
-		//	Useful = 2, // 2
-		//	Minor = 4, // 3
-		//	Bees = 8, // 4
-		//	Buff = 16, // 5
-		//	Card = 32, // 6
-		//	CaveScroll = 64, // 7
-		//	Crayon = 128, // 8
-		//	Debuff = 256, // 9
-		//	EFCS = 512, // 10
-		//	Heart = 1024, // 11
-		//	Key = 2048, // 12
-		//	Keyring = 4096, // 13
-		//	Melee = 8192, // 14
-		//	Outfit = 16384, // 15
-		//	PortalWorldScroll = 32768, // 16
-		//	Upgrade = 65536, // 17
-		//	Shard = 131072 // 18
-		//}
-
 		public enum ItemTypes
 		{
 			Bees,

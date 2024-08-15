@@ -31,14 +31,6 @@ namespace ArchipelagoRandomizer
 		public static List<LocationData.Location> Locations { get { return locations; } }
 		public FadeEffectData FadeData { get { return fadeData; } }
 
-		public enum ShardSetting
-		{
-			Open,
-			Vanilla,
-			Half,
-			Lockdown
-		}
-
 		public void OnFileStart(bool newFile, APFileData apFileData)
 		{
 			settings = new RandomizerSettings();
