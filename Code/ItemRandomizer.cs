@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ArchipelagoRandomizer.MessageBoxHandler;
 
 namespace ArchipelagoRandomizer
@@ -27,6 +28,7 @@ namespace ArchipelagoRandomizer
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
+		public static List<LocationData.Location> Locations { get { return locations; } }
 		public FadeEffectData FadeData { get { return fadeData; } }
 
 		public enum ShardSetting
@@ -104,6 +106,13 @@ namespace ArchipelagoRandomizer
 			}
 
 			APHandler.Instance.LocationChecked(location.Offset);
+		}
+
+		public ItemHandler.ItemData.Item GetItemForLocation(string saveFlag, out Archipelago.MultiClient.Net.Models.ScoutedItemInfo scoutedItemInfo)
+		{
+			LocationData.Location location = locations.Find(x => x.SceneName == SceneManager.GetActiveScene().name && x.Flag == saveFlag);
+			scoutedItemInfo = APHandler.Instance.GetScoutedItemInfo(location);
+			return itemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
 		}
 
 		public IEnumerator ItemSent(string itemName, string playerName)
@@ -230,7 +239,7 @@ namespace ArchipelagoRandomizer
 			this.player = player;
 		}
 
-		private struct LocationData
+		public struct LocationData
 		{
 			public List<Location> Locations { get; set; }
 

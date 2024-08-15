@@ -4,140 +4,159 @@
 			"itemName": "Progressive Melee",
 			"iconName": "Custom/Stick",
 			"offset": 0,
-			"flag": "melee",
+			"saveFlag": "melee",
 			"max": 2,
-			"type": "Melee"
+			"type": "Melee",
+			"flag": "Major"
 		},
 		{
 			"itemName": "Progressive Force Wand",
 			"iconName": "Forcewand1",
 			"offset": 1,
-			"flag": "forcewand",
-			"max": 3
+			"saveFlag": "forcewand",
+			"max": 3,
+			"flag": "Major"
 		},
 		{
 			"itemName": "Progressive Dynamite",
 			"iconName": "Dynamite1",
 			"offset": 2,
-			"flag": "dynamite",
-			"max": 3
+			"saveFlag": "dynamite",
+			"max": 3,
+			"flag": "Major"
 		},
 		{
 			"itemName": "Progressive Ice Ring",
 			"iconName": "Icering1",
 			"offset": 3,
-			"flag": "icering",
-			"max": 3
+			"saveFlag": "icering",
+			"max": 3,
+			"flag": "Major"
 		},
 		{
 			"itemName": "Progressive Chain",
 			"iconName": "chain",
 			"offset": 4,
-			"flag": "chain",
-			"max": 3
+			"saveFlag": "chain",
+			"max": 3,
+			"flag": "Major"
 		},
 		{
 			"itemName": "Force Wand Upgrade",
 			"iconName": "Forcewand1",
 			"offset": 5,
-			"flag": "forcewandUpgrade",
+			"saveFlag": "forcewandUpgrade",
 			"max": 3,
-			"type": "Upgrade"
+			"type": "Upgrade",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Dynamite Upgrade",
 			"iconName": "Dynamite1",
 			"offset": 6,
-			"flag": "dynamiteUpgrade",
+			"saveFlag": "dynamiteUpgrade",
 			"max": 3,
-			"type": "Upgrade"
+			"type": "Upgrade",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Ice Ring Upgrade",
 			"iconName": "Icering1",
 			"offset": 7,
-			"flag": "iceringUpgrade",
+			"saveFlag": "iceringUpgrade",
 			"max": 3,
-			"type": "Upgrade"
+			"type": "Upgrade",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Chain Upgrade",
 			"iconName": "chain",
 			"offset": 8,
-			"flag": "chainUpgrade",
+			"saveFlag": "chainUpgrade",
 			"max": 3,
-			"type": "Upgrade"
+			"type": "Upgrade",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Roll",
 			"iconName": "Custom/Roll",
 			"offset": 9,
-			"flag": "canRoll"
+			"saveFlag": "canRoll",
+			"flag": "Major"
 		},
 		{
 			"itemName": "Progressive Tracker",
 			"iconName": "Tracker",
 			"offset": 10,
-			"flag": "tracker",
-			"max": 3
+			"saveFlag": "tracker",
+			"max": 3,
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Progressive Headband",
 			"iconName": "BlueHeadBand",
 			"offset": 11,
-			"flag": "headband",
-			"max": 3
+			"saveFlag": "headband",
+			"max": 3,
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Progressive Amulet",
 			"iconName": "Amulet",
 			"offset": 12,
-			"flag": "amulet",
-			"max": 3
+			"saveFlag": "amulet",
+			"max": 3,
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Progressive Tome",
 			"iconName": "Tome",
 			"offset": 13,
-			"flag": "tome",
-			"max": 3
+			"saveFlag": "tome",
+			"max": 3,
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Secret Shard",
 			"iconName": "SecretShard",
 			"offset": 14,
-			"flag": "shards"
+			"saveFlag": "shards",
+			"type": "Shard"
 		},
 		{
 			"itemName": "Forbidden Key",
 			"iconName": "ForbiddenKey",
 			"offset": 15,
-			"flag": "evilKeys"
+			"saveFlag": "evilKeys",
+			"type": "EvilKey"
 		},
 		{
 			"itemName": "Lockpick",
 			"iconName": "MasterKey",
 			"offset": 16,
-			"flag": "keys"
+			"saveFlag": "keys",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Box of Crayons",
 			"iconName": "Fullpaper",
 			"offset": 17,
-			"flag": "hpcs",
+			"saveFlag": "hpcs",
 			"type": "Crayon"
 		},
 		{
 			"itemName": "Cave Scroll",
 			"iconName": "CaveScroll",
 			"offset": 18,
-			"type": "CaveScroll"
+			"type": "CaveScroll",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Portal World Scroll",
 			"iconName": "CaveScrollDeep",
 			"offset": 19,
-			"type": "PortalWorldScroll"
+			"type": "PortalWorldScroll",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Yellow Heart",
@@ -149,583 +168,628 @@
 			"itemName": "Raft Piece",
 			"iconName": "RaftPiece",
 			"offset": 21,
-			"flag": "raft"
+			"saveFlag": "raft",
+			"flag": "Major"
 		},
 		{
 			"itemName": "Pillow Fort Key",
 			"iconName": "Key",
 			"offset": 22,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Pillow Fort Key Ring",
 			"iconName": "Key",
 			"offset": 23,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Sand Castle Key",
 			"iconName": "Key",
 			"offset": 24,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Sand Castle Key Ring",
 			"iconName": "Key",
 			"offset": 25,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Art Exhibit Key",
 			"iconName": "Key",
 			"offset": 26,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Art Exhibit Key Ring",
 			"iconName": "Key",
 			"offset": 27,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Trash Cave Key",
 			"iconName": "Key",
 			"offset": 28,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Trash Cave Key Ring",
 			"iconName": "Key",
 			"offset": 29,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Flooded Basement Key",
 			"iconName": "Key",
 			"offset": 30,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Flooded Basement Key Ring",
 			"iconName": "Key",
 			"offset": 31,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Potassium Mine Key",
 			"iconName": "Key",
 			"offset": 32,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Potassium Mine Key Ring",
 			"iconName": "Key",
 			"offset": 33,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Boiling Grave Key",
 			"iconName": "Key",
 			"offset": 34,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Boiling Grave Key Ring",
 			"iconName": "Key",
 			"offset": 35,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Grand Library Key",
 			"iconName": "Key",
 			"offset": 36,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Grand Library Key Ring",
 			"iconName": "Key",
 			"offset": 37,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Sunken Labyrinth Key",
 			"iconName": "Key",
 			"offset": 38,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Sunken Labyrinth Key Ring",
 			"iconName": "Key",
 			"offset": 39,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Machine Fortress Key",
 			"iconName": "Key",
 			"offset": 40,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Machine Fortress Key Ring",
 			"iconName": "Key",
 			"offset": 41,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Dark Hypostyle Key",
 			"iconName": "Key",
 			"offset": 42,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Dark Hypostyle Key Ring",
 			"iconName": "Key",
 			"offset": 43,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Tomb of Simulacrum Key",
 			"iconName": "Key",
 			"offset": 44,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Tomb of Simulacrum Key Ring",
 			"iconName": "Key",
 			"offset": 45,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Syncope Key",
 			"iconName": "Key",
 			"offset": 46,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Syncope Key Ring",
 			"iconName": "Key",
 			"offset": 47,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Bottomless Tower Key",
 			"iconName": "Key",
 			"offset": 48,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Bottomless Tower Key Ring",
 			"iconName": "Key",
 			"offset": 49,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Antigram Key",
 			"iconName": "Key",
 			"offset": 50,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Antigram Key Ring",
 			"iconName": "Key",
 			"offset": 51,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Quietus Key",
 			"iconName": "Key",
 			"offset": 52,
-			"flag": "localKeys",
-			"type": "Key"
+			"saveFlag": "localKeys",
+			"type": "Key",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Quietus Key Ring",
 			"iconName": "Key",
 			"offset": 53,
-			"type": "Keyring"
+			"type": "Keyring",
+			"flag": "Useful"
 		},
 		{
 			"itemName": "Jenny Dew Outfit",
 			"iconName": "SuitJenny",
 			"offset": 54,
-			"flag": "outfit3",
-			"type": "Outfit"
+			"saveFlag": "outfit3",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Swimsuit Outfit",
 			"iconName": "SuitSwim",
 			"offset": 55,
-			"flag": "outfit4",
-			"type": "Outfit"
+			"saveFlag": "outfit4",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Tippsie Outfit",
 			"iconName": "SuitTippsie",
 			"offset": 56,
-			"flag": "outfit1",
-			"type": "Outfit"
+			"saveFlag": "outfit1",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Little Dude Outfit",
 			"iconName": "SuitCard",
 			"offset": 57,
-			"flag": "outfit6",
-			"type": "Outfit"
+			"saveFlag": "outfit6",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Tiger Jenny Outfit",
 			"iconName": "SuitArmor",
 			"offset": 58,
-			"flag": "outfit5",
-			"type": "Outfit"
+			"saveFlag": "outfit5",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Ittle Dew 1 Outfit",
 			"iconName": "SuitIttleOriginal",
 			"offset": 59,
-			"flag": "outfit2",
-			"type": "Outfit"
+			"saveFlag": "outfit2",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Delinquint Outfit",
 			"iconName": "SuitDelinquent",
 			"offset": 60,
-			"flag": "outfit7",
-			"type": "Outfit"
+			"saveFlag": "outfit7",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Jenny Berry Outfit",
 			"iconName": "Custom/SuitJennyBerry",
 			"offset": 61,
-			"flag": "outfit10",
-			"type": "Outfit"
+			"saveFlag": "outfit10",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Apathetic Frog Outfit",
 			"iconName": "Custom/SuitApaFrog",
 			"offset": 62,
-			"flag": "outfit8",
-			"type": "Outfit"
+			"saveFlag": "outfit8",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "That Guy Outfit",
 			"iconName": "Custom/SuitThatGuy",
 			"offset": 63,
-			"flag": "outfit9",
-			"type": "Outfit"
+			"saveFlag": "outfit9",
+			"type": "Outfit",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Big Old Pile o' Loot",
 			"iconName": "Loot",
 			"offset": 64,
-			"flag": "loot"
+			"saveFlag": "loot",
+			"flag": "Major"
 		},
 		{
 			"itemName": "Impossible Gates Pass",
 			"iconName": "EFCS",
 			"offset": 65,
-			"type": "EFCS"
+			"type": "EFCS",
+			"flag": "Major"
 		},
 		{
 			"itemName": "Card 1 - Fishbun",
 			"iconName": "Card",
 			"offset": 100,
-			"flag": "Fishbun",
+			"saveFlag": "Fishbun",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 2 - Stupid Bee",
 			"iconName": "Card",
 			"offset": 101,
-			"flag": "StupidBee",
+			"saveFlag": "StupidBee",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 3 - Safety Jenny",
 			"iconName": "Card",
 			"offset": 102,
-			"flag": "JennySafety",
+			"saveFlag": "JennySafety",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 4 - Shellbun",
 			"iconName": "Card",
 			"offset": 103,
-			"flag": "Shellbun",
+			"saveFlag": "Shellbun",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 5 - Spikebun",
 			"iconName": "Card",
 			"offset": 104,
-			"flag": "Spikebun",
+			"saveFlag": "Spikebun",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 6 - Feral Gate",
 			"iconName": "Card",
 			"offset": 105,
-			"flag": "FeralGate",
+			"saveFlag": "FeralGate",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 7 - Candy Snake",
 			"iconName": "Card",
 			"offset": 106,
-			"flag": "CandySnake",
+			"saveFlag": "CandySnake",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 8 - Hermit Legs",
 			"iconName": "Card",
 			"offset": 107,
-			"flag": "HermitLegs",
+			"saveFlag": "HermitLegs",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 9 - Ogler",
 			"iconName": "Card",
 			"offset": 108,
-			"flag": "Ogler",
+			"saveFlag": "Ogler",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 10 - Hyperdusa",
 			"iconName": "Card",
 			"offset": 109,
-			"flag": "Hyperdusa",
+			"saveFlag": "Hyperdusa",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 11 - Evil Easel",
 			"iconName": "Card",
 			"offset": 110,
-			"flag": "EvilEasel",
+			"saveFlag": "EvilEasel",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 12 - Warnip",
 			"iconName": "Card",
 			"offset": 111,
-			"flag": "Warnip",
+			"saveFlag": "Warnip",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 13 - Octacle",
 			"iconName": "Card",
 			"offset": 112,
-			"flag": "Octacle",
+			"saveFlag": "Octacle",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 14 - Rotnip",
 			"iconName": "Card",
 			"offset": 113,
-			"flag": "Rotnip",
+			"saveFlag": "Rotnip",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 15 - Bee Swarm",
 			"iconName": "Card",
 			"offset": 114,
-			"flag": "BeeSwarm",
+			"saveFlag": "BeeSwarm",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 16 - Volcano",
 			"iconName": "Card",
 			"offset": 115,
-			"flag": "Volcano",
+			"saveFlag": "Volcano",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 17 - Jenny Shark",
 			"iconName": "Card",
 			"offset": 116,
-			"flag": "JennyShark",
+			"saveFlag": "JennyShark",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 18 - Swimmy Roger",
 			"iconName": "Card",
 			"offset": 117,
-			"flag": "SwimmyRoger",
+			"saveFlag": "SwimmyRoger",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 19 - Bunboy",
 			"iconName": "Card",
 			"offset": 118,
-			"flag": "Bunboy",
+			"saveFlag": "Bunboy",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 20 - Spectre",
 			"iconName": "Card",
 			"offset": 119,
-			"flag": "Spectre",
+			"saveFlag": "Spectre",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 21 - Return of Brutus",
 			"iconName": "Card",
 			"offset": 120,
-			"flag": "Brutus",
+			"saveFlag": "Brutus",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 22 - Jelly",
 			"iconName": "Card",
 			"offset": 121,
-			"flag": "Jelly",
+			"saveFlag": "Jelly",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 23 - Skullnip",
 			"iconName": "Card",
 			"offset": 122,
-			"flag": "Skullnip",
+			"saveFlag": "Skullnip",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 24 - Slayer Jenny",
 			"iconName": "Card",
 			"offset": 123,
-			"flag": "JennySlayer",
+			"saveFlag": "JennySlayer",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 25 - Titan",
 			"iconName": "Card",
 			"offset": 124,
-			"flag": "Titan",
+			"saveFlag": "Titan",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 26 - Chilly Roger",
 			"iconName": "Card",
 			"offset": 125,
-			"flag": "ChillyRoger",
+			"saveFlag": "ChillyRoger",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 27 - Jenny Flower",
 			"iconName": "Card",
 			"offset": 126,
-			"flag": "JennyFlower",
+			"saveFlag": "JennyFlower",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 28 - Hexrot",
 			"iconName": "Card",
 			"offset": 127,
-			"flag": "Hexrot",
+			"saveFlag": "Hexrot",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 29 - Jenny Mole",
 			"iconName": "Card",
 			"offset": 128,
-			"flag": "JennyMole",
+			"saveFlag": "JennyMole",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 30 - Jenny Bun (Unemployed)",
 			"iconName": "Card",
 			"offset": 129,
-			"flag": "JennyBun",
+			"saveFlag": "JennyBun",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 31 - Jenny Cat",
 			"iconName": "Card",
 			"offset": 130,
-			"flag": "JennyCat",
+			"saveFlag": "JennyCat",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 32 - Jenny Mermaid",
 			"iconName": "Card",
 			"offset": 131,
-			"flag": "JennyMermaid",
+			"saveFlag": "JennyMermaid",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 33 - Jenny Berry (Vacation)",
 			"iconName": "Card",
 			"offset": 132,
-			"flag": "JennyBerry",
+			"saveFlag": "JennyBerry",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 34 - Mapman",
 			"iconName": "Card",
 			"offset": 133,
-			"flag": "Mapman",
+			"saveFlag": "Mapman",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 35 - Cyberjenny",
 			"iconName": "Card",
 			"offset": 134,
-			"flag": "Cyberjenny",
+			"saveFlag": "Cyberjenny",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 36 - Le Biadlo",
 			"iconName": "Card",
 			"offset": 135,
-			"flag": "LeBiadlo",
+			"saveFlag": "LeBiadlo",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 37 - Lenny",
 			"iconName": "Card",
 			"offset": 136,
-			"flag": "Lenny",
+			"saveFlag": "Lenny",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 38 - Passel Carver",
 			"iconName": "Card",
 			"offset": 137,
-			"flag": "Passel",
+			"saveFlag": "Passel",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 39 - Tippsie",
 			"iconName": "Card",
 			"offset": 138,
-			"flag": "Tippsie",
+			"saveFlag": "Tippsie",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 40 - Ittle Dew",
 			"iconName": "Card",
 			"offset": 139,
-			"flag": "IttleDew",
+			"saveFlag": "IttleDew",
 			"type": "Card"
 		},
 		{
 			"itemName": "Card 41 - Napping Fly",
 			"iconName": "Card",
 			"offset": 140,
-			"flag": "NappingFly",
+			"saveFlag": "NappingFly",
 			"type": "Card"
 		},
 		{
@@ -735,7 +799,7 @@
 			"type": "Buff"
 		},
 		{
-			"itemName": "Random Debuff",
+			"itemName": "Random Debuff Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 142,
 			"type": "Debuff"

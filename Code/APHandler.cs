@@ -134,6 +134,11 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
+		public ScoutedItemInfo GetScoutedItemInfo(ItemRandomizer.LocationData.Location forLocation)
+		{
+			return scoutedItems.Find(x => x.LocationId - forLocation.Offset == baseId);
+		}
+
 		private bool TryCreateSession(string url, out string errorMessage)
 		{
 			if (Session != null)
@@ -234,6 +239,13 @@ namespace ArchipelagoRandomizer
 				foreach (ScoutedItemInfo item in scoutResult.Values)
 				{
 					scoutedItems.Add(item);
+					//if (item.ItemDisplayName == "Roll")
+					//{
+					//	Plugin.Log.LogInfo("Testing Roll...");
+					//	Plugin.Log.LogInfo($"LocationId = {item.LocationId}");
+					//	ItemRandomizer.LocationData.Location locationData = ItemRandomizer.Locations.Find(x => item.LocationId - x.Offset == baseId);
+					//	Plugin.Log.LogInfo($"Found location: {locationData.LocationName}");
+					//}
 				}
 			}, Session.Locations.AllLocations.ToArray());
 		}
