@@ -16,7 +16,6 @@ namespace ArchipelagoRandomizer
 			if (!ItemRandomizer.IsActive || !Plugin.Instance.APFileData.ChestAppearanceMatchesContents)
 				return;
 
-			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
 			Transform chest = null;
 
 			if (__instance.name.StartsWith("Dungeon_") && (__instance.name.EndsWith("Chest") || __instance.name.EndsWith("Bees")))
@@ -28,10 +27,10 @@ namespace ArchipelagoRandomizer
 				return;
 
 			DummyAction dummyAction = chest.GetComponent<DummyAction>();
-			SkinnedMeshRenderer mesh = chest.GetComponentInChildren<SkinnedMeshRenderer>();
-			ChestReplacer.Instance.ReplaceChestTextures(dummyAction, mesh);
-			sw.Stop();
-			Plugin.Log.LogInfo($"{sw.ElapsedMilliseconds}ms ({sw.ElapsedTicks} ticks)");
+			Renderer chestMesh = chest.GetComponentInChildren<SkinnedMeshRenderer>();
+			Renderer crystalMesh = chest.GetComponentInChildren<MeshRenderer>();
+
+			ChestReplacer.Instance.ReplaceChestTextures(dummyAction, chestMesh, crystalMesh);
 		}
 
 		[HarmonyPrefix]
