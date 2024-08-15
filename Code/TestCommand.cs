@@ -15,7 +15,7 @@ namespace ArchipelagoRandomizer
             "ChestJewelBrown",
             "ChestJewelBurgundy",
             "ChestJewelDarkGrey",
-            "ChestJewelGreen",
+            "ChestJewelCyan",
             "ChestJewelBlue",
             "ChestJewelOrange",
             "ChestJewelOrange"
@@ -26,7 +26,7 @@ namespace ArchipelagoRandomizer
             "ChestCrystalRimBrown",
             "ChestCrystalRimBurgundy",
             "ChestCrystalRimDarkGrey",
-            "ChestCrystalRimGreen",
+            "ChestCrystalRimCyan",
             "ChestCrystalRimBlue",
             "ChestCrystalRimOrange",
             "ChestCrystalRimOrange"
@@ -37,7 +37,7 @@ namespace ArchipelagoRandomizer
             "ChestBurgundy",
             "ChestLightGrey",
             "ChestLightGrey",
-            "ChestDarkYellow",
+            "ChestCyan",
             "ChestBlue",
             "ChestOrange",
             "ChestYellow"

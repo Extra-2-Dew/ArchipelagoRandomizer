@@ -11,7 +11,7 @@ namespace ArchipelagoRandomizer
 		{
 			{ new("Minor",
 				new ChestCrystalColorData.ChestColors("Brown", "DarkYellow", "Gold"),
-				new ChestCrystalColorData.CrystalColors("Brown", "Brown", "Yellow"))
+				new ChestCrystalColorData.CrystalColors("Brown", "Brown", "Burgundy"))
 			},
 			{ new("Card",
 				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
@@ -26,16 +26,16 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.CrystalColors("DarkGrey", "DarkGrey", "LightGrey"))
 			},
 			{ new("Filler",
-				new ChestCrystalColorData.ChestColors("TealGreen", "Grey", "Grey"),
-				new ChestCrystalColorData.CrystalColors("Green", "Green", "LightGrey"))
+				new ChestCrystalColorData.ChestColors("Cyan", "Grey", "Grey"),
+				new ChestCrystalColorData.CrystalColors("Cyan", "Cyan", "Cyan"))
 			},
 			{ new("Useful",
 				new ChestCrystalColorData.ChestColors("Blue", "DarkYellow", "Gold"),
-				new ChestCrystalColorData.CrystalColors("Blue", "Blue", "Yellow"))
+				new ChestCrystalColorData.CrystalColors("Blue", "Blue", "Blue"))
 			},
 			{ new("NeverExclude",
 				new ChestCrystalColorData.ChestColors("Orange", "Grey", "Grey"),
-				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "LightGrey"))
+				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Orange"))
 			},
 			{ new("Advancement",
 				new ChestCrystalColorData.ChestColors("Orange", "DarkYellow", "Gold"),
