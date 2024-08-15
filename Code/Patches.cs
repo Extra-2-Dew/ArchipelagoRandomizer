@@ -13,10 +13,10 @@ namespace ArchipelagoRandomizer
 		[HarmonyPatch(typeof(RoomObject), nameof(RoomObject.Start))]
 		public static void RoomObject_Start_Patch(RoomObject __instance)
 		{
-			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
-			if (!ItemRandomizer.IsActive)
+			if (!ItemRandomizer.IsActive || !Plugin.Instance.APFileData.ChestAppearanceMatchesContents)
 				return;
 
+			System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
 			Transform chest = null;
 
 			if (__instance.name.StartsWith("Dungeon_") && (__instance.name.EndsWith("Chest") || __instance.name.EndsWith("Bees")))

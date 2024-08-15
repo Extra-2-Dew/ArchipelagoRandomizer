@@ -263,6 +263,7 @@ namespace ArchipelagoRandomizer
 			public bool Deathlink { get; set; }
 			public bool AutoEquipOutfits { get; set; }
 			public bool StackStatuses { get; set; }
+			public bool ChestAppearanceMatchesContents { get; set; }
 		}
 
 		public delegate void OnItemReceievedFunc(ItemHandler.ItemData.Item item, string sentFromPlayerName);
