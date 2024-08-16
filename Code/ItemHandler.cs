@@ -32,6 +32,7 @@ namespace ArchipelagoRandomizer
 
 		public enum ItemTypes
 		{
+			None,
 			Bees,
 			Buff,
 			Card,
@@ -399,6 +400,7 @@ namespace ArchipelagoRandomizer
 				StoreStatus(statuses, false, "Fear");
 				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
+				beeSwarmSpawner.SetActive(false);
 				DontDestroyOnLoad(beeSwarmSpawner);
 				GoalHandler.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
 				DontDestroyOnLoad(GoalHandler.effectRef);

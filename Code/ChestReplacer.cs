@@ -60,24 +60,13 @@ namespace ArchipelagoRandomizer
 			ItemHandler.ItemData.Item item = ItemRandomizer.Instance.GetItemForLocation(dummyAction._saveName, out var scoutedItemInfo);
 
 			// Leave vanila if major
-			if (CheckItemType(item, ItemHandler.ItemFlags.Major))
+			if (item != null && CheckItemType(item, ItemHandler.ItemFlags.Major))
 				return;
 
-			ChestCrystalColorData colors;
+			ChestCrystalColorData colors = null;
 
-			if (item.Type == ItemHandler.ItemTypes.Card)
-				colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
-			else if (item.Type == ItemHandler.ItemTypes.Shard || item.Type == ItemHandler.ItemTypes.EvilKey)
-				colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
-			else if (CheckItemType(item, ItemHandler.ItemFlags.Minor))
-				colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
-			else if (CheckItemType(item, ItemHandler.ItemFlags.Useful))
-				colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
-			else if (CheckItemType(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement))
-				colors = chestCrystalColors.Find(x => x.flag == scoutedItemInfo.Flags.ToString());
-			else if (CheckItemType(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude))
-				colors = chestCrystalColors.Find(x => x.flag == scoutedItemInfo.Flags.ToString());
-			else if (CheckItemType(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Trap))
+			// If trap
+			if (CheckItemType(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Trap))
 			{
 				// Get random colors
 				int randIndex = Random.Range(0, chestCrystalColors.Count);
@@ -89,7 +78,29 @@ namespace ArchipelagoRandomizer
 				colors = chestCrystalColors[randIndex];
 				dummyAction.transform.localScale = new(1, 1, -1);
 			}
+			// If ID2 item
+			else if (item != null)
+			{
+				if (item.Type == ItemHandler.ItemTypes.Card)
+					colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
+				else if (item.Type == ItemHandler.ItemTypes.Shard || item.Type == ItemHandler.ItemTypes.EvilKey)
+					colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
+				else if (CheckItemType(item, ItemHandler.ItemFlags.Minor))
+					colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
+				else if (CheckItemType(item, ItemHandler.ItemFlags.Useful))
+					colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
+			}
+			// If item for another game or is a trap
 			else
+			{
+				if (CheckItemType(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement))
+					colors = chestCrystalColors.Find(x => x.flag == scoutedItemInfo.Flags.ToString());
+				else if (CheckItemType(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude))
+					colors = chestCrystalColors.Find(x => x.flag == scoutedItemInfo.Flags.ToString());
+			}
+
+			// Filler
+			if (colors == null)
 				colors = chestCrystalColors.Find(x => x.flag == "Filler");
 
 			SetChestTextures(chestMesh, colors.chestColors);
@@ -148,7 +159,7 @@ namespace ArchipelagoRandomizer
 			return (item.Flags & flag) == flag;
 		}
 
-		private readonly struct ChestCrystalColorData
+		private class ChestCrystalColorData
 		{
 			public readonly string flag;
 			public readonly ChestColors chestColors;
