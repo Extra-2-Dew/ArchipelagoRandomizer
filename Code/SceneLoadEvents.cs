@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Archipelago.MultiClient.Net.Models;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
@@ -164,11 +165,22 @@ namespace ArchipelagoRandomizer
 			reqsSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
 			reqsSign.transform.position = new Vector3(49, 0, - 78);
 			reqsSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
+			reqsSign.AddComponent<Light>().color = new(1, 0.4f, 0.4f);
 			GameObject hintSign = GameObject.Instantiate(reqsSign);
 			hintSign.name = "Hint Sign";
 			string hintPlayer = "";
 			string hintItem = "";
-			hintSign.GetComponentInChildren<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {hintPlayer}'s {hintItem}\nawaits.";
+			ItemRandomizer.Instance.GetItemForLocation("outfit9", out ScoutedItemInfo itemInfo);
+			if (itemInfo.Player.Slot == APHandler.Instance.CurrentPlayer.Slot)
+			{
+				hintPlayer = "your";
+			}
+            else
+            {
+                hintPlayer = itemInfo.Player.Name + "'s";
+			}
+			hintItem = itemInfo.ItemName;
+			hintSign.GetComponentInChildren<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {hintPlayer} {hintItem}\nawaits.";
 			hintSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
 			hintSign.transform.position = new Vector3(55, 0, -78);
 		}
