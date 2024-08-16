@@ -48,7 +48,7 @@
 			"saveFlag": "forcewandUpgrade",
 			"max": 3,
 			"type": "Upgrade",
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Dynamite Upgrade",
@@ -57,7 +57,7 @@
 			"saveFlag": "dynamiteUpgrade",
 			"max": 3,
 			"type": "Upgrade",
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Ice Ring Upgrade",
@@ -66,7 +66,7 @@
 			"saveFlag": "iceringUpgrade",
 			"max": 3,
 			"type": "Upgrade",
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Chain Upgrade",
@@ -75,7 +75,7 @@
 			"saveFlag": "chainUpgrade",
 			"max": 3,
 			"type": "Upgrade",
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Roll",
@@ -98,7 +98,7 @@
 			"offset": 11,
 			"saveFlag": "headband",
 			"max": 3,
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Progressive Amulet",
@@ -106,7 +106,7 @@
 			"offset": 12,
 			"saveFlag": "amulet",
 			"max": 3,
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Progressive Tome",
@@ -114,7 +114,7 @@
 			"offset": 13,
 			"saveFlag": "tome",
 			"max": 3,
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Secret Shard",
@@ -135,34 +135,36 @@
 			"iconName": "MasterKey",
 			"offset": 16,
 			"saveFlag": "keys",
-			"flag": "Useful"
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Box of Crayons",
 			"iconName": "Fullpaper",
 			"offset": 17,
 			"saveFlag": "hpcs",
-			"type": "Crayon"
+			"type": "Crayon",
+			"flag": "Minor"
 		},
 		{
 			"itemName": "Cave Scroll",
 			"iconName": "CaveScroll",
 			"offset": 18,
 			"type": "CaveScroll",
-			"flag": "Minor"
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Portal World Scroll",
 			"iconName": "CaveScrollDeep",
 			"offset": 19,
 			"type": "PortalWorldScroll",
-			"flag": "Minor"
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Yellow Heart",
 			"iconName": "ChestHeart",
 			"offset": 20,
-			"type": "Heart"
+			"type": "Heart",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Raft Piece",
@@ -176,240 +178,208 @@
 			"iconName": "Key",
 			"offset": 22,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Pillow Fort Key Ring",
 			"iconName": "Key",
 			"offset": 23,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Sand Castle Key",
 			"iconName": "Key",
 			"offset": 24,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Sand Castle Key Ring",
 			"iconName": "Key",
 			"offset": 25,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Art Exhibit Key",
 			"iconName": "Key",
 			"offset": 26,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Art Exhibit Key Ring",
 			"iconName": "Key",
 			"offset": 27,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Trash Cave Key",
 			"iconName": "Key",
 			"offset": 28,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Trash Cave Key Ring",
 			"iconName": "Key",
 			"offset": 29,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Flooded Basement Key",
 			"iconName": "Key",
 			"offset": 30,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Flooded Basement Key Ring",
 			"iconName": "Key",
 			"offset": 31,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Potassium Mine Key",
 			"iconName": "Key",
 			"offset": 32,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Potassium Mine Key Ring",
 			"iconName": "Key",
 			"offset": 33,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Boiling Grave Key",
 			"iconName": "Key",
 			"offset": 34,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Boiling Grave Key Ring",
 			"iconName": "Key",
 			"offset": 35,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Grand Library Key",
 			"iconName": "Key",
 			"offset": 36,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Grand Library Key Ring",
 			"iconName": "Key",
 			"offset": 37,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Sunken Labyrinth Key",
 			"iconName": "Key",
 			"offset": 38,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Sunken Labyrinth Key Ring",
 			"iconName": "Key",
 			"offset": 39,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Machine Fortress Key",
 			"iconName": "Key",
 			"offset": 40,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Machine Fortress Key Ring",
 			"iconName": "Key",
 			"offset": 41,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Dark Hypostyle Key",
 			"iconName": "Key",
 			"offset": 42,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Dark Hypostyle Key Ring",
 			"iconName": "Key",
 			"offset": 43,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Tomb of Simulacrum Key",
 			"iconName": "Key",
 			"offset": 44,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Tomb of Simulacrum Key Ring",
 			"iconName": "Key",
 			"offset": 45,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Syncope Key",
 			"iconName": "Key",
 			"offset": 46,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Syncope Key Ring",
 			"iconName": "Key",
 			"offset": 47,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Bottomless Tower Key",
 			"iconName": "Key",
 			"offset": 48,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Bottomless Tower Key Ring",
 			"iconName": "Key",
 			"offset": 49,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Antigram Key",
 			"iconName": "Key",
 			"offset": 50,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Antigram Key Ring",
 			"iconName": "Key",
 			"offset": 51,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Quietus Key",
 			"iconName": "Key",
 			"offset": 52,
 			"saveFlag": "localKeys",
-			"type": "Key",
-			"flag": "Useful"
+			"type": "Key"
 		},
 		{
 			"itemName": "Quietus Key Ring",
 			"iconName": "Key",
 			"offset": 53,
-			"type": "Keyring",
-			"flag": "Useful"
+			"type": "Keyring"
 		},
 		{
 			"itemName": "Jenny Dew Outfit",
