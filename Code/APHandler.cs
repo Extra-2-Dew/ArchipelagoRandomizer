@@ -136,6 +136,9 @@ namespace ArchipelagoRandomizer
 
 		public ScoutedItemInfo GetScoutedItemInfo(ItemRandomizer.LocationData.Location forLocation)
 		{
+			if (forLocation == null)
+				return null;
+
 			return scoutedItems.Find(x => x.LocationId - forLocation.Offset == baseId);
 		}
 

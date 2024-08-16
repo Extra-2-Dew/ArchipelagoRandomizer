@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
@@ -57,7 +58,7 @@ namespace ArchipelagoRandomizer
 
 		public void ReplaceChestTextures(DummyAction dummyAction, Renderer chestMesh, Renderer crystalMesh)
 		{
-			ItemHandler.ItemData.Item item = ItemRandomizer.Instance.GetItemForLocation(dummyAction._saveName, out var scoutedItemInfo);
+			ItemHandler.ItemData.Item item = ItemRandomizer.Instance.GetItemForLocation(SceneManager.GetActiveScene().name, dummyAction._saveName, out var scoutedItemInfo);
 
 			// Leave vanila if major
 			if (item != null && CheckItemType(item, ItemHandler.ItemFlags.Major))

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static ArchipelagoRandomizer.MessageBoxHandler;
 
 namespace ArchipelagoRandomizer
@@ -100,10 +99,14 @@ namespace ArchipelagoRandomizer
 			APHandler.Instance.LocationChecked(location.Offset);
 		}
 
-		public ItemHandler.ItemData.Item GetItemForLocation(string saveFlag, out Archipelago.MultiClient.Net.Models.ScoutedItemInfo scoutedItemInfo)
+		public ItemHandler.ItemData.Item GetItemForLocation(string scene, string saveFlag, out Archipelago.MultiClient.Net.Models.ScoutedItemInfo scoutedItemInfo)
 		{
-			LocationData.Location location = locations.Find(x => x.SceneName == SceneManager.GetActiveScene().name && x.Flag == saveFlag);
+			LocationData.Location location = locations.Find(x => x.SceneName == scene && x.Flag == saveFlag);
 			scoutedItemInfo = APHandler.Instance.GetScoutedItemInfo(location);
+
+			if (scoutedItemInfo == null)
+				return null;
+
 			return itemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
 		}
 
