@@ -170,7 +170,7 @@ namespace ArchipelagoRandomizer
 			hintSign.name = "Hint Sign";
 			string hintPlayer = "";
 			string hintItem = "";
-			ItemRandomizer.Instance.GetItemForLocation("outfit9", out ScoutedItemInfo itemInfo);
+			ItemRandomizer.Instance.GetItemForLocation("Deep19s", "outfit9", out ScoutedItemInfo itemInfo);
 			if (itemInfo.Player.Slot == APHandler.Instance.CurrentPlayer.Slot)
 			{
 				hintPlayer = "your";
