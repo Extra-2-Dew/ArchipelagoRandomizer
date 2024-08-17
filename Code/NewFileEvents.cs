@@ -25,6 +25,7 @@ namespace ArchipelagoRandomizer
 			settingsSaver.SaveInt("easyMode", 1);
 			IDataSaver playerVarsSaver = mainSaver.GetSaver("/local/player/vars");
 			playerVarsSaver.SaveInt("melee", -1);
+			playerVarsSaver.SaveInt("easyMode", 1);
 
 			if (settings.OpenD8)
 				mainSaver.GetSaver("/local/levels/LonelyRoad/A").SaveInt("PasselDoorYes", 1);
