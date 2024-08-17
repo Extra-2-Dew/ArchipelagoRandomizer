@@ -418,12 +418,15 @@ namespace ArchipelagoRandomizer
 			else if (scene.name == "MachineFortress")
 			{
 				StoreStatus(statuses, false, "Fear");
-				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
+				beeSwarmSpawner = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
 				beeSwarmSpawner.SetActive(false);
 				DontDestroyOnLoad(beeSwarmSpawner);
-				GoalHandler.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
-				DontDestroyOnLoad(GoalHandler.effectRef);
+				GameObject portalAppearEffecter = GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject;
+				portalAppearEffecter.transform.parent = null;
+				portalAppearEffecter.SetActive(false);
+				DontDestroyOnLoad(portalAppearEffecter);
+				GoalHandler.effectRef = portalAppearEffecter.GetComponent<EffectEventObserver>();
 				hasStoredRefs = true;
 				fadeData._fadeOutTime = 0;
 				IDataSaver startSaver = mainSaver.GetSaver("/local/start");
