@@ -27,8 +27,8 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.CrystalColors("DarkGrey", "DarkGrey", "LightGrey"))
 			},
 			{ new("Junk",
-				new ChestCrystalColorData.ChestColors("Burgundy", "Silver", "Silver"),
-				new ChestCrystalColorData.CrystalColors("Burgundy", "Silver", "Silver"))
+				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
+				new ChestCrystalColorData.CrystalColors("Burgundy", "Burgundy", "LightGrey"))
 			},
 			{ new("Filler",
 				new ChestCrystalColorData.ChestColors("Cyan", "Grey", "Grey"),
