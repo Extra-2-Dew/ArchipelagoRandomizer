@@ -178,6 +178,9 @@ namespace ArchipelagoRandomizer
 				{
 					int level = ModCore.Utility.GetPlayer().GetStateVariable("melee");
 
+					if (level > 1)
+						iconName = "Melee2";
+
 					if (level > 0)
 						iconName = $"Melee{level}";
 				}
