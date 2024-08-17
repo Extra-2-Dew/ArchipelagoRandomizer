@@ -46,6 +46,31 @@ namespace ArchipelagoRandomizer
 			ItemRandomizer.OnItemReceived -= OnItemReceieved;
 		}
 
+		private void AddCustomComponentToItems()
+		{
+			foreach (SpawnItemEventObserver itemSpawner in Resources.FindObjectsOfTypeAll<SpawnItemEventObserver>())
+			{
+				// Keys and cards
+				if (itemSpawner.name == "Spawner")
+				{
+					itemSpawner.transform.parent.gameObject.AddComponent<RandomizedObject>();
+					continue;
+				}
+
+				if (itemSpawner.name.Contains("Chest"))
+					itemSpawner.gameObject.AddComponent<RandomizedObject>();
+			}
+
+			if (SceneName == "FluffyFieldsCaves")
+				GameObject.Find("LevelRoot").transform.Find("U/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
+
+			else if (SceneName == "Deep19s" && RandomizerSettings.Instance.IncludeSuperSecrets)
+				GameObject.Find("LevelRoot").transform.Find("B/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
+
+			else if (SceneName == "MachineFortress")
+				GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject.AddComponent<RandomizedObject>();
+		}
+
 		/// <summary>
 		/// Helps prevent softlocks or near-softlocks when phasing by
 		/// resetting your spawn point to the point from before the <br/>
@@ -163,7 +188,7 @@ namespace ArchipelagoRandomizer
 			reqsSpeech.transform.SetParent(reqsSign.transform);
 			reqsSpeech.transform.localPosition = Vector3.up * 0.5f;
 			reqsSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
-			reqsSign.transform.position = new Vector3(49, 0, - 78);
+			reqsSign.transform.position = new Vector3(49, 0, -78);
 			reqsSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
 			reqsSign.AddComponent<Light>().color = new(1, 0.4f, 0.4f);
 			GameObject hintSign = GameObject.Instantiate(reqsSign);
@@ -175,9 +200,9 @@ namespace ArchipelagoRandomizer
 			{
 				hintPlayer = "your";
 			}
-            else
-            {
-                hintPlayer = itemInfo.Player.Name + "'s";
+			else
+			{
+				hintPlayer = itemInfo.Player.Name + "'s";
 			}
 			hintItem = itemInfo.ItemName;
 			hintSign.GetComponentInChildren<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {hintPlayer} {hintItem}\nawaits.";
@@ -197,6 +222,9 @@ namespace ArchipelagoRandomizer
 
 			Plugin.LogDebugMessage("Event fired:\n" + $"    Curr: {scene.name}");
 
+			if (!ItemHandler.Instance.HasInitialized || scene.name == "Intro")
+				return;
+
 			// Disable rando
 			if (scene.name == "MainMenu")
 			{
@@ -206,12 +234,17 @@ namespace ArchipelagoRandomizer
 
 			// Hide message boxes when in credits
 			if (scene.name == "Outro")
+			{
 				MessageBoxHandler.Instance.HideMessageBoxes();
+				return;
+			}
 
-			if (settings.IncludeSuperSecrets && scene.name == "Deep19s")
-				CreateRemedySigns();
-
+			AddCustomComponentToItems();
 			OverrideSpawnPoints();
+
+			// Open DW
+			if (settings.OpenDW && scene.name == "FluffyFields")
+				OpenDreamWorld();
 
 			if (DoModifyShardReqs)
 				ModifyShardDungeonReqs();
@@ -219,9 +252,8 @@ namespace ArchipelagoRandomizer
 			if (DoGiveTempEFCS)
 				GiveTempEFCS();
 
-			// Open DW
-			if (settings.OpenDW && scene.name == "FluffyFields")
-				OpenDreamWorld();
+			if (settings.IncludeSuperSecrets && scene.name == "Deep19s")
+				CreateRemedySigns();
 		}
 
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)

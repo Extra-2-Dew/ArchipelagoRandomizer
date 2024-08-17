@@ -22,8 +22,9 @@ namespace ArchipelagoRandomizer
 		private RoomLoadEvents roomEventHandler;
 		private Entity player;
 		private SaverOwner mainSaver;
-		private bool rollOpensChests;
 		private RandomizerSettings settings;
+		private PlayerActionModifier playerActionModifier;
+		private bool rollOpensChests;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -41,6 +42,7 @@ namespace ArchipelagoRandomizer
 			sceneEventHandler = new SceneLoadEvents(settings);
 			roomEventHandler = new RoomLoadEvents(settings);
 			mainSaver = ModCore.Plugin.MainSaver;
+			playerActionModifier = new();
 
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 
