@@ -128,7 +128,7 @@
 			"iconName": "ForbiddenKey",
 			"offset": 15,
 			"saveFlag": "evilKeys",
-			"type": "EvilKey"
+			"flag": "Macguffin"
 		},
 		{
 			"itemName": "Lockpick",
@@ -171,7 +171,7 @@
 			"iconName": "RaftPiece",
 			"offset": 21,
 			"saveFlag": "raft",
-			"flag": "Major"
+			"flag": "Macguffin"
 		},
 		{
 			"itemName": "Pillow Fort Key",
@@ -466,7 +466,7 @@
 			"iconName": "Loot",
 			"offset": 64,
 			"saveFlag": "loot",
-			"flag": "Major"
+			"flag": "Macguffin"
 		},
 		{
 			"itemName": "Impossible Gates Pass",

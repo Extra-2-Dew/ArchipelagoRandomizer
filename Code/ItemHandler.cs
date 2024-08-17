@@ -40,7 +40,6 @@ namespace ArchipelagoRandomizer
 			Crayon,
 			Debuff,
 			EFCS,
-			EvilKey,
 			Heart,
 			Key,
 			Keyring,
@@ -55,8 +54,8 @@ namespace ArchipelagoRandomizer
 		public enum ItemFlags
 		{
 			None = 0,
-			Major = 1,
-			Useful = 2,
+			Macguffin = 1,
+			Major = 2,
 			Minor = 4,
 			Junk = 8
 		}
