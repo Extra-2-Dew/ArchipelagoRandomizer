@@ -99,6 +99,7 @@
 		{
 			"location": "Sweetwater Coast Caves - Portal Spikes Chest",
 			"offset": 104,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-68--27"
 		},
 		{
