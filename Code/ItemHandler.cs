@@ -239,11 +239,8 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 
-			OverlayFader.StartFade(fadeData, true, delegate ()
-			{
-				stopwatch = Stopwatch.StartNew();
-				ModCore.Utility.LoadScene("Deep7");
-			}, Vector3.zero);
+			stopwatch = Stopwatch.StartNew();
+			ModCore.Utility.LoadScene("Deep7");
 		}
 
 		private void OnDisable()
@@ -415,6 +412,7 @@ namespace ArchipelagoRandomizer
 				StoreStatus(statuses, false, "Cold");
 				StoreStatus(statuses, false, "Fragile");
 				StoreStatus(statuses, false, "Weak");
+
 				ModCore.Utility.LoadScene("MachineFortress");
 			}
 			else if (scene.name == "MachineFortress")
