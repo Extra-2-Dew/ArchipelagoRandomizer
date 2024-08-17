@@ -35,9 +35,9 @@ Currently, the following locations are randomized:
 ## What is the goal of the randomizer?
 
 There are three possible goals:
-* Raft Quest: Simply find the 8 Raft Pieces and escape the island.
-* Queen of Adventure: Find the 8 Raft Pieces, but before you can escape the island, you must also defeat Simulacrum and take her Big Ol' Bag of Loot.
-* Queen of Dreams: Find a Raft Piece to enter the Dreamworld and complete all five Dreamworld dungeons. This will let you escape the island.
+* **Raft Quest**: Simply find the 8 Raft Pieces and escape the island.
+* **Queen of Adventure**: Find the 8 Raft Pieces, but before you can escape the island, you must also defeat Simulacrum and take her Big Ol' Bag of Loot.
+* **Queen of Dreams**: Find a Raft Piece to enter the Dreamworld and complete all five Dreamworld dungeons. This will let you escape the island.
 
 ## Installation
 
@@ -63,14 +63,14 @@ Click it, and you'll be brought to the Connection Info menu. (Note, none of the 
 
 ![Connection Info](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ConnectionInfo.png)
 
-* Server: The server URL that is hosting the randomizer seed. Do not include the port.
-* Port: Port of the server to connect to. These are the five numbers after the : in the full server address.
-* Slot Name: Your player's slot name.
-* Password: If your server has a password, you'll need to enter it here to connect.
-* Deathlink: When you die, everyone dies. Of course, the reverse is true too.
-* Equip Outfits: Automatically equip outfits when you receive them.
-* Stackable Statuses: Makes it possible to stack multiple of the same status effect on Ittle and enemies, and allows Ittle to receive multiple positive statuses at once.
-* Chests Match Contents: Makes chests change color to reflect their contents. More details below.
+* **Server**: The server URL that is hosting the randomizer seed. Do not include the port.
+* **Port**: Port of the server to connect to. These are the five numbers after the : in the full server address.
+* **Slot Name**: Your player's slot name.
+* **Password**: If your server has a password, you'll need to enter it here to connect.
+* **Deathlink**: When you die, everyone dies. Of course, the reverse is true too.
+* **Equip Outfits**: Automatically equip outfits when you receive them.
+* **Stackable Statuses**: Makes it possible to stack multiple of the same status effect on Ittle and enemies, and allows Ittle to receive multiple positive statuses at once.
+* **Chests Match Contents**: Makes chests change color to reflect their contents. More details below.
 
 Once you have your info entered, press Back, and the game will attempt to connect to the server (or give you an error if it fails). The Archipelago logo will become colored. Now, simply input your file name (or just leave it as the default "Ittle") and press "Confirm" to start your adventure!
 
