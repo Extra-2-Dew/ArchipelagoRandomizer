@@ -83,7 +83,6 @@
 		{
 			public bool CheckPrevent(Attack attack)
 			{
-				Plugin.Log.LogInfo(attack.name);
 				return attack.name.StartsWith("Melee1");
 			}
 		}
