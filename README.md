@@ -72,7 +72,7 @@ Click it, and you'll be brought to the Connection Info menu. (Note, none of the 
 * **Stackable Statuses**: Makes it possible to stack multiple of the same status effect on Ittle and enemies, and allows Ittle to receive multiple positive statuses at once.
 * **Chests Match Contents**: Makes chests change color to reflect their contents. More details below.
 
-Once you have your info entered, press Back, and the game will attempt to connect to the server (or give you an error if it fails). The Archipelago logo will become colored. Now, simply input your file name (or just leave it as the default "Ittle") and press "Confirm" to start your adventure!
+Once you have your info entered, press Back, and the game will attempt to connect to the server (or give you an error if it fails). The Archipelago logo will become colored if a connection was successfully established. Now, simply input your file name (or just leave it as the default "Ittle") and press "Confirm" to start your adventure!
 
 If you need to change your connection info or settings, the Archipelago button can be pressed on the File Summary screen.
 
@@ -93,6 +93,12 @@ If you have the setting on, chests will change their colors to let you know what
 ![Chests Match Contents chart](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ChestsMatchContentsChart.png)
 
 What about traps? Well...you'll figure it out.
+
+### Is there a text client for this?
+
+You can use the ModCore console as an Archipelago text client! Open it with the \` (grave accent) key at any time. All standard Archipelago commands can be entered by using the `ap` command. For example, you can use `ap !hint sword` or `ap !release`. You can also simply chat by preceding your chat message with `ap`; for example `ap Some text` will chat "Some text" to all other text clients.
+
+![Console example](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ConsoleExample.png)
 
 ## Want to keep up with development?
 
