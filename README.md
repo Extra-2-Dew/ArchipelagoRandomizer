@@ -19,7 +19,7 @@ Currently, the randomizer can give you the following:
 * Random status effects (both positive and negative)
 * BEES
 
-EFCS is replaced with the Impossible Gates Pass, which automatically opens doors that normally requires EFCS.
+EFCS is replaced with the Impossible Gates Pass, which automatically opens doors and gates that normally requires EFCS.
 
 ## What locations are included in the randomizer?
 
