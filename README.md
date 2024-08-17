@@ -2,7 +2,7 @@
 
 ## What's an Archipelago Randomizer?
 
-A randomizer is software that rearranges the items in a game, increasing replayability by ensuring you get items in a different order every playthrough. In the case of Ittle Dew 2, your Raft Pieces could be hidden in some random caves, your dynamite could be locked behind a boss fight, and a yellow heart could be your reward for Northern End.
+A randomizer is software that rearranges the items in a game, increasing replayability by ensuring you get items in a different order every playthrough. In the case of Ittle Dew 2, your Raft Pieces could be hidden in some random caves, your dynamite could be locked behind a boss fight, and a tracker upgrade could be your reward for Northern End.
 
 [Archipelago](https://archipelago.gg) is a multiworld framework, allowing multiple games to combine their randomizers and send items between players. For example, I could play Ittle Dew 2 while a friend plays Tunic. I find the Tunic player's stick, which allows them to defeat some enemies and find my dynamite. We continue exploring our islands whacking enemies with our sticks and blowing stuff up until we find enough items for us to both beat our games.
 
@@ -10,13 +10,12 @@ A randomizer is software that rearranges the items in a game, increasing replaya
 
 Currently, the randomizer can give you the following:
 
-* Everything in the Loot menu, except Forbidden Keys, Secret Shards, and the Big Ol' Bag of Loot
+* Everything in the Loot menu
 * All outfits
 * All cards
-* All standard dungeon keys
+* All dungeon keys
 * Crayons
 * Lockpicks
-* Yellow Hearts
 * Random status effects (both positive and negative)
 * BEES
 
@@ -29,15 +28,20 @@ Currently, the following locations are randomized:
 * All Optional Hidden Caves
 * All chests and keys in the main eight dungeons
 * All chests in the 15 main Portal Worlds (optional)
+* All chests and keys in the four secret dungeons (optional)
+* All cards and keys in the five Dreamworld dungeons (optional)
 * Certain SUPER SECRET LOCATIONS (optional)
 
 ## What is the goal of the randomizer?
 
-Currently, the only goal is Raft Quest, which requires that you obtain all eight Raft Pieces and return to Fluffy Fields to escape the island. Other goals will be added in the future.
+There are three possible goals:
+* Raft Quest: Simply find the 8 Raft Pieces and escape the island.
+* Queen of Adventure: Find the 8 Raft Pieces, but before you can escape the island, you must also defeat Simulacrum and take her Big Ol' Bag of Loot.
+* Queen of Dreams: Find a Raft Piece to enter the Dreamworld and complete all five Dreamworld dungeons. This will let you escape the island.
 
 ## Installation
 
-1. Download the latest version of [ModCore](https://github.com/Extra-2-Dew/ModCore) along with its dependencies.
+1. Download the latest version of [ModCore](https://github.com/Extra-2-Dew/ModCore) along with Bepinex. Details are in their Readmes.
 2. Download the latest release (the zip file) from the [Releases page](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/releases).
 3. Unzip the release and drop it into your Bepinex plugins folder.
 
@@ -57,7 +61,7 @@ Once a server has been set up, launch Ittle Dew 2 and start a new game. You shou
 
 Click it, and you'll be brought to the Connection Info menu. (Note, none of the custom UI supports controller.)
 
-![image](https://github.com/user-attachments/assets/f4767178-f4e1-4c35-b025-d785cb32fd90)
+![Connection Info](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ConnectionInfo.png)
 
 * Server: The server URL that is hosting the randomizer seed. Do not include the port.
 * Port: Port of the server to connect to. These are the five numbers after the : in the full server address.
@@ -66,6 +70,7 @@ Click it, and you'll be brought to the Connection Info menu. (Note, none of the 
 * Deathlink: When you die, everyone dies. Of course, the reverse is true too.
 * Equip Outfits: Automatically equip outfits when you receive them.
 * Stackable Statuses: Makes it possible to stack multiple of the same status effect on Ittle and enemies, and allows Ittle to receive multiple positive statuses at once.
+* Chests Match Contents: Makes chests change color to reflect their contents. More details below.
 
 Once you have your info entered, press Back, and the game will attempt to connect to the server (or give you an error if it fails). The Archipelago logo will become colored. Now, simply input your file name (or just leave it as the default "Ittle") and press "Confirm" to start your adventure!
 
@@ -80,6 +85,14 @@ If you want to generate a seed locally, or host a seed on either your own server
 There are no official trackers yet, but Ittle Dew 2 is compatible with the [Universal Tracker](https://discord.com/channels/731205301247803413/1170094879142051912).
 
 As the mod is still in develpment, there may be bugs, softlocks, or items not properly granted. If this happens, you may want to use the [Debug Menu Cheats](https://github.com/Extra-2-Dew/DebugMenuCheats) mod to remedy any issues.
+
+### What's this "Chests Match Contents" setting?
+
+If you have the setting on, chests will change their colors to let you know what kind of item is inside them. If they're in a crystal, the crystal will change color too.
+
+![Chests Match Contents chart](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ChestsMatchContentsChart.png)
+
+What about traps? Well...you'll figure it out.
 
 ## Want to keep up with development?
 
