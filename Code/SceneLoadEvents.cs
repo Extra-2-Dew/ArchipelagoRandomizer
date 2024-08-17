@@ -65,7 +65,7 @@ namespace ArchipelagoRandomizer
 				GameObject.Find("LevelRoot").transform.Find("U/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
 
 			else if (SceneName == "Deep19s" && RandomizerSettings.Instance.IncludeSuperSecrets)
-				GameObject.Find("LevelRoot").transform.Find("B/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
+				GameObject.Find("LevelRoot").transform.Find("B/Doodads/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
 
 			else if (SceneName == "MachineFortress")
 				GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject.AddComponent<RandomizedObject>();
@@ -144,7 +144,13 @@ namespace ArchipelagoRandomizer
 		/// </summary>
 		private void ModifyShardDungeonReqs()
 		{
-			ExprVarHolder varHolder = GameObject.Find("SecretDungeonDoor").GetComponent<ExprVarHolder>();
+			GameObject secretDungeonDoor = GameObject.Find("SecretDungeonDoor");
+
+			// Return if no door (is disabled after button is pressed)
+			if (secretDungeonDoor == null)
+				return;
+
+			ExprVarHolder varHolder = secretDungeonDoor.GetComponent<ExprVarHolder>();
 			string key = "shardTarget";
 
 			// If half
@@ -179,35 +185,41 @@ namespace ArchipelagoRandomizer
 		{
 			GameObject signBase = GameObject.Find("LevelRoot").transform.Find("F").GetChild(9).gameObject;
 			GameObject speechBase = GameObject.Find("LevelRoot").transform.Find("F/Doodads/SpeechBubble").gameObject;
-			GameObject reqsSign = GameObject.Instantiate(signBase);
+
+			// Set up requirements sign
+			GameObject reqsSign = Object.Instantiate(signBase);
 			reqsSign.name = "Requirements Sign";
-			GameObject reqsSpeech = GameObject.Instantiate(speechBase);
-			reqsSpeech.name = "Speech Bubble";
-			reqsSpeech.GetComponent<Sign>()._configString = null;
-			reqsSpeech.GetComponent<Sign>()._text = "Only the one who can pass the\nimpossible gates and wields the\nflaming mace may proceed.";
-			reqsSpeech.transform.SetParent(reqsSign.transform);
-			reqsSpeech.transform.localPosition = Vector3.up * 0.5f;
 			reqsSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
 			reqsSign.transform.position = new Vector3(49, 0, -78);
 			reqsSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
 			reqsSign.AddComponent<Light>().color = new(1, 0.4f, 0.4f);
-			GameObject hintSign = GameObject.Instantiate(reqsSign);
+
+			// Set up requirements speech bubble
+			GameObject reqsSpeech = Object.Instantiate(speechBase);
+			reqsSpeech.name = "Speech Bubble";
+			reqsSpeech.transform.SetParent(reqsSign.transform);
+			reqsSpeech.transform.localPosition = Vector3.up * 0.5f;
+			Sign reqsSpeechSign = reqsSpeech.GetComponent<Sign>();
+			reqsSpeechSign._configString = null;
+			reqsSpeechSign._text = "Only the one who can pass the\nimpossible gates and wields the\nflaming mace may proceed.";
+
+			// Set up hint sign
+			GameObject hintSign = Object.Instantiate(signBase);
 			hintSign.name = "Hint Sign";
-			string hintPlayer = "";
-			string hintItem = "";
-			ItemRandomizer.Instance.GetItemForLocation("Deep19s", "outfit9", out ScoutedItemInfo itemInfo);
-			if (itemInfo.Player.Slot == APHandler.Instance.CurrentPlayer.Slot)
-			{
-				hintPlayer = "your";
-			}
-			else
-			{
-				hintPlayer = itemInfo.Player.Name + "'s";
-			}
-			hintItem = itemInfo.ItemName;
-			hintSign.GetComponentInChildren<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {hintPlayer} {hintItem}\nawaits.";
 			hintSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
 			hintSign.transform.position = new Vector3(55, 0, -78);
+			hintSign.transform.localScale = new Vector3(-1, 1, 1);
+			hintSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
+			hintSign.AddComponent<Light>().color = new(1, 0.4f, 0.4f);
+
+			// Set up hint speech bubble
+			GameObject hintSpeech = Object.Instantiate(reqsSpeech);
+			hintSpeech.name = "Speech Bubble";
+			hintSpeech.transform.SetParent(hintSign.transform);
+			hintSpeech.transform.localPosition = Vector3.up * 0.5f;
+			ItemRandomizer.Instance.GetItemForLocation("Deep19s", "outfit9", out ScoutedItemInfo itemInfo);
+			string player = itemInfo.Player.Slot == APHandler.Instance.CurrentPlayer.Slot ? "your" : itemInfo.Player.Name + "'s";
+			hintSpeech.GetComponent<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {player} {itemInfo.ItemDisplayName}\n awaits.";
 		}
 
 		private void DisableRando()
