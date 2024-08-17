@@ -480,293 +480,335 @@
 			"iconName": "Card",
 			"offset": 100,
 			"saveFlag": "Fishbun",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 2 - Stupid Bee",
 			"iconName": "Card",
 			"offset": 101,
 			"saveFlag": "StupidBee",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 3 - Safety Jenny",
 			"iconName": "Card",
 			"offset": 102,
 			"saveFlag": "JennySafety",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 4 - Shellbun",
 			"iconName": "Card",
 			"offset": 103,
 			"saveFlag": "Shellbun",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 5 - Spikebun",
 			"iconName": "Card",
 			"offset": 104,
 			"saveFlag": "Spikebun",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 6 - Feral Gate",
 			"iconName": "Card",
 			"offset": 105,
 			"saveFlag": "FeralGate",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 7 - Candy Snake",
 			"iconName": "Card",
 			"offset": 106,
 			"saveFlag": "CandySnake",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 8 - Hermit Legs",
 			"iconName": "Card",
 			"offset": 107,
 			"saveFlag": "HermitLegs",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 9 - Ogler",
 			"iconName": "Card",
 			"offset": 108,
 			"saveFlag": "Ogler",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 10 - Hyperdusa",
 			"iconName": "Card",
 			"offset": 109,
 			"saveFlag": "Hyperdusa",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 11 - Evil Easel",
 			"iconName": "Card",
 			"offset": 110,
 			"saveFlag": "EvilEasel",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 12 - Warnip",
 			"iconName": "Card",
 			"offset": 111,
 			"saveFlag": "Warnip",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 13 - Octacle",
 			"iconName": "Card",
 			"offset": 112,
 			"saveFlag": "Octacle",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 14 - Rotnip",
 			"iconName": "Card",
 			"offset": 113,
 			"saveFlag": "Rotnip",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 15 - Bee Swarm",
 			"iconName": "Card",
 			"offset": 114,
 			"saveFlag": "BeeSwarm",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 16 - Volcano",
 			"iconName": "Card",
 			"offset": 115,
 			"saveFlag": "Volcano",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 17 - Jenny Shark",
 			"iconName": "Card",
 			"offset": 116,
 			"saveFlag": "JennyShark",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 18 - Swimmy Roger",
 			"iconName": "Card",
 			"offset": 117,
 			"saveFlag": "SwimmyRoger",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 19 - Bunboy",
 			"iconName": "Card",
 			"offset": 118,
 			"saveFlag": "Bunboy",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 20 - Spectre",
 			"iconName": "Card",
 			"offset": 119,
 			"saveFlag": "Spectre",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 21 - Return of Brutus",
 			"iconName": "Card",
 			"offset": 120,
 			"saveFlag": "Brutus",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 22 - Jelly",
 			"iconName": "Card",
 			"offset": 121,
 			"saveFlag": "Jelly",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 23 - Skullnip",
 			"iconName": "Card",
 			"offset": 122,
 			"saveFlag": "Skullnip",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 24 - Slayer Jenny",
 			"iconName": "Card",
 			"offset": 123,
 			"saveFlag": "JennySlayer",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 25 - Titan",
 			"iconName": "Card",
 			"offset": 124,
 			"saveFlag": "Titan",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 26 - Chilly Roger",
 			"iconName": "Card",
 			"offset": 125,
 			"saveFlag": "ChillyRoger",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 27 - Jenny Flower",
 			"iconName": "Card",
 			"offset": 126,
 			"saveFlag": "JennyFlower",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 28 - Hexrot",
 			"iconName": "Card",
 			"offset": 127,
 			"saveFlag": "Hexrot",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 29 - Jenny Mole",
 			"iconName": "Card",
 			"offset": 128,
 			"saveFlag": "JennyMole",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 30 - Jenny Bun (Unemployed)",
 			"iconName": "Card",
 			"offset": 129,
 			"saveFlag": "JennyBun",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 31 - Jenny Cat",
 			"iconName": "Card",
 			"offset": 130,
 			"saveFlag": "JennyCat",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 32 - Jenny Mermaid",
 			"iconName": "Card",
 			"offset": 131,
 			"saveFlag": "JennyMermaid",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 33 - Jenny Berry (Vacation)",
 			"iconName": "Card",
 			"offset": 132,
 			"saveFlag": "JennyBerry",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 34 - Mapman",
 			"iconName": "Card",
 			"offset": 133,
 			"saveFlag": "Mapman",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 35 - Cyberjenny",
 			"iconName": "Card",
 			"offset": 134,
 			"saveFlag": "Cyberjenny",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 36 - Le Biadlo",
 			"iconName": "Card",
 			"offset": 135,
 			"saveFlag": "LeBiadlo",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 37 - Lenny",
 			"iconName": "Card",
 			"offset": 136,
 			"saveFlag": "Lenny",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 38 - Passel Carver",
 			"iconName": "Card",
 			"offset": 137,
 			"saveFlag": "Passel",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 39 - Tippsie",
 			"iconName": "Card",
 			"offset": 138,
 			"saveFlag": "Tippsie",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 40 - Ittle Dew",
 			"iconName": "Card",
 			"offset": 139,
 			"saveFlag": "IttleDew",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Card 41 - Napping Fly",
 			"iconName": "Card",
 			"offset": 140,
 			"saveFlag": "NappingFly",
-			"type": "Card"
+			"type": "Card",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Random Buff",
 			"iconName": "Custom/BuffRandom",
 			"offset": 141,
-			"type": "Buff"
+			"type": "Buff",
+			"flag": "Junk"
 		},
 		{
 			"itemName": "Random Debuff Trap",
