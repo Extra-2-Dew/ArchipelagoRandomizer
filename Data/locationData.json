@@ -4,7 +4,7 @@
 			"location": "Fluffy Fields Caves - Goldbun Combat Chest",
 			"offset": 0,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_EnemyChest-21--2"
+			"flag": "Chest-21--2"
 		},
 		{
 			"location": "Fluffy Fields Caves - Portal Room Chest",
@@ -28,7 +28,7 @@
 			"location": "Fluffy Fields Caves - Laser Chest",
 			"offset": 4,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_PuzzleChest-99--4"
+			"flag": "Chest-99--4"
 		},
 		{
 			"location": "Fluffy Fields Caves - Number Blocks Chest",
@@ -46,7 +46,7 @@
 			"location": "Fluffy Fields Caves - Double Spikebun Combat Chest",
 			"offset": 7,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_EnemyChest-82--16"
+			"flag": "Chest-82--16"
 		},
 		{
 			"location": "Fluffy Fields Caves - Potion Bar Chest",
@@ -58,7 +58,7 @@
 			"location": "Fluffy Fields Caves - Six Buns Combat Chest",
 			"offset": 9,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_EnemyChest-40--29"
+			"flag": "Chest-40--29"
 		},
 		{
 			"location": "Fluffy Fields Caves - Artist Backroom Chest",
@@ -94,7 +94,7 @@
 			"location": "Sweetwater Coast Caves - Four Candy Snakes Combat Chest",
 			"offset": 103,
 			"scene": "CandyCoastCaves",
-			"flag": "Dungeon_EnemyChest-25--17"
+			"flag": "Chest-25--17"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Portal Spikes Chest",
@@ -147,7 +147,7 @@
 			"location": "Fancy Ruins Caves - Big Ogler Combat Chest",
 			"offset": 203,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_EnemyChest-47--6"
+			"flag": "Chest-47--6"
 		},
 		{
 			"location": "Fancy Ruins Caves - Hint Turnip Chest",
@@ -159,7 +159,7 @@
 			"location": "Fancy Ruins Caves - Rhythm Pillars Chest",
 			"offset": 205,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_PuzzleChest-9--17"
+			"flag": "Chest-9--17"
 		},
 		{
 			"location": "Fancy Ruins Caves - Teleporter Puzzle Chest",
@@ -171,13 +171,13 @@
 			"location": "Fancy Ruins Caves - Four Oglers Combat Chest",
 			"offset": 207,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_EnemyChest-37--14"
+			"flag": "Chest-37--14"
 		},
 		{
 			"location": "Fancy Ruins Caves - Spike Path Chest",
 			"offset": 208,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_PuzzleChest-51--18"
+			"flag": "Chest-51--18"
 		},
 		{
 			"location": "Fancy Ruins Caves - Hiding Hermit Chest",
@@ -189,25 +189,25 @@
 			"location": "Fancy Ruins Caves - Ice and Torch Chest",
 			"offset": 210,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_PuzzleChest-80--16"
+			"flag": "Chest-80--16"
 		},
 		{
 			"location": "Star Woods Caves - Turnip Combat Chest",
 			"offset": 300,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_EnemyChest-3--3"
+			"flag": "Chest-3--3"
 		},
 		{
 			"location": "Star Woods Caves - Barrel Blast Chest",
 			"offset": 301,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_PuzzleChest-22--5"
+			"flag": "Chest-22--5"
 		},
 		{
 			"location": "Star Woods Caves - Four Crystals Chest",
 			"offset": 302,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_PuzzleChest-36--4"
+			"flag": "Chest-36--4"
 		},
 		{
 			"location": "Star Woods Caves - Sleeping Safety Jenny Chest",
@@ -225,7 +225,7 @@
 			"location": "Star Woods Caves - Number Tiles Chest",
 			"offset": 305,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_PuzzleChest-94--3"
+			"flag": "Chest-94--3"
 		},
 		{
 			"location": "Star Woods Caves - Whirlwind Chest",
@@ -261,7 +261,7 @@
 			"location": "Slippery Slope Caves - Volcanic Path Chest",
 			"offset": 400,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-3--5"
+			"flag": "Chest-3--5"
 		},
 		{
 			"location": "Slippery Slope Caves - Ice and Barrels Chest",
@@ -273,7 +273,7 @@
 			"location": "Slippery Slope Caves - Eight Crystals Chest",
 			"offset": 402,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-50--3"
+			"flag": "Chest-50--3"
 		},
 		{
 			"location": "Slippery Slope Caves - Forgetful Jennies Chest",
@@ -285,7 +285,7 @@
 			"location": "Slippery Slope Caves - Push the Crystals Chest",
 			"offset": 404,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-82--3"
+			"flag": "Chest-82--3"
 		},
 		{
 			"location": "Slippery Slope Caves - Exhausted Turnip Chest",
@@ -297,7 +297,7 @@
 			"location": "Slippery Slope Caves - Bee Nest Combat Chest",
 			"offset": 406,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_EnemyChest-25--15"
+			"flag": "Chest-25--15"
 		},
 		{
 			"location": "Slippery Slope Caves - Pushable Fan Chest",
@@ -309,7 +309,7 @@
 			"location": "Slippery Slope Caves - Moving Crystals Chest",
 			"offset": 408,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-53--16"
+			"flag": "Chest-53--16"
 		},
 		{
 			"location": "Slippery Slope Caves - Shark House",
@@ -321,7 +321,7 @@
 			"location": "Pepperpain Caves - Cowbun Combat Chest",
 			"offset": 500,
 			"scene": "VitaminHillsCaves",
-			"flag": "Dungeon_EnemyChest-7--5"
+			"flag": "Chest-7--5"
 		},
 		{
 			"location": "Pepperpain Caves - Brutus Combat Chest",
@@ -375,7 +375,7 @@
 			"location": "Pepperpain Caves - Number Tiles Chest",
 			"offset": 509,
 			"scene": "VitaminHillsCaves",
-			"flag": "Dungeon_PuzzleChest-18--27"
+			"flag": "Chest-18--27"
 		},
 		{
 			"location": "Pepperpain Caves - Pacifist Brute Chest",
@@ -387,37 +387,37 @@
 			"location": "Frozen Court Caves - Bushfire Chest",
 			"offset": 600,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-7--9"
+			"flag": "Chest-7--9"
 		},
 		{
 			"location": "Frozen Court Caves - Cannon Spinner Chest",
 			"offset": 601,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-20--2"
+			"flag": "Chest-20--2"
 		},
 		{
 			"location": "Frozen Court Caves - Mimicbuns Combat Chest",
 			"offset": 602,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_EnemyChest-37--5"
+			"flag": "Chest-37--5"
 		},
 		{
 			"location": "Frozen Court Caves - Teleporter Maze Chest",
 			"offset": 603,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-63--3"
+			"flag": "Chest-63--3"
 		},
 		{
 			"location": "Frozen Court Caves - Chilly Roger Combat Chest",
 			"offset": 604,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_EnemyChest-84--5"
+			"flag": "Chest-84--5"
 		},
 		{
 			"location": "Frozen Court Caves - Rickety Bridge Chest",
 			"offset": 605,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-6--15"
+			"flag": "Chest-6--15"
 		},
 		{
 			"location": "Frozen Court Caves - Titans Combat Chest",
@@ -447,7 +447,7 @@
 			"location": "Lonely Road Caves - Timed Platforms Chest",
 			"offset": 700,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-18--6"
+			"flag": "Chest-18--6"
 		},
 		{
 			"location": "Lonely Road Caves - Timed Number Tiles Chest",
@@ -465,13 +465,13 @@
 			"location": "Lonely Road Caves - Lava Fans Chest",
 			"offset": 703,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-52--17"
+			"flag": "Chest-52--17"
 		},
 		{
 			"location": "Lonely Road Caves - Force Turrets Chest",
 			"offset": 704,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-80--15"
+			"flag": "Chest-80--15"
 		},
 		{
 			"location": "Lonely Road Caves - Hint Shark Chest",
@@ -489,19 +489,19 @@
 			"location": "Lonely Road Caves - Dark Maze Chest",
 			"offset": 707,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-87--32"
+			"flag": "Chest-87--32"
 		},
 		{
 			"location": "Lonely Road Caves - Block Factory",
 			"offset": 708,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-67--32"
+			"flag": "Chest-67--32"
 		},
 		{
 			"location": "Pillow Fort - Treasure Chest",
 			"offset": 800,
 			"scene": "PillowFort",
-			"flag": "Dungeon_PuzzleChest-39--28"
+			"flag": "Chest-39--28"
 		},
 		{
 			"location": "Pillow Fort - Shellbun Nest Key",
@@ -513,7 +513,7 @@
 			"location": "Pillow Fort - Crayon Chest",
 			"offset": 802,
 			"scene": "PillowFort",
-			"flag": "Dungeon_EnemyChest-3--29"
+			"flag": "Chest-3--29"
 		},
 		{
 			"location": "Pillow Fort - Safety Jenny Gate Key",
@@ -603,7 +603,7 @@
 			"location": "Trash Cave - Crayon Chest",
 			"offset": 1100,
 			"scene": "TrashCave",
-			"flag": "Dungeon_PuzzleChest-65--39"
+			"flag": "Chest-65--39"
 		},
 		{
 			"location": "Trash Cave - Ice Barricade Key",
@@ -891,7 +891,7 @@
 			"Location": "Sunken Labyrinth - Crayon Chest",
 			"Offset": 1604,
 			"Scene": "SunkenLabyrinth",
-			"Flag": "Dungeon_PuzzleChest-41--80"
+			"Flag": "Chest-41--80"
 		},
 		{
 			"Location": "Sunken Labyrinth - Boss Reward Chest",
@@ -1449,7 +1449,7 @@
 			"location": "Scrap Yard - Chest",
 			"offset": 2504,
 			"scene": "Deep5",
-			"flag": "Dungeon_EnemyChest-18--3"
+			"flag": "Chest-18--3"
 		},
 		{
 			"location": "Brutal Oasis - Chest",
