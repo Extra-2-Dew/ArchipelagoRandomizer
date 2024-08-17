@@ -22,10 +22,6 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.ChestColors("Brown", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Brown", "Brown", "Burgundy"))
 			},
-			{ new("Card",
-				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
-				new ChestCrystalColorData.CrystalColors("Burgundy", "Burgundy", "LightGrey"))
-			},
 			{ new("Shard",
 				new ChestCrystalColorData.ChestColors("DarkGrey", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("DarkGrey", "DarkGrey", "LightGrey"))
@@ -33,10 +29,6 @@ namespace ArchipelagoRandomizer
 			{ new("Junk",
 				new ChestCrystalColorData.ChestColors("Burgundy", "Silver", "Silver"),
 				new ChestCrystalColorData.CrystalColors("Burgundy", "Silver", "Silver"))
-			},
-			{ new("Key",
-				new ChestCrystalColorData.ChestColors("Magenta", "Gold", "Gold"),
-				new ChestCrystalColorData.CrystalColors("Magenta", "Gold", "Gold"))
 			},
 			{ new("Filler",
 				new ChestCrystalColorData.ChestColors("Cyan", "Grey", "Grey"),
