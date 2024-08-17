@@ -82,8 +82,6 @@ namespace ArchipelagoRandomizer
 
 			ChestCrystalColorData colors = null;
 
-			Plugin.Log.LogInfo(scoutedItemInfo == null);
-
 			if (scoutedItemInfo != null)
 			{
 				// If trap
