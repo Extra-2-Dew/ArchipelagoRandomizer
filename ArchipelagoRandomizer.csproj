@@ -6,6 +6,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>Latest</LangVersion>
 		<NoWarn>1701;1702;0436</NoWarn>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
 	
 	<!-- Custom properties-->

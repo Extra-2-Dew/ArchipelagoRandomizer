@@ -10,7 +10,15 @@ namespace ArchipelagoRandomizer
 		private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/";
 		private static readonly List<ChestCrystalColorData> chestCrystalColors = new()
 		{
-			{ new("Minor",
+			{ new("Key",
+				new ChestCrystalColorData.ChestColors("Yellow", "DarkGrey", "Grey"),
+				new ChestCrystalColorData.CrystalColors("Gold", "Gold", "Yellow"))
+			},
+            { new("Macguffin",
+                new ChestCrystalColorData.ChestColors("Purple", "LightGrey", "Pearl"),
+                new ChestCrystalColorData.CrystalColors("Purple", "Purple", "White"))
+            },
+            { new("Minor",
 				new ChestCrystalColorData.ChestColors("Brown", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Brown", "Brown", "Burgundy"))
 			},
@@ -50,7 +58,11 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.ChestColors("Orange", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Yellow"))
 			},
-		};
+            { new("Empty",
+                new ChestCrystalColorData.ChestColors("LightGrey", "Grey", "Grey"),
+                new ChestCrystalColorData.CrystalColors("Silver", "Silver", "Grey"))
+            }
+        };
 		private static readonly Dictionary<string, Texture2D> cachedTextures = new();
 
 		public static ChestReplacer Instance
