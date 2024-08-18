@@ -242,13 +242,6 @@ namespace ArchipelagoRandomizer
 				foreach (ScoutedItemInfo item in scoutResult.Values)
 				{
 					scoutedItems.Add(item);
-					//if (item.ItemDisplayName == "Roll")
-					//{
-					//	Plugin.Log.LogInfo("Testing Roll...");
-					//	Plugin.Log.LogInfo($"LocationId = {item.LocationId}");
-					//	ItemRandomizer.LocationData.Location locationData = ItemRandomizer.Locations.Find(x => item.LocationId - x.Offset == baseId);
-					//	Plugin.Log.LogInfo($"Found location: {locationData.LocationName}");
-					//}
 				}
 			}, Session.Locations.AllLocations.ToArray());
 		}
