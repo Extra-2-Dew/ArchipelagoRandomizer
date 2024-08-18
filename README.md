@@ -82,7 +82,7 @@ If you want to generate a seed locally, or host a seed on either your own server
 
 ### Should I have anything else?
 
-There are no official trackers yet, but Ittle Dew 2 is compatible with the [Universal Tracker](https://discord.com/channels/731205301247803413/1170094879142051912).
+Arborelia has been working on a [Poptracker pack](https://github.com/arborelia/ittledew2-poptracker). It's not 100% accurate to the logic yet, but should be largely correct for seeds without phasing logic. This randomizer is also compatible with the [Universal Tracker](https://discord.com/channels/731205301247803413/1170094879142051912).
 
 As the mod is still in develpment, there may be bugs, softlocks, or items not properly granted. If this happens, you may want to use the [Debug Menu Cheats](https://github.com/Extra-2-Dew/DebugMenuCheats) mod to remedy any issues.
 
