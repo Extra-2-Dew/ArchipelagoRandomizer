@@ -12,12 +12,6 @@ namespace ArchipelagoRandomizer
 		private void Awake()
 		{
 			Instance = this;
-			/*
-			dungeonRewardSetting = APHandler.GetSlotData<long>("dungeon_rewards_setting");
-			requiredDungeons = dungeonRewardSetting != 0 ?
-				APHandler.GetSlotData<JArray>("required_dungeons").ToObject<List<string>>() :
-				null;
-			*/
 			requiredDungeons = RandomizerSettings.Instance.RequiredDungeons;
 		}
 
@@ -116,7 +110,7 @@ namespace ArchipelagoRandomizer
 
 		private void OnSpawnEntity(Entity entity)
 		{
-			if (requiredDungeons == null)
+			if (requiredDungeons == null || requiredDungeons.Count == 0)
 				return;
 
 			if (entity.name == "NPCJennyMole")

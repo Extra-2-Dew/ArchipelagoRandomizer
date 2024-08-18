@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				if (!settings.IncludeSuperSecrets || SceneName != "Deep19s")
+				if (!settings.IncludeSuperSecrets)
 					return false;
 
 				Entity player = ModCore.Utility.GetPlayer();
@@ -26,10 +26,7 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				if (settings.ShardSetting == ShardSettings.Open || settings.ShardSetting == ShardSettings.Vanilla)
-					return false;
-
-				return SceneName == "FluffyFields" || SceneName == "FancyRuins" || SceneName == "StarWoods";
+				return settings.ShardSetting == ShardSettings.Half || settings.ShardSetting == ShardSettings.Lockdown;
 			}
 		}
 
@@ -222,6 +219,12 @@ namespace ArchipelagoRandomizer
 			hintSpeech.GetComponent<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {player} {itemInfo.ItemDisplayName}\n awaits.";
 		}
 
+		private void RemoveBeeChestSpawner()
+		{
+			Transform beeChest = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees");
+			Object.Destroy(beeChest.GetComponent<SpawnEntityEventObserver>());
+		}
+
 		private void DisableRando()
 		{
 			MessageBoxHandler.Instance.HideMessageBoxes();
@@ -234,43 +237,50 @@ namespace ArchipelagoRandomizer
 
 			Plugin.LogDebugMessage("Event fired:\n" + $"    Curr: {scene.name}");
 
-			if (!ItemHandler.Instance.HasInitialized || scene.name == "Intro")
+			if (!ItemHandler.Instance.HasInitialized)
 				return;
 
-			// Disable rando
-			if (scene.name == "MainMenu")
+			switch (SceneName)
 			{
-				DisableRando();
-				return;
-			}
+				case "Intro":
+					return;
+				case "MainMenu":
+					DisableRando();
+					return;
+				case "Outro":
+					MessageBoxHandler.Instance.HideMessageBoxes();
+					return;
+				case "FluffyFields":
+					if (settings.OpenDW)
+						OpenDreamWorld();
 
-			// Hide message boxes when in credits
-			if (scene.name == "Outro")
-			{
-				MessageBoxHandler.Instance.HideMessageBoxes();
-				return;
+					if (DoModifyShardReqs)
+						ModifyShardDungeonReqs();
+					break;
+				case "Deep19s":
+					if (DoGiveTempEFCS)
+						GiveTempEFCS();
+
+					if (settings.IncludeSuperSecrets)
+						CreateRemedySigns();
+					break;
+				case "MachineFortress":
+					RemoveBeeChestSpawner();
+					break;
+				case "FancyRuins":
+				case "StarWoods":
+					if (DoModifyShardReqs)
+						ModifyShardDungeonReqs();
+					break;
 			}
 
 			AddCustomComponentToItems();
 			OverrideSpawnPoints();
-
-			// Open DW
-			if (settings.OpenDW && scene.name == "FluffyFields")
-				OpenDreamWorld();
-
-			if (DoModifyShardReqs)
-				ModifyShardDungeonReqs();
-
-			if (DoGiveTempEFCS)
-				GiveTempEFCS();
-
-			if (settings.IncludeSuperSecrets && scene.name == "Deep19s")
-				CreateRemedySigns();
 		}
 
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)
 		{
-			if (item.ItemName == "Raft Piece" && DoGiveTempEFCS)
+			if ((item.Type == ItemHandler.ItemTypes.Melee || item.Type == ItemHandler.ItemTypes.EFCS) && SceneName == "Deep19s" && DoGiveTempEFCS)
 				GiveTempEFCS();
 		}
 	}

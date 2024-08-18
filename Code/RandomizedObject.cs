@@ -12,8 +12,9 @@ namespace ArchipelagoRandomizer
 
 		public string SceneName { get { return sceneName; } }
 		public string SaveFlag { get { return action._saveName; } }
+		public ObjectType ObjType { get { return objectType; } }
 
-		private enum ObjectType
+		public enum ObjectType
 		{
 			Card,
 			Chest,
@@ -44,9 +45,6 @@ namespace ArchipelagoRandomizer
 					TemporaryPauseEventObserver pauser = transform.Find("Outfit").GetComponent<TemporaryPauseEventObserver>();
 					pauser._next = [this];
 					runBaseAwake = false;
-					//Transform changer = transform.Find("Outfit");
-					//Destroy(changer.GetComponent<UpdateVarsEventObserver>());
-					//Destroy(changer.GetComponent<ExprVarHolder>());
 					break;
 			}
 

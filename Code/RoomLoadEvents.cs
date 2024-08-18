@@ -118,6 +118,9 @@ namespace ArchipelagoRandomizer
 
 		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
 		{
+			if (toRoom == null)
+				return;
+
 			CurrentRoom = toRoom;
 
 			if (Plugin.IsDebug)

@@ -63,7 +63,8 @@ namespace ArchipelagoRandomizer
 
 			foreach (CollisionDetector.CollisionData collision in collisions)
 			{
-				bool isChest = collision.gameObject.GetComponentInParent<SpawnItemEventObserver>() != null;
+				RandomizedObject objData = collision.gameObject.GetComponentInParent<RandomizedObject>();
+				bool isChest = objData != null && objData.ObjType == RandomizedObject.ObjectType.Chest;
 
 				if (!isChest)
 					continue;

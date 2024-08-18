@@ -10,47 +10,48 @@ namespace ArchipelagoRandomizer
 		private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/";
 		private static readonly List<ChestCrystalColorData> chestCrystalColors = new()
 		{
-			{ new("Key",
+			{ new("Key", true,
 				new ChestCrystalColorData.ChestColors("Yellow", "DarkGrey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Gold", "Gold", "Yellow"))
 			},
-			{ new("Macguffin",
+			{ new("Macguffin", true,
 				new ChestCrystalColorData.ChestColors("Purple", "LightGrey", "Pearl"),
 				new ChestCrystalColorData.CrystalColors("Purple", "Purple", "White"))
 			},
-			{ new("Minor",
+			{ new("Minor", true,
 				new ChestCrystalColorData.ChestColors("Brown", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Brown", "Brown", "Burgundy"))
 			},
-			{ new("Shard",
+			{ new("Shard", true,
 				new ChestCrystalColorData.ChestColors("DarkGrey", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("DarkGrey", "DarkGrey", "LightGrey"))
 			},
-			{ new("Junk",
+			{ new("Junk", true,
 				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Burgundy", "Burgundy", "LightGrey"))
 			},
-			{ new("Filler",
+			{ new("Filler", false,
 				new ChestCrystalColorData.ChestColors("Cyan", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Cyan", "Cyan", "Cyan"))
 			},
-			{ new("Useful",
+			{ new("Useful", false,
 				new ChestCrystalColorData.ChestColors("Blue", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Blue", "Blue", "Blue"))
 			},
-			{ new("NeverExclude",
+			{ new("NeverExclude", false,
 				new ChestCrystalColorData.ChestColors("Orange", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Orange"))
 			},
-			{ new("Advancement",
+			{ new("Advancement", false,
 				new ChestCrystalColorData.ChestColors("Orange", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Yellow"))
 			},
-			{ new("Empty",
+			{ new("Empty", false,
 				new ChestCrystalColorData.ChestColors("LightGrey", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Silver", "Silver", "Grey"))
 			}
 		};
+		private static List<ChestCrystalColorData> trapChestColors;
 		private static readonly Dictionary<string, Texture2D> cachedTextures = new();
 
 		public static ChestReplacer Instance
@@ -62,6 +63,12 @@ namespace ArchipelagoRandomizer
 
 				return instance;
 			}
+		}
+
+		public ChestReplacer()
+		{
+			if (trapChestColors == null)
+				trapChestColors = chestCrystalColors.FindAll(x => x.useForTraps);
 		}
 
 		public void ReplaceChestTextures(DummyAction dummyAction, Renderer chestMesh, Renderer crystalMesh)
@@ -80,14 +87,15 @@ namespace ArchipelagoRandomizer
 				if (CheckItemFlags(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Trap))
 				{
 					// Get random colors
-					int randIndex = Random.Range(0, chestCrystalColors.Count);
+					int randIndex = Random.Range(0, trapChestColors.Count);
 
 					// Major item color
-					if (randIndex >= chestCrystalColors.Count)
+					if (randIndex >= trapChestColors.Count)
 						return;
 
-					colors = chestCrystalColors[randIndex];
-					dummyAction.transform.localScale = new(1, 1, -1);
+					colors = trapChestColors[randIndex];
+					Vector3 rot = dummyAction.transform.localEulerAngles;
+					dummyAction.transform.localEulerAngles = new Vector3(rot.x, rot.y + 180, rot.z);
 				}
 				// If ID2 item
 				else if (item != null)
@@ -175,8 +183,17 @@ namespace ArchipelagoRandomizer
 		private class ChestCrystalColorData
 		{
 			public readonly string flag;
+			public readonly bool useForTraps;
 			public readonly ChestColors chestColors;
 			public readonly CrystalColors crystalColors;
+
+			public ChestCrystalColorData(string flag, bool useForTraps, ChestColors chestColors, CrystalColors crystalColors)
+			{
+				this.flag = flag;
+				this.useForTraps = useForTraps;
+				this.chestColors = chestColors;
+				this.crystalColors = crystalColors;
+			}
 
 			public readonly struct ChestColors
 			{
@@ -204,13 +221,6 @@ namespace ArchipelagoRandomizer
 					this.faceRim = "CrystalRim" + faceRim;
 					this.edgeColor = edgeColor;
 				}
-			}
-
-			public ChestCrystalColorData(string flag, ChestColors chestColors, CrystalColors crystalColors)
-			{
-				this.flag = flag;
-				this.chestColors = chestColors;
-				this.crystalColors = crystalColors;
 			}
 		}
 	}
