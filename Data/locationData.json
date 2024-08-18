@@ -4,7 +4,7 @@
 			"location": "Fluffy Fields Caves - Goldbun Combat Chest",
 			"offset": 0,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_EnemyChest-21--2"
+			"flag": "Chest-21--2"
 		},
 		{
 			"location": "Fluffy Fields Caves - Portal Room Chest",
@@ -28,7 +28,7 @@
 			"location": "Fluffy Fields Caves - Laser Chest",
 			"offset": 4,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_PuzzleChest-99--4"
+			"flag": "Chest-99--4"
 		},
 		{
 			"location": "Fluffy Fields Caves - Number Blocks Chest",
@@ -46,7 +46,7 @@
 			"location": "Fluffy Fields Caves - Double Spikebun Combat Chest",
 			"offset": 7,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_EnemyChest-82--16"
+			"flag": "Chest-82--16"
 		},
 		{
 			"location": "Fluffy Fields Caves - Potion Bar Chest",
@@ -58,7 +58,7 @@
 			"location": "Fluffy Fields Caves - Six Buns Combat Chest",
 			"offset": 9,
 			"scene": "FluffyFieldsCaves",
-			"flag": "Dungeon_EnemyChest-40--29"
+			"flag": "Chest-40--29"
 		},
 		{
 			"location": "Fluffy Fields Caves - Artist Backroom Chest",
@@ -94,11 +94,12 @@
 			"location": "Sweetwater Coast Caves - Four Candy Snakes Combat Chest",
 			"offset": 103,
 			"scene": "CandyCoastCaves",
-			"flag": "Dungeon_EnemyChest-25--17"
+			"flag": "Chest-25--17"
 		},
 		{
 			"location": "Sweetwater Coast Caves - Portal Spikes Chest",
 			"offset": 104,
+			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-68--27"
 		},
 		{
@@ -147,7 +148,7 @@
 			"location": "Fancy Ruins Caves - Big Ogler Combat Chest",
 			"offset": 203,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_EnemyChest-47--6"
+			"flag": "Chest-47--6"
 		},
 		{
 			"location": "Fancy Ruins Caves - Hint Turnip Chest",
@@ -159,7 +160,7 @@
 			"location": "Fancy Ruins Caves - Rhythm Pillars Chest",
 			"offset": 205,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_PuzzleChest-9--17"
+			"flag": "Chest-9--17"
 		},
 		{
 			"location": "Fancy Ruins Caves - Teleporter Puzzle Chest",
@@ -171,13 +172,13 @@
 			"location": "Fancy Ruins Caves - Four Oglers Combat Chest",
 			"offset": 207,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_EnemyChest-37--14"
+			"flag": "Chest-37--14"
 		},
 		{
 			"location": "Fancy Ruins Caves - Spike Path Chest",
 			"offset": 208,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_PuzzleChest-51--18"
+			"flag": "Chest-51--18"
 		},
 		{
 			"location": "Fancy Ruins Caves - Hiding Hermit Chest",
@@ -189,25 +190,25 @@
 			"location": "Fancy Ruins Caves - Ice and Torch Chest",
 			"offset": 210,
 			"scene": "FancyRuinsCaves",
-			"flag": "Dungeon_PuzzleChest-80--16"
+			"flag": "Chest-80--16"
 		},
 		{
 			"location": "Star Woods Caves - Turnip Combat Chest",
 			"offset": 300,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_EnemyChest-3--3"
+			"flag": "Chest-3--3"
 		},
 		{
 			"location": "Star Woods Caves - Barrel Blast Chest",
 			"offset": 301,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_PuzzleChest-22--5"
+			"flag": "Chest-22--5"
 		},
 		{
 			"location": "Star Woods Caves - Four Crystals Chest",
 			"offset": 302,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_PuzzleChest-36--4"
+			"flag": "Chest-36--4"
 		},
 		{
 			"location": "Star Woods Caves - Sleeping Safety Jenny Chest",
@@ -225,7 +226,7 @@
 			"location": "Star Woods Caves - Number Tiles Chest",
 			"offset": 305,
 			"scene": "StarWoodsCaves",
-			"flag": "Dungeon_PuzzleChest-94--3"
+			"flag": "Chest-94--3"
 		},
 		{
 			"location": "Star Woods Caves - Whirlwind Chest",
@@ -261,7 +262,7 @@
 			"location": "Slippery Slope Caves - Volcanic Path Chest",
 			"offset": 400,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-3--5"
+			"flag": "Chest-3--5"
 		},
 		{
 			"location": "Slippery Slope Caves - Ice and Barrels Chest",
@@ -273,7 +274,7 @@
 			"location": "Slippery Slope Caves - Eight Crystals Chest",
 			"offset": 402,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-50--3"
+			"flag": "Chest-50--3"
 		},
 		{
 			"location": "Slippery Slope Caves - Forgetful Jennies Chest",
@@ -285,7 +286,7 @@
 			"location": "Slippery Slope Caves - Push the Crystals Chest",
 			"offset": 404,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-82--3"
+			"flag": "Chest-82--3"
 		},
 		{
 			"location": "Slippery Slope Caves - Exhausted Turnip Chest",
@@ -297,7 +298,7 @@
 			"location": "Slippery Slope Caves - Bee Nest Combat Chest",
 			"offset": 406,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_EnemyChest-25--15"
+			"flag": "Chest-25--15"
 		},
 		{
 			"location": "Slippery Slope Caves - Pushable Fan Chest",
@@ -309,7 +310,7 @@
 			"location": "Slippery Slope Caves - Moving Crystals Chest",
 			"offset": 408,
 			"scene": "SlipperySlopeCaves",
-			"flag": "Dungeon_PuzzleChest-53--16"
+			"flag": "Chest-53--16"
 		},
 		{
 			"location": "Slippery Slope Caves - Shark House",
@@ -321,7 +322,7 @@
 			"location": "Pepperpain Caves - Cowbun Combat Chest",
 			"offset": 500,
 			"scene": "VitaminHillsCaves",
-			"flag": "Dungeon_EnemyChest-7--5"
+			"flag": "Chest-7--5"
 		},
 		{
 			"location": "Pepperpain Caves - Brutus Combat Chest",
@@ -375,7 +376,7 @@
 			"location": "Pepperpain Caves - Number Tiles Chest",
 			"offset": 509,
 			"scene": "VitaminHillsCaves",
-			"flag": "Dungeon_PuzzleChest-18--27"
+			"flag": "Chest-18--27"
 		},
 		{
 			"location": "Pepperpain Caves - Pacifist Brute Chest",
@@ -387,37 +388,37 @@
 			"location": "Frozen Court Caves - Bushfire Chest",
 			"offset": 600,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-7--9"
+			"flag": "Chest-7--9"
 		},
 		{
 			"location": "Frozen Court Caves - Cannon Spinner Chest",
 			"offset": 601,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-20--2"
+			"flag": "Chest-20--2"
 		},
 		{
 			"location": "Frozen Court Caves - Mimicbuns Combat Chest",
 			"offset": 602,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_EnemyChest-37--5"
+			"flag": "Chest-37--5"
 		},
 		{
 			"location": "Frozen Court Caves - Teleporter Maze Chest",
 			"offset": 603,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-63--3"
+			"flag": "Chest-63--3"
 		},
 		{
 			"location": "Frozen Court Caves - Chilly Roger Combat Chest",
 			"offset": 604,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_EnemyChest-84--5"
+			"flag": "Chest-84--5"
 		},
 		{
 			"location": "Frozen Court Caves - Rickety Bridge Chest",
 			"offset": 605,
 			"scene": "FrozenCourtCaves",
-			"flag": "Dungeon_PuzzleChest-6--15"
+			"flag": "Chest-6--15"
 		},
 		{
 			"location": "Frozen Court Caves - Titans Combat Chest",
@@ -447,7 +448,7 @@
 			"location": "Lonely Road Caves - Timed Platforms Chest",
 			"offset": 700,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-18--6"
+			"flag": "Chest-18--6"
 		},
 		{
 			"location": "Lonely Road Caves - Timed Number Tiles Chest",
@@ -465,13 +466,13 @@
 			"location": "Lonely Road Caves - Lava Fans Chest",
 			"offset": 703,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-52--17"
+			"flag": "Chest-52--17"
 		},
 		{
 			"location": "Lonely Road Caves - Force Turrets Chest",
 			"offset": 704,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-80--15"
+			"flag": "Chest-80--15"
 		},
 		{
 			"location": "Lonely Road Caves - Hint Shark Chest",
@@ -489,19 +490,19 @@
 			"location": "Lonely Road Caves - Dark Maze Chest",
 			"offset": 707,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-87--32"
+			"flag": "Chest-87--32"
 		},
 		{
 			"location": "Lonely Road Caves - Block Factory",
 			"offset": 708,
 			"scene": "LonelyRoadCaves",
-			"flag": "Dungeon_PuzzleChest-67--32"
+			"flag": "Chest-67--32"
 		},
 		{
 			"location": "Pillow Fort - Treasure Chest",
 			"offset": 800,
 			"scene": "PillowFort",
-			"flag": "Dungeon_PuzzleChest-39--28"
+			"flag": "Chest-39--28"
 		},
 		{
 			"location": "Pillow Fort - Shellbun Nest Key",
@@ -513,7 +514,7 @@
 			"location": "Pillow Fort - Crayon Chest",
 			"offset": 802,
 			"scene": "PillowFort",
-			"flag": "Dungeon_EnemyChest-3--29"
+			"flag": "Chest-3--29"
 		},
 		{
 			"location": "Pillow Fort - Safety Jenny Gate Key",
@@ -603,7 +604,7 @@
 			"location": "Trash Cave - Crayon Chest",
 			"offset": 1100,
 			"scene": "TrashCave",
-			"flag": "Dungeon_PuzzleChest-65--39"
+			"flag": "Chest-65--39"
 		},
 		{
 			"location": "Trash Cave - Ice Barricade Key",
@@ -864,6 +865,564 @@
 			"flag": "Dungeon_Chest-5--5"
 		},
 		{
+			"Location": "Sunken Labyrinth - Gold Titan Combat Key",
+			"Offset": 1600,
+			"Scene": "SunkenLabyrinth",
+			"Flag": "KeyChest-40--17"
+		},
+		{
+			"Location": "Sunken Labyrinth - Death Ogler Combat Key",
+			"Offset": 1601,
+			"Scene": "SunkenLabyrinth",
+			"Flag": "KeyChest-2--18"
+		},
+		{
+			"Location": "Sunken Labyrinth - Treasure Chest",
+			"Offset": 1602,
+			"Scene": "SunkenLabyrinth",
+			"Flag": "Dungeon_Chest-8--41"
+		},
+		{
+			"Location": "Sunken Labyrinth - Mimic Combat Key",
+			"Offset": 1603,
+			"Scene": "SunkenLabyrinth",
+			"Flag": "KeyChest-3--50"
+		},
+		{
+			"Location": "Sunken Labyrinth - Crayon Chest",
+			"Offset": 1604,
+			"Scene": "SunkenLabyrinth",
+			"Flag": "Chest-41--80"
+		},
+		{
+			"Location": "Sunken Labyrinth - Boss Reward Chest",
+			"Offset": 1605,
+			"Scene": "SunkenLabyrinth",
+			"Flag": "Dungeon_Chest-67--16"
+		},
+		{
+			"Location": "Machine Fortress - Hyperdusa conveyor Key",
+			"Offset": 1700,
+			"Scene": "MachineFortress",
+			"Flag": "KeyChest-21--65"
+		},
+		{
+			"Location": "Machine Fortress - Bee Chest",
+			"Offset": 1701,
+			"Scene": "MachineFortress",
+			"Flag": "Dungeon_ChestBees-83--65"
+		},
+		{
+			"Location": "Machine Fortress - Crayon Chest",
+			"Offset": 1702,
+			"Scene": "MachineFortress",
+			"Flag": "Dungeon_Chest-50--68"
+		},
+		{
+			"Location": "Machine Fortress - Number Tiles Key",
+			"Offset": 1703,
+			"Scene": "MachineFortress",
+			"Flag": "KeyChest-13--51"
+		},
+		{
+			"Location": "Machine Fortress - Cannon conveyors Key",
+			"Offset": 1704,
+			"Scene": "MachineFortress",
+			"Flag": "KeyChest-42--41"
+		},
+		{
+			"Location": "Machine Fortress - Light Bridge Key",
+			"Offset": 1705,
+			"Scene": "MachineFortress",
+			"Flag": "KeyChest-31--29"
+		},
+		{
+			"Location": "Machine Fortress - Steel Skullnip Combat Key",
+			"Offset": 1706,
+			"Scene": "MachineFortress",
+			"Flag": "KeyChest-6--16"
+		},
+		{
+			"Location": "Machine Fortress - Treasure Chest",
+			"Offset": 1707,
+			"Scene": "MachineFortress",
+			"Flag": "Dungeon_Chest-37--3"
+		},
+		{
+			"Location": "Machine Fortress - Boss Reward Chest",
+			"Offset": 1708,
+			"Scene": "MachineFortress",
+			"Flag": "Dungeon_Chest-82--40"
+		},
+		{
+			"Location": "Dark Hypostyle - Initial Key",
+			"Offset": 1800,
+			"Scene": "DarkHypostyle",
+			"Flag": "KeyChest-27--8"
+		},
+		{
+			"Location": "Dark Hypostyle - Crayon Chest",
+			"Offset": 1801,
+			"Scene": "DarkHypostyle",
+			"Flag": "Dungeon_Chest-38--67"
+		},
+		{
+			"Location": "Dark Hypostyle - Blue Path Key",
+			"Offset": 1802,
+			"Scene": "DarkHypostyle",
+			"Flag": "KeyChest-42--53"
+		},
+		{
+			"Location": "Dark Hypostyle - Yellow Path Monochrome Key",
+			"Offset": 1803,
+			"Scene": "DarkHypostyle",
+			"Flag": "KeyChest-52--45"
+		},
+		{
+			"Location": "Dark Hypostyle - Treasure Chest",
+			"Offset": 1804,
+			"Scene": "DarkHypostyle",
+			"Flag": "Dungeon_Chest-63--44"
+		},
+		{
+			"Location": "Dark Hypostyle - Yellow Path Key",
+			"Offset": 1805,
+			"Scene": "DarkHypostyle",
+			"Flag": "KeyChest-33--28"
+		},
+		{
+			"Location": "Dark Hypostyle - Red Path Cannon Key",
+			"Offset": 1806,
+			"Scene": "DarkHypostyle",
+			"Flag": "KeyChest-54--17"
+		},
+		{
+			"Location": "Dark Hypostyle - Red Path Key",
+			"Offset": 1807,
+			"Scene": "DarkHypostyle",
+			"Flag": "KeyChest-33--19"
+		},
+		{
+			"Location": "Dark Hypostyle - Boss Reward Chest",
+			"Offset": 1808,
+			"Scene": "DarkHypostyle",
+			"Flag": "Dungeon_Chest-67--4"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Mercury Jello Number Tiles Key",
+			"Offset": 1900,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-3--78"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Self Locked Tile Key",
+			"Offset": 1901,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-23--65"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Eight Tile Key",
+			"Offset": 1902,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-42--51"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Roundabout Crystal Key",
+			"Offset": 1903,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-11--38"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Corner Torch Key",
+			"Offset": 1904,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-33--26"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Crayon Chest",
+			"Offset": 1905,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "Dungeon_Chest-48--52"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Death Ogler Combat Key",
+			"Offset": 1906,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-83--65"
+		},
+		{
+			"Location": "Tomb of Simulacrum - EFCS Door Key",
+			"Offset": 1907,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-71--27"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Large Chasm Key",
+			"Offset": 1908,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-99--50"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Spiked Orbitals Key",
+			"Offset": 1909,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-102--32"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Molten Conveyors Key",
+			"Offset": 1910,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "KeyChest-101--74"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Treasure Chest",
+			"Offset": 1911,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "Dungeon_Chest-22--15"
+		},
+		{
+			"Location": "Tomb of Simulacrum - Boss Reward Chest",
+			"Offset": 1912,
+			"Scene": "TombOfSimulacrum",
+			"Flag": "Dungeon_Chest-99--3"
+		},
+		{
+			"Location": "Syncope - Shifting Chamber Key",
+			"Offset": 2000,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-56--51"
+		},
+		{
+			"Location": "Syncope - Shifting Chamber Key",
+			"Offset": 2000,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-71--51"
+		},
+		{
+			"Location": "Syncope - Switch Chamber Card",
+			"Offset": 2001,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-55--65"
+		},
+		{
+			"Location": "Syncope - Foyer Card",
+			"Offset": 2002,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-68--39"
+		},
+		{
+			"Location": "Syncope - Garden Key",
+			"Offset": 2003,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-97--24"
+		},
+		{
+			"Location": "Syncope - Piano Card",
+			"Offset": 2004,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-52--15"
+		},
+		{
+			"Location": "Syncope - Knights Hint Card",
+			"Offset": 2005,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-37--4"
+		},
+		{
+			"Location": "Syncope - Shadow Walker Key",
+			"Offset": 2006,
+			"Scene": "DreamDynamite",
+			"Flag": "KeyChest-48--2"
+		},
+		{
+			"Location": "Syncope - Force Turret Maze Card",
+			"Offset": 2007,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-5--42"
+		},
+		{
+			"Location": "Syncope - Reward Card A",
+			"Offset": 2008,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-81--63"
+		},
+		{
+			"Location": "Syncope - Reward Card B",
+			"Offset": 2009,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-82--65"
+		},
+		{
+			"Location": "Syncope - Reward Card C",
+			"Offset": 2010,
+			"Scene": "DreamDynamite",
+			"Flag": "CardChest-83--63"
+		},
+		{
+			"Location": "Wizardry Lab - Entrance Card",
+			"Offset": 2100,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-54--73"
+		},
+		{
+			"Location": "Wizardry Lab - West Energy Source Card",
+			"Offset": 2101,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-18--41"
+		},
+		{
+			"Location": "Wizardry Lab - Cannon Card",
+			"Offset": 2102,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-37--3"
+		},
+		{
+			"Location": "Wizardry Lab - East Mirrors Card",
+			"Offset": 2103,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-77--34"
+		},
+		{
+			"Location": "Wizardry Lab - East Energy Source Card",
+			"Offset": 2104,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-77--47"
+		},
+		{
+			"Location": "Wizardry Lab - Reward Card A",
+			"Offset": 2105,
+			"Scene": "DreamForce",
+			"Flag": "CardChest-82--55"
+		},
+		{
+			"Location": "Wizardry Lab - Reward Card B",
+			"Offset": 2106,
+			"Scene": "DreamForce",
+			"Flag": "CardChest (1)-84--55"
+		},
+		{
+			"Location": "Wizardry Lab - Reward Card C",
+			"Offset": 2107,
+			"Scene": "DreamForce",
+			"Flag": "CardChest (2)-80--55"
+		},
+		{
+			"Location": "Antigram - Free Key",
+			"Offset": 2200,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-54--57"
+		},
+		{
+			"Location": "Antigram - West Light Bridge Card",
+			"Offset": 2201,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-24--61"
+		},
+		{
+			"Location": "Antigram - East Light Bridge Card",
+			"Offset": 2202,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-50--61"
+		},
+		{
+			"Location": "Antigram - West Ice Card",
+			"Offset": 2203,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-7--49"
+		},
+		{
+			"Location": "Antigram - East Ice Card",
+			"Offset": 2204,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-67--49"
+		},
+		{
+			"Location": "Antigram - West Bombs Key",
+			"Offset": 2205,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-12--18"
+		},
+		{
+			"Location": "Antigram - East Bombs Key",
+			"Offset": 2206,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-62--18"
+		},
+		{
+			"Location": "Antigram - End East Bridge Card",
+			"Offset": 2207,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-42--16"
+		},
+		{
+			"Location": "Antigram - End West Bridge Key",
+			"Offset": 2208,
+			"Scene": "DreamFireChain",
+			"Flag": "KeyChest-33--16"
+		},
+		{
+			"Location": "Antigram - Reward Card A",
+			"Offset": 2209,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-37-7"
+		},
+		{
+			"Location": "Antigram - Reward Card B",
+			"Offset": 2210,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-35-7"
+		},
+		{
+			"Location": "Antigram - Reward Card C",
+			"Offset": 2211,
+			"Scene": "DreamFireChain",
+			"Flag": "CardChest-39-7"
+		},
+		{
+			"Location": "Bottomless Tower - First Floor Card",
+			"Offset": 2300,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-5--14"
+		},
+		{
+			"Location": "Bottomless Tower - First Floor Key",
+			"Offset": 2301,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-35--8"
+		},
+		{
+			"Location": "Bottomless Tower - Second Floor Card",
+			"Offset": 2302,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-71--5"
+		},
+		{
+			"Location": "Bottomless Tower - Second Floor Key",
+			"Offset": 2303,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-99--2"
+		},
+		{
+			"Location": "Bottomless Tower - Blue Portal Card",
+			"Offset": 2304,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-6--5"
+		},
+		{
+			"Location": "Bottomless Tower - Third Floor Spike Gates Card",
+			"Offset": 2305,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-4--63"
+		},
+		{
+			"Location": "Bottomless Tower - Third Floor Key",
+			"Offset": 2306,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-42--77"
+		},
+		{
+			"Location": "Bottomless Tower - Third Floor Ice Square Card",
+			"Offset": 2307,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-42--67"
+		},
+		{
+			"Location": "Bottomless Tower - Fourth Floor Key",
+			"Offset": 2308,
+			"Scene": "DreamIce",
+			"Flag": "KeyChest-92--57"
+		},
+		{
+			"Location": "Bottomless Tower - Reward Card A",
+			"Offset": 2309,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-99--65"
+		},
+		{
+			"Location": "Bottomless Tower - Reward Card B",
+			"Offset": 2310,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-95--65"
+		},
+		{
+			"Location": "Bottomless Tower - Reward Card C",
+			"Offset": 2311,
+			"Scene": "DreamIce",
+			"Flag": "CardChest-97--65"
+		},
+		{
+			"Location": "Quietus - Center Card",
+			"Offset": 2400,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-37--21"
+		},
+		{
+			"Location": "Quietus - Alternating Floors Key",
+			"Offset": 2401,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-3--3"
+		},
+		{
+			"Location": "Quietus - Tangled Wires Key",
+			"Offset": 2402,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-70--6"
+		},
+		{
+			"Location": "Quietus - Push the Coil Key",
+			"Offset": 2403,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-7--33"
+		},
+		{
+			"Location": "Quietus - Giant Mess Key",
+			"Offset": 2404,
+			"Scene": "DreamAll",
+			"Flag": "KeyChest-62--29"
+		},
+		{
+			"Location": "Quietus - Northwest Vault Card",
+			"Offset": 2405,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-17--9"
+		},
+		{
+			"Location": "Quietus - Northeast Vault Card",
+			"Offset": 2406,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-48--7"
+		},
+		{
+			"Location": "Quietus - Southwest Vault Card",
+			"Offset": 2407,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-26--33"
+		},
+		{
+			"Location": "Quietus - Southeast Vault Card",
+			"Offset": 2408,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-55--34"
+		},
+		{
+			"Location": "Quietus - Reward Card A",
+			"Offset": 2409,
+			"Scene": "DreamAll",
+			"Flag": "CardChest-17--56"
+		},
+		{
+			"Location": "Quietus - Reward Card B",
+			"Offset": 2410,
+			"Scene": "DreamAll",
+			"Flag": "CardChest (1)-25--56"
+		},
+		{
+			"Location": "Quietus - Reward Card C",
+			"Offset": 2411,
+			"Scene": "DreamAll",
+			"Flag": "CardChest (2)-22--61"
+		},
+		{
 			"location": "Autumn Climb - Chest",
 			"offset": 2500,
 			"scene": "Deep1",
@@ -891,7 +1450,7 @@
 			"location": "Scrap Yard - Chest",
 			"offset": 2504,
 			"scene": "Deep5",
-			"flag": "Dungeon_EnemyChest-18--3"
+			"flag": "Chest-18--3"
 		},
 		{
 			"location": "Brutal Oasis - Chest",
@@ -964,6 +1523,12 @@
 			"offset": 2602,
 			"scene": "Deep26",
 			"flag": "CardChest-0-6"
+		},
+		{
+			"location": "Promised Remedy - That Guy Outfit",
+			"offset": 2603,
+			"scene": "Deep19s",
+			"flag": "outfit9"
 		}
 	]
 }

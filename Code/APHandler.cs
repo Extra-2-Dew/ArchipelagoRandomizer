@@ -84,7 +84,27 @@ namespace ArchipelagoRandomizer
 			if (!IsConnected)
 				return;
 
-			Session.Locations.CompleteLocationChecks(baseId + offset);
+			Action locationCheckedDelegate = () =>
+			{
+				Session.Locations.CompleteLocationChecksAsync((bool success) =>
+				{
+					long id = baseId + offset;
+					string locationName = Session.Locations.GetLocationNameFromId(id);
+					ScoutedItemInfo item = scoutedItems.FirstOrDefault(x => x.LocationId == id);
+
+					// If sending item
+					if (item != null && item.Player.Slot != CurrentPlayer.Slot)
+						Plugin.StartRoutine(ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name));
+
+					ModCore.Plugin.MainSaver.SaveLocal();
+					Plugin.Log.LogInfo($"Checked location: {locationName}");
+				}, baseId + offset);
+			};
+
+			locationCheckedDelegate.BeginInvoke(new AsyncCallback((IAsyncResult ar) =>
+			{
+				locationCheckedDelegate.EndInvoke(ar);
+			}), null);
 		}
 
 		public void SyncItemsWithServer()
@@ -112,6 +132,14 @@ namespace ArchipelagoRandomizer
 					}
 				}
 			}
+		}
+
+		public ScoutedItemInfo GetScoutedItemInfo(ItemRandomizer.LocationData.Location forLocation)
+		{
+			if (forLocation == null)
+				return null;
+
+			return scoutedItems.Find(x => x.LocationId - forLocation.Offset == baseId);
 		}
 
 		private bool TryCreateSession(string url, out string errorMessage)
@@ -176,7 +204,6 @@ namespace ArchipelagoRandomizer
 				slotData = loginSuccess.SlotData;
 
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
-			Session.Locations.CheckedLocationsUpdated += OnLocationChecked;
 			Session.Items.ItemReceived += OnReceivedItem;
 			Session.Socket.SocketClosed += OnDisconnected;
 
@@ -190,7 +217,6 @@ namespace ArchipelagoRandomizer
 				Plugin.StartRoutine(ItemRandomizer.Instance.OnDisconnected());
 
 			Session.MessageLog.OnMessageReceived -= OnReceiveMessage;
-			Session.Locations.CheckedLocationsUpdated -= OnLocationChecked;
 			Session.Items.ItemReceived -= OnReceivedItem;
 			Session.Socket.SocketClosed -= OnDisconnected;
 			Session = null;
@@ -198,19 +224,6 @@ namespace ArchipelagoRandomizer
 			OnDisconnect?.Invoke();
 
 			Plugin.Log.LogInfo("Disconnected from Archipelago server!");
-		}
-
-		private void OnLocationChecked(System.Collections.ObjectModel.ReadOnlyCollection<long> newCheckedLocations)
-		{
-			long id = newCheckedLocations[newCheckedLocations.Count - 1];
-			string locationName = Session.Locations.GetLocationNameFromId(id);
-			ScoutedItemInfo item = scoutedItems.FirstOrDefault(x => x.LocationId == id);
-
-			// If sending item
-			if (item != null && item.Player.Slot != CurrentPlayer.Slot)
-				Plugin.StartRoutine(ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name));
-
-			Plugin.Log.LogInfo($"Checked location: {locationName}");
 		}
 
 		private void OnReceivedItem(ReceivedItemsHelper helper)

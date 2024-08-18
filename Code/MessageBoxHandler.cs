@@ -155,7 +155,7 @@ namespace ArchipelagoRandomizer
 				if (isLevelItem)
 					return $"! You're now at level {count}!";
 
-				if (item.Type == ItemType.Key)
+				if (item.Type == ItemTypes.Key)
 					return $"! You have {count} key{(count > 1 ? "s" : "")} for this dungeon.";
 
 				return $"! You have {count} of them.";
@@ -174,12 +174,12 @@ namespace ArchipelagoRandomizer
 				string iconName = Data.Item != null ? Data.Item.IconName : "Custom/APUseful";
 
 				// Increment melee icon from stick
-				if (Data.Item != null && Data.Item.Type == ItemType.Melee)
+				if (Data.Item != null && Data.Item.Type == ItemTypes.Melee)
 				{
 					int level = ModCore.Utility.GetPlayer().GetStateVariable("melee");
 
 					if (level > 0)
-						iconName = $"Melee{level}";
+						iconName = level > 1 ? "Melee2" : $"Melee{level}";
 				}
 
 				bool isCustomIcon = iconName.StartsWith("Custom");

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
-	internal class ItemHandler : MonoBehaviour
+	public class ItemHandler : MonoBehaviour
 	{
 		private static ItemHandler instance;
 		private static List<ItemData.Item> itemData;
@@ -30,9 +30,9 @@ namespace ArchipelagoRandomizer
 		public static ItemHandler Instance { get { return instance; } }
 		public bool HasInitialized { get; private set; }
 
-		public enum ItemType
+		public enum ItemTypes
 		{
-			None, // Default
+			None,
 			Bees,
 			Buff,
 			Card,
@@ -46,7 +46,18 @@ namespace ArchipelagoRandomizer
 			Melee,
 			Outfit,
 			PortalWorldScroll,
+			Shard,
 			Upgrade
+		}
+
+		[System.Flags]
+		public enum ItemFlags
+		{
+			None = 0,
+			Macguffin = 1,
+			Major = 2,
+			Minor = 4,
+			Junk = 8
 		}
 
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
@@ -56,9 +67,30 @@ namespace ArchipelagoRandomizer
 			if (player == null || mainSaver == null)
 				return 0;
 
-			if (item.Type == ItemType.Key)
+			if (item.Type == ItemTypes.Key)
 			{
 				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
+
+				// Handle dungeon names with different names than what is in item name
+				switch (dungeonName)
+				{
+					case "TombofSimulacrum":
+						dungeonName = "TombOfSimulacrum";
+						break;
+					case "Syncope":
+						dungeonName = "DreamDynamite";
+						break;
+					case "Antigram":
+						dungeonName = "DreamFireChain";
+						break;
+					case "BottomlessTower":
+						dungeonName = "DreamIce";
+						break;
+					case "Quietus":
+						dungeonName = "DreamAll";
+						break;
+				}
+
 				IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
 				int keyCount = keySaver.LoadInt("localKeys");
 
@@ -71,10 +103,10 @@ namespace ArchipelagoRandomizer
 			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
 			List<string> countItems = new() { "shards", "raft", "evilKeys" };
 
-			isLevelItem = item.Type == ItemType.Upgrade || levelItems.Contains(item.Flag);
+			isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
 
-			if (isLevelItem || countItems.Contains(item.Flag))
-				return player.GetStateVariable(item.Flag);
+			if (isLevelItem || countItems.Contains(item.SaveFlag))
+				return player.GetStateVariable(item.SaveFlag);
 
 			return 0;
 		}
@@ -106,47 +138,47 @@ namespace ArchipelagoRandomizer
 
 			switch (item.Type)
 			{
-				case ItemType.Bees:
+				case ItemTypes.Bees:
 					Plugin.StartRoutine(SpawnBees());
 					break;
-				case ItemType.Buff:
+				case ItemTypes.Buff:
 					ApplyRandomStatus(statusBuffs);
 					break;
-				case ItemType.Card:
-					AddCard(item.Flag);
+				case ItemTypes.Card:
+					AddCard(item.SaveFlag);
 					break;
-				case ItemType.CaveScroll:
+				case ItemTypes.CaveScroll:
 					AddScroll(true);
 					break;
-				case ItemType.Crayon:
+				case ItemTypes.Crayon:
 					AddCrayon();
 					break;
-				case ItemType.Debuff:
+				case ItemTypes.Debuff:
 					ApplyRandomStatus(statusDebuffs);
 					break;
-				case ItemType.EFCS:
+				case ItemTypes.EFCS:
 					AddEFCS();
 					break;
-				case ItemType.Heart:
+				case ItemTypes.Heart:
 					AddHeart();
 					break;
-				case ItemType.Key:
+				case ItemTypes.Key:
 					AddKeys(item.ItemName, false);
 					break;
-				case ItemType.Keyring:
+				case ItemTypes.Keyring:
 					AddKeys(item.ItemName, true);
 					break;
-				case ItemType.Outfit:
-					AddOutfit(item.Flag);
+				case ItemTypes.Outfit:
+					AddOutfit(item.SaveFlag);
 					break;
-				case ItemType.PortalWorldScroll:
+				case ItemTypes.PortalWorldScroll:
 					AddScroll(false);
 					break;
-				case ItemType.Upgrade:
+				case ItemTypes.Upgrade:
 					AddUpgrade(item);
 					break;
 				default:
-					if (!string.IsNullOrEmpty(item.Flag))
+					if (!string.IsNullOrEmpty(item.SaveFlag))
 						IncrementItem(item);
 					break;
 			}
@@ -207,11 +239,8 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 
-			OverlayFader.StartFade(fadeData, true, delegate ()
-			{
-				stopwatch = Stopwatch.StartNew();
-				ModCore.Utility.LoadScene("Deep7");
-			}, Vector3.zero);
+			stopwatch = Stopwatch.StartNew();
+			ModCore.Utility.LoadScene("Deep7");
 		}
 
 		private void OnDisable()
@@ -236,7 +265,9 @@ namespace ArchipelagoRandomizer
 		{
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/N").SaveInt("PuzzleDoor_green-100--22", 1);
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/S").SaveInt("PuzzleDoor_green-64--25", 1);
+			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/AC").SaveInt("PuzzleGate-48--54", 1);
 			mainSaver.GetSaver("/local/levels/Deep17/B").SaveInt("PuzzleGate-23--5", 1);
+			player.SetStateVariable("fakeEFCS", 1);
 		}
 
 		private void AddHeart()
@@ -255,6 +286,26 @@ namespace ArchipelagoRandomizer
 			string dungeonName = itemName.Substring(0, itemName.IndexOf("Key") - 1).Replace(" ", "");
 			string flagName = "localKeys";
 			int keysToGive = 0;
+
+			// Handle dungeon names with different names than what is in item name
+			switch (dungeonName)
+			{
+				case "TombofSimulacrum":
+					dungeonName = "TombOfSimulacrum";
+					break;
+				case "Syncope":
+					dungeonName = "DreamDynamite";
+					break;
+				case "Antigram":
+					dungeonName = "DreamFireChain";
+					break;
+				case "BottomlessTower":
+					dungeonName = "DreamIce";
+					break;
+				case "Quietus":
+					dungeonName = "DreamAll";
+					break;
+			}
 
 			if (giveAll && !dungeonKeyCounts.TryGetValue(dungeonName, out keysToGive))
 				return;
@@ -291,7 +342,7 @@ namespace ArchipelagoRandomizer
 		private void AddUpgrade(ItemData.Item item)
 		{
 			// Remove word "Upgrade" from saveFlag
-			string upgradeFlag = item.Flag;
+			string upgradeFlag = item.SaveFlag;
 			string itemFlag = upgradeFlag.Substring(0, upgradeFlag.Length - 7);
 			int upgradeAmount = player.GetStateVariable(upgradeFlag);
 
@@ -316,16 +367,16 @@ namespace ArchipelagoRandomizer
 
 		private void IncrementItem(ItemData.Item item)
 		{
-			int currentLevel = player.GetStateVariable(item.Flag);
+			int currentLevel = player.GetStateVariable(item.SaveFlag);
 
 			// If at max level already, don't do anything
 			if (item.Max > 0 && currentLevel >= item.Max)
 				return;
 
-			int upgradeLevel = player.GetStateVariable(item.Flag + "Upgrade");
+			int upgradeLevel = player.GetStateVariable(item.SaveFlag + "Upgrade");
 			// If no upgrade level, increment by 1, otherwise use upgrade level
 			int newLevel = upgradeLevel == 0 ? currentLevel + 1 : upgradeLevel;
-			player.SetStateVariable(item.Flag, newLevel);
+			player.SetStateVariable(item.SaveFlag, newLevel);
 		}
 
 		private IEnumerator SpawnBees()
@@ -361,14 +412,21 @@ namespace ArchipelagoRandomizer
 				StoreStatus(statuses, false, "Cold");
 				StoreStatus(statuses, false, "Fragile");
 				StoreStatus(statuses, false, "Weak");
+
 				ModCore.Utility.LoadScene("MachineFortress");
 			}
 			else if (scene.name == "MachineFortress")
 			{
 				StoreStatus(statuses, false, "Fear");
-				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
+				beeSwarmSpawner = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
+				beeSwarmSpawner.SetActive(false);
 				DontDestroyOnLoad(beeSwarmSpawner);
+				GameObject portalAppearEffecter = GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject;
+				portalAppearEffecter.transform.parent = null;
+				portalAppearEffecter.SetActive(false);
+				DontDestroyOnLoad(portalAppearEffecter);
+				GoalHandler.effectRef = portalAppearEffecter.GetComponent<EffectEventObserver>();
 				hasStoredRefs = true;
 				fadeData._fadeOutTime = 0;
 				IDataSaver startSaver = mainSaver.GetSaver("/local/start");
@@ -419,8 +477,9 @@ namespace ArchipelagoRandomizer
 				public string ItemName { get; set; }
 				public string IconName { get; set; } = "APProgression"; // Default AP icon
 				public int Offset { get; set; }
-				public string Flag { get; set; }
-				public ItemType Type { get; set; }
+				public string SaveFlag { get; set; }
+				public ItemTypes Type { get; set; }
+				public ItemFlags Flag { get; set; }
 				public int Max { get; set; }
 			}
 		}

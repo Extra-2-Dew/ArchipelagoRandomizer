@@ -185,7 +185,7 @@ namespace ArchipelagoRandomizer
 			// Set AP data
 			APFileData apFileData = GetAPFileData();
 
-			if (apFileData != null && ModCore.Plugin.MainSaver != null)
+			if (apFileData != null && isInFileSelectMenu && ModCore.Plugin.MainSaver != null)
 				SaveAPDataToFile(apFileData);
 
 			Plugin.Instance.SetAPFileData(apFileData);
@@ -236,6 +236,7 @@ namespace ArchipelagoRandomizer
 			bool deathlink = GetToggleValue("DeathlinkToggle");
 			bool autoEquipOutfits = GetToggleValue("OutfitToggle");
 			bool stackStatuses = GetToggleValue("StackStatuses");
+			bool chestAppearanceMatchesContents = GetToggleValue("ChestsMatchContents");
 
 			if (string.IsNullOrEmpty(server) || string.IsNullOrEmpty(portStr) || string.IsNullOrEmpty(slotName))
 				return null;
@@ -254,7 +255,8 @@ namespace ArchipelagoRandomizer
 				Password = password,
 				Deathlink = deathlink,
 				AutoEquipOutfits = autoEquipOutfits,
-				StackStatuses = stackStatuses
+				StackStatuses = stackStatuses,
+				ChestAppearanceMatchesContents = chestAppearanceMatchesContents
 			};
 		}
 
@@ -309,6 +311,9 @@ namespace ArchipelagoRandomizer
 						break;
 					case "StackStatuses":
 						toggle.isOn = apFileData.StackStatuses;
+						break;
+					case "ChestsMatchContents":
+						toggle.isOn = apFileData.ChestAppearanceMatchesContents;
 						break;
 				}
 			}
