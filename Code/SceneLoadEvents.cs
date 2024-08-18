@@ -168,14 +168,6 @@ namespace ArchipelagoRandomizer
 		}
 
 		/// <summary>
-		/// Opens Dream World
-		/// </summary>
-		private void OpenDreamWorld()
-		{
-			GameObject.Find("ShowIt").transform.GetChild(0).GetComponent<EntityExprInhibitor>()._data._inhibitIf = "true";
-		}
-
-		/// <summary>
 		/// Creates signs with text in Promised Remedy
 		/// </summary>
 		private void CreateRemedySigns()
@@ -250,13 +242,6 @@ namespace ArchipelagoRandomizer
 				case "Outro":
 					MessageBoxHandler.Instance.HideMessageBoxes();
 					return;
-				case "FluffyFields":
-					if (settings.OpenDW)
-						OpenDreamWorld();
-
-					if (DoModifyShardReqs)
-						ModifyShardDungeonReqs();
-					break;
 				case "Deep19s":
 					if (DoGiveTempEFCS)
 						GiveTempEFCS();
@@ -267,6 +252,7 @@ namespace ArchipelagoRandomizer
 				case "MachineFortress":
 					RemoveBeeChestSpawner();
 					break;
+				case "FluffyFields":
 				case "FancyRuins":
 				case "StarWoods":
 					if (DoModifyShardReqs)

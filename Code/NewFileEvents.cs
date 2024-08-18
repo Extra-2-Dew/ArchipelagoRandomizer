@@ -44,6 +44,20 @@ namespace ArchipelagoRandomizer
 				lr2Saver.SaveInt("LonelyRoad_secretwall_lock-13--18", 1);
 				lr2Saver.SaveInt("LonelyRoad_secretwall_gate-8--17", 1);
 			}
+			if (settings.OpenDW)
+			{
+				IDataSaver dwSaver = mainSaver.GetSaver("/local/levels/DreamWorld/A");
+				dwSaver.SaveInt("PuzzleGate-27--46", 1);
+				dwSaver.SaveInt("PuzzleGate-27--47", 1);
+				dwSaver.SaveInt("PuzzleGate-27--48", 1);
+				dwSaver.SaveInt("PuzzleGate-31--36", 1);
+				dwSaver.SaveInt("PuzzleGate-40--37", 1);
+				dwSaver.SaveInt("PuzzleGate-40--35", 1);
+				dwSaver.SaveInt("PuzzleGate-49--38", 1);
+				dwSaver.SaveInt("PuzzleGate-50--38", 1);
+				dwSaver.SaveInt("PuzzleGate-51--38", 1);
+				dwSaver.SaveInt("PuzzleGate-54--48", 1);
+			}
 
 			if (settings.KeySetting == KeySettings.Keysey)
 				UnlockDoors();
