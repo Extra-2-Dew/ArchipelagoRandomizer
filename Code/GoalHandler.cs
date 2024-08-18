@@ -23,7 +23,7 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				return player != null && player.GetStateVariable("loot") > 0;
+				return HasCompletedRaftQuest && player.GetStateVariable("loot") > 0;
 			}
 		}
 		private bool HasCompletedQueenOfDreams
