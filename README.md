@@ -61,7 +61,7 @@ Once a server has been set up, launch Ittle Dew 2 and start a new game. You shou
 
 Click it, and you'll be brought to the Connection Info menu. (Note, none of the custom UI supports controller.)
 
-![Connection Info](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ConnectionInfo.png)
+![Connection Info](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/blob/main/Readme%20Art/ConnectionInfo.png)
 
 * **Server**: The server URL that is hosting the randomizer seed. Do not include the port.
 * **Port**: Port of the server to connect to. These are the five numbers after the : in the full server address.
@@ -90,7 +90,7 @@ As the mod is still in develpment, there may be bugs, softlocks, or items not pr
 
 If you have the setting on, chests will change their colors to let you know what kind of item is inside them. If they're in a crystal, the crystal will change color too.
 
-![Chests Match Contents chart](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ChestsMatchContentsChart.png)
+![Chests Match Contents chart](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/blob/main/Readme%20Art/ChestsMatchContentsChart.png)
 
 What about traps? Well...you'll figure it out.
 
@@ -98,7 +98,7 @@ What about traps? Well...you'll figure it out.
 
 You can use the ModCore console as an Archipelago text client! Open it with the \` (grave accent) key at any time. All standard Archipelago commands can be entered by using the `ap` command. For example, you can use `ap !hint sword` or `ap !release`. You can also simply chat by preceding your chat message with `ap`; for example `ap Some text` will chat "Some text" to all other text clients.
 
-![Console example](https://raw.githubusercontent.com/Extra-2-Dew/ArchipelagoRandomizer/0.2.0/Readme%20Art/ConsoleExample.png)
+![Console example](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/blob/main/Readme%20Art/ConsoleExample.png)
 
 ## Want to keep up with development?
 
