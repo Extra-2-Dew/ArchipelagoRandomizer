@@ -40,7 +40,6 @@ namespace ArchipelagoRandomizer
 			Crayon,
 			Debuff,
 			EFCS,
-			EvilKey,
 			Heart,
 			Key,
 			Keyring,
@@ -55,9 +54,10 @@ namespace ArchipelagoRandomizer
 		public enum ItemFlags
 		{
 			None = 0,
-			Major = 1,
-			Useful = 2,
-			Minor = 4
+			Macguffin = 1,
+			Major = 2,
+			Minor = 4,
+			Junk = 8
 		}
 
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
@@ -70,6 +70,27 @@ namespace ArchipelagoRandomizer
 			if (item.Type == ItemTypes.Key)
 			{
 				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
+
+				// Handle dungeon names with different names than what is in item name
+				switch (dungeonName)
+				{
+					case "TombofSimulacrum":
+						dungeonName = "TombOfSimulacrum";
+						break;
+					case "Syncope":
+						dungeonName = "DreamDynamite";
+						break;
+					case "Antigram":
+						dungeonName = "DreamFireChain";
+						break;
+					case "BottomlessTower":
+						dungeonName = "DreamIce";
+						break;
+					case "Quietus":
+						dungeonName = "DreamAll";
+						break;
+				}
+
 				IDataSaver keySaver = mainSaver.GetSaver($"/local/levels/{dungeonName}/player/vars");
 				int keyCount = keySaver.LoadInt("localKeys");
 
@@ -218,11 +239,8 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 
-			OverlayFader.StartFade(fadeData, true, delegate ()
-			{
-				stopwatch = Stopwatch.StartNew();
-				ModCore.Utility.LoadScene("Deep7");
-			}, Vector3.zero);
+			stopwatch = Stopwatch.StartNew();
+			ModCore.Utility.LoadScene("Deep7");
 		}
 
 		private void OnDisable()
@@ -247,6 +265,7 @@ namespace ArchipelagoRandomizer
 		{
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/N").SaveInt("PuzzleDoor_green-100--22", 1);
 			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/S").SaveInt("PuzzleDoor_green-64--25", 1);
+			mainSaver.GetSaver("/local/levels/TombOfSimulacrum/AC").SaveInt("PuzzleGate-48--54", 1);
 			mainSaver.GetSaver("/local/levels/Deep17/B").SaveInt("PuzzleGate-23--5", 1);
 			player.SetStateVariable("fakeEFCS", 1);
 		}
@@ -393,17 +412,21 @@ namespace ArchipelagoRandomizer
 				StoreStatus(statuses, false, "Cold");
 				StoreStatus(statuses, false, "Fragile");
 				StoreStatus(statuses, false, "Weak");
+
 				ModCore.Utility.LoadScene("MachineFortress");
 			}
 			else if (scene.name == "MachineFortress")
 			{
 				StoreStatus(statuses, false, "Fear");
-				beeSwarmSpawner = ModCore.Utility.FindNestedChild("LevelRoot", "Dungeon_ChestBees").gameObject;
+				beeSwarmSpawner = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject;
 				beeSwarmSpawner.transform.parent = null;
 				beeSwarmSpawner.SetActive(false);
 				DontDestroyOnLoad(beeSwarmSpawner);
-				GoalHandler.effectRef = ModCore.Utility.FindNestedChild("LevelRoot", "SecretPortal").GetComponent<EffectEventObserver>();
-				DontDestroyOnLoad(GoalHandler.effectRef);
+				GameObject portalAppearEffecter = GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject;
+				portalAppearEffecter.transform.parent = null;
+				portalAppearEffecter.SetActive(false);
+				DontDestroyOnLoad(portalAppearEffecter);
+				GoalHandler.effectRef = portalAppearEffecter.GetComponent<EffectEventObserver>();
 				hasStoredRefs = true;
 				fadeData._fadeOutTime = 0;
 				IDataSaver startSaver = mainSaver.GetSaver("/local/start");

@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				if (!settings.IncludeSuperSecrets || SceneName != "Deep19s")
+				if (!settings.IncludeSuperSecrets)
 					return false;
 
 				Entity player = ModCore.Utility.GetPlayer();
@@ -26,10 +26,7 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				if (settings.ShardSetting == ShardSettings.Open || settings.ShardSetting == ShardSettings.Vanilla)
-					return false;
-
-				return SceneName == "FluffyFields" || SceneName == "FancyRuins" || SceneName == "StarWoods";
+				return settings.ShardSetting == ShardSettings.Half || settings.ShardSetting == ShardSettings.Lockdown;
 			}
 		}
 
@@ -44,6 +41,31 @@ namespace ArchipelagoRandomizer
 		{
 			Events.OnSceneLoaded -= OnSceneLoaded;
 			ItemRandomizer.OnItemReceived -= OnItemReceieved;
+		}
+
+		private void AddCustomComponentToItems()
+		{
+			foreach (SpawnItemEventObserver itemSpawner in Resources.FindObjectsOfTypeAll<SpawnItemEventObserver>())
+			{
+				// Keys and cards
+				if (itemSpawner.name == "Spawner")
+				{
+					itemSpawner.transform.parent.gameObject.AddComponent<RandomizedObject>();
+					continue;
+				}
+
+				if (itemSpawner.name.Contains("Chest"))
+					itemSpawner.gameObject.AddComponent<RandomizedObject>();
+			}
+
+			if (SceneName == "FluffyFieldsCaves")
+				GameObject.Find("LevelRoot").transform.Find("U/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
+
+			else if (SceneName == "Deep19s" && RandomizerSettings.Instance.IncludeSuperSecrets)
+				GameObject.Find("LevelRoot").transform.Find("B/Doodads/DefaultChanger").gameObject.AddComponent<RandomizedObject>();
+
+			else if (SceneName == "MachineFortress")
+				GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject.AddComponent<RandomizedObject>();
 		}
 
 		/// <summary>
@@ -119,7 +141,13 @@ namespace ArchipelagoRandomizer
 		/// </summary>
 		private void ModifyShardDungeonReqs()
 		{
-			ExprVarHolder varHolder = GameObject.Find("SecretDungeonDoor").GetComponent<ExprVarHolder>();
+			GameObject secretDungeonDoor = GameObject.Find("SecretDungeonDoor");
+
+			// Return if no door (is disabled after button is pressed)
+			if (secretDungeonDoor == null)
+				return;
+
+			ExprVarHolder varHolder = secretDungeonDoor.GetComponent<ExprVarHolder>();
 			string key = "shardTarget";
 
 			// If half
@@ -154,35 +182,47 @@ namespace ArchipelagoRandomizer
 		{
 			GameObject signBase = GameObject.Find("LevelRoot").transform.Find("F").GetChild(9).gameObject;
 			GameObject speechBase = GameObject.Find("LevelRoot").transform.Find("F/Doodads/SpeechBubble").gameObject;
-			GameObject reqsSign = GameObject.Instantiate(signBase);
+
+			// Set up requirements sign
+			GameObject reqsSign = Object.Instantiate(signBase);
 			reqsSign.name = "Requirements Sign";
-			GameObject reqsSpeech = GameObject.Instantiate(speechBase);
-			reqsSpeech.name = "Speech Bubble";
-			reqsSpeech.GetComponent<Sign>()._configString = null;
-			reqsSpeech.GetComponent<Sign>()._text = "Only the one who can pass the\nimpossible gates and wields the\nflaming mace may proceed.";
-			reqsSpeech.transform.SetParent(reqsSign.transform);
-			reqsSpeech.transform.localPosition = Vector3.up * 0.5f;
 			reqsSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
-			reqsSign.transform.position = new Vector3(49, 0, - 78);
+			reqsSign.transform.position = new Vector3(49, 0, -78);
 			reqsSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
 			reqsSign.AddComponent<Light>().color = new(1, 0.4f, 0.4f);
-			GameObject hintSign = GameObject.Instantiate(reqsSign);
+
+			// Set up requirements speech bubble
+			GameObject reqsSpeech = Object.Instantiate(speechBase);
+			reqsSpeech.name = "Speech Bubble";
+			reqsSpeech.transform.SetParent(reqsSign.transform);
+			reqsSpeech.transform.localPosition = Vector3.up * 0.5f;
+			Sign reqsSpeechSign = reqsSpeech.GetComponent<Sign>();
+			reqsSpeechSign._configString = null;
+			reqsSpeechSign._text = "Only the one who can pass the\nimpossible gates and wields the\nflaming mace may proceed.";
+
+			// Set up hint sign
+			GameObject hintSign = Object.Instantiate(signBase);
 			hintSign.name = "Hint Sign";
-			string hintPlayer = "";
-			string hintItem = "";
-			ItemRandomizer.Instance.GetItemForLocation("Deep19s", "outfit9", out ScoutedItemInfo itemInfo);
-			if (itemInfo.Player.Slot == APHandler.Instance.CurrentPlayer.Slot)
-			{
-				hintPlayer = "your";
-			}
-            else
-            {
-                hintPlayer = itemInfo.Player.Name + "'s";
-			}
-			hintItem = itemInfo.ItemName;
-			hintSign.GetComponentInChildren<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {hintPlayer} {hintItem}\nawaits.";
 			hintSign.transform.SetParent(GameObject.Find("LevelRoot").transform.Find("Q/Doodads"));
 			hintSign.transform.position = new Vector3(55, 0, -78);
+			hintSign.transform.localScale = new Vector3(-1, 1, 1);
+			hintSign.AddComponent<BC_ColliderAACylinder8>().Extents = Vector2.one * 0.5f;
+			hintSign.AddComponent<Light>().color = new(1, 0.4f, 0.4f);
+
+			// Set up hint speech bubble
+			GameObject hintSpeech = Object.Instantiate(reqsSpeech);
+			hintSpeech.name = "Speech Bubble";
+			hintSpeech.transform.SetParent(hintSign.transform);
+			hintSpeech.transform.localPosition = Vector3.up * 0.5f;
+			ItemRandomizer.Instance.GetItemForLocation("Deep19s", "outfit9", out ScoutedItemInfo itemInfo);
+			string player = itemInfo.Player.Slot == APHandler.Instance.CurrentPlayer.Slot ? "your" : itemInfo.Player.Name + "'s";
+			hintSpeech.GetComponent<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {player} {itemInfo.ItemDisplayName}\n awaits.";
+		}
+
+		private void RemoveBeeChestSpawner()
+		{
+			Transform beeChest = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees");
+			Object.Destroy(beeChest.GetComponent<SpawnEntityEventObserver>());
 		}
 
 		private void DisableRando()
@@ -197,36 +237,50 @@ namespace ArchipelagoRandomizer
 
 			Plugin.LogDebugMessage("Event fired:\n" + $"    Curr: {scene.name}");
 
-			// Disable rando
-			if (scene.name == "MainMenu")
-			{
-				DisableRando();
+			if (!ItemHandler.Instance.HasInitialized)
 				return;
+
+			switch (SceneName)
+			{
+				case "Intro":
+					return;
+				case "MainMenu":
+					DisableRando();
+					return;
+				case "Outro":
+					MessageBoxHandler.Instance.HideMessageBoxes();
+					return;
+				case "FluffyFields":
+					if (settings.OpenDW)
+						OpenDreamWorld();
+
+					if (DoModifyShardReqs)
+						ModifyShardDungeonReqs();
+					break;
+				case "Deep19s":
+					if (DoGiveTempEFCS)
+						GiveTempEFCS();
+
+					if (settings.IncludeSuperSecrets)
+						CreateRemedySigns();
+					break;
+				case "MachineFortress":
+					RemoveBeeChestSpawner();
+					break;
+				case "FancyRuins":
+				case "StarWoods":
+					if (DoModifyShardReqs)
+						ModifyShardDungeonReqs();
+					break;
 			}
 
-			// Hide message boxes when in credits
-			if (scene.name == "Outro")
-				MessageBoxHandler.Instance.HideMessageBoxes();
-
-			if (settings.IncludeSuperSecrets && scene.name == "Deep19s")
-				CreateRemedySigns();
-
+			AddCustomComponentToItems();
 			OverrideSpawnPoints();
-
-			if (DoModifyShardReqs)
-				ModifyShardDungeonReqs();
-
-			if (DoGiveTempEFCS)
-				GiveTempEFCS();
-
-			// Open DW
-			if (settings.OpenDW && scene.name == "FluffyFields")
-				OpenDreamWorld();
 		}
 
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)
 		{
-			if (item.ItemName == "Raft Piece" && DoGiveTempEFCS)
+			if ((item.Type == ItemHandler.ItemTypes.Melee || item.Type == ItemHandler.ItemTypes.EFCS) && SceneName == "Deep19s" && DoGiveTempEFCS)
 				GiveTempEFCS();
 		}
 	}

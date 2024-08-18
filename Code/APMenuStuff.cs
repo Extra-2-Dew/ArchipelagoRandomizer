@@ -185,7 +185,7 @@ namespace ArchipelagoRandomizer
 			// Set AP data
 			APFileData apFileData = GetAPFileData();
 
-			if (apFileData != null && ModCore.Plugin.MainSaver != null)
+			if (apFileData != null && isInFileSelectMenu && ModCore.Plugin.MainSaver != null)
 				SaveAPDataToFile(apFileData);
 
 			Plugin.Instance.SetAPFileData(apFileData);

@@ -23,8 +23,7 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				IDataSaver localSaver = mainSaver.GetSaver("/local/dungeons");
-				return localSaver.HasData("secdun4");
+				return player != null && player.GetStateVariable("loot") > 0;
 			}
 		}
 		private bool HasCompletedQueenOfDreams
@@ -48,7 +47,6 @@ namespace ArchipelagoRandomizer
 				ItemRandomizer.OnItemReceived += OnItemGet;
 
 			Events.OnSceneLoaded += OnSceneLoaded;
-			Events.OnRoomChanged += OnRoomChanged;
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 		}
 
@@ -58,13 +56,13 @@ namespace ArchipelagoRandomizer
 				ItemRandomizer.OnItemReceived -= OnItemGet;
 
 			Events.OnSceneLoaded -= OnSceneLoaded;
-			Events.OnRoomChanged -= OnRoomChanged;
 			Events.OnPlayerSpawn -= OnPlayerSpawn;
 		}
 
 		private void ActivateCreditsTrigger()
 		{
 			GameObject winGameTrigger = GameObject.Find("WinGameTrigger");
+			winGameTrigger.transform.Find("ActivateTrigger").gameObject.SetActive(false);
 			GameObject creditsDoor = winGameTrigger.transform.Find("LevelDoor").gameObject;
 			creditsDoor.SetActive(true);
 
@@ -91,21 +89,18 @@ namespace ArchipelagoRandomizer
 				SendCompletion();
 		}
 
-		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
-		{
-			if (SceneManager.GetActiveScene().name != "FluffyFields" || toRoom == null || toRoom.RoomName != "A")
-				return;
-
-			// If completed other goals, activate credits trigger
-			if (currentGoal == GoalSettings.QueenOfDreams && HasCompletedQueenOfDreams)
-				ActivateCreditsTrigger();
-			else if (currentGoal == GoalSettings.QueenOfAdventure && HasCompletedQueenOfAdventure)
-				ActivateCreditsTrigger();
-		}
-
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
+
+			if (SceneManager.GetActiveScene().name != "FluffyFields")
+				return;
+
+			// If completed other goals, activate credits trigger
+			if (currentGoal == GoalSettings.QueenOfAdventure && HasCompletedQueenOfAdventure)
+				ActivateCreditsTrigger();
+			else if (currentGoal == GoalSettings.QueenOfDreams && HasCompletedQueenOfDreams)
+				ActivateCreditsTrigger();
 		}
 
 		private void OnItemGet(ItemHandler.ItemData.Item item, string sentFromPlayerName)
