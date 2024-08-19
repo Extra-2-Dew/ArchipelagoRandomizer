@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net.Packets;
 using ModCore;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -17,6 +18,21 @@ namespace ArchipelagoRandomizer
 		public void AddCommands()
 		{
 			DebugMenuManager.AddCommands(this);
+		}
+
+		[DebugMenuCommand(commandName: "test")]
+		private void Test(string[] args)
+		{
+			//foreach (Object obj in Preloader.Instance.preloadedObjects)
+			//{
+			//	//if (obj == null)
+			//	//	continue;
+			//	Plugin.Log.LogInfo(obj.name);
+			//}
+
+			GameObject obj = Preloader.GetPreloadedObject<GameObject>("Dungeon_ChestBees");
+			obj.transform.position = ModCore.Utility.GetPlayer().transform.position;
+			obj.GetComponent<SpawnEntityEventObserver>().OnFire(false);
 		}
 
 		[DebugMenuCommand(commandName: "archipelago", commandAliases: ["ap"], caseSensitive: true)]

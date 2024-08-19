@@ -5,6 +5,16 @@ namespace ArchipelagoRandomizer
 	[HarmonyPatch]
 	public class Patches
 	{
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.DoSpawn))]
+		public static bool PlayerSpawner_DoSpawn_Patch()
+		{
+			if (ItemRandomizer.IsActive && Preloader.Instance.IsPreloading)
+				return false;
+
+			return true;
+		}
+
 		// Prevents dream dungeons from overriding items if the setting is on
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(EntityLocalVarOverrider), nameof(EntityLocalVarOverrider.Apply))]

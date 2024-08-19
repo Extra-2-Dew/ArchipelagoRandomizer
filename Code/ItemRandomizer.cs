@@ -51,6 +51,8 @@ namespace ArchipelagoRandomizer
 			if (newFile)
 				new NewFileEvents(settings, mainSaver, apFileData);
 
+			PreloadObjects();
+
 			APHandler.Instance.SyncItemsWithServer();
 			IsActive = true;
 			Plugin.Log.LogInfo("ItemRandomizer is enabled!");
@@ -230,6 +232,69 @@ namespace ArchipelagoRandomizer
 			APHandler.Instance.Disconnect();
 
 			Plugin.Log.LogInfo("ItemRandomizer is disabled!");
+		}
+
+		private void PreloadObjects()
+		{
+			Preloader preloader = new();
+
+			preloader.AddObjectToPreloadList("Deep7", () =>
+			{
+				return Resources.FindObjectsOfTypeAll<StatusType>();
+			});
+			preloader.AddObjectToPreloadList("MachineFortress", () =>
+			{
+				return [
+					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
+					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject
+				];
+			});
+			preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("TrashCave", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep1", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep3", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep6", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep9", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep11", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep14", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep15", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("Deep26", () =>
+			{
+				return [null];
+			});
+			preloader.AddObjectToPreloadList("VitaminHills3", () =>
+			{
+				return [null];
+			});
+
+			preloader.StartPreload();
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)

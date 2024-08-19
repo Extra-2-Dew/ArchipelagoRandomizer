@@ -239,8 +239,8 @@ namespace ArchipelagoRandomizer
 			Events.OnSceneLoaded += OnSceneLoaded;
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 
-			stopwatch = Stopwatch.StartNew();
-			ModCore.Utility.LoadScene("Deep7");
+			//stopwatch = Stopwatch.StartNew();
+			//ModCore.Utility.LoadScene("Deep7");
 		}
 
 		private void OnDisable()
@@ -392,6 +392,7 @@ namespace ArchipelagoRandomizer
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
+			return;
 			if (hasStoredRefs)
 			{
 				Events.OnSceneLoaded -= OnSceneLoaded;
