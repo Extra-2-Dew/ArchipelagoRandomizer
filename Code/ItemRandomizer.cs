@@ -24,6 +24,7 @@ namespace ArchipelagoRandomizer
 		private SaverOwner mainSaver;
 		private RandomizerSettings settings;
 		private PlayerActionModifier playerActionModifier;
+		private LootMenuHandler lootMenuHandler;
 		private bool rollOpensChests;
 
 		public static ItemRandomizer Instance { get { return instance; } }
@@ -207,6 +208,18 @@ namespace ArchipelagoRandomizer
 			}
 
 			DontDestroyOnLoad(this);
+		}
+
+		private void Start()
+		{
+			Events.OnChangeScreen += (string toScene, object args) =>
+			{
+				if (toScene == "itemRoot")
+				{
+					if (lootMenuHandler == null) 
+						lootMenuHandler = GameObject.Find("OverlayCamera").transform.Find("PauseOverlay_anchor/PauseOverlay/Pause/ItemScreen/ItemList").gameObject.AddComponent<LootMenuHandler>();
+				}
+			};
 		}
 
 		private void OnDisable()
