@@ -1,0 +1,154 @@
+{
+    "menus": [
+        {
+            "menuName": "Loot",
+            "nodes": [
+                {
+                    "name": "FakeEFCS",
+                    "title": "Impossible Gates Pass",
+                    "description": "The randomizer devs won't let us have any fun, so they won't let us have the EFCS under normal circumstances. This opens gates that require it instead.",
+                    "useQuantity": false,
+                    "iconPath": "IconFakeEFCS"
+                },
+                {
+                    "name": "KeyBag",
+                    "title": "Key Bag",
+                    "description": "I put all of your identical keys into a sack to keep them organized. Press Confirm to check them out.",
+                    "useQuantity": false,
+                    "iconPath": "IconKey"
+                },
+                {
+                    "name": "Wardrobe",
+                    "title": "Wardrobe",
+                    "description": "Nobody's got time to go ALL the way to the changing tent. Press Confirm if you want to change.",
+                    "useQuantity": false,
+                    "iconPath": "IconOutfit"
+                },
+                {
+                    "name": "Potions",
+                    "title": "Potions",
+                    "description": "I know a guy who knows a guy who deals in rafts. Get me enough of these and I could be...persuaded to get one from him.",
+                    "useQuantity": true,
+                    "iconPath": "IconPotion"
+                }
+            ]
+        },
+        {
+            "menuName": "Keys",
+            "nodes": [
+                {
+                    "name": "DKEYS_PillowFort",
+                    "title": "Pillow Fort Keys",
+                    "description": "Surprised these are allowed, they seem like a safety hazard.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_PillowFort"
+                },
+                {
+                    "name": "DKEYS_SandCastle",
+                    "title": "Sand Castle Keys",
+                    "description": "Probably the most useless keys on this island.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_SandCastle"
+                },
+                {
+                    "name": "DKEYS_ArtExhibit",
+                    "title": "Art Exhibit Keys",
+                    "description": "You can actually reach the boss without any of these if you've got Dynamite and Fire Sword.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_ArtExhibit"
+                },
+                {
+                    "name": "DKEYS_TrashCave",
+                    "title": "Trash Cave Keys",
+                    "description": "Use the shortcut near the beginning to save a key if you can.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_TrashCave"
+                },
+                {
+                    "name": "DKEYS_FloodedBasement",
+                    "title": "Flooded Basement Keys",
+                    "description": "You can save a key to reach the crayon chest with the right items.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_FloodedBasement"
+                },
+                {
+                    "name": "DKEYS_PotassiumMine",
+                    "title": "Potassium Mine Keys",
+                    "description": "I would have replaced the lock by the boss with a combat door, personally.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_PotassiumMine"
+                },
+                {
+                    "name": "DKEYS_BoilingGrave",
+                    "title": "Boiling Grave Keys",
+                    "description": "Huh, you can't do very much in this dungeon without some keys.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_BoilingGrave"
+                },
+                {
+                    "name": "DKEYS_GrandLibrary",
+                    "title": "Grand Library Keys",
+                    "description": "With so many keys, there better be some very valueable loot here.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_GrandLibrary"
+                },
+                {
+                    "name": "DKEYS_SunkenLabyrinth",
+                    "title": "Sunken Labyrinth Keys",
+                    "description": "Imagine getting lost here, there's barely any branching paths.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_SunkenLabyrinth"
+                },
+                {
+                    "name": "DKEYS_MachineFortress",
+                    "title": "Machine Fortress Keys",
+                    "description": "Why do these exist? Just replace them with buttons.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_MachineFortress"
+                },
+                {
+                    "name": "DKEYS_DarkHypostyle",
+                    "title": "Dark Hypostyle Keys",
+                    "description": "So many options. How are you going to use these? No extra key anymore though.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_DarkHypostyle"
+                },
+                {
+                    "name": "DKEYS_TombOfSimulacrum",
+                    "title": "Tomb of Simulacrum Keys",
+                    "description": "Really? Ten keys but no options on where to use them?",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_TombOfSimulacrum"
+                },
+                {
+                    "name": "DKEYS_DreamDynamite",
+                    "title": "Syncope Keys",
+                    "description": "They aren't drenched in ectoplasm, thankfully.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_DreamDynamite"
+                },
+                {
+                    "name": "DKEYS_DreamFireChain",
+                    "title": "Antigram Keys",
+                    "description": "These keys are symmetrical down the middle. Just like all the other keys.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_DreamFireChain"
+                },
+                {
+                    "name": "DKEYS_DreamIce",
+                    "title": "Bottomless Tower Keys",
+                    "description": "They're cold to the touch. I feel some strange forboding from them.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_DreamIce"
+                },
+                {
+                    "name": "DKEYS_DreamAll",
+                    "title": "Quietus Keys",
+                    "description": "You don't need these to reach the boss. They only unlock one location each, lame.",
+                    "useQuantity": true,
+                    "iconPath": "DKEYS_DreamAll"
+                }
+            ]
+        }
+    ]
+}

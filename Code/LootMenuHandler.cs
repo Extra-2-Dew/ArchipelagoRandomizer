@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Newtonsoft.Json;
 
 namespace ArchipelagoRandomizer
 {
@@ -13,42 +14,44 @@ namespace ArchipelagoRandomizer
         private BetterTextMesh descDesc;
         private GameObject descriptionHolder;
         private GameObject noDescriptionHolder;
-        private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/";
+        private GameObject templateIcon;
+        private GameObject itemList;
+        private GameObject keyList;
+        private LootMenuData menuData;
+        private Dictionary<string, GameObject> lootButtons;
+        private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/LootMenuIcons/";
 
         private IEnumerator Start()
         {
             yield return new WaitForEndOfFrame();
 
-            GameObject templateIcon = transform.GetChild(0).gameObject;
+            string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "lootMenuData.json");
+            if (!ModCore.Utility.TryParseJson<LootMenuData>(path, out menuData))
+            {
+                Plugin.Log.LogError("Unable to load Loot Menu Data! Custom loot menus will not be available.");
+                yield break;
+            }
 
-            GameObject igpIcon = Instantiate(templateIcon);
-            igpIcon.transform.SetParent(transform, false);
-            igpIcon.transform.localPosition = Vector3.zero;
-            igpIcon.transform.localRotation = Quaternion.identity;
-            igpIcon.transform.localScale = Vector3.one;
-            GameObject iconObject = igpIcon.transform.Find("Item/Root/Pic").gameObject;
-            iconObject.SetActive(true);
-            iconObject.GetComponent<Renderer>().enabled = true;
-            iconObject.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{assetPath}IconFakeEFCS.png"));
-            SE_LootMenuDescription desc = igpIcon.transform.GetChild(0).gameObject.AddComponent<SE_LootMenuDescription>();
-            desc.titleText = "Impossible Gates Pass";
-            desc.descriptionText = "The randomizer devs won't let us have any fun, so they won't let us have the EFCS under normal circumstances. This opens gates that require it instead.";
-            desc.handler = this;
+            itemList = transform.Find("ItemList").gameObject;
+
+            templateIcon = itemList.transform.GetChild(0).gameObject;
+            lootButtons = new();
+
+            CreateLootMenu();
+
+            transform.Find("BackBtn").GetComponent<GuiClickable>().OnClicked += SwitchToLootMenu;
+            lootButtons["KeyBag"].GetComponentInChildren<GuiClickable>().OnClicked += SwitchToKeysMenu;
+            lootButtons["Wardrobe"].GetComponentInChildren<GuiClickable>().OnClicked += SwitchToOutfitMenu;
         }
 
         public void SetTitleAndDescription(string title, string description)
         {
             if (descriptionHolder == null)
             {
-                Plugin.Log.LogMessage("1");
-                descriptionHolder = transform.parent.Find("Data/ItemData").gameObject;
-                Plugin.Log.LogMessage("2");
+                descriptionHolder = transform.Find("Data/ItemData").gameObject;
                 noDescriptionHolder = descriptionHolder.transform.parent.Find("NoItem").gameObject;
-                Plugin.Log.LogMessage("3");
                 descTitle = descriptionHolder.transform.Find("ItemName").GetComponent<TextMesh>();
-                Plugin.Log.LogMessage("4");
                 descDesc = descriptionHolder.transform.Find("ItemDesc").GetComponent<BetterTextMesh>();
-                Plugin.Log.LogMessage("5");
             }
             if (descriptionHolder != null)
             {
@@ -57,6 +60,98 @@ namespace ArchipelagoRandomizer
                 descTitle.text = title;
                 descDesc.Text = description;
             }
+        }
+
+        public void CreateLootMenu()
+        {
+            LootMenuData.LootSubMenu lootMenu = menuData.menus.FirstOrDefault((x) => x.menuName == "Loot");
+
+            foreach (var node in lootMenu.nodes)
+            {
+                GameObject newIcon = Instantiate(templateIcon);
+                newIcon.transform.SetParent(itemList.transform, false);
+                newIcon.transform.localRotation = Quaternion.identity;
+                newIcon.transform.localScale = Vector3.one;
+                newIcon.name = node.name;
+                GameObject iconObject = newIcon.transform.Find("Item/Root/Pic").gameObject;
+                iconObject.SetActive(true);
+                iconObject.GetComponent<Renderer>().enabled = true;
+                iconObject.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{assetPath}{node.iconPath}.png"));
+                SE_LootMenuDescription desc = newIcon.transform.GetChild(0).gameObject.AddComponent<SE_LootMenuDescription>();
+                desc.titleText = node.title;
+                desc.descriptionText = node.description;
+                desc.handler = this;
+                if (node.useQuantity)
+                {
+                    newIcon.transform.Find("Item/Button").gameObject.SetActive(true);
+                    newIcon.transform.Find("Item/Button/Count").gameObject.SetActive(true);
+                }
+                lootButtons.Add(node.name, newIcon);
+            }
+        }
+
+        public GameObject CreateKeyMenu()
+        {
+            keyList = Instantiate(itemList);
+            keyList.name = "KeyList";
+            keyList.transform.SetParent(transform);
+            keyList.transform.localPosition = itemList.transform.localPosition;
+            keyList.transform.localRotation = Quaternion.identity;
+            keyList.transform.localScale = Vector3.one;
+
+            LootMenuData.LootSubMenu keyMenu = menuData.menus.FirstOrDefault((x) => x.menuName == "Keys");
+
+            for (int i = 0; i < 16; i++)
+            {
+                GameObject button = keyList.transform.GetChild(i).gameObject;
+                GameObject buttonPic = button.transform.Find("Item/Root/Pic").gameObject;
+                var node = keyMenu.nodes[i];
+                buttonPic.SetActive(true);
+                buttonPic.GetComponent<Renderer>().enabled = true;
+                buttonPic.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{assetPath}{node.iconPath}.png"));
+                SE_LootMenuDescription desc = button.transform.GetChild(0).gameObject.GetComponent<SE_LootMenuDescription>();
+                if (desc == null) desc = button.transform.GetChild(0).gameObject.AddComponent<SE_LootMenuDescription>();
+                desc.titleText = node.title;
+                desc.descriptionText = node.description;
+                desc.handler = this;
+                if (node.useQuantity)
+                {
+                    button.transform.Find("Item/Button").gameObject.SetActive(true);
+                    button.transform.Find("Item/Button/Count").gameObject.SetActive(true);
+                }
+                lootButtons.Add(node.name, button);
+            }
+
+            return keyList;
+        }
+
+        private void SwitchToLootMenu()
+        {
+            SwitchToMenu(LootMenuType.Loot);
+        }
+
+        private void SwitchToKeysMenu()
+        {
+            if (keyList == null) keyList = CreateKeyMenu();
+            SwitchToMenu(LootMenuType.Keys);
+        }
+
+        private void SwitchToOutfitMenu()
+        {
+            SwitchToMenu(LootMenuType.Outfits);
+        }
+
+        private void SwitchToMenu(LootMenuType menu)
+        {
+            itemList.SetActive(menu == LootMenuType.Loot);
+            keyList.SetActive(menu == LootMenuType.Keys);
+        }
+
+        private enum LootMenuType
+        {
+            Loot,
+            Keys,
+            Outfits
         }
     }
 }

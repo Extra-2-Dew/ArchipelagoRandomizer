@@ -217,7 +217,7 @@ namespace ArchipelagoRandomizer
 				if (toScene == "itemRoot")
 				{
 					if (lootMenuHandler == null) 
-						lootMenuHandler = GameObject.Find("OverlayCamera").transform.Find("PauseOverlay_anchor/PauseOverlay/Pause/ItemScreen/ItemList").gameObject.AddComponent<LootMenuHandler>();
+						lootMenuHandler = GameObject.Find("OverlayCamera").transform.Find("PauseOverlay_anchor/PauseOverlay/Pause/ItemScreen").gameObject.AddComponent<LootMenuHandler>();
 				}
 			};
 		}

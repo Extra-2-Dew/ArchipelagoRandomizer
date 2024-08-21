@@ -42,11 +42,7 @@
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 
-		<None Update="Data\itemData.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-
-		<None Update="Data\locationData.json">
+		<None Update="Data\*.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="manifest.json">

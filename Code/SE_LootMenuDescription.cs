@@ -14,9 +14,7 @@ namespace ArchipelagoRandomizer
         private void Awake()
         {
             GuiSelectionObject selecter = gameObject.GetComponent<GuiSelectionObject>();
-            List<GuiSelectEffect> selectEffects = new(selecter.selectEffects);
-            selectEffects.Add(this);
-            selecter.selectEffects = selectEffects.ToArray();
+            selecter.selectEffects[2] = this;
         }
 
         public override void DoActivate(bool quick)
