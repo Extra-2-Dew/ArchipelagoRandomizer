@@ -13,6 +13,7 @@ namespace ArchipelagoRandomizer
 		private static MainMenu mainMenu;
 		private static bool hasLoadedAssets;
 		private static GameObject menuPrefab;
+		private static GameObject loadingScreenPrefab;
 
 		private GameObject apMenuObj;
 		private Animator apButtonAnim;
@@ -24,6 +25,8 @@ namespace ArchipelagoRandomizer
 		private RectTransform apButtonRectTrans;
 		private InputField[] apMenuInputFields;
 		private Toggle[] apMenuToggles;
+		private GameObject loadingScreen;
+		private Slider loadingBarSlider;
 		private bool isInFileSelectMenu;
 
 		private MenuScreen<MainMenu> mainScreen;
@@ -35,6 +38,8 @@ namespace ArchipelagoRandomizer
 		{
 			AssetBundle bundle = AssetBundle.LoadFromFile(BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmenus"));
 			menuPrefab = bundle.LoadAsset<GameObject>("APCanvas");
+			loadingScreenPrefab = bundle.LoadAsset<GameObject>("LoadingScreen");
+			loadingScreenPrefab.GetComponentInChildren<Slider>().value = 0;
 			hasLoadedAssets = true;
 		}
 
@@ -161,6 +166,30 @@ namespace ArchipelagoRandomizer
 		public void DeleteAPDataFile()
 		{
 			File.Delete(GetAPDataFilePath(false));
+		}
+
+		public void ToggleLoadingBar(bool enable)
+		{
+			if (enable)
+			{
+				loadingScreen = Instantiate(loadingScreenPrefab);
+				DontDestroyOnLoad(loadingScreen);
+			}
+			else if (loadingScreen != null)
+			{
+				Destroy(loadingScreen);
+			}
+		}
+
+		public void UpdateLoadingBar(float percent)
+		{
+			if (loadingScreen == null)
+				return;
+
+			if (loadingBarSlider == null)
+				loadingBarSlider = loadingScreen.GetComponentInChildren<Slider>();
+
+			loadingBarSlider.value = percent / 100;
 		}
 
 		private void ShowAPMenu()

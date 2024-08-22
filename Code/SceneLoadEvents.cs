@@ -229,9 +229,6 @@ namespace ArchipelagoRandomizer
 
 			Plugin.LogDebugMessage("Event fired:\n" + $"    Curr: {scene.name}");
 
-			if (!ItemHandler.Instance.HasInitialized)
-				return;
-
 			switch (SceneName)
 			{
 				case "Intro":

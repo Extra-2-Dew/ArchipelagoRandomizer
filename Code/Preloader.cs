@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,12 +13,18 @@ namespace ArchipelagoRandomizer
 		private readonly Dictionary<string, List<OnLoadedSceneFunc>> objectsToPreload;
 		private readonly Transform objectHolder;
 		public readonly List<Object> preloadedObjects;
+		private readonly FadeEffectData fadeData;
 		private Stopwatch stopwatch;
-		private string currentScene;
+		private string savedScene;
 
 		public static Preloader Instance { get { return instance; } }
-		public bool IsPreloading { get; private set; }
-		public float PreloadingProgress { get; private set; }
+		public static bool IsPreloading
+		{
+			get
+			{
+				return !Instance.objectsToPreload.Keys.ToList().Contains(SceneManager.GetActiveScene().name);
+			}
+		}
 
 		public Preloader()
 		{
@@ -25,12 +32,11 @@ namespace ArchipelagoRandomizer
 			objectsToPreload = new();
 			preloadedObjects = new();
 			objectHolder = new GameObject("Preloaded Objects").transform;
+			fadeData = ItemRandomizer.Instance.FadeData;
 			Object.DontDestroyOnLoad(objectHolder);
 
-			Events.OnSceneLoaded += OnSceneLoaded;
 			APHandler.Instance.OnDisconnect += () =>
 			{
-				Events.OnSceneLoaded -= OnSceneLoaded;
 				Object.Destroy(objectHolder.gameObject);
 			};
 		}
@@ -48,15 +54,17 @@ namespace ArchipelagoRandomizer
 				objectsToPreload.Add(scene, new List<OnLoadedSceneFunc>() { onLoadedScene });
 		}
 
-		public void StartPreload()
+		public void StartPreload(OnPreloadDone onPreloadDone = null)
 		{
 			stopwatch = Stopwatch.StartNew();
-			Plugin.StartRoutine(PreloadAll());
+			Plugin.StartRoutine(PreloadAll(onPreloadDone));
 		}
 
-		private IEnumerator PreloadAll()
+		private IEnumerator PreloadAll(OnPreloadDone onPreloadDone)
 		{
-			IsPreloading = true;
+			APMenuStuff apMenuStuff = APMenuStuff.Instance;
+			float progressPercent;
+			bool hasDoneFadeOut = false;
 			int loopCount = 0;
 
 			foreach (KeyValuePair<string, List<OnLoadedSceneFunc>> kvp in objectsToPreload)
@@ -64,54 +72,64 @@ namespace ArchipelagoRandomizer
 				loopCount++;
 				string sceneToLoad = kvp.Key;
 
-				// Wait until that scene has loaded
-				yield return SceneManager.LoadSceneAsync(sceneToLoad);
-
-				List<OnLoadedSceneFunc> callbacks = kvp.Value;
-
-				for (int i = 0; i < callbacks.Count; i++)
+				if (!hasDoneFadeOut)
 				{
-					Object[] objs = callbacks[i]?.Invoke();
-
-					foreach (Object obj in objs)
+					OverlayFader.StartFade(fadeData, true, delegate ()
 					{
-						GameObject gameObj = obj as GameObject;
-
-						// If Object is a GameObject, change its parent so it persists
-						if (gameObj != null)
-							gameObj.transform.parent = objectHolder;
-						else
-							Object.DontDestroyOnLoad(obj);
-
-						preloadedObjects.Add(obj);
-					}
+						apMenuStuff.ToggleLoadingBar(true);
+						hasDoneFadeOut = true;
+					}, Vector3.zero);
 				}
 
-				PreloadingProgress = (float)loopCount / objectsToPreload.Count * 100;
-				Plugin.Log.LogInfo($"Preloading progress: {PreloadingProgress}%");
+				yield return new WaitUntil(() => { return hasDoneFadeOut; });
+				yield return SceneManager.LoadSceneAsync(sceneToLoad);
+
+				PreloadObjects(kvp.Value);
+
+				progressPercent = (float)loopCount / objectsToPreload.Count * 100;
+				apMenuStuff.UpdateLoadingBar(progressPercent);
 			}
 
-			IsPreloading = false;
-			PreloadingFinished();
+			apMenuStuff.ToggleLoadingBar(false);
+			PreloadingFinished(onPreloadDone);
 		}
 
-		private void PreloadingFinished()
+		private void PreloadObjects(List<OnLoadedSceneFunc> callbacks)
+		{
+			for (int i = 0; i < callbacks.Count; i++)
+			{
+				Object[] objs = callbacks[i]?.Invoke();
+
+				foreach (Object obj in objs)
+				{
+					GameObject gameObj = obj as GameObject;
+
+					// If Object is a GameObject, change its parent so it persists
+					if (gameObj != null)
+						gameObj.transform.parent = objectHolder;
+					else
+						Object.DontDestroyOnLoad(obj);
+
+					preloadedObjects.Add(obj);
+				}
+			}
+		}
+
+		private void PreloadingFinished(OnPreloadDone onPreloadDone)
 		{
 			// Load into saved scene
 			IDataSaver startSaver = ModCore.Plugin.MainSaver.GetSaver("/local/start");
-			string savedScene = startSaver.LoadData("level");
+			savedScene = startSaver.LoadData("level");
 			string sceneToLoad = string.IsNullOrEmpty(savedScene) ? "Intro" : savedScene;
-			SceneDoor.StartLoad(sceneToLoad, startSaver.LoadData("door"), ItemRandomizer.Instance.FadeData);
+			fadeData._fadeOutTime = 0;
+			SceneDoor.StartLoad(sceneToLoad, startSaver.LoadData("door"), fadeData);
 
+			onPreloadDone?.Invoke();
 			stopwatch.Stop();
 			Plugin.Log.LogInfo($"Finished preloading objects in {stopwatch.ElapsedMilliseconds}ms");
 		}
 
-		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-		{
-			currentScene = scene.name;
-		}
-
 		public delegate Object[] OnLoadedSceneFunc();
+		public delegate void OnPreloadDone();
 	}
 }

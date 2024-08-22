@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
@@ -9,9 +10,12 @@ namespace ArchipelagoRandomizer
 		[HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.DoSpawn))]
 		public static bool PlayerSpawner_DoSpawn_Patch()
 		{
-			if (ItemRandomizer.IsActive && Preloader.Instance.IsPreloading)
+			return true;
+			if (ItemRandomizer.IsActive && Preloader.IsPreloading)
+				//if (ItemRandomizer.IsActive && Preloader.Instance.IsPreloading)
 				return false;
 
+			Plugin.Log.LogInfo($"Spawning player in scene: {SceneManager.GetActiveScene().name}");
 			return true;
 		}
 

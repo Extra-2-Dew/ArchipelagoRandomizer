@@ -35,18 +35,7 @@ namespace ArchipelagoRandomizer
 		public void OnFileStart(bool newFile, APFileData apFileData)
 		{
 			settings = new RandomizerSettings();
-			itemHandler = gameObject.AddComponent<ItemHandler>();
-			itemMessageHandler = MessageBoxHandler.Instance;
-			deathLinkHandler = apFileData.Deathlink ? gameObject.AddComponent<DeathLinkHandler>() : null;
-			hintHandler = gameObject.AddComponent<HintHandler>();
-			goalHandler = gameObject.AddComponent<GoalHandler>();
-			sceneEventHandler = new SceneLoadEvents(settings);
-			roomEventHandler = new RoomLoadEvents(settings);
 			mainSaver = ModCore.Plugin.MainSaver;
-			playerActionModifier = new();
-
-			Events.OnPlayerSpawn += OnPlayerSpawn;
-
 			rollOpensChests = settings.RollOpensChests;
 
 			if (newFile)
@@ -54,7 +43,6 @@ namespace ArchipelagoRandomizer
 
 			PreloadObjects();
 
-			APHandler.Instance.SyncItemsWithServer();
 			IsActive = true;
 			Plugin.Log.LogInfo("ItemRandomizer is enabled!");
 		}
@@ -251,63 +239,105 @@ namespace ArchipelagoRandomizer
 		{
 			Preloader preloader = new();
 
-			preloader.AddObjectToPreloadList("Deep7", () =>
-			{
-				return Resources.FindObjectsOfTypeAll<StatusType>();
-			});
+			// TODO: Store: Forbidden Key, Dynamite
 			preloader.AddObjectToPreloadList("MachineFortress", () =>
 			{
+				//GameObject bees = null;
+
+				//foreach (SpawnEntityEventObserver entSpawner in Resources.FindObjectsOfTypeAll<SpawnEntityEventObserver>())
+				//{
+				//	bees = entSpawner.gameObject;
+				//}
 				return [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
+					//bees
 					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject
 				];
 			});
+			// Maze of Steel
+			// TODO: Store: Headband
+			preloader.AddObjectToPreloadList("Deep11", () =>
+			{
+				return Resources.FindObjectsOfTypeAll<StatusType>();
+			});
+			/*
+			// TODO: Store outfits from changing tent, shards, lockpicks, crayons
 			preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
 			{
 				return [null];
 			});
+			// TODO: Store: Melees, Raft Piece, Dungeon Key
 			preloader.AddObjectToPreloadList("TrashCave", () =>
 			{
 				return [null];
 			});
-			preloader.AddObjectToPreloadList("Deep1", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep3", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep6", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep9", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep11", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep14", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep15", () =>
-			{
-				return [null];
-			});
-			preloader.AddObjectToPreloadList("Deep26", () =>
-			{
-				return [null];
-			});
+			// Pepperpain Mountain
+			// TODO: Store: Eruption
 			preloader.AddObjectToPreloadList("VitaminHills3", () =>
 			{
 				return [null];
 			});
+			// Autumn Climb
+			// TODO: Store: Tracker
+			preloader.AddObjectToPreloadList("Deep1", () =>
+			{
+				return [null];
+			});
+			// Painful Plain
+			// TODO: Store: Tome
+			preloader.AddObjectToPreloadList("Deep3", () =>
+			{
+				return [null];
+			});
+			// Brutal Oasis
+			// TODO: Store: Amulet
+			preloader.AddObjectToPreloadList("Deep6", () =>
+			{
+				return [null];
+			});
+			// Ocean Castle
+			// TODO: Store: Force Wand
+			preloader.AddObjectToPreloadList("Deep9", () =>
+			{
+				return [null];
+			});
+			// Northern End
+			// TODO: Store: Ice Ring
+			preloader.AddObjectToPreloadList("Deep14", () =>
+			{
+				return [null];
+			});
+			// Moon Garden
+			// TODO: Store: Chain
+			preloader.AddObjectToPreloadList("Deep15", () =>
+			{
+				return [null];
+			});
+			// Bad Dream
+			// TODO: Store: Card
+			preloader.AddObjectToPreloadList("Deep26", () =>
+			{
+				return [null];
+			});
+			*/
 
-			preloader.StartPreload();
+			preloader.StartPreload(PreloadDone);
+		}
+
+		private void PreloadDone()
+		{
+			itemHandler = gameObject.AddComponent<ItemHandler>();
+			itemMessageHandler = MessageBoxHandler.Instance;
+			deathLinkHandler = Plugin.Instance.APFileData.Deathlink ? gameObject.AddComponent<DeathLinkHandler>() : null;
+			hintHandler = gameObject.AddComponent<HintHandler>();
+			goalHandler = gameObject.AddComponent<GoalHandler>();
+			sceneEventHandler = new SceneLoadEvents(settings);
+			roomEventHandler = new RoomLoadEvents(settings);
+			playerActionModifier = new();
+
+			Events.OnPlayerSpawn += OnPlayerSpawn;
+
+			APHandler.Instance.SyncItemsWithServer();
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
