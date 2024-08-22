@@ -26,6 +26,7 @@ namespace ArchipelagoRandomizer
 		private PlayerActionModifier playerActionModifier;
 		private LootMenuHandler lootMenuHandler;
 		private bool rollOpensChests;
+		private bool hasSyncedItemsWithServer;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -128,10 +129,6 @@ namespace ArchipelagoRandomizer
 			if (item == null)
 				yield return null;
 
-			// Wait for ItemHandler to initialize
-			while (!itemHandler.HasInitialized)
-				yield return null;
-
 			// Wait for player to spawn
 			while (player == null)
 				yield return null;
@@ -204,7 +201,7 @@ namespace ArchipelagoRandomizer
 			{
 				if (toScene == "itemRoot")
 				{
-					if (lootMenuHandler == null) 
+					if (lootMenuHandler == null)
 						lootMenuHandler = GameObject.Find("OverlayCamera").transform.Find("PauseOverlay_anchor/PauseOverlay/Pause/ItemScreen").gameObject.AddComponent<LootMenuHandler>();
 				}
 			};
@@ -242,15 +239,8 @@ namespace ArchipelagoRandomizer
 			// TODO: Store: Forbidden Key, Dynamite
 			preloader.AddObjectToPreloadList("MachineFortress", () =>
 			{
-				//GameObject bees = null;
-
-				//foreach (SpawnEntityEventObserver entSpawner in Resources.FindObjectsOfTypeAll<SpawnEntityEventObserver>())
-				//{
-				//	bees = entSpawner.gameObject;
-				//}
 				return [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
-					//bees
 					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject
 				];
 			});
@@ -336,13 +326,17 @@ namespace ArchipelagoRandomizer
 			playerActionModifier = new();
 
 			Events.OnPlayerSpawn += OnPlayerSpawn;
-
-			APHandler.Instance.SyncItemsWithServer();
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
 		{
 			this.player = player;
+
+			if (!hasSyncedItemsWithServer && !Preloader.IsPreloading)
+			{
+				APHandler.Instance.SyncItemsWithServer();
+				hasSyncedItemsWithServer = true;
+			}
 		}
 
 		public struct LocationData

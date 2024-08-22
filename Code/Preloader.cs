@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,13 +17,14 @@ namespace ArchipelagoRandomizer
 		private string savedScene;
 
 		public static Preloader Instance { get { return instance; } }
-		public static bool IsPreloading
+		public static bool NeedsPreloading
 		{
 			get
 			{
-				return !Instance.objectsToPreload.Keys.ToList().Contains(SceneManager.GetActiveScene().name);
+				return Instance.objectsToPreload != null && Instance.objectsToPreload.Count > 0;
 			}
 		}
+		public static bool IsPreloading { get; private set; }
 
 		public Preloader()
 		{
@@ -34,16 +34,17 @@ namespace ArchipelagoRandomizer
 			objectHolder = new GameObject("Preloaded Objects").transform;
 			fadeData = ItemRandomizer.Instance.FadeData;
 			Object.DontDestroyOnLoad(objectHolder);
-
-			APHandler.Instance.OnDisconnect += () =>
-			{
-				Object.Destroy(objectHolder.gameObject);
-			};
+			APHandler.Instance.OnDisconnect += OnDisconnected;
 		}
 
 		public static T GetPreloadedObject<T>(string name) where T : Object
 		{
 			return (T)Instance.preloadedObjects.Find(x => x.name == name);
+		}
+
+		public static List<Object> GetAllPreloadedObjects()
+		{
+			return Instance.preloadedObjects;
 		}
 
 		public void AddObjectToPreloadList(string scene, OnLoadedSceneFunc onLoadedScene)
@@ -56,7 +57,6 @@ namespace ArchipelagoRandomizer
 
 		public void StartPreload(OnPreloadDone onPreloadDone = null)
 		{
-			stopwatch = Stopwatch.StartNew();
 			Plugin.StartRoutine(PreloadAll(onPreloadDone));
 		}
 
@@ -66,6 +66,7 @@ namespace ArchipelagoRandomizer
 			float progressPercent;
 			bool hasDoneFadeOut = false;
 			int loopCount = 0;
+			IsPreloading = true;
 
 			foreach (KeyValuePair<string, List<OnLoadedSceneFunc>> kvp in objectsToPreload)
 			{
@@ -74,20 +75,29 @@ namespace ArchipelagoRandomizer
 
 				if (!hasDoneFadeOut)
 				{
+					// Does fadeout after clicking start game
 					OverlayFader.StartFade(fadeData, true, delegate ()
 					{
+						// Fadeout has finished
+						stopwatch = Stopwatch.StartNew();
 						apMenuStuff.ToggleLoadingBar(true);
 						hasDoneFadeOut = true;
 					}, Vector3.zero);
 				}
 
+				// Waits for fadeout to finish
 				yield return new WaitUntil(() => { return hasDoneFadeOut; });
-				yield return SceneManager.LoadSceneAsync(sceneToLoad);
+				// Wait for scene to load
+				yield return SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+				SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
 
 				PreloadObjects(kvp.Value);
 
 				progressPercent = (float)loopCount / objectsToPreload.Count * 100;
 				apMenuStuff.UpdateLoadingBar(progressPercent);
+
+				// Done with scene, so unload it
+				yield return SceneManager.UnloadSceneAsync(sceneToLoad);
 			}
 
 			apMenuStuff.ToggleLoadingBar(false);
@@ -98,6 +108,7 @@ namespace ArchipelagoRandomizer
 		{
 			for (int i = 0; i < callbacks.Count; i++)
 			{
+				// Get the objects to preload from the callback
 				Object[] objs = callbacks[i]?.Invoke();
 
 				foreach (Object obj in objs)
@@ -117,16 +128,25 @@ namespace ArchipelagoRandomizer
 
 		private void PreloadingFinished(OnPreloadDone onPreloadDone)
 		{
+			stopwatch.Stop();
+			Plugin.Log.LogInfo($"Finished preloading {preloadedObjects.Count} object(s) across {objectsToPreload.Count} scene(s) in {stopwatch.ElapsedMilliseconds}ms");
+
+			IsPreloading = false;
+			objectsToPreload.Clear();
+			onPreloadDone?.Invoke();
+
 			// Load into saved scene
 			IDataSaver startSaver = ModCore.Plugin.MainSaver.GetSaver("/local/start");
 			savedScene = startSaver.LoadData("level");
 			string sceneToLoad = string.IsNullOrEmpty(savedScene) ? "Intro" : savedScene;
 			fadeData._fadeOutTime = 0;
 			SceneDoor.StartLoad(sceneToLoad, startSaver.LoadData("door"), fadeData);
+		}
 
-			onPreloadDone?.Invoke();
-			stopwatch.Stop();
-			Plugin.Log.LogInfo($"Finished preloading objects in {stopwatch.ElapsedMilliseconds}ms");
+		private void OnDisconnected()
+		{
+			Object.Destroy(objectHolder.gameObject);
+			APHandler.Instance.OnDisconnect -= OnDisconnected;
 		}
 
 		public delegate Object[] OnLoadedSceneFunc();

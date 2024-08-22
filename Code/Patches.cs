@@ -1,21 +1,30 @@
 ﻿using HarmonyLib;
-using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
 	[HarmonyPatch]
 	public class Patches
 	{
-		[HarmonyPrefix]
-		[HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.DoSpawn))]
+		// Prevents loading into saved scene if doing preloading
+		[HarmonyPrefix, HarmonyPatch(typeof(MainMenu), nameof(MainMenu.StartGame))]
+		public static bool MainMenu_StartGame_Patch(MainMenu __instance)
+		{
+			if (!ItemRandomizer.IsActive || !Preloader.NeedsPreloading)
+				return true;
+
+			__instance.menuImpl.Hide();
+			MainMenu.SetupStartGame(__instance._saver, __instance._texts);
+			MusicSelector.Instance.StopLayer(__instance._songLayer, __instance._songFadeoutTime);
+			return false;
+		}
+
+		// Prevents player from spawning during preloading
+		[HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.DoSpawn))]
 		public static bool PlayerSpawner_DoSpawn_Patch()
 		{
-			return true;
 			if (ItemRandomizer.IsActive && Preloader.IsPreloading)
-				//if (ItemRandomizer.IsActive && Preloader.Instance.IsPreloading)
 				return false;
 
-			Plugin.Log.LogInfo($"Spawning player in scene: {SceneManager.GetActiveScene().name}");
 			return true;
 		}
 

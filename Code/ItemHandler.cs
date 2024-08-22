@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -18,17 +17,13 @@ namespace ArchipelagoRandomizer
 		private readonly List<StatusType> statusBuffs = new();
 		private readonly List<StatusType> statusDebuffs = new();
 		private IDataSaver itemsObtainedSaver;
-		private FadeEffectData fadeData;
 		private Entity player;
 		private EntityStatusable playerStatusable;
 		private SaverOwner mainSaver;
-		private GameObject beeSwarmSpawner;
+		private SpawnEntityEventObserver beeSwarmSpawner;
 		private SoundClip heartSound;
-		private Stopwatch stopwatch;
-		private bool hasStoredRefs;
 
 		public static ItemHandler Instance { get { return instance; } }
-		public bool HasInitialized { get; private set; }
 
 		public enum ItemTypes
 		{
@@ -63,6 +58,7 @@ namespace ArchipelagoRandomizer
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
 		{
 			isLevelItem = false;
+			Entity player = ModCore.Utility.GetPlayer();
 
 			if (player == null || mainSaver == null)
 				return 0;
@@ -135,6 +131,7 @@ namespace ArchipelagoRandomizer
 		private IEnumerator DoGiveItem(ItemData.Item item)
 		{
 			yield return new WaitForEndOfFrame();
+			player = ModCore.Utility.GetPlayer();
 
 			switch (item.Type)
 			{
@@ -142,7 +139,7 @@ namespace ArchipelagoRandomizer
 					Plugin.StartRoutine(SpawnBees());
 					break;
 				case ItemTypes.Buff:
-					ApplyRandomStatus(statusBuffs);
+					ApplyRandomStatus(false);
 					break;
 				case ItemTypes.Card:
 					AddCard(item.SaveFlag);
@@ -154,7 +151,7 @@ namespace ArchipelagoRandomizer
 					AddCrayon();
 					break;
 				case ItemTypes.Debuff:
-					ApplyRandomStatus(statusDebuffs);
+					ApplyRandomStatus(true);
 					break;
 				case ItemTypes.EFCS:
 					AddEFCS();
@@ -234,19 +231,6 @@ namespace ArchipelagoRandomizer
 
 			mainSaver = ModCore.Plugin.MainSaver;
 			itemsObtainedSaver = itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
-			fadeData = ItemRandomizer.Instance.FadeData;
-
-			Events.OnSceneLoaded += OnSceneLoaded;
-			Events.OnPlayerSpawn += OnPlayerSpawn;
-
-			//stopwatch = Stopwatch.StartNew();
-			//ModCore.Utility.LoadScene("Deep7");
-		}
-
-		private void OnDisable()
-		{
-			Events.OnSceneLoaded -= OnSceneLoaded;
-			Events.OnPlayerSpawn -= OnPlayerSpawn;
 		}
 
 		private void AddCard(string saveFlag)
@@ -359,9 +343,18 @@ namespace ArchipelagoRandomizer
 				player.SetStateVariable(itemFlag, newUpgradeAmount);
 		}
 
-		private void ApplyRandomStatus(List<StatusType> statuses)
+		private void ApplyRandomStatus(bool debuff)
 		{
-			StatusType randomStatus = statuses[Random.Range(0, statuses.Count)];
+			if (statusDebuffs.Count == 0 || statusBuffs.Count == 0)
+				SortStatuses();
+
+			StatusType randomStatus = debuff ?
+				statusDebuffs[Random.Range(0, statusDebuffs.Count)] :
+				statusBuffs[Random.Range(0, statusBuffs.Count)];
+
+			if (playerStatusable == null)
+				playerStatusable = player.GetEntityComponent<EntityStatusable>();
+
 			playerStatusable.AddStatus(randomStatus);
 		}
 
@@ -384,84 +377,38 @@ namespace ArchipelagoRandomizer
 			yield return new WaitForEndOfFrame();
 
 			if (beeSwarmSpawner == null)
-				yield return null;
+			{
+				GameObject beeSwarmSpawnerObj = Preloader.GetPreloadedObject<GameObject>("Dungeon_ChestBees");
+				beeSwarmSpawnerObj.transform.position = player.transform.position;
+				beeSwarmSpawner = beeSwarmSpawnerObj.GetComponent<SpawnEntityEventObserver>();
+			}
 
-			beeSwarmSpawner.transform.position = player.transform.position;
-			beeSwarmSpawner.GetComponent<SpawnEntityEventObserver>().OnFire(false);
+			beeSwarmSpawner.OnFire(false);
 		}
 
-		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+		private void SortStatuses()
 		{
-			return;
-			if (hasStoredRefs)
+			List<string> buffs = new() { "DireHit", "Hearty", "Tough", "Mighty" };
+			List<string> debuffs = new() { "Cold", "Fragile", "Weak" };
+
+			foreach (Object obj in Preloader.GetAllPreloadedObjects())
 			{
-				Events.OnSceneLoaded -= OnSceneLoaded;
-				stopwatch.Stop();
-				Plugin.Log.LogInfo($"Took {stopwatch.ElapsedMilliseconds}ms to store references");
-				return;
+				if (obj is StatusType status)
+				{
+					string statName = status.name.Substring(5);
+
+					if (debuffs.Contains(statName))
+					{
+						statusDebuffs.Add(status);
+						continue;
+					}
+
+					if (buffs.Contains(statName))
+						statusBuffs.Add(status);
+				}
 			}
 
-			StatusType[] statuses = Resources.FindObjectsOfTypeAll<StatusType>();
-
-			// Former Colossus
-			if (scene.name == "Deep7")
-			{
-				StoreStatus(statuses, true, "DireHit");
-				StoreStatus(statuses, true, "Hearty");
-				StoreStatus(statuses, true, "Tough");
-				StoreStatus(statuses, true, "Mighty");
-				StoreStatus(statuses, false, "Cold");
-				StoreStatus(statuses, false, "Fragile");
-				StoreStatus(statuses, false, "Weak");
-
-				ModCore.Utility.LoadScene("MachineFortress");
-			}
-			else if (scene.name == "MachineFortress")
-			{
-				StoreStatus(statuses, false, "Fear");
-				beeSwarmSpawner = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject;
-				beeSwarmSpawner.transform.parent = null;
-				beeSwarmSpawner.SetActive(false);
-				DontDestroyOnLoad(beeSwarmSpawner);
-				GameObject portalAppearEffecter = GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject;
-				portalAppearEffecter.transform.parent = null;
-				portalAppearEffecter.SetActive(false);
-				DontDestroyOnLoad(portalAppearEffecter);
-				GoalHandler.effectRef = portalAppearEffecter.GetComponent<EffectEventObserver>();
-				hasStoredRefs = true;
-				fadeData._fadeOutTime = 0;
-				IDataSaver startSaver = mainSaver.GetSaver("/local/start");
-				string savedScene = startSaver.LoadData("level");
-				string sceneToLoad = string.IsNullOrEmpty(savedScene) ? "Intro" : savedScene;
-				SceneDoor.StartLoad(sceneToLoad, startSaver.LoadData("door"), fadeData);
-			}
-		}
-
-		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
-		{
-			this.player = player;
-			playerStatusable = player.GetEntityComponent<EntityStatusable>();
-
-			if (hasStoredRefs)
-				HasInitialized = true;
-		}
-
-		private void StoreStatus(StatusType[] loadedStatuses, bool isBuff, string name)
-		{
-			StatusType status = loadedStatuses.FirstOrDefault(status => status.name.EndsWith(name));
-
-			if (status != null)
-			{
-				if (Plugin.Instance.APFileData.StackStatuses)
-					status._overrides = [];
-
-				if (isBuff)
-					statusBuffs.Add(status);
-				else
-					statusDebuffs.Add(status);
-
-				DontDestroyOnLoad(status);
-			}
+			Plugin.Log.LogInfo("Stored statuses!");
 		}
 
 		private void LogNotImplementedMessage(string itemName)
