@@ -20,6 +20,7 @@ namespace ArchipelagoRandomizer
         private GameObject outfitList;
         private LootMenuData menuData;
         private Dictionary<string, GameObject> lootButtons;
+        private GuiClickable backButton;
         private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/LootMenuIcons/";
 
         private IEnumerator Start()
@@ -40,7 +41,8 @@ namespace ArchipelagoRandomizer
 
             CreateLootMenu();
 
-            transform.Find("BackBtn").GetComponent<GuiClickable>().OnClicked += SwitchToLootMenu;
+            backButton = transform.Find("BackBtn").GetComponent<GuiClickable>();
+            backButton.OnClicked += SwitchToLootMenu;
             lootButtons["KeyBag"].GetComponentInChildren<GuiClickable>().OnClicked += SwitchToKeysMenu;
             lootButtons["Wardrobe"].GetComponentInChildren<GuiClickable>().OnClicked += SwitchToOutfitMenu;
         }
@@ -73,20 +75,6 @@ namespace ArchipelagoRandomizer
                 button.transform.SetParent(itemList.transform, false);
                 button.transform.localRotation = Quaternion.identity;
                 button.transform.localScale = Vector3.one;
-                //GameObject iconObject = button.transform.Find("Item/Root/Pic").gameObject;
-                //iconObject.SetActive(true);
-                //iconObject.GetComponent<Renderer>().enabled = true;
-                //iconObject.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{assetPath}{node.iconPath}.png"));
-                //SE_LootMenuDescription desc = button.transform.GetChild(0).gameObject.AddComponent<SE_LootMenuDescription>();
-                //desc.titleText = node.title;
-                //desc.descriptionText = node.description;
-                //desc.handler = this;
-                //if (node.useQuantity)
-                //{
-                //    button.transform.Find("Item/Button").gameObject.SetActive(true);
-                //    button.transform.Find("Item/Button/Count").gameObject.SetActive(true);
-                //}
-                //lootButtons.Add(node.name, button);
                 CreateButtonNode(button, node);
             }
         }
@@ -125,10 +113,17 @@ namespace ArchipelagoRandomizer
 
             for (int i = 0; i < 11; i++)
             {
+                var i2 = i;
                 GameObject button = outfitList.transform.GetChild(i).gameObject;
                 var node = outfitMenu.nodes[i];
                 CreateButtonNode(button, node);
                 button.transform.Find("Item/Root/Background").gameObject.SetActive(false);
+                button.transform.GetComponentInChildren<GuiClickable>().OnClicked += () =>
+                {
+                    ModCore.Utility.GetPlayer().SetStateVariable("outfit", i2);
+                    ModCore.Plugin.MainSaver.SaveLocal();
+                    backButton.SendClick();
+                };
             }
             for (int i = outfitList.transform.childCount -1; i >= 11; i--)
             {

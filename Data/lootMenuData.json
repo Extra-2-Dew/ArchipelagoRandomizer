@@ -184,7 +184,7 @@
                 {
                     "name": "outfitSwim",
                     "title": "Swimsuit",
-                    "description": "Perfect for the beach episode. When is Stephan adding swimming?",
+                    "description": "Perfect for the beach episode. When are the devs adding swimming?",
                     "useQuantity": false,
                     "iconPath": "ItemIcon_SuitSwim"
                 },
@@ -198,7 +198,7 @@
                 {
                     "name": "outfitCard",
                     "title": "Little Dude",
-                    "description": "I can't stand card games, big cities, or nighttime. 2 of them are even worse.",
+                    "description": "I can't stand card games, big cities, nighttime, or the number 2.",
                     "useQuantity": false,
                     "iconPath": "ItemIcon_SuitCard"
                 },
@@ -219,7 +219,7 @@
                 {
                     "name": "outfitThatGuy",
                     "title": "That Guy",
-                    "description": "Those shadowey shapes in The Promised Remedy...do you think those were souls? What do you think happens to you when you wear this?",
+                    "description": "Those shadowey shapes in The Promised Remedy...do you think those were souls? What do you think happens to us when we wear this?",
                     "useQuantity": false,
                     "iconPath": "SuitThatGuy"
                 },
