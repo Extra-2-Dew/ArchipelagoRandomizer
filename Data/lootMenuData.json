@@ -149,6 +149,88 @@
                     "iconPath": "DKEYS_DreamAll"
                 }
             ]
+        },
+        {
+            "menuName": "Outfits",
+            "nodes": [
+                {
+                    "name": "outfitDefault",
+                    "title": "Ittle Dew 2",
+                    "description": "You know, I wasn't sure about the jump to 3D, but you pulled it off pretty well. I'm fine staying flat though, thank you very much.",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitDefault"
+                },
+                {
+                    "name": "outfitTippsie",
+                    "title": "Tippsie",
+                    "description": "I appreciate the flattery, but less of a fan of the wig I have to wear...",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitTippsie"
+                },
+                {
+                    "name": "outfitOriginal",
+                    "title": "Ittle Dew 1",
+                    "description": "Personally, I think you look better with short hair.",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitIttleOriginal"
+                },
+                {
+                    "name": "outfitJenny",
+                    "title": "Jenny Dew",
+                    "description": "Huh, with this you almost look as intimidating as Jenny Fox. Perhaps consider getting an axe?",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitJenny"
+                },
+                {
+                    "name": "outfitSwim",
+                    "title": "Swimsuit",
+                    "description": "Perfect for the beach episode. When is Stephan adding swimming?",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitSwim"
+                },
+                {
+                    "name": "outfitArmor",
+                    "title": "Tiger Jenny Armor",
+                    "description": "Tiger Jenny may have been the previous owner, but legend has it that this armor once belonged to a fierce diety of some kind.",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitArmor"
+                },
+                {
+                    "name": "outfitCard",
+                    "title": "Little Dude",
+                    "description": "I can't stand card games, big cities, or nighttime. 2 of them are even worse.",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitCard"
+                },
+                {
+                    "name": "outfitDelinquent",
+                    "title": "Delinquent",
+                    "description": "Putting the \"Fashion\" in \"Fashionably Late.\"",
+                    "useQuantity": false,
+                    "iconPath": "ItemIcon_SuitDelinquent"
+                },
+                {
+                    "name": "outfitApaFrog",
+                    "title": "Apathetic Frog",
+                    "description": "Meh.",
+                    "useQuantity": false,
+                    "iconPath": "SuitApaFrog"
+                },
+                {
+                    "name": "outfitThatGuy",
+                    "title": "That Guy",
+                    "description": "Those shadowey shapes in The Promised Remedy...do you think those were souls? What do you think happens to you when you wear this?",
+                    "useQuantity": false,
+                    "iconPath": "SuitThatGuy"
+                },
+                {
+                    "name": "outfitJennyBerry",
+                    "title": "Jenny Berry",
+                    "description": "Probably not the best time to bring up that I have a phobia of being turned into a flying ice cream cone?",
+                    "useQuantity": false,
+                    "iconPath": "SuitJennyBerry"
+                }
+            ]
         }
     ]
 }
