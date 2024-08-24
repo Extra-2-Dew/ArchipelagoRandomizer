@@ -821,6 +821,12 @@
 			"iconName": "Custom/APTrap",
 			"offset": 143,
 			"type": "Bees"
+		},
+		{
+			"itemName": "Potion",
+			"iconName": "Custom/potion",
+			"offset": 163,
+			"saveFlag": "potions"
 		}
 	]
 }
