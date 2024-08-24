@@ -21,7 +21,7 @@
                     "name": "Wardrobe",
                     "title": "Wardrobe",
                     "description": "Nobody's got time to go ALL the way to the changing tent. Press Confirm if you want to change.",
-                    "useQuantity": false,
+                    "useQuantity": true,
                     "iconPath": "IconOutfit"
                 },
                 {
