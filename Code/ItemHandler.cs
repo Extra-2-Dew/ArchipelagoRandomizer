@@ -97,7 +97,7 @@ namespace ArchipelagoRandomizer
 			}
 
 			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
-			List<string> countItems = new() { "shards", "raft", "evilKeys" };
+			List<string> countItems = new() { "shards", "raft", "potions", "evilKeys" };
 
 			isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
 

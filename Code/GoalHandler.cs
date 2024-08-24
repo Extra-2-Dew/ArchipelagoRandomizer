@@ -34,6 +34,13 @@ namespace ArchipelagoRandomizer
 				return localSaver.GetAllDataKeys().Length > 4;
 			}
 		}
+		private bool HasCompletedPotionHunt
+		{
+			get
+			{
+				return player != null && player.GetStateVariable("potions") >= RandomizerSettings.Instance.RequiredPotions;
+			}
+		}
 
 		private void Awake()
 		{
@@ -43,20 +50,16 @@ namespace ArchipelagoRandomizer
 
 		private void OnEnable()
 		{
-			if (currentGoal == GoalSettings.RaftQuest)
-				ItemRandomizer.OnItemReceived += OnItemGet;
-
 			Events.OnSceneLoaded += OnSceneLoaded;
 			Events.OnPlayerSpawn += OnPlayerSpawn;
+			ItemRandomizer.OnItemReceived += OnItemGet;
 		}
 
 		private void OnDisable()
 		{
-			if (currentGoal == GoalSettings.RaftQuest)
-				ItemRandomizer.OnItemReceived -= OnItemGet;
-
 			Events.OnSceneLoaded -= OnSceneLoaded;
 			Events.OnPlayerSpawn -= OnPlayerSpawn;
+			ItemRandomizer.OnItemReceived -= OnItemGet;
 		}
 
 		private void ActivateCreditsTrigger()
@@ -101,16 +104,21 @@ namespace ArchipelagoRandomizer
 				ActivateCreditsTrigger();
 			else if (currentGoal == GoalSettings.QueenOfDreams && HasCompletedQueenOfDreams)
 				ActivateCreditsTrigger();
+			else if (currentGoal == GoalSettings.PotionHunt && HasCompletedPotionHunt)
+				ActivateCreditsTrigger();
 		}
 
 		private void OnItemGet(ItemHandler.ItemData.Item item, string sentFromPlayerName)
 		{
-			if (!item.ItemName.Contains("Raft Piece") || SceneManager.GetActiveScene().name != "FluffyFields" || !HasCompletedRaftQuest)
+			// If not in Fluffy, we don't need to worry about instantly checking for win condition
+			if (SceneManager.GetActiveScene().name != "FluffyFields")
 				return;
 
-			// Activate credits trigger if you have all raft pieces
-			// and are in FluffyFields when final raft was obtained
-			ActivateCreditsTrigger();
+			bool hasCompletedRaftQuest = (currentGoal == GoalSettings.RaftQuest && item.ItemName == "Raft Piece" && HasCompletedRaftQuest);
+			bool hasCompletedPotionHunt = (currentGoal == GoalSettings.PotionHunt && item.ItemName == "Potion" && HasCompletedPotionHunt);
+
+			if (hasCompletedRaftQuest || hasCompletedPotionHunt)
+				ActivateCreditsTrigger();
 		}
 	}
 }

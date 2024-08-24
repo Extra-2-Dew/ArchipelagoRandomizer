@@ -16,7 +16,8 @@ namespace ArchipelagoRandomizer
 	{
 		RaftQuest,
 		QueenOfAdventure,
-		QueenOfDreams
+		QueenOfDreams,
+		PotionHunt
 	}
 
 	public enum KeySettings
@@ -48,6 +49,7 @@ namespace ArchipelagoRandomizer
 		private bool openDW;
 		private bool openS4;
 		private List<string> requiredDungeons;
+		private long requiredPotions;
 		private bool rollOpensChests;
 		private ShardSettings shardSetting;
 		private bool startWithTracker;
@@ -68,6 +70,7 @@ namespace ArchipelagoRandomizer
 		public bool OpenDW { get { return openDW; } }
 		public bool OpenS4 { get { return openS4; } }
 		public List<string> RequiredDungeons { get { return requiredDungeons; } }
+		public long RequiredPotions { get { return requiredPotions; } }
 		public bool RollOpensChests { get { return rollOpensChests; } }
 		public ShardSettings ShardSetting { get { return shardSetting; } }
 		public bool StartWithTracker { get { return startWithTracker; } }
@@ -97,6 +100,7 @@ namespace ArchipelagoRandomizer
 				{ nameof(OpenDW), openDW = APHandler.GetSlotData<long>("include_dream_dungeons") == 1 && APHandler.GetSlotData<long>("open_dreamworld") == 1 },
 				{ nameof(OpenS4), openS4 = APHandler.GetSlotData<long>("open_s4") == 1 },
 				{ nameof(RequiredDungeons), requiredDungeons = dungeonRewardSetting != 0 ? APHandler.GetSlotData<JArray>("required_dungeons").ToObject<List<string>>() : new() },
+				{ nameof(RequiredPotions), requiredPotions = APHandler.GetSlotData<long>("required_potion_count") },
 				{ nameof(RollOpensChests), rollOpensChests = APHandler.GetSlotData<long>("roll_opens_chests") == 1 },
 				{ nameof(ShardSetting), shardSetting = (ShardSettings)APHandler.GetSlotData<long>("shard_settings") },
 				{ nameof(StartWithTracker), startWithTracker = APHandler.GetSlotData<long>("start_with_tracker") == 1 },
