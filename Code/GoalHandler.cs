@@ -16,7 +16,6 @@ namespace ArchipelagoRandomizer
 		{
 			get
 			{
-				Application.Quit();
 				return player != null && player.GetStateVariable("raft") > 7;
 			}
 		}
