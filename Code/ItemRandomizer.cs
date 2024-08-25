@@ -297,12 +297,19 @@ namespace ArchipelagoRandomizer
 			{
 				return [null];
 			});
+			*/
 			// Moon Garden
 			// TODO: Store: Chain
 			preloader.AddObjectToPreloadList("Deep15", () =>
 			{
-				return [null];
+				SpawnItemEventObserver observer = GameObject.Find("LevelRoot").transform.Find("A/Doodads/Dungeon_Chest").GetComponent<SpawnItemEventObserver>();
+				GameObject chain = GameObject.Instantiate(FreestandingReplacer.GetGameObjectFromSelector(observer));
+				Destroy(chain.GetComponent<VarUpdatingItem>());
+				chain.name = "MC Chain";
+				FreestandingReplacer.AddModelPreview("Progressive Chain", chain);
+				return [chain];
 			});
+			/*
 			// Bad Dream
 			// TODO: Store: Card
 			preloader.AddObjectToPreloadList("Deep26", () =>

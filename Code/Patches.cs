@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -125,6 +126,20 @@ namespace ArchipelagoRandomizer
 			__instance._onStart?.FireOnActivate(true);
 
 			return false;
+		}
+
+		// Replace key with model of randomized item
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(SpawnItemEventObserver), nameof(SpawnItemEventObserver.SpawnItem))]
+		public static void SpawnItemEventObserver_SpawnItem_Postfix(SpawnItemEventObserver __instance)
+		{
+			if (!ItemRandomizer.IsActive) return;
+			if (__instance.transform.parent.name == "KeyChest")
+			{
+				GameObject key = __instance.showItem.gameObject;
+				PreviewItemData preview = key.AddComponent<PreviewItemData>();
+				preview.ChangePreview(__instance.GetComponentInParent<DummyAction>());
+			}
 		}
 
 		[HarmonyPostfix]
