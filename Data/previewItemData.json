@@ -1,0 +1,19 @@
+[
+    {
+        "key": "Progressive Chain",
+        "path": "A/Doodads/Dungeon_Chest",
+        "index": 0,
+        "spin": false,
+        "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 25
+    }
+]

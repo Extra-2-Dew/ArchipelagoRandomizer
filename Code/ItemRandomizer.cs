@@ -302,7 +302,7 @@ namespace ArchipelagoRandomizer
 			// TODO: Store: Chain
 			preloader.AddObjectToPreloadList("Deep15", () =>
 			{
-				GameObject chain = FreestandingReplacer.GetModelForPreview("A/Doodads/Dungeon_Chest", "Progressive Chain");
+				GameObject chain = FreestandingReplacer.GetModelForPreview("Progressive Chain");
 				return [chain];
 			});
 			/*

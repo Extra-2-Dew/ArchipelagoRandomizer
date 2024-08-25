@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
@@ -8,6 +9,7 @@ namespace ArchipelagoRandomizer
     /// </summary>
     public class FreestandingReplacer
     {
+        private static List<PreviewItemData> itemData;
         private static Dictionary<string, GameObject> models;
 
         public static GameObject GetGameObjectFromItem(SpawnItemEventObserver observer)
@@ -25,12 +27,23 @@ namespace ArchipelagoRandomizer
         /// <summary>
         /// Finds an object to use for previewing from the given path. Automatically adjusts for ItemSelectors.
         /// </summary>
-        /// <param name="path">The path to the GameObject that has the SpawnItemEventObserver. Do not include LevelRoot.</param>
-        /// <param name="selectorIndex">If the item is part of a selector, which one should be used?</param>
+        /// <param name="itemName">The item's key in previewItemData.json</param>
         /// <returns></returns>
-        public static GameObject GetModelForPreview(string path, string itemName, int selectorIndex = 0)
+        public static GameObject GetModelForPreview(string itemName)
         {
-            SpawnItemEventObserver observer = GameObject.Find("LevelRoot").transform.Find(path).GetComponent<SpawnItemEventObserver>();
+            if (itemData == null)
+            {
+                string dataPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "previewItemData.json");
+                if (!ModCore.Utility.TryParseJson<List<PreviewItemData>>(dataPath, out itemData))
+                {
+                    Plugin.Log.LogError("Unable to load preview item data!");
+                    return null;
+                }
+            }
+
+            PreviewItemData data = itemData.FirstOrDefault((x) => x.key == itemName);
+
+            SpawnItemEventObserver observer = GameObject.Find("LevelRoot").transform.Find(data.path).GetComponent<SpawnItemEventObserver>();
             GameObject model = null;
             if (observer._itemSelector == null)
             {
@@ -38,9 +51,14 @@ namespace ArchipelagoRandomizer
             }
             else
             {
-                model = GameObject.Instantiate(GetGameObjectFromSelector(observer, selectorIndex));
+                model = GameObject.Instantiate(GetGameObjectFromSelector(observer, data.index));
             }
             Object.Destroy(model.GetComponent<VarUpdatingItem>());
+            Transform child = model.transform.GetChild(0);
+            child.position += data.position;
+            child.eulerAngles = data.rotation;
+            child.localScale = new Vector3(data.scale, data.scale, data.scale);
+
             model.name = "Preview" + itemName;
             AddModelPreview(itemName, model);
             return model;
