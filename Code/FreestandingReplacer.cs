@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
@@ -23,6 +20,30 @@ namespace ArchipelagoRandomizer
             ItemSelector selector = (ItemSelector)observer._itemSelector;
             Item item = (Item)selector._data[index].result;
             return item.gameObject;
+        }
+
+        /// <summary>
+        /// Finds an object to use for previewing from the given path. Automatically adjusts for ItemSelectors.
+        /// </summary>
+        /// <param name="path">The path to the GameObject that has the SpawnItemEventObserver. Do not include LevelRoot.</param>
+        /// <param name="selectorIndex">If the item is part of a selector, which one should be used?</param>
+        /// <returns></returns>
+        public static GameObject GetModelForPreview(string path, string itemName, int selectorIndex = 0)
+        {
+            SpawnItemEventObserver observer = GameObject.Find("LevelRoot").transform.Find(path).GetComponent<SpawnItemEventObserver>();
+            GameObject model = null;
+            if (observer._itemSelector == null)
+            {
+                model = GameObject.Instantiate(GetGameObjectFromItem(observer));
+            }
+            else
+            {
+                model = GameObject.Instantiate(GetGameObjectFromSelector(observer, selectorIndex));
+            }
+            Object.Destroy(model.GetComponent<VarUpdatingItem>());
+            model.name = "Preview" + itemName;
+            AddModelPreview(itemName, model);
+            return model;
         }
 
         public static void AddModelPreview(string key, GameObject model)

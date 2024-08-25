@@ -137,7 +137,7 @@ namespace ArchipelagoRandomizer
 			if (__instance.transform.parent.name == "KeyChest")
 			{
 				GameObject key = __instance.showItem.gameObject;
-				PreviewItemData preview = key.AddComponent<PreviewItemData>();
+				PreviewItemInfo preview = key.AddComponent<PreviewItemInfo>();
 				preview.ChangePreview(__instance.GetComponentInParent<DummyAction>());
 			}
 		}

@@ -302,11 +302,7 @@ namespace ArchipelagoRandomizer
 			// TODO: Store: Chain
 			preloader.AddObjectToPreloadList("Deep15", () =>
 			{
-				SpawnItemEventObserver observer = GameObject.Find("LevelRoot").transform.Find("A/Doodads/Dungeon_Chest").GetComponent<SpawnItemEventObserver>();
-				GameObject chain = GameObject.Instantiate(FreestandingReplacer.GetGameObjectFromSelector(observer));
-				Destroy(chain.GetComponent<VarUpdatingItem>());
-				chain.name = "MC Chain";
-				FreestandingReplacer.AddModelPreview("Progressive Chain", chain);
+				GameObject chain = FreestandingReplacer.GetModelForPreview("A/Doodads/Dungeon_Chest", "Progressive Chain");
 				return [chain];
 			});
 			/*

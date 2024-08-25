@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer
 {
-    public class PreviewItemData : MonoBehaviour
+    public class PreviewItemInfo : MonoBehaviour
     {
         private GameObject previewObject;
 
