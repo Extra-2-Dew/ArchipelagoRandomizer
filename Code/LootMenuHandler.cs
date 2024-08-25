@@ -24,6 +24,7 @@ namespace ArchipelagoRandomizer
         private Entity player;
         private IDataSaver worldStorage;
         private SaverOwner mainSaver;
+        private RandomizerSettings settings;
         
         private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/LootMenuIcons/";
 
@@ -41,6 +42,7 @@ namespace ArchipelagoRandomizer
             player = ModCore.Utility.GetPlayer();
             worldStorage = ModCore.Plugin.MainSaver.WorldStorage;
             mainSaver = ModCore.Plugin.MainSaver;
+            settings = RandomizerSettings.Instance;
 
             itemList = transform.Find("ItemList").gameObject;
 
@@ -53,7 +55,7 @@ namespace ArchipelagoRandomizer
             descDesc = descriptionHolder.transform.Find("ItemDesc").GetComponent<BetterTextMesh>();
 
             CreateLootMenu();
-            UpdateQuanties(LootMenuType.Loot);
+            UpdateQuantities(LootMenuType.Loot);
 
             backButton = transform.Find("BackBtn").GetComponent<GuiClickable>();
             backButton.OnClicked += SwitchToLootMenu;
@@ -63,7 +65,7 @@ namespace ArchipelagoRandomizer
 
         private void OnEnable()
         {
-            if (itemList != null) UpdateQuanties(LootMenuType.Loot);
+            if (itemList != null) UpdateQuantities(LootMenuType.Loot);
         }
 
         public void SetTitleAndDescription(string title, string description)
@@ -92,6 +94,20 @@ namespace ArchipelagoRandomizer
                 button.transform.localScale = Vector3.one;
                 CreateButtonNode(button, node);
             }
+
+            keyList = CreateKeyMenu();
+            outfitList = CreateOutfitMenu();
+            keyList.SetActive(false);
+            outfitList.SetActive(false);
+
+            if (settings.KeySetting == KeySettings.Keysey)
+            {
+                Destroy(lootButtons["KeyBag"]);
+            }
+            if (settings.GoalSetting != GoalSettings.PotionHunt)
+            {
+                Destroy(lootButtons["Potions"]);
+            }
         }
 
         private GameObject CreateKeyMenu()
@@ -110,6 +126,22 @@ namespace ArchipelagoRandomizer
                 GameObject button = keyList.transform.GetChild(i).gameObject;
                 var node = keyMenu.nodes[i];
                 CreateButtonNode(button, node);
+            }
+
+            if (!settings.IncludeSecretDungeons)
+            {
+                Destroy(lootButtons["DKEYS_SunkenLabyrinth"]);
+                Destroy(lootButtons["DKEYS_MachineFortress"]);
+                Destroy(lootButtons["DKEYS_DarkHypostyle"]);
+                if (settings.GoalSetting != GoalSettings.QueenOfAdventure) Destroy(lootButtons["DKEYS_TombOfSimulacrum"]);
+            }
+
+            if (!settings.IncludeDreamDungeons)
+            {
+                Destroy(lootButtons["DKEYS_DreamDynamite"]);
+                Destroy(lootButtons["DKEYS_DreamFireChain"]);
+                Destroy(lootButtons["DKEYS_DreamIce"]);
+                Destroy(lootButtons["DKEYS_DreamAll"]);
             }
 
             return keyList;
@@ -140,7 +172,11 @@ namespace ArchipelagoRandomizer
                     backButton.SendClick();
                 };
             }
-            for (int i = outfitList.transform.childCount -1; i >= 11; i--)
+
+            int maxOutfit = 10;
+            if (!settings.IncludeSuperSecrets) maxOutfit = 7;
+
+            for (int i = outfitList.transform.childCount -1; i > maxOutfit; i--)
             {
                 Destroy(outfitList.transform.GetChild(i).gameObject);
             }
@@ -154,20 +190,15 @@ namespace ArchipelagoRandomizer
             buttonPic.SetActive(true);
             buttonPic.GetComponent<Renderer>().enabled = true;
             buttonPic.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{assetPath}{node.iconPath}.png"));
-            SE_LootMenuDescription desc = button.transform.GetChild(0).gameObject.GetComponent<SE_LootMenuDescription>();
-            if (desc == null) desc = button.transform.GetChild(0).gameObject.AddComponent<SE_LootMenuDescription>();
-            desc.titleText = node.title;
-            desc.descriptionText = node.description;
-            desc.handler = this;
-            desc.hasQuantity = node.useQuantity;
-            //if (node.useQuantity)
-            //{
-            //    button.transform.Find("Item/Button").gameObject.SetActive(true);
-            //    button.transform.Find("Item/Button/Count").gameObject.SetActive(true);
-            //}
+            SE_LootMenuDescription lootInfo = button.transform.GetChild(0).gameObject.GetComponent<SE_LootMenuDescription>();
+            if (lootInfo == null) lootInfo = button.transform.GetChild(0).gameObject.AddComponent<SE_LootMenuDescription>();
+            lootInfo.titleText = node.title;
+            lootInfo.descriptionText = node.description;
+            lootInfo.handler = this;
+            lootInfo.hasQuantity = node.useQuantity;
             button.name = node.name;
             lootButtons.Add(node.name, button);
-            Plugin.Log.LogInfo($"Adding {node.name} to list");
+            button.transform.Find("Item/Button").gameObject.SetActive(true);
         }
 
         private void SwitchToLootMenu()
@@ -178,17 +209,15 @@ namespace ArchipelagoRandomizer
         private void SwitchToKeysMenu()
         {
             lootButtons["KeyBag"].GetComponentInChildren<GuiSelectionObject>().Deselect();
-            if (keyList == null) keyList = CreateKeyMenu();
-            UpdateQuanties(LootMenuType.Keys);
             SwitchToMenu(LootMenuType.Keys);
+            UpdateQuantities(LootMenuType.Keys);
         }
 
         private void SwitchToOutfitMenu()
         {
             lootButtons["Wardrobe"].GetComponentInChildren<GuiSelectionObject>().Deselect();
-            if (outfitList == null) outfitList = CreateOutfitMenu();
-            UpdateQuanties(LootMenuType.Outfits);
             SwitchToMenu(LootMenuType.Outfits);
+            UpdateQuantities(LootMenuType.Outfits);
         }
 
         private void SwitchToMenu(LootMenuType menu)
@@ -198,48 +227,70 @@ namespace ArchipelagoRandomizer
             outfitList?.SetActive(menu == LootMenuType.Outfits);
         }
 
-        private void UpdateQuanties(LootMenuType menu)
+        private void UpdateQuantities(LootMenuType menu)
         {
             switch (menu)
             {
                 case LootMenuType.Loot:
-                    lootButtons["FakeEFCS"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(player.GetStateVariable("fakeEFCS"));
-                    lootButtons["Wardrobe"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetOutfitCount());
-                    lootButtons["Potions"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(player.GetStateVariable("potions"));
+                    GetLootInfo("FakeEFCS")?.UpdateQuantity(player.GetStateVariable("fakeEFCS"));
+                    GetLootInfo("KeyBag")?.UpdateQuantity(1);
+                    GetLootInfo("Wardrobe")?.UpdateQuantity(GetOutfitCount());
+                    GetLootInfo("Potions")?.UpdateQuantity(player.GetStateVariable("potions"));
                     break;
                 case LootMenuType.Keys:
-                    lootButtons["DKEYS_PillowFort"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("PillowFort"));
-                    lootButtons["DKEYS_SandCastle"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("SandCastle"));
-                    lootButtons["DKEYS_ArtExhibit"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("ArtExhibit"));
-                    lootButtons["DKEYS_TrashCave"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("TrashCave"));
-                    lootButtons["DKEYS_FloodedBasement"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("FloodedBasement"));
-                    lootButtons["DKEYS_PotassiumMine"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("PotassiumMine"));
-                    lootButtons["DKEYS_BoilingGrave"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("BoilingGrave"));
-                    lootButtons["DKEYS_GrandLibrary"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("GrandLibrary"));
-                    lootButtons["DKEYS_SunkenLabyrinth"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("SunkenLabyrinth"));
-                    lootButtons["DKEYS_MachineFortress"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("MachineFortress"));
-                    lootButtons["DKEYS_DarkHypostyle"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("DarkHypostyle"));
-                    lootButtons["DKEYS_TombOfSimulacrum"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("TombOfSimulacrum"));
-                    lootButtons["DKEYS_DreamDynamite"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("DreamDynamite"));
-                    lootButtons["DKEYS_DreamFireChain"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("DreamFireChain"));
-                    lootButtons["DKEYS_DreamIce"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("DreamIce"));
-                    lootButtons["DKEYS_DreamAll"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetKeyCount("DreamAll"));
+                    GetLootInfo("DKEYS_PillowFort")?.UpdateQuantity(GetKeyCount("PillowFort"));
+                    GetLootInfo("DKEYS_SandCastle")?.UpdateQuantity(GetKeyCount("SandCastle"));
+                    GetLootInfo("DKEYS_ArtExhibit")?.UpdateQuantity(GetKeyCount("ArtExhibit"));
+                    GetLootInfo("DKEYS_TrashCave")?.UpdateQuantity(GetKeyCount("TrashCave"));
+                    GetLootInfo("DKEYS_FloodedBasement")?.UpdateQuantity(GetKeyCount("FloodedBasement"));
+                    GetLootInfo("DKEYS_PotassiumMine")?.UpdateQuantity(GetKeyCount("PotassiumMine"));
+                    GetLootInfo("DKEYS_BoilingGrave")?.UpdateQuantity(GetKeyCount("BoilingGrave"));
+                    GetLootInfo("DKEYS_GrandLibrary")?.UpdateQuantity(GetKeyCount("GrandLibrary"));
+                    GetLootInfo("DKEYS_SunkenLabyrinth")?.UpdateQuantity(GetKeyCount("SunkenLabyrinth"));
+                    GetLootInfo("DKEYS_MachineFortress")?.UpdateQuantity(GetKeyCount("MachineFortress"));
+                    GetLootInfo("DKEYS_DarkHypostyle")?.UpdateQuantity(GetKeyCount("DarkHypostyle"));
+                    GetLootInfo("DKEYS_TombOfSimulacrum")?.UpdateQuantity(GetKeyCount("TombOfSimulacrum"));
+                    GetLootInfo("DKEYS_DreamDynamite")?.UpdateQuantity(GetKeyCount("DreamDynamite"));
+                    GetLootInfo("DKEYS_DreamFireChain")?.UpdateQuantity(GetKeyCount("DreamFireChain"));
+                    GetLootInfo("DKEYS_DreamIce")?.UpdateQuantity(GetKeyCount("DreamIce"));
+                    GetLootInfo("DKEYS_DreamAll")?.UpdateQuantity(GetKeyCount("DreamAll"));
                     break;
                 case LootMenuType.Outfits:
                     // if we ever randomize the default outfit, we'll need to track it here
-                    lootButtons["outfitDefault"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(1);
-                    lootButtons["outfitTippsie"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(1));
-                    lootButtons["outfitOriginal"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(2));
-                    lootButtons["outfitJenny"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(3));
-                    lootButtons["outfitSwim"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(4));
-                    lootButtons["outfitArmor"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(5));
-                    lootButtons["outfitCard"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(6));
-                    lootButtons["outfitDelinquent"].GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(7));
-                    lootButtons["outfitApaFrog"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(8));
-                    lootButtons["outfitThatGuy"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(9));
-                    lootButtons["outfitJennyBerry"]?.GetComponentInChildren<SE_LootMenuDescription>().UpdateQuantity(GetHasOutfit(10));
+                    GetLootInfo("outfitDefault")?.UpdateQuantity(1);
+                    GetLootInfo("outfitTippsie")?.UpdateQuantity(GetHasOutfit(1));
+                    GetLootInfo("outfitOriginal")?.UpdateQuantity(GetHasOutfit(2));
+                    GetLootInfo("outfitJenny")?.UpdateQuantity(GetHasOutfit(3));
+                    GetLootInfo("outfitSwim")?.UpdateQuantity(GetHasOutfit(4));
+                    GetLootInfo("outfitArmor")?.UpdateQuantity(GetHasOutfit(5));
+                    GetLootInfo("outfitCard")?.UpdateQuantity(GetHasOutfit(6));
+                    GetLootInfo("outfitDelinquent")?.UpdateQuantity(GetHasOutfit(7));
+                    GetLootInfo("outfitApaFrog")?.UpdateQuantity(GetHasOutfit(8));
+                    GetLootInfo("outfitThatGuy")?.UpdateQuantity(GetHasOutfit(9));
+                    GetLootInfo("outfitJennyBerry")?.UpdateQuantity(GetHasOutfit(10));
                     break;
             }
+        }
+
+        private SE_LootMenuDescription GetLootInfo(string key)
+        {
+            if (lootButtons.ContainsKey(key))
+            {
+                if (lootButtons[key] == null)
+                {
+                    // We destroyed it
+                    return null;
+                }
+                var lootDesc = lootButtons[key].GetComponentInChildren<SE_LootMenuDescription>(true);
+                if (lootDesc != null)
+                {
+                    return lootDesc;
+                }
+                else Plugin.Log.LogError($"Somehow {key} does not have a Loot Description component attached!");
+                return null;
+            }
+            Plugin.Log.LogError($"Invalid key \"{key}\" requested");
+            return null;
         }
 
         private int GetOutfitCount()
