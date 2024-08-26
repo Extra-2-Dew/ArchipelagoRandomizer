@@ -362,7 +362,7 @@ namespace ArchipelagoRandomizer
 					break;
 				case "FR_SW":
 					level1 = "FancyRuins";
-					level2 = "CandyCoast";
+					level2 = "StarWoods";
 					break;
 				case "FR_VH":
 					level1 = "FancyRuins";
@@ -373,7 +373,7 @@ namespace ArchipelagoRandomizer
 					level2 = "FrozenCourt";
 					break;
 				case "SW_FC":
-					level1 = "StarWoods";
+					level1 = "StarWoods2";
 					level2 = "FrozenCourt";
 					break;
 				case "SS_VH":

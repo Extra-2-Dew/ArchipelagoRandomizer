@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -50,9 +51,14 @@ namespace ArchipelagoRandomizer
 		private bool ShouldBlockConnection(string flag)
 		{
 			if (hasActivated)
-				return false;
+				return true;
 
-			return doorData.EnableFlag == flag;
+			return doorData.EnableFlag != flag && doorData.EnableFlag != GetFlippedFlag(flag);
+		}
+
+		private string GetFlippedFlag(string flag)
+		{
+			return string.Join("_", flag.Split('_').Reverse().ToArray());
 		}
 
 		private void OnItemReceived(ItemHandler.ItemData.Item item, string sentFromPlayerName)
