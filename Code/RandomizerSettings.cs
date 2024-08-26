@@ -37,6 +37,7 @@ namespace ArchipelagoRandomizer
 
 	class RandomizerSettings
 	{
+		private bool blockRegionConnections;
 		private DungeonRewardSettings dungeonRewardSetting;
 		private GoalSettings goalSetting;
 		private bool includeDreamDungeons;
@@ -58,6 +59,7 @@ namespace ArchipelagoRandomizer
 
 		public static RandomizerSettings Instance { get; private set; }
 
+		public bool BlockRegionConnections { get { return blockRegionConnections; } }
 		public DungeonRewardSettings DungeonRewardSetting { get { return dungeonRewardSetting; } }
 		public GoalSettings GoalSetting { get { return goalSetting; } }
 		public bool IncludeDreamDungeons { get { return includeDreamDungeons; } }
@@ -88,6 +90,7 @@ namespace ArchipelagoRandomizer
 		{
 			return new()
 			{
+				{ nameof(BlockRegionConnections), blockRegionConnections = APHandler.GetSlotData<long>("block_region_connections") == 1 },
 				{ nameof(DungeonRewardSetting), dungeonRewardSetting = (DungeonRewardSettings)APHandler.GetSlotData<long>("dungeon_rewards_setting") },
 				{ nameof(GoalSetting), goalSetting = (GoalSettings)APHandler.GetSlotData<long>("goal") },
 				{ nameof(IncludeDreamDungeons), includeDreamDungeons = APHandler.GetSlotData<long>("include_dream_dungeons") == 1 },
