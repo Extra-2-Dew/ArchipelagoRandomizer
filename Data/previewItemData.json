@@ -1,19 +1,263 @@
 [
     {
-        "key": "Progressive Chain",
-        "path": "A/Doodads/Dungeon_Chest",
-        "index": 0,
-        "spin": false,
-        "position": {
-            "x": 0,
+        "key": "Progressive Dynamite",
+        "path": "B/Doodads/Dungeon_Chest",
+        "spin": true,
+        "rotation": {
+            "x": 270,
             "y": 0,
             "z": 0
         },
-        "rotation": {
+        "scale": 0.25
+    },
+    {
+        "key": "Dynamite Upgrade",
+        "copyOf": "Progressive Dynamite"
+    },
+    {
+        "key": "Forbidden Key",
+        "path": "G/Logic/SecretChest/Dungeon_Chest",
+        "spin": false,
+        "position": {
+            "x": -0.4,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.4
+    },
+    {
+        "key": "Box of Crayons",
+        "path": "M/Doodads/Dungeon_Chest",
+        "spin": true,
+        "position": {
             "x": 0,
+            "y": 0.4,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 1
+    },
+    {
+        "key": "Lightning",
+        "path": "DT_Tier3",
+        "index": 6,
+        "spin": false,
+        "position": {
+            "x": 0,
+            "y": -0.4,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
             "y": 0,
             "z": 0
         },
         "scale": 25
+    },
+    {
+        "key": "Yellow Heart",
+        "path": "DT_Tier3Super",
+        "index": 0,
+        "spin": false,
+        "position": {
+            "x": 0,
+            "y": -0.4,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.14
+    },
+    {
+        "key": "Random Buff",
+        "path": "DT_Tier3Super",
+        "index": 1,
+        "spin": false,
+        "position": {
+            "x": 0,
+            "y": -0.4,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.1
+    },
+    {
+        "key": "Progressive Headband",
+        "path": "A/Puzzle/Dungeon_Chest",
+        "child": 1,
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 40
+    },
+    {
+        "key": "Secret Shard",
+        "path": "B/Doodads/Dungeon_Chest",
+        "index": -1,
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 40
+    },
+    {
+        "key": "Lockpick",
+        "path": "H/Doodads/Dungeon_Chest",
+        "spin": false,
+        "position": {
+            "x": -0.4,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.25
+    },
+    {
+        "key": "Connection",
+        "path": "K/Doodads/Dungeon_Chest",
+        "index": -1,
+        "spin": true,
+        "position": {
+            "x": -0.1,
+            "y": 0.5,
+            "z": -0.1
+        },
+        "scale": 25
+    },
+    {
+        "key": "Progressive Melee",
+        "path": "D/Doodads/Dungeon_Chest",
+        "spin": true,
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 270
+        },
+        "scale": 0.25
+    },
+    {
+        "key": "Impossible Gates Pass",
+        "path": "D/Doodads/Dungeon_Chest",
+        "index": 2,
+        "spin": false,
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 270
+        },
+        "scale": 0.25
+    },
+    {
+        "key": "Raft Piece",
+        "path": "B/Doodads/SecretChest/Dungeon_Chest",
+        "spin": true,
+        "scale": 50
+    },
+    {
+        "key": "Key",
+        "path": "N/Doodads/KeyChest/Spawner",
+        "spin": false,
+        "position": {
+            "x": -0.4,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.25
+    },
+    {
+        "key": "Progressive Tracker",
+        "path": "A/Doodads/Dungeon_Chest",
+        "spin": false,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 25
+    },
+    {
+        "key": "Progressive Amulet",
+        "path": "B/Doodads/Dungeon_Chest",
+        "spin": false,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 25
+    },
+    {
+        "key": "Progressive Tome",
+        "path": "A/Doodads/Dungeon_Chest",
+        "spin": false,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 25
+    },
+    {
+        "key": "Progressive Force Wand",
+        "path": "A/Doodads/Dungeon_Chest",
+        "child": 1,
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.25
+    },
+    {
+        "key": "Force Wand Upgrade",
+        "copyOf": "Progressive Force Wand"
+    },
+    {
+        "key": "Progressive Ice Ring",
+        "path": "F/Doodads/Dungeon_Chest",
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.5
+    },
+    {
+        "key": "Ice Ring Upgrade",
+        "copyOf": "Progressive Ice Ring"
+    },
+    {
+        "key": "Progressive Chain",
+        "path": "A/Doodads/Dungeon_Chest",
+        "index": 0,
+        "spin": true,
+        "scale": 25
+    },
+    {
+        "key": "Chain Upgrade",
+        "copyOf": "Progressive Chain"
+    },
+    {
+        "key": "Card",
+        "path": "A/Doodads/CardChest/Spawner",
+        // comes with its own spin animation
+        "spin": false
     }
 ]

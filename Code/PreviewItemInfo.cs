@@ -26,6 +26,7 @@ namespace ArchipelagoRandomizer
             GameObject newPreview = GameObject.Instantiate(previewObject);
             newPreview.transform.parent = transform;
             newPreview.transform.localPosition = Vector3.zero;
+            newPreview.SetActive(true);
         }
 
         private void OnDisable()
