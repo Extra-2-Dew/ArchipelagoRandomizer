@@ -41,6 +41,7 @@ namespace ArchipelagoRandomizer
 			Melee,
 			Outfit,
 			PortalWorldScroll,
+			RegionConnector,
 			Shard,
 			Upgrade
 		}
@@ -170,6 +171,9 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemTypes.PortalWorldScroll:
 					AddScroll(false);
+					break;
+				case ItemTypes.RegionConnector:
+					AddRegionConnector(item.SaveFlag);
 					break;
 				case ItemTypes.Upgrade:
 					AddUpgrade(item);
@@ -315,6 +319,76 @@ namespace ArchipelagoRandomizer
 
 			if (Plugin.Instance.APFileData.AutoEquipOutfits)
 				player.SetStateVariable(saveFlag.Replace(outfitNum.ToString(), ""), outfitNum);
+		}
+
+		private void AddRegionConnector(string region)
+		{
+			string level1 = "";
+			string level2 = "";
+
+			switch (region)
+			{
+				case "FF_CC":
+					level1 = "FluffyFields";
+					level2 = "CandyCoast";
+					break;
+				case "FF_FR":
+					level1 = "FluffyFields";
+					level2 = "FancyRuins";
+					break;
+				case "FF_SW":
+					level1 = "FluffyFields";
+					level2 = "StarWoods";
+					break;
+				case "FF_SS":
+					level1 = "FluffyFields";
+					level2 = "SlipperySlope";
+					break;
+				case "FF_VH":
+					level1 = "FluffyFields";
+					level2 = "VitaminHills";
+					break;
+				case "CC_FR":
+					level1 = "CandyCoast";
+					level2 = "FancyRuins";
+					break;
+				case "CC_SW":
+					level1 = "CandyCoast";
+					level2 = "StarWoods";
+					break;
+				case "CC_SS":
+					level1 = "CandyCoast";
+					level2 = "SlipperySlope";
+					break;
+				case "FR_SW":
+					level1 = "FancyRuins";
+					level2 = "CandyCoast";
+					break;
+				case "FR_VH":
+					level1 = "FancyRuins";
+					level2 = "VitaminHills";
+					break;
+				case "FR_FC":
+					level1 = "FancyRuins";
+					level2 = "FrozenCourt";
+					break;
+				case "SW_FC":
+					level1 = "StarWoods";
+					level2 = "FrozenCourt";
+					break;
+				case "SS_VH":
+					level1 = "SlipperySlope";
+					level2 = "VitaminHills";
+					break;
+				case "SS_LR":
+					level1 = "SlipperySlope";
+					level2 = "LonelyRoad";
+					break;
+			}
+
+			string flippedRegion = string.Join("_", region.Split('_').Reverse().ToArray());
+			mainSaver.GetSaver($"/local/levels/{level1}/player/regionConnections").SaveInt(region, 1);
+			mainSaver.GetSaver($"/local/levels/{level2}/player/regionConnections").SaveInt(flippedRegion, 1);
 		}
 
 		// TODO
