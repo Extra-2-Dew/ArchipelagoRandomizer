@@ -823,6 +823,104 @@
 			"type": "Bees"
 		},
 		{
+			"itemName": "Connection - Fluffy Fields To Sweetwater Coast",
+			"iconName": "Custom/connection_ff_sc",
+			"offset": 149,
+			"saveFlag": "FF_CC",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fluffy Fields To Fancy Ruins",
+			"iconName": "Custom/connection_ff_fr",
+			"offset": 150,
+			"saveFlag": "FF_FR",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fluffy Fields To Star Woods",
+			"iconName": "Custom/connection_ff_sw",
+			"offset": 151,
+			"saveFlag": "FF_SW",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fluffy Fields To Slippery Slope",
+			"iconName": "Custom/connection_ff_ss",
+			"offset": 152,
+			"saveFlag": "FF_SS",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fluffy Fields To Pepperpain Prairie",
+			"iconName": "Custom/connection_ff_pp",
+			"offset": 153,
+			"saveFlag": "FF_VH",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Sweetwater Coast To Fancy Ruins",
+			"iconName": "Custom/connection_sc_fr",
+			"offset": 154,
+			"saveFlag": "CC_FR",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Sweetwater Coast To Star Woods",
+			"iconName": "Custom/connection_sc_sw",
+			"offset": 155,
+			"saveFlag": "CC_SW",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Sweetwater Coast To Slippery Slope",
+			"iconName": "Custom/connection_sc_ss",
+			"offset": 156,
+			"saveFlag": "CC_SS",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fancy Ruins To Star Woods",
+			"iconName": "Custom/connection_fr_sw",
+			"offset": 157,
+			"saveFlag": "FR_SW",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fancy Ruins To Pepperpain Prairie",
+			"iconName": "Custom/connection_fr_pp",
+			"offset": 158,
+			"saveFlag": "FR_VH",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Fancy Ruins To Frozen Court",
+			"iconName": "Custom/connection_fr_fc",
+			"offset": 159,
+			"saveFlag": "FR_FC",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Star Woods To Frozen Court",
+			"iconName": "Custom/connection_sw_fc",
+			"offset": 160,
+			"saveFlag": "SW_FC",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Slippery Slope To Pepperpain Prairie",
+			"iconName": "Custom/connection_ss_pp",
+			"offset": 161,
+			"saveFlag": "SS_VH",
+			"type": "RegionConnector"
+		},
+		{
+			"itemName": "Connection - Slippery Slope To Lonely Road",
+			"iconName": "Custom/connection_ss_lr",
+			"offset": 162,
+			"saveFlag": "SS_LR",
+			"type": "RegionConnector"
+		},
+		{
 			"itemName": "Potion",
 			"iconName": "Custom/potion",
 			"offset": 163,

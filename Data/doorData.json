@@ -1,0 +1,219 @@
+{
+	"doors": [
+		{
+			"door": "FF_CC1",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_CC"
+		},
+		{
+			"door": "FF_FR1",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_FR"
+		},
+		{
+			"door": "FF_FR2",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_FR"
+		},
+		{
+			"door": "FF_FR4",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_FR"
+		},
+		{
+			"door": "FF_SS1",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_SS"
+		},
+		{
+			"door": "FF_SW1",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_SW"
+		},
+		{
+			"door": "FF_SW3",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_SW"
+		},
+		{
+			"door": "FF_SW4",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_SW"
+		},
+		{
+			"door": "FF_VH1",
+			"scene": "FluffyFields",
+			"enableFlag": "FF_VH"
+		},
+		{
+			"door": "CC_FF1",
+			"scene": "CandyCoast",
+			"enableFlag": "CC_FF"
+		},
+		{
+			"door": "CC_SS1",
+			"scene": "CandyCoast",
+			"enableFlag": "CC_SS"
+		},
+		{
+			"door": "CC_SW1",
+			"scene": "CandyCoast",
+			"enableFlag": "CC_SW"
+		},
+		{
+			"door": "CC_SW2",
+			"scene": "CandyCoast",
+			"enableFlag": "CC_SW"
+		},
+		{
+			"door": "CaveP1",
+			"scene": "CandyCoast",
+			"enableFlag": "CC_FR"
+		},
+		{
+			"door": "FR_FC1",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_FC"
+		},
+		{
+			"door": "FR_FF1",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_FF"
+		},
+		{
+			"door": "FR_FF2",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_FF"
+		},
+		{
+			"door": "FR_FF4",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_FF"
+		},
+		{
+			"door": "FR_SW1",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_SW"
+		},
+		{
+			"door": "FR_VH1",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_VH"
+		},
+		{
+			"door": "CaveP2",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_CC"
+		},
+		{
+			"door": "CaveN1",
+			"scene": "FancyRuins",
+			"enableFlag": "FR_FC"
+		},
+		{
+			"door": "SW_CC1",
+			"scene": "StarWoods",
+			"enableFlag": "SW_CC"
+		},
+		{
+			"door": "SW_CC2",
+			"scene": "StarWoods",
+			"enableFlag": "SW_CC"
+		},
+		{
+			"door": "SW_FF1",
+			"scene": "StarWoods",
+			"enableFlag": "SW_FF"
+		},
+		{
+			"door": "SW_FF3",
+			"scene": "StarWoods",
+			"enableFlag": "SW_FF"
+		},
+		{
+			"door": "SW_FF4",
+			"scene": "StarWoods",
+			"enableFlag": "SW_FF"
+		},
+		{
+			"door": "SW_FR1",
+			"scene": "StarWoods",
+			"enableFlag": "SW_FR"
+		},
+		{
+			"door": "CaveT1",
+			"scene": "StarWoods",
+			"enableFlag": "SW_FC"
+		},
+		{
+			"door": "SS_CC1",
+			"scene": "SlipperySlope",
+			"enableFlag": "SS_CC"
+		},
+		{
+			"door": "SS_FF1",
+			"scene": "SlipperySlope",
+			"enableFlag": "SS_FF"
+		},
+		{
+			"door": "SS_LR1",
+			"scene": "SlipperySlope",
+			"enableFlag": "SS_LR"
+		},
+		{
+			"door": "SS_VH1",
+			"scene": "SlipperySlope",
+			"enableFlag": "SS_VH"
+		},
+		{
+			"door": "CaveN1",
+			"scene": "SlipperySlope",
+			"enableFlag": "SS_VH"
+		},
+		{
+			"door": "VH_FF1",
+			"scene": "VitaminHills",
+			"enableFlag": "VH_FF"
+		},
+		{
+			"door": "VH_FR1",
+			"scene": "VitaminHills",
+			"enableFlag": "VH_FR"
+		},
+		{
+			"door": "VH_SS1",
+			"scene": "VitaminHills",
+			"enableFlag": "VH_SS"
+		},
+		{
+			"door": "CaveN2",
+			"scene": "VitaminHills",
+			"enableFlag": "VH_SS"
+		},
+		{
+			"door": "CaveN3",
+			"scene": "VitaminHills",
+			"enableFlag": "VH_SS"
+		},
+		{
+			"door": "FC_FR1",
+			"scene": "FrozenCourt",
+			"enableFlag": "FC_FR"
+		},
+		{
+			"door": "CaveN2",
+			"scene": "FrozenCourt",
+			"enableFlag": "FC_FR"
+		},
+		{
+			"door": "CaveT2",
+			"scene": "FrozenCourt",
+			"enableFlag": "FC_SW"
+		},
+		{
+			"door": "LR_SS1",
+			"scene": "LonelyRoad",
+			"enableFlag": "LR_SS"
+		}
+	]
+}

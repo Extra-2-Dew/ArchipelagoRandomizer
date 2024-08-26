@@ -20,6 +20,7 @@ namespace ArchipelagoRandomizer
 		private GoalHandler goalHandler;
 		private SceneLoadEvents sceneEventHandler;
 		private RoomLoadEvents roomEventHandler;
+		private DoorHandler doorHandler;
 		private Entity player;
 		private SaverOwner mainSaver;
 		private RandomizerSettings settings;
@@ -323,6 +324,7 @@ namespace ArchipelagoRandomizer
 			goalHandler = gameObject.AddComponent<GoalHandler>();
 			sceneEventHandler = new SceneLoadEvents(settings);
 			roomEventHandler = new RoomLoadEvents(settings);
+			doorHandler = new DoorHandler();
 			playerActionModifier = new();
 
 			Events.OnPlayerSpawn += OnPlayerSpawn;
