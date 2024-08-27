@@ -407,5 +407,54 @@
         "path": "A/Doodads/CardChest/Spawner",
         // comes with its own spin animation
         "spin": false
+    },
+    {
+        "key": "Potion",
+        "path": "Assets/Extra2Dew/Prefabs/AP/ItemPotion.prefab",
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": 0.4,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.5
+    },
+    {
+        "key": "Filler",
+        "path": "Assets/Extra2Dew/Prefabs/AP/ItemAPFiller.prefab",
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.5
+    },
+    {
+        "key": "Useful",
+        "path": "Assets/Extra2Dew/Prefabs/AP/ItemAPUseful.prefab",
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.5
+    },
+    {
+        "key": "Progression",
+        "path": "Assets/Extra2Dew/Prefabs/AP/ItemAPProgression.prefab",
+        "spin": true,
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.5
     }
 ]

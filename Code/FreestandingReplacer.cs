@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ namespace ArchipelagoRandomizer
             }
         }
 
+        private static string bundlePath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmodels");
         private static List<PreviewItemData> itemData;
         private static Dictionary<string, GameObject> models;
 
@@ -152,6 +154,17 @@ namespace ArchipelagoRandomizer
             Object.Destroy(model.GetComponent<EntityHittable>());
             Object.Destroy(model.transform.Find("Killable").gameObject);
             Object.Destroy(model.transform.Find("Attacks").gameObject);
+
+            return GenerateModelPrefab(model, data, itemName);
+        }
+
+        public static GameObject GetModelFromBundle(string itemName)
+        {
+            Plugin.Log.LogInfo($"Preloading {itemName}...");
+
+            PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
+
+            GameObject model = GameObject.Instantiate(ModCore.Utility.LoadAssetFromBundle(bundlePath, data.path));
 
             return GenerateModelPrefab(model, data, itemName);
         }

@@ -252,7 +252,12 @@ namespace ArchipelagoRandomizer
 					FreestandingReplacer.GetModelFromPath("Box of Crayons"),
 					FreestandingReplacer.GetModelFromDroptable("Lightning"),
 					FreestandingReplacer.GetModelFromDroptable("Yellow Heart"),
-					FreestandingReplacer.GetModelFromDroptable("Random Buff")
+					FreestandingReplacer.GetModelFromDroptable("Random Buff"),
+					// these can be done at any point during preload
+					FreestandingReplacer.GetModelFromBundle("Filler"),
+                    FreestandingReplacer.GetModelFromBundle("Useful"),
+                    FreestandingReplacer.GetModelFromBundle("Progression"),
+                    FreestandingReplacer.GetModelFromBundle("Potion"),
                 ];
 			});
 			// Maze of Steel

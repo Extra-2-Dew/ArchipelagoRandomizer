@@ -23,12 +23,28 @@ namespace ArchipelagoRandomizer
         [DebugMenuCommand(commandName:"test")]
         private void SendTestCommand(string[] args)
         {
-            GameObject chest = GameObject.Find("Dungeon_Chest");
-            SpawnItemEventObserver observer = chest.GetComponent<SpawnItemEventObserver>();
-            ItemSelector selector = (ItemSelector)observer._itemSelector;
-            Item item = (Item)selector._data[0].result;
-            GameObject chain = GameObject.Instantiate(item.gameObject);
-            chain.transform.position = ModCore.Utility.GetPlayer().transform.position + Vector3.up;
+            string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmodels");
+            string assetPath = "Assets/Extra2Dew/Prefabs/AP/ItemAPUseful.prefab";
+            if (args.Length > 0)
+            {
+                switch (args[0])
+                {
+                    case "0":
+                        assetPath = "Assets/Extra2Dew/Prefabs/AP/ItemAPFiller.prefab";
+                        break;
+                    case "1":
+                        assetPath = "Assets/Extra2Dew/Prefabs/AP/ItemAPUseful.prefab";
+                        break;
+                    case "2":
+                        assetPath = "Assets/Extra2Dew/Prefabs/AP/ItemAPProgression.prefab";
+                        break;
+                    case "3":
+                        assetPath = "Assets/Extra2Dew/Prefabs/AP/ItemPotion.prefab";
+                        break;
+                }
+            }
+            GameObject logo = GameObject.Instantiate(ModCore.Utility.LoadAssetFromBundle(path, assetPath));
+            logo.transform.position = ModCore.Utility.GetPlayer().transform.position;
         }
     }
 }
