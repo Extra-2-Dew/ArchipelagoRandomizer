@@ -134,10 +134,10 @@ namespace ArchipelagoRandomizer
 		public static void SpawnItemEventObserver_SpawnItem_Postfix(SpawnItemEventObserver __instance)
 		{
 			if (!ItemRandomizer.IsActive) return;
-			if (__instance.transform.parent.name == "KeyChest")
+			if (__instance.transform.parent.name == "KeyChest" || __instance.transform.parent.name == "CardChest")
 			{
-				GameObject key = __instance.showItem.gameObject;
-				PreviewItemInfo preview = key.AddComponent<PreviewItemInfo>();
+				GameObject spawnedObject = __instance.showItem.gameObject;
+				PreviewItemInfo preview = spawnedObject.AddComponent<PreviewItemInfo>();
 				preview.ChangePreview(__instance.GetComponentInParent<DummyAction>());
 			}
 		}
