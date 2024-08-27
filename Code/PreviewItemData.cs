@@ -6,8 +6,8 @@ namespace ArchipelagoRandomizer
     {
         // name of the item
         public string key;
-        // if the item has a model that already exists, use this entry's data
-        public string copyOf = "";
+        // If the model needs to exist on multiple entries, put the extra entry here
+        public string copyTo = "";
         // path from LevelRoot
         public string path;
         // if it's part of a selector, which index in the selector should be used?

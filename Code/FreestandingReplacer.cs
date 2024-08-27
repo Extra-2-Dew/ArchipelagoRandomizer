@@ -76,9 +76,7 @@ namespace ArchipelagoRandomizer
                 model = GameObject.Instantiate(GetGameObjectFromSelector(observer, data.index));
             }
 
-            model = GenerateModelPrefab(model, data, itemName);
-
-            return model;
+            return GenerateModelPrefab(model, data, itemName);
         }
 
         public static GameObject GetModelFromDroptable(string itemName)
@@ -99,6 +97,16 @@ namespace ArchipelagoRandomizer
             }
 
             GameObject model = GameObject.Instantiate(table._items[data.index].gameObject);
+            Object.Destroy(model.GetComponent<StatusClearingItem>());
+            Object.Destroy(model.GetComponent<HealthAffectingItem>());
+            Object.Destroy(model.GetComponent<PickupEffectItem>());
+            Object.Destroy(model.GetComponent<RandomStatusItem>());
+            Object.Destroy(model.GetComponent<BC_ColliderSphere>());
+            Object.Destroy(model.GetComponent<GameActionItem>());
+            Object.Destroy(model.GetComponent<GA_Explode>());
+            Object.Destroy(model.GetComponent<EnvirodeathableItem>());
+            Object.Destroy(model.GetComponent<Envirodeathable>());
+            Object.Destroy(model.GetComponent<Item>());
             Object.Destroy(model.GetComponentInChildren<Animation>());
             Object.Destroy(model.GetComponentInChildren<AnimatingItem>());
             Object.Destroy(model.GetComponentInChildren<EntityAnimator>());
@@ -109,35 +117,75 @@ namespace ArchipelagoRandomizer
                 model.transform.Find("Particle System").SetParent(model.transform.Find("crystal"));
             }
 
-            model = GenerateModelPrefab(model, data, itemName);
+            return GenerateModelPrefab(model, data, itemName);
+        }
 
-            return model;
+        public static GameObject GetModelFromGameObject(string itemName)
+        {
+            Plugin.Log.LogInfo($"Preloading {itemName}...");
+
+            PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
+
+            GameObject model = GameObject.Instantiate(GameObject.Find("LevelRoot").transform.Find(data.path).gameObject);
+            Object.Destroy(model.GetComponent<Animator>());
+            return GenerateModelPrefab(model, data, itemName);
+        }
+
+        public static GameObject GetModelFromSpawner(string itemName)
+        {
+            Plugin.Log.LogInfo($"Preloading {itemName}...");
+
+            PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
+
+            GameObject model = GameObject.Instantiate(ItemRandomizer.GetEntityFromSpawner(data.path).gameObject);
+
+
+            Object.Destroy(model.GetComponent<GameStatEntityDeath>());
+            Object.Destroy(model.GetComponent<BC_ColliderCylinder8>());
+            Object.Destroy(model.GetComponent<Moveable>());
+            Object.Destroy(model.GetComponent<BC_Body>());
+            Object.Destroy(model.GetComponent<EntityStatusable>());
+            Object.Destroy(model.GetComponent<EntityAnimator>());
+            Object.Destroy(model.GetComponent<RigidBodyController>());
+            Object.Destroy(model.GetComponent<Entity>());
+            Object.Destroy(model.GetComponent<Hittable>());
+            Object.Destroy(model.GetComponent<EntityHittable>());
+            Object.Destroy(model.transform.Find("Killable").gameObject);
+            Object.Destroy(model.transform.Find("Attacks").gameObject);
+
+            return GenerateModelPrefab(model, data, itemName);
         }
 
         public static GameObject GenerateModelPrefab(GameObject model, PreviewItemData data, string itemName)
         {
             Object.Destroy(model.GetComponent<VarUpdatingItem>());
-            GameObject child = model.transform.GetChild(data.child).gameObject;
-            child.transform.localPosition = data.position;
-            child.transform.localEulerAngles = data.rotation;
-            child.transform.localScale = new Vector3(data.scale, data.scale, data.scale);
+            GameObject appearanceApplier = null;
+            if (data.child > -1)
+            {
+                appearanceApplier = model.transform.GetChild(data.child).gameObject;
+            }
+            else
+            {
+                appearanceApplier = model;
+            }
+            appearanceApplier.transform.localPosition = data.position;
+            appearanceApplier.transform.localEulerAngles = data.rotation;
+            appearanceApplier.transform.localScale = new Vector3(data.scale, data.scale, data.scale);
 
             model.name = "Preview " + itemName;
 
             if (data.spin)
             {
-                child.gameObject.AddComponent<SpinAnimation>();
+                appearanceApplier.gameObject.AddComponent<SpinAnimation>();
             }
 
             AddModelPreview(itemName, model);
+            if (!string.IsNullOrEmpty(data.copyTo))
+            {
+                AddModelPreview(data.copyTo, model);
+            }
 
             return model;
-        }
-
-        public static void CreateModelCopy(string itemName)
-        {
-            PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
-            AddModelPreview(itemName, GetModelPreview(data.copyOf));
         }
 
         public static void AddModelPreview(string key, GameObject model)

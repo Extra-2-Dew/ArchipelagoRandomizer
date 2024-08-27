@@ -160,6 +160,11 @@ namespace ArchipelagoRandomizer
 			SceneDoor.StartLoad("MainMenu", "", fadeData);
 		}
 
+		public static Entity GetEntityFromSpawner(string path)
+		{
+			return GameObject.Find("LevelRoot").transform.Find(path).GetComponent<EntitySpawner>()._entityPrefab;
+		}
+
 		private void Awake()
 		{
 			instance = this;
@@ -239,12 +244,10 @@ namespace ArchipelagoRandomizer
             // TODO: Store: Forbidden Key, Dynamite
             preloader.AddObjectToPreloadList("MachineFortress", () =>
 			{
-				GameObject dynamite = FreestandingReplacer.GetModelFromPath("Progressive Dynamite");
-				FreestandingReplacer.CreateModelCopy("Dynamite Upgrade");
 				return [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
 					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject,
-                    dynamite,
+					FreestandingReplacer.GetModelFromPath("Progressive Dynamite"),
                     FreestandingReplacer.GetModelFromPath("Forbidden Key"),
 					FreestandingReplacer.GetModelFromPath("Box of Crayons"),
 					FreestandingReplacer.GetModelFromDroptable("Lightning"),
@@ -264,11 +267,20 @@ namespace ArchipelagoRandomizer
 			// TODO: Store outfits from changing tent
 			preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
 			{
-				List<GameObject> list = new();
-				list.Add(FreestandingReplacer.GetModelFromPath("Secret Shard"));
-				list.Add(FreestandingReplacer.GetModelFromPath("Lockpick"));
-				list.Add(FreestandingReplacer.GetModelFromPath("Connection"));
-				return list.ToArray();
+				return [
+					FreestandingReplacer.GetModelFromPath("Secret Shard"),
+					FreestandingReplacer.GetModelFromPath("Lockpick"),
+					FreestandingReplacer.GetModelFromPath("Connection"),
+					FreestandingReplacer.GetModelFromGameObject("Tippsie Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Ittle Dew 1 Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Jenny Dew Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Swimsuit Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Tiger Jenny Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Little Dude Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Delinquint Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
+                    FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
+                    ];
 			});
 			// Trash Cave
 			preloader.AddObjectToPreloadList("TrashCave", () =>
@@ -320,7 +332,6 @@ namespace ArchipelagoRandomizer
 				shine.transform.localRotation = Quaternion.identity;
 				shine.transform.localScale = Vector3.one;
 				
-				FreestandingReplacer.CreateModelCopy("Force Wand Upgrade");
                 return [
 					force
 				];
@@ -328,18 +339,23 @@ namespace ArchipelagoRandomizer
 			// Northern End
 			preloader.AddObjectToPreloadList("Deep14", () =>
 			{
-				GameObject ice = FreestandingReplacer.GetModelFromPath("Progressive Ice Ring");
-				FreestandingReplacer.CreateModelCopy("Ice Ring Upgrade");
                 return [
-					ice
+					FreestandingReplacer.GetModelFromPath("Progressive Ice Ring")
 				];
 			});
 			// Moon Garden
 			preloader.AddObjectToPreloadList("Deep15", () =>
 			{
-				GameObject chain = FreestandingReplacer.GetModelFromPath("Progressive Chain");
-				FreestandingReplacer.CreateModelCopy("Chain Upgrade");
-				return [chain];
+				return [
+					FreestandingReplacer.GetModelFromPath("Progressive Chain")
+				];
+			});
+			// Cave of Mystery
+			preloader.AddObjectToPreloadList("Deep17", () =>
+			{
+				return [
+					FreestandingReplacer.GetModelFromSpawner("Apathetic Frog Outfit")
+				];
 			});
 			// Bad Dream
             preloader.AddObjectToPreloadList("Deep26", () =>

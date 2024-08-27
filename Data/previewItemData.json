@@ -1,6 +1,7 @@
 [
     {
         "key": "Progressive Dynamite",
+        "copyTo": "Dynamite Upgrade",
         "path": "B/Doodads/Dungeon_Chest",
         "spin": true,
         "rotation": {
@@ -9,10 +10,6 @@
             "z": 0
         },
         "scale": 0.25
-    },
-    {
-        "key": "Dynamite Upgrade",
-        "copyOf": "Progressive Dynamite"
     },
     {
         "key": "Forbidden Key",
@@ -140,6 +137,159 @@
         "scale": 25
     },
     {
+        "key": "Tippsie Outfit",
+        "path": "Q/Doodads/Outfit1Changer/Gfx/IttleSuit_Tippsie",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "Ittle Dew 1 Outfit",
+        "path": "Q/Doodads/Outfit2Changer/Gfx/IttleSuit_IttleOriginal",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "Jenny Dew Outfit",
+        "path": "Q/Doodads/Outfit3Changer/Gfx/IttleSuit_Jenny",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "Swimsuit Outfit",
+        "path": "Q/Doodads/Outfit4Changer/Gfx/IttleSuit_Ittle",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "Tiger Jenny Outfit",
+        "path": "Q/Doodads/Outfit5Changer/Gfx/IttleSuit_Ittle",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "Little Dude Outfit",
+        "path": "Q/Doodads/Outfit6Changer/Gfx/IttleSuit_Ittle",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "Delinquint Outfit",
+        "path": "Q/Doodads/Outfit7Changer/Gfx/IttleSuit_Ittle",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
+        "key": "That Guy Outfit",
+        "path": "Q/Doodads/Outfit9Changer/Gfx/artexhibit_statue_thatguy",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 30
+    },
+    {
+        "key": "Jenny Berry Outfit",
+        "path": "Q/Doodads/Outfit10Changer/Gfx/IttleSuit_Berry",
+        "child": -1,
+        "spin": true,
+        "position": {
+            "x": 0,
+            "y": -0.5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 270,
+            "y": 0,
+            "z": 0
+        },
+        "scale": 0.7
+    },
+    {
         "key": "Progressive Melee",
         "path": "D/Doodads/Dungeon_Chest",
         "spin": true,
@@ -214,6 +364,7 @@
     },
     {
         "key": "Progressive Force Wand",
+        "copyTo": "Force Wand Upgrade",
         "path": "A/Doodads/Dungeon_Chest",
         "child": 1,
         "spin": true,
@@ -225,11 +376,8 @@
         "scale": 0.25
     },
     {
-        "key": "Force Wand Upgrade",
-        "copyOf": "Progressive Force Wand"
-    },
-    {
         "key": "Progressive Ice Ring",
+        "copyTo": "Ice Ring Upgrade",
         "path": "F/Doodads/Dungeon_Chest",
         "spin": true,
         "rotation": {
@@ -240,19 +388,19 @@
         "scale": 0.5
     },
     {
-        "key": "Ice Ring Upgrade",
-        "copyOf": "Progressive Ice Ring"
-    },
-    {
         "key": "Progressive Chain",
+        "copyTo": "Chain Upgrade",
         "path": "A/Doodads/Dungeon_Chest",
         "index": 0,
         "spin": true,
         "scale": 25
     },
     {
-        "key": "Chain Upgrade",
-        "copyOf": "Progressive Chain"
+        "key": "Apathetic Frog Outfit",
+        "path": "A/Doodads/ApatheticFrogSpawner",
+        "child": 2,
+        "spin": true,
+        "scale": 0.3
     },
     {
         "key": "Card",
