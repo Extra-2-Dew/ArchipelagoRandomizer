@@ -241,6 +241,7 @@ namespace ArchipelagoRandomizer
 		private void PreloadObjects()
 		{
 			Preloader preloader = new();
+			FreestandingReplacer.Reset();
 
             // TODO: Store: Forbidden Key, Dynamite
             preloader.AddObjectToPreloadList("MachineFortress", () =>
@@ -366,10 +367,11 @@ namespace ArchipelagoRandomizer
 			// Bad Dream
             preloader.AddObjectToPreloadList("Deep26", () =>
             {
+				// gotta do this late
+				FreestandingReplacer.SetupKeyMaterials();
                 GameObject card = FreestandingReplacer.GetModelFromPath("Card");
                 return [card];
             });
-
 
 
             preloader.StartPreload(PreloadDone);

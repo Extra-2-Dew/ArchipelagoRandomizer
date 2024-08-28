@@ -34,6 +34,20 @@ namespace ArchipelagoRandomizer
         private static string bundlePath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmodels");
         private static List<PreviewItemData> itemData;
         private static Dictionary<string, GameObject> models;
+        private static Dictionary<KeyType, Material> keyMaterials;
+        private static Dictionary<KeyType, Material> trimMaterials;
+        private static Material blackOutline;
+        private static Material whiteOutline;
+
+        public static void Reset()
+        {
+            if (models == null) return;
+            foreach (var model in models.Values)
+            {
+                Object.Destroy(model);
+            }
+            models = new();
+        }
 
         private static GameObject GetGameObjectFromItem(SpawnItemEventObserver observer)
         {
@@ -209,15 +223,174 @@ namespace ArchipelagoRandomizer
 
         public static GameObject GetModelPreview(string key)
         {
+            int type = 0;
             if (key.Contains("Card")) key = "Card";
-            if (key.Contains("Key") && key != "Forbidden Key") key = "Key";
-            // TODO change to key-specific method
-            if (!models.ContainsKey(key))
+            if (key.Contains("Key") && key != "Forbidden Key") ChangeKeyColor(key, out type);
+            if (!models.ContainsKey(key) && type == 0)
             {
                 Plugin.Log.LogError($"Preview Model {key} does not exist.");
                 return null;
             }
+            if (type == 1) return models["Key"];
+            if (type == 2) return models["Secret Key"];
             return models[key];
+        }
+
+        private static void ChangeKeyColor(string keyDungeon, out int type)
+        {
+            if (keyMaterials == null) SetupKeyMaterials();
+            KeyType keyType = KeyType.PillowFort;
+
+            if (keyDungeon.Contains("Ring")) keyDungeon = keyDungeon.Replace(" Ring", "");
+            Plugin.Log.LogInfo($"Getting key for {keyDungeon}");
+
+            bool secretKey = false;
+            bool dreamKey = false;
+            type = 0;
+
+            switch (keyDungeon)
+            {
+                case "Pillow Fort Key":
+                    keyType = KeyType.PillowFort; break;
+                case "Sand Castle Key":
+                    keyType = KeyType.SandCastle; break;
+                case "Art Exhibit Key":
+                    keyType = KeyType.ArtExhibit; break;
+                case "Trash Cave Key":
+                    keyType = KeyType.TrashCave; break;
+                case "Flooded Basement Key":
+                    keyType = KeyType.FloodedBasement; break;
+                case "Potassium Mine Key":
+                    keyType = KeyType.PotassiumMine; break;
+                case "Boiling Grave Key":
+                    keyType = KeyType.BoilingGrave; break;
+                case "Grand Library Key":
+                    keyType = KeyType.GrandLibrary; break;
+                case "Sunken Labyrinth Key":
+                    keyType = KeyType.SunkenLabyrinth;
+                    secretKey = true; break;
+                case "Machine Fortress Key":
+                    keyType = KeyType.MachineFortress;
+                    secretKey = true; break;
+                case "Dark Hypostyle Key":
+                    keyType = KeyType.DarkHypostyle;
+                    secretKey = true; break;
+                case "Tomb of Simulacrum Key":
+                    keyType = KeyType.TombOfSimulacrum;
+                    secretKey = true; break;
+                case "Syncope Key":
+                    keyType = KeyType.Syncope;
+                    dreamKey = true; break;
+                case "Antigram Key":
+                    keyType = KeyType.Antigram;
+                    dreamKey = true; break;
+                case "Bottomless Tower Key":
+                    keyType = KeyType.BottomlessTower;
+                    dreamKey = true; break;
+                case "Quietus Key":
+                    keyType = KeyType.Quietus;
+                    dreamKey = true; break;
+            }
+            Plugin.Log.LogInfo($"Keytype is {keyType}");
+
+            GameObject key = null;
+            if (secretKey)
+            {
+                key = models["Secret Key"];
+                type = 2;
+            }
+            else
+            {
+                key = models["Key"];
+                type = 1;
+            }
+            MeshRenderer rend = key.GetComponentInChildren<MeshRenderer>();
+            Plugin.Log.LogInfo($"Setting materials for {rend.gameObject.name}, child of {key.name}");
+            List<Material> mats = new();
+            // set outline color
+            if (secretKey)
+            {
+                mats.Add(keyMaterials[keyType]);
+                mats.Add(blackOutline);
+                rend.sharedMaterials = mats.ToArray();
+                Plugin.Log.LogInfo($"Assigning {keyMaterials[keyType].name} and {blackOutline}");
+                Plugin.Log.LogInfo($"Now, the renderer has {rend.sharedMaterials[0].name} and {rend.sharedMaterials[1].name}");
+            }
+            else
+            {
+                mats.Add(dreamKey ? whiteOutline : blackOutline);
+                mats.Add(keyMaterials[keyType]);
+                mats.Add(trimMaterials[keyType]);
+                rend.sharedMaterials = mats.ToArray();
+                Plugin.Log.LogInfo($"Assigning {keyMaterials[keyType].name}, {trimMaterials[keyType].name}, and {(dreamKey ? whiteOutline.name : blackOutline.name)}");
+                Plugin.Log.LogInfo($"Now, the renderer has {rend.sharedMaterials[0].name}, {rend.sharedMaterials[1].name} and {rend.sharedMaterials[2].name}");
+            }
+        }
+
+        public static void SetupKeyMaterials()
+        {
+            keyMaterials = new();
+            trimMaterials = new();
+            GameObject materialsObject = GameObject.Instantiate(ModCore.Utility.LoadAssetFromBundle(bundlePath, "Assets/Extra2Dew/Prefabs/AP/MaterialHolder.prefab"));
+
+            keyMaterials.Add(KeyType.PillowFort, GetMaterial(materialsObject, "Lavender"));
+            trimMaterials.Add(KeyType.PillowFort, GetMaterial(materialsObject, "GenericDullPink"));
+            keyMaterials.Add(KeyType.SandCastle, GetMaterial(materialsObject, "Tan"));
+            trimMaterials.Add(KeyType.SandCastle, GetMaterial(materialsObject, "GenericBrown"));
+            keyMaterials.Add(KeyType.ArtExhibit, GetMaterial(materialsObject, "White"));
+            trimMaterials.Add(KeyType.ArtExhibit, GetMaterial(materialsObject, "GenericGrey"));
+            keyMaterials.Add(KeyType.TrashCave, GetMaterial(materialsObject, "Green"));
+            trimMaterials.Add(KeyType.TrashCave, GetMaterial(materialsObject, "GenericGreen"));
+            keyMaterials.Add(KeyType.FloodedBasement, GetMaterial(materialsObject, "LightBlue"));
+            trimMaterials.Add(KeyType.FloodedBasement, GetMaterial(materialsObject, "GenericBlue"));
+            keyMaterials.Add(KeyType.PotassiumMine, GetMaterial(materialsObject, "Brown"));
+            trimMaterials.Add(KeyType.PotassiumMine, GetMaterial(materialsObject, "GenericBrown2"));
+            keyMaterials.Add(KeyType.BoilingGrave, GetMaterial(materialsObject, "Red"));
+            trimMaterials.Add(KeyType.BoilingGrave, GetMaterial(materialsObject, "GenericRed"));
+            keyMaterials.Add(KeyType.GrandLibrary, GetMaterial(materialsObject, "Gold"));
+            trimMaterials.Add(KeyType.GrandLibrary, GetMaterial(materialsObject, "GenericBrown3"));
+            keyMaterials.Add(KeyType.SunkenLabyrinth, GetMaterial(materialsObject, "Purple"));
+            keyMaterials.Add(KeyType.MachineFortress, GetMaterial(materialsObject, "Red"));
+            keyMaterials.Add(KeyType.DarkHypostyle, GetMaterial(materialsObject, "Blue"));
+            keyMaterials.Add(KeyType.TombOfSimulacrum, GetMaterial(materialsObject, "Gold"));
+            keyMaterials.Add(KeyType.Syncope, GetMaterial(materialsObject, "Red"));
+            trimMaterials.Add(KeyType.Syncope, GetMaterial(materialsObject, "GenericRed"));
+            keyMaterials.Add(KeyType.Antigram, GetMaterial(materialsObject, "Lavender"));
+            trimMaterials.Add(KeyType.Antigram, GetMaterial(materialsObject, "GenericDullPink"));
+            keyMaterials.Add(KeyType.BottomlessTower, GetMaterial(materialsObject, "Blue"));
+            trimMaterials.Add(KeyType.BottomlessTower, GetMaterial(materialsObject, "GenericBlue"));
+            keyMaterials.Add(KeyType.Quietus, GetMaterial(materialsObject, "Purple"));
+            trimMaterials.Add(KeyType.Quietus, GetMaterial(materialsObject, "GenericDullPink"));
+
+            blackOutline = GetMaterial(materialsObject, "OutlineBlack");
+            whiteOutline = GetMaterial(materialsObject, "OutlineWhite");
+            Object.DontDestroyOnLoad(materialsObject);
+            materialsObject.SetActive(false);
+        }
+
+        private static Material GetMaterial(GameObject materialsObject, string objectName)
+        {
+            return materialsObject.transform.Find(objectName).GetComponent<MeshRenderer>().sharedMaterial;
+        }
+
+        private enum KeyType
+        {
+            PillowFort,
+            SandCastle,
+            ArtExhibit,
+            TrashCave,
+            FloodedBasement,
+            PotassiumMine,
+            BoilingGrave,
+            GrandLibrary,
+            SunkenLabyrinth,
+            MachineFortress,
+            DarkHypostyle,
+            TombOfSimulacrum,
+            Syncope,
+            Antigram,
+            BottomlessTower,
+            Quietus
         }
     }
 }

@@ -13,6 +13,7 @@
     },
     {
         "key": "Forbidden Key",
+        "copyTo": "Secret Key",
         "path": "G/Logic/SecretChest/Dungeon_Chest",
         "spin": false,
         "position": {
@@ -262,7 +263,7 @@
         "spin": true,
         "position": {
             "x": 0,
-            "y": -0.5,
+            "y": 0,
             "z": 0
         },
         "rotation": {
@@ -323,7 +324,7 @@
         "path": "N/Doodads/KeyChest/Spawner",
         "spin": false,
         "position": {
-            "x": -0.4,
+            "x": 0,
             "y": 0,
             "z": 0
         },
