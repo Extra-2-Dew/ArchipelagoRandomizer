@@ -242,37 +242,41 @@ namespace ArchipelagoRandomizer
 		{
 			Preloader preloader = new();
 			FreestandingReplacer.Reset();
+			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents;
 
-            // TODO: Store: Forbidden Key, Dynamite
+			// Machine Fortress
             preloader.AddObjectToPreloadList("MachineFortress", () =>
 			{
-				return [
+				List<GameObject> list = [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
-					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject,
+					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject
+					];
+				if (preloadItems) list.AddRange([
 					FreestandingReplacer.GetModelFromPath("Progressive Dynamite"),
-                    FreestandingReplacer.GetModelFromPath("Forbidden Key"),
+					FreestandingReplacer.GetModelFromPath("Forbidden Key"),
 					FreestandingReplacer.GetModelFromPath("Box of Crayons"),
 					FreestandingReplacer.GetModelFromDroptable("Lightning"),
 					FreestandingReplacer.GetModelFromDroptable("Yellow Heart"),
 					FreestandingReplacer.GetModelFromDroptable("Random Buff"),
 					// these can be done at any point during preload
 					FreestandingReplacer.GetModelFromBundle("Filler"),
-                    FreestandingReplacer.GetModelFromBundle("Useful"),
-                    FreestandingReplacer.GetModelFromBundle("Progression"),
-                    FreestandingReplacer.GetModelFromBundle("Potion"),
-                ];
+					FreestandingReplacer.GetModelFromBundle("Useful"),
+					FreestandingReplacer.GetModelFromBundle("Progression"),
+					FreestandingReplacer.GetModelFromBundle("Potion"),
+				]);
+
+				return list.ToArray();
 			});
 			// Maze of Steel
 			preloader.AddObjectToPreloadList("Deep11", () =>
 			{
 				List<Object> list = new();
 				list.AddRange(Resources.FindObjectsOfTypeAll<StatusType>());
-				list.Add(FreestandingReplacer.GetModelFromPath("Progressive Headband"));
+				if (preloadItems) list.Add(FreestandingReplacer.GetModelFromPath("Progressive Headband"));
 				return list.ToArray();
 			});
 			// Sweetwater Coast Caves
-			// TODO: Store outfits from changing tent
-			preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
+			if (preloadItems) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
 			{
 				return [
 					FreestandingReplacer.GetModelFromPath("Secret Shard"),
@@ -289,8 +293,8 @@ namespace ArchipelagoRandomizer
                     FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
                     ];
 			});
-			// Trash Cave
-			preloader.AddObjectToPreloadList("TrashCave", () =>
+            // Trash Cave
+            if (preloadItems) preloader.AddObjectToPreloadList("TrashCave", () =>
 			{
 				return [
                     FreestandingReplacer.GetModelFromPath("Progressive Melee"),
@@ -299,7 +303,7 @@ namespace ArchipelagoRandomizer
                     FreestandingReplacer.GetModelFromPath("Key")
                 ];
 			});
-			/*
+            /*
 			// Pepperpain Mountain
 			// TODO: Store: Eruption
 			preloader.AddObjectToPreloadList("VitaminHills3", () =>
@@ -307,29 +311,29 @@ namespace ArchipelagoRandomizer
 				return [null];
 			});
 			*/
-			// Autumn Climb
-			preloader.AddObjectToPreloadList("Deep1", () =>
+            // Autumn Climb
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep1", () =>
 			{
 				return [
                     FreestandingReplacer.GetModelFromPath("Progressive Tracker")
                 ];
 			});
-			// The Vault
-			preloader.AddObjectToPreloadList("Deep2", () =>
+            // The Vault
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep2", () =>
 			{
 				return [
                     FreestandingReplacer.GetModelFromPath("Progressive Amulet")
                 ];
 			});
-			// Painful Plain
-			preloader.AddObjectToPreloadList("Deep3", () =>
+            // Painful Plain
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep3", () =>
 			{
 				return [
                     FreestandingReplacer.GetModelFromPath("Progressive Tome")
                 ];
 			});
-			// Ocean Castle
-			preloader.AddObjectToPreloadList("Deep9", () =>
+            // Ocean Castle
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep9", () =>
 			{
 				GameObject force = FreestandingReplacer.GetModelFromPath("Progressive Force Wand");
 				// make the shine object use the same transform as the rod object
@@ -343,32 +347,33 @@ namespace ArchipelagoRandomizer
 					force
 				];
 			});
-			// Northern End
-			preloader.AddObjectToPreloadList("Deep14", () =>
+            // Northern End
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep14", () =>
 			{
                 return [
 					FreestandingReplacer.GetModelFromPath("Progressive Ice Ring")
 				];
 			});
-			// Moon Garden
-			preloader.AddObjectToPreloadList("Deep15", () =>
+            // Moon Garden
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep15", () =>
 			{
 				return [
 					FreestandingReplacer.GetModelFromPath("Progressive Chain")
 				];
 			});
-			// Cave of Mystery
-			preloader.AddObjectToPreloadList("Deep17", () =>
+            // Cave of Mystery
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep17", () =>
 			{
 				return [
 					FreestandingReplacer.GetModelFromSpawner("Apathetic Frog Outfit")
 				];
 			});
-			// Bad Dream
-            preloader.AddObjectToPreloadList("Deep26", () =>
+            // Bad Dream
+            if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>
             {
 				// gotta do this late
 				FreestandingReplacer.SetupKeyMaterials();
+
                 GameObject card = FreestandingReplacer.GetModelFromPath("Card");
                 return [card];
             });
