@@ -41,9 +41,10 @@ There are three possible goals:
 
 ## Installation
 
-1. Download the latest version of [ModCore](https://github.com/Extra-2-Dew/ModCore) along with Bepinex. Details are in their Readmes.
-2. Download the latest release (the zip file) from the [Releases page](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/releases).
-3. Unzip the release and drop it into your Bepinex plugins folder.
+1. Download the latest version of [Bepinex](https://github.com/BepInEx/BepInEx/releases) (if you're on Linux, you need to use [v5.4.22](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.22)).
+2. Download the latest version of [ModCore](https://github.com/Extra-2-Dew/ModCore).
+3. Download the latest release (the zip file) from the [Releases page](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/releases).
+4. Unzip the release and drop it into your Bepinex plugins folder.
 
 ## Getting Started
 
