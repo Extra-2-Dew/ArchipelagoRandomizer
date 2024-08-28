@@ -119,7 +119,7 @@
         "path": "H/Doodads/Dungeon_Chest",
         "spin": false,
         "position": {
-            "x": -0.4,
+            "x": 0,
             "y": 0,
             "z": 0
         },
@@ -317,6 +317,11 @@
         "key": "Raft Piece",
         "path": "B/Doodads/SecretChest/Dungeon_Chest",
         "spin": true,
+        "position": {
+            "x": 0,
+            "y": 0.5,
+            "z": 0
+        },
         "scale": 50
     },
     {
@@ -394,6 +399,11 @@
         "path": "A/Doodads/Dungeon_Chest",
         "index": 0,
         "spin": true,
+        "position": {
+            "x": 0,
+            "y": 0.8,
+            "z": 0
+        },
         "scale": 25
     },
     {

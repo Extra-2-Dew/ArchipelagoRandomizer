@@ -226,6 +226,7 @@ namespace ArchipelagoRandomizer
             int type = 0;
             if (key.Contains("Card")) key = "Card";
             if (key.Contains("Key") && key != "Forbidden Key") ChangeKeyColor(key, out type);
+            if (key.Contains("Connection")) key = "Connection";
             if (!models.ContainsKey(key) && type == 0)
             {
                 Plugin.Log.LogError($"Preview Model {key} does not exist.");
@@ -305,7 +306,6 @@ namespace ArchipelagoRandomizer
                 type = 1;
             }
             MeshRenderer rend = key.GetComponentInChildren<MeshRenderer>();
-            Plugin.Log.LogInfo($"Setting materials for {rend.gameObject.name}, child of {key.name}");
             List<Material> mats = new();
             // set outline color
             if (secretKey)
@@ -313,8 +313,6 @@ namespace ArchipelagoRandomizer
                 mats.Add(keyMaterials[keyType]);
                 mats.Add(blackOutline);
                 rend.sharedMaterials = mats.ToArray();
-                Plugin.Log.LogInfo($"Assigning {keyMaterials[keyType].name} and {blackOutline}");
-                Plugin.Log.LogInfo($"Now, the renderer has {rend.sharedMaterials[0].name} and {rend.sharedMaterials[1].name}");
             }
             else
             {
@@ -322,8 +320,6 @@ namespace ArchipelagoRandomizer
                 mats.Add(keyMaterials[keyType]);
                 mats.Add(trimMaterials[keyType]);
                 rend.sharedMaterials = mats.ToArray();
-                Plugin.Log.LogInfo($"Assigning {keyMaterials[keyType].name}, {trimMaterials[keyType].name}, and {(dreamKey ? whiteOutline.name : blackOutline.name)}");
-                Plugin.Log.LogInfo($"Now, the renderer has {rend.sharedMaterials[0].name}, {rend.sharedMaterials[1].name} and {rend.sharedMaterials[2].name}");
             }
         }
 

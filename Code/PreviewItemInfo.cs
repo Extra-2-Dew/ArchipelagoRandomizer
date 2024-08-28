@@ -58,7 +58,6 @@ namespace ArchipelagoRandomizer
             {
                 // specifying int because Unity has a bad habit of using the float version otherwise
                 itemName = trapNames[Random.Range((int)0, (int)trapNames.Count)];
-                Plugin.Log.LogWarning($"It's a trap! Flags are {info.Flags}, itemName is {itemName}");
             }
 
             previewObject = FreestandingReplacer.GetModelPreview(itemName);
