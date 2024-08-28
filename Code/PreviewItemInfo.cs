@@ -9,7 +9,7 @@ namespace ArchipelagoRandomizer
     public class PreviewItemInfo : MonoBehaviour
     {
         private GameObject previewObject;
-        private List<string> trapNames =
+        private readonly List<string> trapNames =
         [
             "Progressive Dynamite",
             "Forbidden Key",

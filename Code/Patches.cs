@@ -133,7 +133,7 @@ namespace ArchipelagoRandomizer
 		[HarmonyPatch(typeof(SpawnItemEventObserver), nameof(SpawnItemEventObserver.SpawnItem))]
 		public static void SpawnItemEventObserver_SpawnItem_Postfix(SpawnItemEventObserver __instance)
 		{
-			if (!ItemRandomizer.IsActive) return;
+			if (!ItemRandomizer.IsActive || !Plugin.Instance.APFileData.ChestAppearanceMatchesContents) return;
 			if (__instance.transform.parent.name == "KeyChest" || __instance.transform.parent.name == "CardChest")
 			{
 				GameObject spawnedObject = __instance.showItem.gameObject;

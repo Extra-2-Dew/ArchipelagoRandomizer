@@ -76,8 +76,6 @@ namespace ArchipelagoRandomizer
         /// <returns></returns>
         public static GameObject GetModelFromPath(string itemName)
         {
-            Plugin.Log.LogInfo($"Preloading {itemName}...");
-
             PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
 
             SpawnItemEventObserver observer = GameObject.Find("LevelRoot").transform.Find(data.path).GetComponent<SpawnItemEventObserver>();
@@ -97,8 +95,6 @@ namespace ArchipelagoRandomizer
 
         public static GameObject GetModelFromDroptable(string itemName)
         {
-            Plugin.Log.LogInfo($"Preloading {itemName}...");
-
             PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
 
             DropTable[] dropTables = Resources.FindObjectsOfTypeAll<DropTable>();
@@ -138,8 +134,6 @@ namespace ArchipelagoRandomizer
 
         public static GameObject GetModelFromGameObject(string itemName)
         {
-            Plugin.Log.LogInfo($"Preloading {itemName}...");
-
             PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
 
             GameObject model = GameObject.Instantiate(GameObject.Find("LevelRoot").transform.Find(data.path).gameObject);
@@ -149,8 +143,6 @@ namespace ArchipelagoRandomizer
 
         public static GameObject GetModelFromSpawner(string itemName)
         {
-            Plugin.Log.LogInfo($"Preloading {itemName}...");
-
             PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
 
             GameObject model = GameObject.Instantiate(ItemRandomizer.GetEntityFromSpawner(data.path).gameObject);
@@ -174,8 +166,6 @@ namespace ArchipelagoRandomizer
 
         public static GameObject GetModelFromBundle(string itemName)
         {
-            Plugin.Log.LogInfo($"Preloading {itemName}...");
-
             PreviewItemData data = ItemData.FirstOrDefault((x) => x.key == itemName);
 
             GameObject model = GameObject.Instantiate(ModCore.Utility.LoadAssetFromBundle(bundlePath, data.path));
@@ -183,7 +173,7 @@ namespace ArchipelagoRandomizer
             return GenerateModelPrefab(model, data, itemName);
         }
 
-        public static GameObject GenerateModelPrefab(GameObject model, PreviewItemData data, string itemName)
+        private static GameObject GenerateModelPrefab(GameObject model, PreviewItemData data, string itemName)
         {
             Object.Destroy(model.GetComponent<VarUpdatingItem>());
             GameObject appearanceApplier = null;
@@ -387,6 +377,28 @@ namespace ArchipelagoRandomizer
             Antigram,
             BottomlessTower,
             Quietus
+        }
+
+        private class PreviewItemData
+        {
+            // name of the item
+            public string key = "";
+            // If the model needs to exist on multiple entries, put the extra entry here
+            public string copyTo = "";
+            // path from LevelRoot
+            public string path = "";
+            // if it's part of a selector, which index in the selector should be used?
+            public int index = 0;
+            // Index of child to apply visual edits
+            public int child = 0;
+            // use the Bad Dream card animation
+            public bool spin = false;
+            // offset from default position
+            public Vector3 position = Vector3.zero;
+            // euler angles
+            public Vector3 rotation = Vector3.zero;
+            // scale in all dimensions
+            public float scale = 1;
         }
     }
 }
