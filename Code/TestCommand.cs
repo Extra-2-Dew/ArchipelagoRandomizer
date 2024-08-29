@@ -9,43 +9,6 @@ namespace ArchipelagoRandomizer
         private static TestCommand instance;
         public static TestCommand Instance { get { return instance; } }
 
-        private string[] crystalFaceRamps =
-        {
-            "ChestJewelGreen",
-            "ChestJewelBrown",
-            "ChestJewelBurgundy",
-            "ChestJewelDarkGrey",
-            "ChestJewelCyan",
-            "ChestJewelBlue",
-            "ChestJewelOrange",
-            "ChestJewelOrange"
-        };
-        private string[] crystalFaceRims =
-        {
-            "ChestCrystalRimGreen",
-            "ChestCrystalRimBrown",
-            "ChestCrystalRimBurgundy",
-            "ChestCrystalRimDarkGrey",
-            "ChestCrystalRimCyan",
-            "ChestCrystalRimBlue",
-            "ChestCrystalRimOrange",
-            "ChestCrystalRimOrange"
-        };
-        private string[] crystalEdgeColors =
-        {
-            "ChestTealGreen",
-            "ChestBurgundy",
-            "ChestLightGrey",
-            "ChestLightGrey",
-            "ChestCyan",
-            "ChestBlue",
-            "ChestOrange",
-            "ChestYellow"
-        };
-        // Crystal edges
-        private Material edgeMaterial;
-        // Crystal faces
-        private Material faceMaterial;
 
         public TestCommand()
         {
@@ -60,26 +23,64 @@ namespace ArchipelagoRandomizer
         [DebugMenuCommand(commandName:"test")]
         private void SendTestCommand(string[] args)
         {
-            if (edgeMaterial == null)
-            {
-                Renderer chestRenderer = GameObject.Find("Dungeon_PuzzleChest").transform.Find("crystal").GetComponent<Renderer>();
-                edgeMaterial = chestRenderer.sharedMaterials[1];
-                faceMaterial = chestRenderer.sharedMaterials[0];
-            }
+            string obj = "Forbidden Key";
             if (args.Length > 0)
             {
-                if (int.TryParse(args[0], out int id))
+                switch (args[0])
                 {
-                    edgeMaterial.shader = Shader.Find("Unlit/Texture");
-                    edgeMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalEdgeColors[id]}.png"));
+                    case "0":
+                        obj = "Pillow Fort Key";
+                        break;
+                    case "1":
 
-                    // rimMaterial.SetTexture("_RimRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimColors[id]}.png"));
-                    faceMaterial.SetTexture("_SpecularRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalFaceRims[id]}.png"));
-                    faceMaterial.SetTexture("_RimRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{crystalFaceRamps[id]}.png"));
-                    //rimMaterial.SetTexture("_SpecularRamp", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{rimShines[id]}.png"));
-                    //chestMaterial.SetTexture("_MainTex", ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/{chestColors[id]}.png"));
+                        obj = "Sand Castle Key";
+                        break;
+                    case "2":
+                        obj = "Art Exhibit Key";
+                        break;
+                    case "3":
+                        obj = "Trash Cave Key";
+                        break;
+                    case "4":
+                        obj = "Flooded Basement Key";
+                        break;
+                    case "5":
+                        obj = "Potassium Mine Key";
+                        break;
+                    case "6":
+                        obj = "Boiling Grave Key";
+                        break;
+                    case "7":
+                        obj = "Grand Library Key";
+                        break;
+                    case "8":
+                        obj = "Sunken Labyrinth Key";
+                        break;
+                    case "9":
+                        obj = "Machine Fortress Key";
+                        break;
+                    case "10":
+                        obj = "Dark Hypostyle Key";
+                        break;
+                    case "11":
+                        obj = "Tomb of Simulacrum Key";
+                        break;
+                    case "12":
+                        obj = "Syncope Key";
+                        break;
+                    case "13":
+                        obj = "Antigram Key";
+                        break;
+                    case "14":
+                        obj = "Bottomless Tower Key";
+                        break;
+                    case "15":
+                        obj = "Quietus Key";
+                        break;
                 }
             }
+            GameObject logo = GameObject.Instantiate(FreestandingReplacer.GetModelPreview(obj));
+            logo.transform.position = ModCore.Utility.GetPlayer().transform.position;
         }
     }
 }

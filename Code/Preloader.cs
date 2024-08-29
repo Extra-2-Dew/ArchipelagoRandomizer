@@ -89,6 +89,7 @@ namespace ArchipelagoRandomizer
 				yield return new WaitUntil(() => { return hasDoneFadeOut; });
 				// Wait for scene to load
 				yield return SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
+				Plugin.Log.LogInfo($"Preloading scene {sceneToLoad}...");
 				SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
 
 				PreloadObjects(kvp.Value);
@@ -117,7 +118,7 @@ namespace ArchipelagoRandomizer
 
 					// If Object is a GameObject, change its parent so it persists
 					if (gameObj != null)
-						gameObj.transform.parent = objectHolder;
+						gameObj.transform.SetParent(objectHolder, true);
 					else
 						Object.DontDestroyOnLoad(obj);
 
