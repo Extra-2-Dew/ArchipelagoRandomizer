@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static ArchipelagoRandomizer.MessageBoxHandler;
 
@@ -243,6 +244,7 @@ namespace ArchipelagoRandomizer
 			Preloader preloader = new();
 			FreestandingReplacer.Reset();
 			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents;
+			bool regionConnections = Instance.settings.BlockRegionConnections;
 
 			// Machine Fortress
             preloader.AddObjectToPreloadList("MachineFortress", () =>
@@ -276,22 +278,32 @@ namespace ArchipelagoRandomizer
 				return list.ToArray();
 			});
 			// Sweetwater Coast Caves
-			if (preloadItems) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
+			if (preloadItems || regionConnections) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
 			{
-				return [
+				List<GameObject> list = new();
+				if (preloadItems) list.AddRange([
 					FreestandingReplacer.GetModelFromPath("Secret Shard"),
 					FreestandingReplacer.GetModelFromPath("Lockpick"),
 					FreestandingReplacer.GetModelFromPath("Connection"),
 					FreestandingReplacer.GetModelFromGameObject("Tippsie Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Ittle Dew 1 Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Jenny Dew Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Swimsuit Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Tiger Jenny Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Little Dude Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Delinquint Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
-                    ];
+					FreestandingReplacer.GetModelFromGameObject("Ittle Dew 1 Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Jenny Dew Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Swimsuit Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Tiger Jenny Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Little Dude Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Delinquint Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
+				]);
+                if (regionConnections)
+                {
+                    GameObject poof = GameObject.Instantiate(Resources.FindObjectsOfTypeAll<SimpleQuickParticleEffect>().First((x) => x.gameObject.name == "ConfettiLarge").gameObject);
+                    BlockadeVisualsHandler.poofEffect = poof;
+					poof.GetComponent<SimpleQuickParticleEffect>().owningFactory = EffectFactory.Instance;
+                    list.Add(poof);
+                }
+
+				return list.ToArray();
 			});
             // Trash Cave
             if (preloadItems) preloader.AddObjectToPreloadList("TrashCave", () =>
@@ -367,6 +379,14 @@ namespace ArchipelagoRandomizer
 				return [
 					FreestandingReplacer.GetModelFromSpawner("Apathetic Frog Outfit")
 				];
+			});
+			// Ludo City
+			if (regionConnections) preloader.AddObjectToPreloadList("Deep20", () =>
+			{
+				GameObject bcm = GameObject.Instantiate(GameObject.Find("LevelRoot").transform.Find("A/NPCs/BusinessCasual").gameObject);
+				BlockadeVisualsHandler.bcm = bcm;
+				BlockadeVisualsHandler.Init();
+				return [bcm];
 			});
             // Bad Dream
             if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>

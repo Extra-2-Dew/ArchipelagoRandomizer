@@ -259,6 +259,7 @@ namespace ArchipelagoRandomizer
 
 			AddCustomComponentToItems();
 			OverrideSpawnPoints();
+			if (settings.IncludeSuperSecrets) BlockadeVisualsHandler.SpawnBCMs(SceneName);
 		}
 
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)
