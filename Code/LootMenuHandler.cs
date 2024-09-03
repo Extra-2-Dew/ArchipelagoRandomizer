@@ -167,9 +167,12 @@ namespace ArchipelagoRandomizer
                 button.transform.Find("Item/Root/Background").gameObject.SetActive(false);
                 button.transform.GetComponentInChildren<GuiClickable>().OnClicked += () =>
                 {
-                    ModCore.Utility.GetPlayer().SetStateVariable("outfit", i2);
-                    ModCore.Plugin.MainSaver.SaveLocal();
-                    backButton.SendClick();
+                    if (button.GetComponentInChildren<SE_LootMenuDescription>().GetQuantity() > 0)
+                    {
+                        ModCore.Utility.GetPlayer().SetStateVariable("outfit", i2);
+                        ModCore.Plugin.MainSaver.SaveLocal();
+                        backButton.SendClick();
+                    }
                 };
             }
 
@@ -208,14 +211,18 @@ namespace ArchipelagoRandomizer
 
         private void SwitchToKeysMenu()
         {
-            lootButtons["KeyBag"].GetComponentInChildren<GuiSelectionObject>().Deselect();
+            GameObject keyBag = lootButtons["KeyBag"];
+            if (keyBag.GetComponentInChildren<SE_LootMenuDescription>().GetQuantity() == 0) return;
+            keyBag.GetComponentInChildren<GuiSelectionObject>().Deselect();
             SwitchToMenu(LootMenuType.Keys);
             UpdateQuantities(LootMenuType.Keys);
         }
 
         private void SwitchToOutfitMenu()
         {
-            lootButtons["Wardrobe"].GetComponentInChildren<GuiSelectionObject>().Deselect();
+            GameObject wardrobe = lootButtons["Wardrobe"];
+            if (wardrobe.GetComponentInChildren<SE_LootMenuDescription>().GetQuantity() == 0) return;
+            wardrobe.GetComponentInChildren<GuiSelectionObject>().Deselect();
             SwitchToMenu(LootMenuType.Outfits);
             UpdateQuantities(LootMenuType.Outfits);
         }
@@ -232,42 +239,42 @@ namespace ArchipelagoRandomizer
             switch (menu)
             {
                 case LootMenuType.Loot:
-                    GetLootInfo("FakeEFCS")?.UpdateQuantity(player.GetStateVariable("fakeEFCS"));
-                    GetLootInfo("KeyBag")?.UpdateQuantity(1);
-                    GetLootInfo("Wardrobe")?.UpdateQuantity(GetOutfitCount());
-                    GetLootInfo("Potions")?.UpdateQuantity(player.GetStateVariable("potions"));
+                    GetLootInfo("FakeEFCS")?.SetQuantity(player.GetStateVariable("fakeEFCS"));
+                    GetLootInfo("KeyBag")?.SetQuantity(1);
+                    GetLootInfo("Wardrobe")?.SetQuantity(GetOutfitCount());
+                    GetLootInfo("Potions")?.SetQuantity(player.GetStateVariable("potions"));
                     break;
                 case LootMenuType.Keys:
-                    GetLootInfo("DKEYS_PillowFort")?.UpdateQuantity(GetKeyCount("PillowFort"));
-                    GetLootInfo("DKEYS_SandCastle")?.UpdateQuantity(GetKeyCount("SandCastle"));
-                    GetLootInfo("DKEYS_ArtExhibit")?.UpdateQuantity(GetKeyCount("ArtExhibit"));
-                    GetLootInfo("DKEYS_TrashCave")?.UpdateQuantity(GetKeyCount("TrashCave"));
-                    GetLootInfo("DKEYS_FloodedBasement")?.UpdateQuantity(GetKeyCount("FloodedBasement"));
-                    GetLootInfo("DKEYS_PotassiumMine")?.UpdateQuantity(GetKeyCount("PotassiumMine"));
-                    GetLootInfo("DKEYS_BoilingGrave")?.UpdateQuantity(GetKeyCount("BoilingGrave"));
-                    GetLootInfo("DKEYS_GrandLibrary")?.UpdateQuantity(GetKeyCount("GrandLibrary"));
-                    GetLootInfo("DKEYS_SunkenLabyrinth")?.UpdateQuantity(GetKeyCount("SunkenLabyrinth"));
-                    GetLootInfo("DKEYS_MachineFortress")?.UpdateQuantity(GetKeyCount("MachineFortress"));
-                    GetLootInfo("DKEYS_DarkHypostyle")?.UpdateQuantity(GetKeyCount("DarkHypostyle"));
-                    GetLootInfo("DKEYS_TombOfSimulacrum")?.UpdateQuantity(GetKeyCount("TombOfSimulacrum"));
-                    GetLootInfo("DKEYS_DreamDynamite")?.UpdateQuantity(GetKeyCount("DreamDynamite"));
-                    GetLootInfo("DKEYS_DreamFireChain")?.UpdateQuantity(GetKeyCount("DreamFireChain"));
-                    GetLootInfo("DKEYS_DreamIce")?.UpdateQuantity(GetKeyCount("DreamIce"));
-                    GetLootInfo("DKEYS_DreamAll")?.UpdateQuantity(GetKeyCount("DreamAll"));
+                    GetLootInfo("DKEYS_PillowFort")?.SetQuantity(GetKeyCount("PillowFort"));
+                    GetLootInfo("DKEYS_SandCastle")?.SetQuantity(GetKeyCount("SandCastle"));
+                    GetLootInfo("DKEYS_ArtExhibit")?.SetQuantity(GetKeyCount("ArtExhibit"));
+                    GetLootInfo("DKEYS_TrashCave")?.SetQuantity(GetKeyCount("TrashCave"));
+                    GetLootInfo("DKEYS_FloodedBasement")?.SetQuantity(GetKeyCount("FloodedBasement"));
+                    GetLootInfo("DKEYS_PotassiumMine")?.SetQuantity(GetKeyCount("PotassiumMine"));
+                    GetLootInfo("DKEYS_BoilingGrave")?.SetQuantity(GetKeyCount("BoilingGrave"));
+                    GetLootInfo("DKEYS_GrandLibrary")?.SetQuantity(GetKeyCount("GrandLibrary"));
+                    GetLootInfo("DKEYS_SunkenLabyrinth")?.SetQuantity(GetKeyCount("SunkenLabyrinth"));
+                    GetLootInfo("DKEYS_MachineFortress")?.SetQuantity(GetKeyCount("MachineFortress"));
+                    GetLootInfo("DKEYS_DarkHypostyle")?.SetQuantity(GetKeyCount("DarkHypostyle"));
+                    GetLootInfo("DKEYS_TombOfSimulacrum")?.SetQuantity(GetKeyCount("TombOfSimulacrum"));
+                    GetLootInfo("DKEYS_DreamDynamite")?.SetQuantity(GetKeyCount("DreamDynamite"));
+                    GetLootInfo("DKEYS_DreamFireChain")?.SetQuantity(GetKeyCount("DreamFireChain"));
+                    GetLootInfo("DKEYS_DreamIce")?.SetQuantity(GetKeyCount("DreamIce"));
+                    GetLootInfo("DKEYS_DreamAll")?.SetQuantity(GetKeyCount("DreamAll"));
                     break;
                 case LootMenuType.Outfits:
                     // if we ever randomize the default outfit, we'll need to track it here
-                    GetLootInfo("outfitDefault")?.UpdateQuantity(1);
-                    GetLootInfo("outfitTippsie")?.UpdateQuantity(GetHasOutfit(1));
-                    GetLootInfo("outfitOriginal")?.UpdateQuantity(GetHasOutfit(2));
-                    GetLootInfo("outfitJenny")?.UpdateQuantity(GetHasOutfit(3));
-                    GetLootInfo("outfitSwim")?.UpdateQuantity(GetHasOutfit(4));
-                    GetLootInfo("outfitArmor")?.UpdateQuantity(GetHasOutfit(5));
-                    GetLootInfo("outfitCard")?.UpdateQuantity(GetHasOutfit(6));
-                    GetLootInfo("outfitDelinquent")?.UpdateQuantity(GetHasOutfit(7));
-                    GetLootInfo("outfitApaFrog")?.UpdateQuantity(GetHasOutfit(8));
-                    GetLootInfo("outfitThatGuy")?.UpdateQuantity(GetHasOutfit(9));
-                    GetLootInfo("outfitJennyBerry")?.UpdateQuantity(GetHasOutfit(10));
+                    GetLootInfo("outfitDefault")?.SetQuantity(1);
+                    GetLootInfo("outfitTippsie")?.SetQuantity(GetHasOutfit(1));
+                    GetLootInfo("outfitOriginal")?.SetQuantity(GetHasOutfit(2));
+                    GetLootInfo("outfitJenny")?.SetQuantity(GetHasOutfit(3));
+                    GetLootInfo("outfitSwim")?.SetQuantity(GetHasOutfit(4));
+                    GetLootInfo("outfitArmor")?.SetQuantity(GetHasOutfit(5));
+                    GetLootInfo("outfitCard")?.SetQuantity(GetHasOutfit(6));
+                    GetLootInfo("outfitDelinquent")?.SetQuantity(GetHasOutfit(7));
+                    GetLootInfo("outfitApaFrog")?.SetQuantity(GetHasOutfit(8));
+                    GetLootInfo("outfitThatGuy")?.SetQuantity(GetHasOutfit(9));
+                    GetLootInfo("outfitJennyBerry")?.SetQuantity(GetHasOutfit(10));
                     break;
             }
         }

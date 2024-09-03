@@ -29,7 +29,7 @@ namespace ArchipelagoRandomizer
             text = countIcon.GetComponent<TextInterface>();
         }
 
-        public void UpdateQuantity(int quantity)
+        public void SetQuantity(int quantity)
         {
             this.quantity = quantity;
             if (hasQuantity) text.Text = quantity.ToString();
@@ -37,6 +37,11 @@ namespace ArchipelagoRandomizer
             blankIcon.SetActive(!hasItem);
             picIcon.SetActive(hasItem);
             countIcon.SetActive(hasItem && hasQuantity);
+        }
+
+        public int GetQuantity()
+        {
+            return quantity;
         }
 
         public override void DoActivate(bool quick)
