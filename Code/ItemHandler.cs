@@ -59,12 +59,18 @@ namespace ArchipelagoRandomizer
 
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
 		{
-			isLevelItem = false;
-			if (item == null)
+            isLevelItem = false;
+
+            if (item == null)
 			{
 				Plugin.Log.LogError("Illegal item count requested! Returning a count of 0.");
 				return 0;
 			}
+
+			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
+
+            isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
+
             Entity player = ModCore.Utility.GetPlayer();
 
             if (player == null || mainSaver == null)
