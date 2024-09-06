@@ -149,7 +149,7 @@ namespace ArchipelagoRandomizer
 			{
 				int count = ItemHandler.Instance.GetItemCount(item, out bool isLevelItem);
 
-				if (count == 0)
+				if (count <= 1)
 					return "!";
 
 				if (isLevelItem)
