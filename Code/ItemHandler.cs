@@ -142,41 +142,15 @@ namespace ArchipelagoRandomizer
 
 		public ItemData.Item GetItemData(APItem item)
 		{
-			return GetItemData(GetItemDataName(item));
+			int index = (int)item;
+			// Accomadate for gap before Card 1, needs to be updated if those slots get filled
+			if (index > 65) index += 34;
+            return GetItemData(index);
 		}
 
         public string GetItemDataName(APItem item)
         {
-            string itemName = "";
-            string[] words = Regex.Split(item.ToString(), @"(?<!^)(?=[A-Z])");
-            if (words[0].Contains("Card"))
-            {
-                words[0] = words[0].Insert(4, " ");
-            }
-            else if (words[0] == "Connection") words[0] += " -";
-
-            switch (item)
-            {
-                case APItem.BoxOfCrayons:
-                case APItem.TombOfSimulacrumKey:
-                case APItem.TombOfSimulacrumKeyRing:
-                    words[1] = "of";
-                    break;
-                case APItem.BigOldPileOLoot:
-                    words[3] = "o'";
-                    break;
-                case APItem.Card30JennyBunUnemployed:
-                    words = ["Card 30 - Jenny Bun (Unemployed)"];
-                    break;
-                case APItem.Card33JennyBerryVacation:
-                    words = ["Card 33 - Jenny Berry (Vacation)"];
-                    break;
-            }
-
-            itemName = string.Join(" ", words);
-            Plugin.Log.LogMessage($"Returning \"{itemName}\"");
-
-            return itemName;
+            return GetItemData(item).ItemName;
         }
 
         public void GiveItem(ItemData.Item item)
@@ -674,6 +648,11 @@ namespace ArchipelagoRandomizer
         RandomBuff,
         RandomDebuffTrap,
         BeeTrap,
+		Lightning,
+		MeteorShowerTrap,
+		BeeOnslaughtTrap,
+		FreeRangeSnowboardingTrap,
+		MatriarchTrap,
         ConnectionFluffyFieldsToSweetwaterCoast,
         ConnectionFluffyFieldsToFancyRuins,
         ConnectionFluffyFieldsToStarWoods,
