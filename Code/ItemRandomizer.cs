@@ -299,7 +299,8 @@ namespace ArchipelagoRandomizer
                 {
                     GameObject poof = GameObject.Instantiate(Resources.FindObjectsOfTypeAll<SimpleQuickParticleEffect>().First((x) => x.gameObject.name == "ConfettiLarge").gameObject);
                     BlockadeVisualsHandler.poofEffect = poof;
-					poof.GetComponent<SimpleQuickParticleEffect>().owningFactory = EffectFactory.Instance;
+					poof.SetActive(false);
+					//poof.GetComponent<SimpleQuickParticleEffect>().owningFactory = EffectFactory.Instance;
                     list.Add(poof);
                 }
 

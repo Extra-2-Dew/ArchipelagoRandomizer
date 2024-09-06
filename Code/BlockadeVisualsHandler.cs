@@ -58,8 +58,17 @@ namespace ArchipelagoRandomizer
         {
             foreach (GameObject blockade in currentSceneBlockades[connectionName])
             {
-                EffectFactory.Instance.PlayQuickEffect(poofEffect.GetComponent<SimpleQuickParticleEffect>(), blockade.transform.position, null);
+                EffectFactory.Instance.PlayQuickEffect(poofEffect.GetComponent<SimpleQuickParticleEffect>(), blockade.transform.position, blockade);
                 blockade.SetActive(false);
+            }
+        }
+
+        public static void DisableAllBlockades()
+        {
+            foreach (var key in  currentSceneBlockades.Keys)
+            {
+                Plugin.Log.LogInfo($"Disabling blockades under {key}");
+                DisableBlockades(key);
             }
         }
 

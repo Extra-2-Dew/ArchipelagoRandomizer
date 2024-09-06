@@ -23,17 +23,6 @@ namespace ArchipelagoRandomizer
         [DebugMenuCommand(commandName:"test", caseSensitive: true)]
         private void SendTestCommand(string[] args)
         {
-            string connectionName = "Connection - ";
-            if (args.Length > 0)
-            {
-                foreach (string arg in args)
-                {
-                    connectionName += arg + " ";
-                }
-            }
-            connectionName.TrimEnd(' ');
-
-            BlockadeVisualsHandler.DisableBlockades(connectionName);
         }
     }
 }
