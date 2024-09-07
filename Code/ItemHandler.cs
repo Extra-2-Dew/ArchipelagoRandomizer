@@ -9,8 +9,9 @@ namespace ArchipelagoRandomizer
 {
 	public class ItemHandler : MonoBehaviour
 	{
+		public static List<ItemData.Item> itemData;
+
 		private static ItemHandler instance;
-		private static List<ItemData.Item> itemData;
 		private static Dictionary<string, int> dungeonKeyCounts;
 		private static bool hasInitialized;
 
@@ -58,13 +59,25 @@ namespace ArchipelagoRandomizer
 
 		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
 		{
-			isLevelItem = false;
-			Entity player = ModCore.Utility.GetPlayer();
+            isLevelItem = false;
 
-			if (player == null || mainSaver == null)
+            if (item == null)
+			{
+				Plugin.Log.LogError("Illegal item count requested! Returning a count of 0.");
+				return 0;
+			}
+
+			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
+
+            isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
+
+            Entity player = ModCore.Utility.GetPlayer();
+
+            if (player == null || mainSaver == null)
 				return 0;
 
-			if (item.Type == ItemTypes.Key)
+
+            if (item.Type == ItemTypes.Key)
 			{
 				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 
@@ -97,15 +110,18 @@ namespace ArchipelagoRandomizer
 				return keyCount;
 			}
 
-			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
-			List<string> countItems = new() { "shards", "raft", "potions", "evilKeys" };
+            if (item.ItemName.Contains("Outfit") && mainSaver.WorldStorage.HasData(item.SaveFlag))
+			{
+				return 1;
+            }
 
-			isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
+            if (item.Type == ItemTypes.Card)
+			{
+				var cardSaver = mainSaver.GetSaver("/local/cards");
+				return cardSaver.LoadInt(item.SaveFlag);
+            }
 
-			if (isLevelItem || countItems.Contains(item.SaveFlag))
-				return player.GetStateVariable(item.SaveFlag);
-
-			return 0;
+            return player.GetStateVariable(item.SaveFlag);
 		}
 
 		public ItemData.Item GetItemData(string itemName)
@@ -124,7 +140,20 @@ namespace ArchipelagoRandomizer
 			return itemData.Find(item => item.Offset == offset);
 		}
 
-		public void GiveItem(ItemData.Item item)
+		public ItemData.Item GetItemData(APItem item)
+		{
+			int index = (int)item;
+			// Accomadate for gap before Card 1, needs to be updated if those slots get filled
+			if (index > 65) index += 34;
+            return GetItemData(index);
+		}
+
+        public string GetItemDataName(APItem item)
+        {
+            return GetItemData(item).ItemName;
+        }
+
+        public void GiveItem(ItemData.Item item)
 		{
 			StartCoroutine(DoGiveItem(item));
 		}
@@ -506,4 +535,138 @@ namespace ArchipelagoRandomizer
 			}
 		}
 	}
+
+    public enum APItem
+    {
+        ProgressiveMelee,
+        ProgressiveForceWand,
+        ProgressiveDynamite,
+        ProgressiveIceRing,
+        ProgressiveChain,
+        ForceWandUpgrade,
+        DynamiteUpgrade,
+        IceRingUpgrade,
+        ChainUpgrade,
+        Roll,
+        ProgressiveTracker,
+        ProgressiveHeadband,
+        ProgressiveAmulet,
+        ProgressiveTome,
+        SecretShard,
+        ForbiddenKey,
+        Lockpick,
+        BoxOfCrayons,
+        CaveScroll,
+        PortalWorldScroll,
+        YellowHeart,
+        RaftPiece,
+        PillowFortKey,
+        PillowFortKeyRing,
+        SandCastleKey,
+        SandCastleKeyRing,
+        ArtExhibitKey,
+        ArtExhibitKeyRing,
+        TrashCaveKey,
+        TrashCaveKeyRing,
+        FloodedBasementKey,
+        FloodedBasementKeyRing,
+        PotassiumMineKey,
+        PotassiumMineKeyRing,
+        BoilingGraveKey,
+        BoilingGraveKeyRing,
+        GrandLibraryKey,
+        GrandLibraryKeyRing,
+        SunkenLabyrinthKey,
+        SunkenLabyrinthKeyRing,
+        MachineFortressKey,
+        MachineFortressKeyRing,
+        DarkHypostyleKey,
+        DarkHypostyleKeyRing,
+        TombOfSimulacrumKey,
+        TombOfSimulacrumKeyRing,
+        SyncopeKey,
+        SyncopeKeyRing,
+        BottomlessTowerKey,
+        BottomlessTowerKeyRing,
+        AntigramKey,
+        AntigramKeyRing,
+        QuietusKey,
+        QuietusKeyRing,
+        JennyDewOutfit,
+        SwimsuitOutfit,
+        TippsieOutfit,
+        LittleDudeOutfit,
+        TigerJennyOutfit,
+        IttleDew1Outfit,
+        DelinquintOutfit,
+        JennyBerryOutfit,
+        ApatheticFrogOutfit,
+        ThatGuyOutfit,
+        BigOldPileOLoot,
+        ImpossibleGatesPass,
+        Card1Fishbun,
+        Card2StupidBee,
+        Card3SafetyJenny,
+        Card4Shellbun,
+        Card5Spikebun,
+        Card6FeralGate,
+        Card7CandySnake,
+        Card8HermitLegs,
+        Card9Ogler,
+        Card10Hyperdusa,
+        Card11EvilEasel,
+        Card12Warnip,
+        Card13Octacle,
+        Card14Rotnip,
+        Card15BeeSwarm,
+        Card16Volcano,
+        Card17JennyShark,
+        Card18SwimmyRoger,
+        Card19Bunboy,
+        Card20Spectre,
+        Card21ReturnOfBrutus,
+        Card22Jelly,
+        Card23Skullnip,
+        Card24SlayerJenny,
+        Card25Titan,
+        Card26ChillyRoger,
+        Card27JennyFlower,
+        Card28Hexrot,
+        Card29JennyMole,
+        Card30JennyBunUnemployed,
+        Card31JennyCat,
+        Card32JennyMermaid,
+        Card33JennyBerryVacation,
+        Card34Mapman,
+        Card35Cyberjenny,
+        Card36LeBiadlo,
+        Card37Lenny,
+        Card38PasselCarver,
+        Card39Tippsie,
+        Card40IttleDew,
+        Card41NappingFly,
+        RandomBuff,
+        RandomDebuffTrap,
+        BeeTrap,
+		Lightning,
+		MeteorShowerTrap,
+		BeeOnslaughtTrap,
+		FreeRangeSnowboardingTrap,
+		MatriarchTrap,
+        ConnectionFluffyFieldsToSweetwaterCoast,
+        ConnectionFluffyFieldsToFancyRuins,
+        ConnectionFluffyFieldsToStarWoods,
+        ConnectionFluffyFieldsToSlipperSlope,
+        ConnectionFluffyFieldsToPepperpainPrairie,
+        ConnectionSweetwaterCoastToFancyRuins,
+        ConnectionSweetwaterCoastToStarWoods,
+        ConnectionSweetwaterCoastToSlipperySlope,
+        ConnectionFancyRuinsToStarWoods,
+        ConnectionFancyRuinsToPepperpainPrairie,
+        ConnectionFancyRuinsToFrozenCourt,
+        ConnectionStarWoodsToFrozenCourt,
+        ConnectionSlipperySlopeToPepperpainPrairie,
+        ConnectionSlipperySlopeToLonelyRoad,
+        Potion
+    }
 }
