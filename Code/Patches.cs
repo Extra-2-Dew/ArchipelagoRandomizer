@@ -161,6 +161,13 @@ namespace ArchipelagoRandomizer
 			APMenuStuff.Instance.DeleteAPDataFile();
 		}
 
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(Entity), "IUpdatable.UpdateObject")]
+		public static void Entity_IUpdatable_UpdateObject_Patch(Entity __instance)
+		{
+			GPS.Instance.OnEntityUpdate(__instance);
+		}
+
 		// KEPT AS REFERENCE SINCE THIS WAS PAIN
 
 		//[HarmonyPatch(typeof(SpawnItemEventObserver))]
