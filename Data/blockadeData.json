@@ -3,6 +3,7 @@
         "scene": "CandyCoast",
         "room": "C",
         "blockadeName": "Sweetwater Coast To Fancy Ruins",
+        "isBCM": true,
         "position": {
             "x": 106,
             "y": 0,
@@ -14,6 +15,7 @@
         "scene": "FancyRuins",
         "room": "A",
         "blockadeName": "Sweetwater Coast To Fancy Ruins",
+        "isBCM": true,
         "position": {
             "x": 63,
             "y": 0,
@@ -22,9 +24,22 @@
         "dialogue": "Mobilize the marble market!\nEngage symbiotic hype!\nSell massive monocles!"
     },
     {
+        "scene": "StarWoods2",
+        "room": "A",
+        "blockadeName": "Star Woods To Frozen Court",
+        "isBCM": true,
+        "position": {
+            "x": 82.5,
+            "y": 1,
+            "z": -8
+        },
+        "dialogue": "Ethically sourced tuber enzymes!\nConvenient cost-effective waste storage!\nAutomatic star-powered marshmallow roasters!"
+    },
+    {
         "scene": "SlipperySlope",
         "room": "B",
         "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "isBCM": true,
         "position": {
             "x": 40,
             "y": 2,
@@ -36,6 +51,7 @@
         "scene": "VitaminHills",
         "room": "A",
         "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "isBCM": true,
         "position": {
             "x": 26,
             "y": 0,
@@ -47,11 +63,37 @@
         "scene": "VitaminHills",
         "room": "C",
         "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "isBCM": true,
         "position": {
             "x": 177,
             "y": 0,
             "z": -32.7
         },
         "dialogue": "Ten dollar ten gallon hats!\nPremium cowbun beef guaranteed confetti free!\nHoming revolvers and silver bullets!"
+    },
+    {
+        "scene": "FrozenCourt",
+        "room": "A",
+        "blockadeName": "Fancy Ruins To Frozen Court",
+        "isBCM": true,
+        "position": {
+            "x": 5,
+            "y": 0,
+            "z": -3
+        },
+        "dialogue": "Boiling-hot cocoa!\nBurning the ozone layer!\nLiterally any source of warmth!"
+    },
+    {
+        "scene": "FrozenCourt",
+        "room": "A",
+        "blockadeName": "Star Woods To Frozen Court",
+        "isBCM": true,
+        "ittleTalk": true,
+        "position": {
+            "x": 3.7,
+            "y": 0,
+            "z": -60
+        },
+        "dialogue": "Wow, you'd rather freeze\nto death than mess with\nthe brand. Dedication."
     }
 ]

@@ -8,15 +8,15 @@ namespace ArchipelagoRandomizer
         public static GameObject bcm;
         public static GameObject poofEffect;
 
-        private static List<BCMData> bcmData;
+        private static List<BlockadeData> bcmData;
         private static Dictionary<string, List<GameObject>> currentSceneBlockades;
 
         public static void Init()
         {
-            string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "bcmData.json");
-            if (!ModCore.Utility.TryParseJson<List<BCMData>>(path, out bcmData))
+            string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
+            if (!ModCore.Utility.TryParseJson<List<BlockadeData>>(path, out bcmData))
             {
-                Plugin.Log.LogError("Unable to load BCM Data! BCM blockades will not be available.");
+                Plugin.Log.LogError("Unable to load Blockade Data! Blockades will not be available.");
                 return;
             }
             bcm.GetComponentInChildren<Sign>()._configString = null;
@@ -36,15 +36,22 @@ namespace ArchipelagoRandomizer
 
                     if (ItemHandler.GetItemCount(ItemHandler.GetItemData(blockadeName)) > 0) continue;
 
-                    GameObject newBCM = GameObject.Instantiate(bcm);
+
+                    GameObject blockade = null;
+                    if (spawn.isBCM)
+                    {
+                        blockade = GameObject.Instantiate(bcm);
+                    }
                     GameObject room = GameObject.Find("LevelRoot").transform.Find(spawn.room.ToUpper()).gameObject;
-                    newBCM.transform.position = spawn.position;
-                    newBCM.transform.SetParent(room.transform, true);
-                    newBCM.GetComponent<RoomObject>()._room = room.GetComponent<LevelRoom>();
-                    newBCM.GetComponentInChildren<Sign>()._text = spawn.dialogue;
+                    blockade.transform.position = spawn.position;
+                    blockade.transform.SetParent(room.transform, true);
+                    blockade.GetComponent<RoomObject>()._room = room.GetComponent<LevelRoom>();
+                    Sign sign = blockade.GetComponentInChildren<Sign>();
+                    sign._text = spawn.dialogue;
+                    sign._reverseTarget = spawn.ittleTalk;
                     if (!currentSceneBlockades.ContainsKey(blockadeName)) currentSceneBlockades.Add(blockadeName, new());
-                    currentSceneBlockades[blockadeName].Add(newBCM);
-                    newBCM.SetActive(true);
+                    currentSceneBlockades[blockadeName].Add(blockade);
+                    blockade.SetActive(true);
                 }
             }
         }
@@ -61,14 +68,19 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        public class BCMData
+        public class BlockadeData
         {
             public string scene;
             public string room;
             // should not include "Connection - "
             public string blockadeName;
+            public bool isBCM = false;
+            public bool ittleTalk = false;
             public Vector3 position;
-            public string dialogue;
+            // Y axis only
+            public float rotation = 0;
+            public float width = 1;
+            public string dialogue = "";
         }
     }
 }
