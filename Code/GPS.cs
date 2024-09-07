@@ -1,16 +1,14 @@
 using System;
+using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer
 {
     public class GPS
     {
-        private const float minRequiredDistanceForUpdate = 3.0f;
+        private static readonly TimeSpan updateInterval = TimeSpan.FromSeconds(1);
         public static GPS Instance = new();
-        private Vector2 lastPosition = Vector2.zero;
-
+        private Stopwatch UpdateTimer = Stopwatch.StartNew();
 
         Entity player;
 
@@ -58,17 +56,15 @@ namespace ArchipelagoRandomizer
 
         public void UpdatePosition()
         {
-            var position = GetPosition();
-            var distance = Vector2.Distance(position, lastPosition);
-
-            if (distance < minRequiredDistanceForUpdate)
+            if (UpdateTimer.Elapsed < updateInterval)
             {
                 return;
             }
 
-            APHandler.Instance.SetPosition(position);
+            UpdateTimer.Reset();
+            UpdateTimer.Start();
 
-            lastPosition = position;
+            APHandler.Instance.SetPosition(GetPosition());
         }
     }
 }
