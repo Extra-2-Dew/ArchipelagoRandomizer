@@ -104,7 +104,7 @@ namespace ArchipelagoRandomizer
 			if (scoutedItemInfo == null)
 				return null;
 
-			return itemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
+			return ItemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
 		}
 
 		public IEnumerator ItemSent(string itemName, string playerName)
@@ -115,7 +115,7 @@ namespace ArchipelagoRandomizer
 
 			MessageData messageData = new()
 			{
-				Item = itemHandler.GetItemData(itemName),
+				Item = ItemHandler.GetItemData(itemName),
 				ItemName = itemName,
 				PlayerName = playerName,
 				MessageType = MessageType.Sent
@@ -125,7 +125,7 @@ namespace ArchipelagoRandomizer
 
 		public IEnumerator ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
-			ItemHandler.ItemData.Item item = itemHandler.GetItemData(offset);
+			ItemHandler.ItemData.Item item = ItemHandler.GetItemData(offset);
 
 			// Do nothing if null item
 			if (item == null)
