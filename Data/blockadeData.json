@@ -12,6 +12,19 @@
         "dialogue": "Monopolize subterrainean travel!\nPromote silicon sales for booming markets!\nEmbrace hyperactive sugar addiction!"
     },
     {
+        "scene": "CandyCoast",
+        "room": "A",
+        "blockadeName": "Sweetwater Coast To Slippery Slope",
+        "ittleTalk": true,
+        "position": {
+            "x": 35,
+            "y": 0,
+            "z": -3
+        },
+        "width": 3,
+        "dialogue": "\"Slippery Slope is currently\nexperiencing a bee apocalypse.\""
+    },
+    {
         "scene": "FancyRuins",
         "room": "A",
         "blockadeName": "Sweetwater Coast To Fancy Ruins",
