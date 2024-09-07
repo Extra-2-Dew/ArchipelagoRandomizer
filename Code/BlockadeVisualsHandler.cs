@@ -21,10 +21,10 @@ namespace ArchipelagoRandomizer
             }
             bcm.GetComponentInChildren<Sign>()._configString = null;
 
-            ItemRandomizer.OnItemReceived += EditBlockades;
+            ItemRandomizer.OnItemReceived += DisableBlockades;
         }
 
-        public static void SpawnBCMs(string sceneName)
+        public static void SpawnBlockades(string sceneName)
         {
             currentSceneBlockades = new();
             var validSpawns = bcmData.FindAll((x) => x.scene == sceneName);
@@ -32,13 +32,16 @@ namespace ArchipelagoRandomizer
             {
                 foreach (var spawn in validSpawns)
                 {
+                    string blockadeName = $"Connection - {spawn.blockadeName}";
+
+                    if (ItemHandler.GetItemCount(ItemHandler.GetItemData(blockadeName)) > 0) continue;
+
                     GameObject newBCM = GameObject.Instantiate(bcm);
                     GameObject room = GameObject.Find("LevelRoot").transform.Find(spawn.room.ToUpper()).gameObject;
                     newBCM.transform.position = spawn.position;
                     newBCM.transform.SetParent(room.transform, true);
                     newBCM.GetComponent<RoomObject>()._room = room.GetComponent<LevelRoom>();
                     newBCM.GetComponentInChildren<Sign>()._text = spawn.dialogue;
-                    string blockadeName = $"Connection - {spawn.blockadeName}";
                     if (!currentSceneBlockades.ContainsKey(blockadeName)) currentSceneBlockades.Add(blockadeName, new());
                     currentSceneBlockades[blockadeName].Add(newBCM);
                     newBCM.SetActive(true);
@@ -46,29 +49,15 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        public static void EditBlockades(ItemHandler.ItemData.Item item, string _)
+        public static void DisableBlockades(ItemHandler.ItemData.Item item, string _)
         {
             if (item.ItemName.Contains("Connection - ") && currentSceneBlockades.ContainsKey(item.ItemName))
             {
-                DisableBlockades(item.ItemName);
-            }
-        }
-
-        public static void DisableBlockades(string connectionName)
-        {
-            foreach (GameObject blockade in currentSceneBlockades[connectionName])
-            {
-                EffectFactory.Instance.PlayQuickEffect(poofEffect.GetComponent<SimpleQuickParticleEffect>(), blockade.transform.position, blockade);
-                blockade.SetActive(false);
-            }
-        }
-
-        public static void DisableAllBlockades()
-        {
-            foreach (var key in  currentSceneBlockades.Keys)
-            {
-                Plugin.Log.LogInfo($"Disabling blockades under {key}");
-                DisableBlockades(key);
+                foreach (GameObject blockade in currentSceneBlockades[item.ItemName])
+                {
+                    EffectFactory.Instance.PlayQuickEffect(poofEffect.GetComponent<SimpleQuickParticleEffect>(), blockade.transform.position, blockade);
+                    blockade.SetActive(false);
+                }
             }
         }
 
