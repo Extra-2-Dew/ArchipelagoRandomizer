@@ -386,7 +386,6 @@ namespace ArchipelagoRandomizer
 			{
 				GameObject bcm = GameObject.Instantiate(GameObject.Find("LevelRoot").transform.Find("A/NPCs/BusinessCasual").gameObject);
 				BlockadeVisualsHandler.bcm = bcm;
-				BlockadeVisualsHandler.Init();
 				return [bcm];
 			});
             // Bad Dream
@@ -414,8 +413,9 @@ namespace ArchipelagoRandomizer
 			roomEventHandler = new RoomLoadEvents(settings);
 			doorHandler = new DoorHandler();
 			playerActionModifier = new();
+            BlockadeVisualsHandler.Init();
 
-			Events.OnPlayerSpawn += OnPlayerSpawn;
+            Events.OnPlayerSpawn += OnPlayerSpawn;
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)

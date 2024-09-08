@@ -157,11 +157,11 @@ namespace ArchipelagoRandomizer
 		}
 
 		public static ItemData.Item GetItemData(string itemName)
-		{
-			if (itemData == null)
+        {
+            if (itemData == null)
 				return null;
 
-			return itemData.Find(item => item.ItemName == itemName);
+            return itemData.Find(item => item.ItemName == itemName);
 		}
 
 		public static ItemData.Item GetItemData(int offset)
@@ -296,7 +296,7 @@ namespace ArchipelagoRandomizer
 
 			mainSaver = ModCore.Plugin.MainSaver;
 			itemsObtainedSaver = itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
-		}
+        }
 
 		private void AddCard(string saveFlag)
 		{

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using ModCore;
 
 namespace ArchipelagoRandomizer
 {
@@ -7,16 +9,21 @@ namespace ArchipelagoRandomizer
     {
         public static GameObject bcm;
         public static GameObject poofEffect;
+        public static Dictionary<string, MapData> editedDatas;
 
         private static GameObject blockadeStand; 
         private static string bundlePath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmodels");
         private static List<BlockadeData> blockadeData;
         private static Dictionary<string, List<GameObject>> currentSceneBlockades;
+        private static Texture2D lockedPath;
+        private static Texture2D openPath;
+        private static MapIconData blockadeIconData;
 
         public static void Init()
         {
-            string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
-            if (!ModCore.Utility.TryParseJson<List<BlockadeData>>(path, out blockadeData))
+            string dataPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
+            string assetPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets");
+            if (!ModCore.Utility.TryParseJson<List<BlockadeData>>(dataPath, out blockadeData))
             {
                 Plugin.Log.LogError("Unable to load Blockade Data! Blockades will not be available.");
                 return;
@@ -32,7 +39,87 @@ namespace ArchipelagoRandomizer
                 blockadeStand.SetActive(false);
             }
 
+            lockedPath = ModCore.Utility.GetTextureFromFile(assetPath + "/MapIconBlockadeClosed.png");
+            openPath = ModCore.Utility.GetTextureFromFile(assetPath + "/MapIconBlockadeOpen.png");
+
+            CreateBlockadeIconData();
+
+            UpdateMapMarkers();
+
             ItemRandomizer.OnItemReceived += DisableBlockades;
+        }
+
+        private static void CreateBlockadeIconData()
+        {
+            blockadeIconData = ScriptableObject.CreateInstance<MapIconData>();
+            blockadeIconData.name = "BlockadeIconData";
+            blockadeIconData._icon = lockedPath;
+            blockadeIconData._animator = "small";
+            MapMarkerPoint.AltIcon altIcon = new();
+            altIcon.name = "open";
+            altIcon.icon = openPath;
+            altIcon.animator = "small";
+            blockadeIconData._altIcons = [altIcon];
+        }
+
+        public static void UpdateMapMarkers()
+        {
+            var markerSaver = ModCore.Plugin.MainSaver.GetSaver("/local/markers");
+            int index = 0;
+            editedDatas = new();
+
+            foreach (var blockade in  blockadeData)
+            {
+                string saveFlag = ItemHandler.GetItemData($"Connection - {blockade.blockadeName}").SaveFlag + "_" + index;
+                if (!markerSaver.HasData(saveFlag))
+                {
+                    markerSaver.SaveData(saveFlag, saveFlag);
+                }
+                if (!editedDatas.ContainsKey(blockade.scene))
+                {
+                    MapData mapData = Resources.Load<MapData>($"Maps/{blockade.scene}");
+                    MapData newData = ScriptableObject.Instantiate(mapData);
+                    editedDatas.Add(blockade.scene, newData);
+                }
+                MapData workingData = editedDatas[blockade.scene];
+                List<MapData.MarkerData> markers = workingData.GetMarkers().ToList();
+                markers.Add(new(
+                    blockade.position,
+                    saveFlag,
+                    string.Empty,
+                    blockadeIconData
+                    ));
+                workingData._markers = markers.ToArray();
+
+                //string a = $"Loading Map {mapData.name}:\n";
+                //foreach (var marker in mapData._markers)
+                //{
+                //    a += marker.name + "\n";
+                //}
+
+                //Plugin.Log.LogMessage($"Loading map for {blockade.scene} which has {markers.Count} marker entries so far.\n{a}");
+
+                index++;
+            }
+
+            TestReportSS();
+            Events.OnChangeScreen += Events_OnChangeScreen;
+        }
+
+        private static void Events_OnChangeScreen(string toScreen, object args = null)
+        {
+            if (toScreen.Contains("map")) TestReportSS();
+        }
+
+        private static void TestReportSS()
+        {
+            MapData ssData = editedDatas["SlipperySlope"];
+            string a = "Slippery Slope has:\n";
+            foreach (var data in ssData._markers)
+            {
+                a += data.name + "\n";
+            }
+            Plugin.Log.LogWarning(a);
         }
 
         public static void SpawnBlockades(string sceneName)

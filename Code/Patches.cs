@@ -1,5 +1,8 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace ArchipelagoRandomizer
 {
@@ -198,6 +201,70 @@ namespace ArchipelagoRandomizer
 		{
 			APMenuStuff.Instance.DeleteAPDataFile();
 		}
+
+		//[HarmonyPrefix]
+		//[HarmonyPatch(typeof(MapWindowMap), nameof(MapWindowMap.LoadMarkers))]
+		//public static void MapWindowMap_LoadMarkers_Prefix(MapWindowMap __instance, List<string> activeMarkers, bool isReload = false)
+		//{
+		//	bool oldData = __instance.oldData != null;
+		//	bool markerHasName = false;
+		//          if (oldData)
+		//          {
+		//		markerHasName = __instance.oldData.GetMarkerByName("SS_LR") != null;
+		//          }
+
+		//          string a = "";
+		//	foreach (string marker in activeMarkers)
+		//	{
+		//		a += marker + ", ";
+		//	}
+		//	string b = "";
+		//	foreach (string marker in __instance.savedMarkers)
+		//	{
+		//		b += marker + ", ";
+		//	}
+
+		//	Plugin.Log.LogInfo($"Old Data exists: {oldData}\nMarker Has Name: {markerHasName}\nMarker info:\n" +
+		//		a +
+		//		"\nSaved Markers:\n" +
+		//		b +
+		//		"\nIs Reload: " + isReload);
+		//}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MapWindowMap), nameof(MapWindowMap.LoadMap), new Type[] { typeof(MapData), typeof(Entity), typeof(float), typeof(MapData), typeof(Texture2D), typeof(bool) })]
+		public static void MapWindowMap_LoadMap_Prefix(ref MapData mapData)
+		{
+			if (BlockadeVisualsHandler.editedDatas.ContainsKey(mapData.name)) mapData = BlockadeVisualsHandler.editedDatas[mapData.name];
+
+			string a = $"Loading Map {mapData.name}:\n";
+			foreach (var marker in mapData._markers)
+			{
+				a += marker.name + "\n";
+			}
+			Plugin.Log.LogMessage(a);
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MapWindow), nameof(MapWindow.LoadWorldMap))]
+		public static void MapWindow_LoadWorldMap_Prefix()
+		{
+			MapData ssMapData = Resources.Load<MapData>("Maps/SlipperySlope");
+            string b = $"Resources Map Data {ssMapData.name}:\n";
+            foreach (var marker in ssMapData._markers)
+            {
+                b += marker.name + "\n";
+            }
+            WorldMapData worldMapData = Resources.Load<WorldMapData>("Maps/WorldMaps/World");
+			var ssWorldMap = worldMapData.GetMaps()[3];
+            string a = $"World Map Data {ssWorldMap.name}:\n";
+            foreach (var marker in ssWorldMap._markers)
+            {
+                a += marker.name + "\n";
+            }
+            Plugin.Log.LogError($"HEY LOOK THIS IS WHERE IT RUNS\n{a}\n---------------\n{b}");
+		}
+
 
 		// KEPT AS REFERENCE SINCE THIS WAS PAIN
 
