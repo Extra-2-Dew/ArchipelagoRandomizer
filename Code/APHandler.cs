@@ -7,6 +7,7 @@ using ModCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -140,6 +141,32 @@ namespace ArchipelagoRandomizer
 				return null;
 
 			return scoutedItems.Find(x => x.LocationId - forLocation.Offset == baseId);
+		}
+
+		public void SetPosition(Vector2 position)
+		{
+			if (!IsConnected)
+			{
+				return;
+			}
+
+			var key = $"id2.pos.{CurrentPlayer.Slot}";
+			var value = $"{(int)position.x},{(int)position.y}";
+
+			Session.DataStorage[key] = value;
+		}
+
+		public void SetLevelName(string levelName)
+		{
+			if (!IsConnected)
+			{
+				return;
+			}
+
+			var key = $"id2.levelName.{CurrentPlayer.Slot}";
+			var value = levelName;
+
+			Session.DataStorage[key] = value;
 		}
 
 		private bool TryCreateSession(string url, out string errorMessage)

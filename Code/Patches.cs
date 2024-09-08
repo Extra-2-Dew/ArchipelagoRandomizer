@@ -161,6 +161,18 @@ namespace ArchipelagoRandomizer
 			APMenuStuff.Instance.DeleteAPDataFile();
 		}
 
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.GetMoveDir))]
+		public static void PlayerController_GetMoveDir_Patch(PlayerController __instance)
+		{
+			if (!ItemRandomizer.IsActive)
+			{
+				return;
+			}
+
+			GPS.Instance.OnPlayerGetMoveDir(__instance);
+		}
+
 		// KEPT AS REFERENCE SINCE THIS WAS PAIN
 
 		//[HarmonyPatch(typeof(SpawnItemEventObserver))]
