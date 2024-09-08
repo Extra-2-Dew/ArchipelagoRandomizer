@@ -165,6 +165,11 @@ namespace ArchipelagoRandomizer
 		[HarmonyPatch(typeof(Entity), "IUpdatable.UpdateObject")]
 		public static void Entity_IUpdatable_UpdateObject_Patch(Entity __instance)
 		{
+			if (!ItemRandomizer.IsActive)
+			{
+				return;
+			}
+
 			GPS.Instance.OnEntityUpdate(__instance);
 		}
 
