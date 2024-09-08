@@ -162,15 +162,15 @@ namespace ArchipelagoRandomizer
 		}
 
 		[HarmonyPostfix]
-		[HarmonyPatch(typeof(Entity), "IUpdatable.UpdateObject")]
-		public static void Entity_IUpdatable_UpdateObject_Patch(Entity __instance)
+		[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.GetMoveDir))]
+		public static void PlayerController_GetMoveDir_Patch(PlayerController __instance)
 		{
 			if (!ItemRandomizer.IsActive)
 			{
 				return;
 			}
 
-			GPS.Instance.OnEntityUpdate(__instance);
+			GPS.Instance.OnPlayerGetMoveDir(__instance);
 		}
 
 		// KEPT AS REFERENCE SINCE THIS WAS PAIN

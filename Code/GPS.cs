@@ -44,9 +44,9 @@ namespace ArchipelagoRandomizer
             APHandler.Instance.SetLevelName(levelName);
         }
 
-        public void OnEntityUpdate(Entity entity)
+        public void OnPlayerGetMoveDir(PlayerController playerController)
         {
-            if (entity != player)
+            if (!playerController.isMoving)
             {
                 return;
             }
