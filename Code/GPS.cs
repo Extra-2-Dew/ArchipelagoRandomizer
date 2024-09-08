@@ -4,18 +4,41 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
-    public class GPS
+    public class GPS : IDisposable
     {
         private static readonly TimeSpan updateInterval = TimeSpan.FromSeconds(1);
-        public static GPS Instance = new();
+        private static GPS instance = null;
+        public static GPS Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new();
+                }
+
+                return instance;
+            }
+        }
+
         private Stopwatch UpdateTimer = Stopwatch.StartNew();
 
         Entity player;
 
         GPS()
         {
+            APHandler.Instance.OnDisconnect += Dispose;
             Events.OnPlayerSpawn += OnPlayerSpawn;
             Events.OnRoomChanged += OnRoomChanged;
+        }
+
+        public void Dispose()
+        {
+            Plugin.Log.LogMessage("Disposing the GPS");
+            APHandler.Instance.OnDisconnect -= Dispose;
+            Events.OnPlayerSpawn -= OnPlayerSpawn;
+            Events.OnRoomChanged -= OnRoomChanged;
+            instance = null;
         }
 
         private Vector2 GetPosition()
