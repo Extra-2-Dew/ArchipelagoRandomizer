@@ -40,7 +40,6 @@ namespace ArchipelagoRandomizer
         private void OnRoomChanged(Entity _entity, LevelRoom toRoom, LevelRoom _fromRoom, EntityEventsOwner.RoomEventData _data)
         {
             var levelName = toRoom.LevelRoot.LevelData.LevelName;
-            Plugin.Log.LogMessage($"YOOO, level changed to `{levelName}`");
             APHandler.Instance.SetLevelName(levelName);
         }
 
