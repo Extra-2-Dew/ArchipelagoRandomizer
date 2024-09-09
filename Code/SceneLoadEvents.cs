@@ -259,7 +259,7 @@ namespace ArchipelagoRandomizer
 
 			AddCustomComponentToItems();
 			OverrideSpawnPoints();
-			if (settings.IncludeSuperSecrets) BlockadeVisualsHandler.SpawnBlockades(SceneName);
+			if (settings.BlockRegionConnections) BlockadeVisualsHandler.SpawnBlockades(SceneName);
 		}
 
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)
