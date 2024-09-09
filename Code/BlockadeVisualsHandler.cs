@@ -21,6 +21,10 @@ namespace ArchipelagoRandomizer
 
         public static void Init()
         {
+            editedDatas = new();
+
+            if (!ItemRandomizer.Instance.settings.BlockRegionConnections) return;
+
             string dataPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
             string assetPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets");
             if (!ModCore.Utility.TryParseJson<List<BlockadeData>>(dataPath, out blockadeData))
@@ -44,7 +48,7 @@ namespace ArchipelagoRandomizer
 
             CreateBlockadeIconData();
 
-            UpdateMapMarkers();
+            CreateMapMarkers();
 
             ItemRandomizer.OnItemReceived += DisableBlockades;
         }
@@ -54,23 +58,22 @@ namespace ArchipelagoRandomizer
             blockadeIconData = ScriptableObject.CreateInstance<MapIconData>();
             blockadeIconData.name = "BlockadeIconData";
             blockadeIconData._icon = lockedPath;
-            blockadeIconData._animator = "small";
+            blockadeIconData._animator = "big";
             MapMarkerPoint.AltIcon altIcon = new();
-            altIcon.name = "open";
+            altIcon.name = "cleared";
             altIcon.icon = openPath;
-            altIcon.animator = "small";
+            altIcon.animator = "big";
             blockadeIconData._altIcons = [altIcon];
         }
 
-        public static void UpdateMapMarkers()
+        public static void CreateMapMarkers()
         {
             var markerSaver = ModCore.Plugin.MainSaver.GetSaver("/local/markers");
-            int index = 0;
-            editedDatas = new();
 
             foreach (var blockade in  blockadeData)
             {
-                string saveFlag = ItemHandler.GetItemData($"Connection - {blockade.blockadeName}").SaveFlag + "_" + index;
+                string saveFlagCoord = $"{Mathf.Abs(Mathf.CeilToInt(blockade.position.x))}_{Mathf.Abs(Mathf.CeilToInt(blockade.position.z))}";
+                string saveFlag = ItemHandler.GetItemData($"Connection - {blockade.blockadeName}").SaveFlag + "_" + saveFlagCoord;
                 if (!markerSaver.HasData(saveFlag))
                 {
                     markerSaver.SaveData(saveFlag, saveFlag);
@@ -90,36 +93,9 @@ namespace ArchipelagoRandomizer
                     blockadeIconData
                     ));
                 workingData._markers = markers.ToArray();
-
-                //string a = $"Loading Map {mapData.name}:\n";
-                //foreach (var marker in mapData._markers)
-                //{
-                //    a += marker.name + "\n";
-                //}
-
-                //Plugin.Log.LogMessage($"Loading map for {blockade.scene} which has {markers.Count} marker entries so far.\n{a}");
-
-                index++;
             }
 
-            TestReportSS();
-            Events.OnChangeScreen += Events_OnChangeScreen;
-        }
-
-        private static void Events_OnChangeScreen(string toScreen, object args = null)
-        {
-            if (toScreen.Contains("map")) TestReportSS();
-        }
-
-        private static void TestReportSS()
-        {
-            MapData ssData = editedDatas["SlipperySlope"];
-            string a = "Slippery Slope has:\n";
-            foreach (var data in ssData._markers)
-            {
-                a += data.name + "\n";
-            }
-            Plugin.Log.LogWarning(a);
+            ModCore.Plugin.MainSaver.SaveLocal();
         }
 
         public static void SpawnBlockades(string sceneName)
@@ -179,13 +155,29 @@ namespace ArchipelagoRandomizer
 
         public static void DisableBlockades(ItemHandler.ItemData.Item item, string _)
         {
-            if (item.ItemName.Contains("Connection - ") && currentSceneBlockades.ContainsKey(item.ItemName))
+            if (item.ItemName.Contains("Connection - "))
             {
-                foreach (GameObject blockade in currentSceneBlockades[item.ItemName])
+                if (currentSceneBlockades.ContainsKey(item.ItemName))
                 {
-                    EffectFactory.Instance.PlayQuickEffect(poofEffect.GetComponent<SimpleQuickParticleEffect>(), blockade.transform.position, blockade);
-                    blockade.SetActive(false);
+                    foreach (GameObject blockade in currentSceneBlockades[item.ItemName])
+                    {
+                        EffectFactory.Instance.PlayQuickEffect(poofEffect.GetComponent<SimpleQuickParticleEffect>(), blockade.transform.position, blockade);
+                        blockade.SetActive(false);
+                    }
                 }
+
+                // edit the blockade's map marker to be a checkmark
+                string blockadeName = item.ItemName.Replace("Connection - ", "");
+                var markerSaver = ModCore.Plugin.MainSaver.GetSaver("/local/markers");
+
+                foreach (BlockadeData blockade in blockadeData)
+                {
+                    if (blockade.blockadeName != blockadeName) continue;
+                    string saveFlagCoord = $"{Mathf.Abs(Mathf.CeilToInt(blockade.position.x))}_{Mathf.Abs(Mathf.CeilToInt(blockade.position.z))}";
+                    string saveFlag = ItemHandler.GetItemData($"Connection - {blockade.blockadeName}").SaveFlag + "_" + saveFlagCoord;
+                    markerSaver.SaveData(saveFlag, saveFlag + ".cleared");
+                }
+                ModCore.Plugin.MainSaver.SaveLocal();
             }
         }
 

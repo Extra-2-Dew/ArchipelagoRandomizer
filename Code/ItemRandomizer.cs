@@ -14,6 +14,7 @@ namespace ArchipelagoRandomizer
 		private static List<LocationData.Location> locations;
 		private static FadeEffectData fadeData;
 
+		public RandomizerSettings settings;
 		private MessageBoxHandler itemMessageHandler;
 		private ItemHandler itemHandler;
 		private DeathLinkHandler deathLinkHandler;
@@ -24,7 +25,6 @@ namespace ArchipelagoRandomizer
 		private DoorHandler doorHandler;
 		private Entity player;
 		private SaverOwner mainSaver;
-		private RandomizerSettings settings;
 		private PlayerActionModifier playerActionModifier;
 		private LootMenuHandler lootMenuHandler;
 		private bool rollOpensChests;

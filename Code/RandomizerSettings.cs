@@ -35,7 +35,7 @@ namespace ArchipelagoRandomizer
 		Lockdown
 	}
 
-	class RandomizerSettings
+	public class RandomizerSettings
 	{
 		private bool blockRegionConnections;
 		private DungeonRewardSettings dungeonRewardSetting;
