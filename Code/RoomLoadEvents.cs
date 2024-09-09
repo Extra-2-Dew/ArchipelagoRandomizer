@@ -116,12 +116,18 @@ namespace ArchipelagoRandomizer
 				doodads.transform.Find("KeyParent").gameObject.SetActive(false);
 		}
 
+		private void RemoveSyncopeBlockade()
+		{
+			Object.Destroy(GameObject.Find("Dream_WarningSign"));
+		}
+
 		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
 		{
 			if (toRoom == null)
 				return;
 
 			CurrentRoom = toRoom;
+			string sceneName = SceneManager.GetActiveScene().name;
 
 			if (Plugin.IsDebug)
 			{
@@ -135,10 +141,11 @@ namespace ArchipelagoRandomizer
 				Plugin.LogDebugMessage(debugMsg);
 			}
 
-			bool doOpenRemedy = settings.IncludeSuperSecrets && SceneManager.GetActiveScene().name == "Deep13" && CurrentRoom.RoomName == "E";
-			bool doRandomizeSyncopePianoPuzzle = settings.IncludeDreamDungeons && settings.SyncopePianoPuzzle != "DEAD" && SceneManager.GetActiveScene().name == "DreamDynamite" &&
+			bool doOpenRemedy = settings.IncludeSuperSecrets && sceneName == "Deep13" && CurrentRoom.RoomName == "E";
+			bool doRandomizeSyncopePianoPuzzle = settings.IncludeDreamDungeons && settings.SyncopePianoPuzzle != "DEAD" && sceneName == "DreamDynamite" &&
 				(CurrentRoom.RoomName == "K" || CurrentRoom.RoomName == "W");
 			bool doFixSyncopeKeyDupe = settings.IncludeDreamDungeons && (toRoom.RoomName == "AF" || toRoom.RoomName == "AG");
+			bool removeSyncopeBlockade = settings.OpenDW && sceneName == "DreamWorld";
 
 			if (doOpenRemedy)
 				OpenRemedy();
@@ -148,6 +155,9 @@ namespace ArchipelagoRandomizer
 
 			if (doFixSyncopeKeyDupe)
 				FixSyncopeKeyDupe();
+
+			if (removeSyncopeBlockade)
+				RemoveSyncopeBlockade();
 		}
 	}
 }
