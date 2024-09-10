@@ -18,12 +18,14 @@ namespace ArchipelagoRandomizer
         private static Texture2D lockedPath;
         private static Texture2D openPath;
         private static MapIconData blockadeIconData;
+        private static SaverOwner mainSaver;
 
         public static void Init()
         {
             editedDatas = new();
+            mainSaver = ModCore.Plugin.MainSaver;
 
-            if (!ItemRandomizer.Instance.settings.BlockRegionConnections) return;
+            if (!RandomizerSettings.Instance.BlockRegionConnections) return;
 
             string dataPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
             string assetPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets");
@@ -68,9 +70,9 @@ namespace ArchipelagoRandomizer
 
         public static void CreateMapMarkers()
         {
-            var markerSaver = ModCore.Plugin.MainSaver.GetSaver("/local/markers");
+            IDataSaver markerSaver = mainSaver.GetSaver("/local/markers");
 
-            foreach (var blockade in  blockadeData)
+            foreach (BlockadeData blockade in  blockadeData)
             {
                 string saveFlagCoord = $"{Mathf.Abs(Mathf.CeilToInt(blockade.position.x))}_{Mathf.Abs(Mathf.CeilToInt(blockade.position.z))}";
                 string saveFlag = ItemHandler.GetItemData($"Connection - {blockade.blockadeName}").SaveFlag + "_" + saveFlagCoord;
@@ -95,7 +97,7 @@ namespace ArchipelagoRandomizer
                 workingData._markers = markers.ToArray();
             }
 
-            ModCore.Plugin.MainSaver.SaveLocal();
+            mainSaver.SaveLocal();
         }
 
         public static void SpawnBlockades(string sceneName)
@@ -104,7 +106,7 @@ namespace ArchipelagoRandomizer
             var validSpawns = blockadeData.FindAll((x) => x.scene == sceneName);
             if (validSpawns != null && validSpawns.Count > 0)
             {
-                foreach (var spawn in validSpawns)
+                foreach (BlockadeData spawn in validSpawns)
                 {
                     string blockadeName = $"Connection - {spawn.blockadeName}";
 
@@ -168,7 +170,7 @@ namespace ArchipelagoRandomizer
 
                 // edit the blockade's map marker to be a checkmark
                 string blockadeName = item.ItemName.Replace("Connection - ", "");
-                var markerSaver = ModCore.Plugin.MainSaver.GetSaver("/local/markers");
+                IDataSaver markerSaver = mainSaver.GetSaver("/local/markers");
 
                 foreach (BlockadeData blockade in blockadeData)
                 {
@@ -177,7 +179,7 @@ namespace ArchipelagoRandomizer
                     string saveFlag = ItemHandler.GetItemData($"Connection - {blockade.blockadeName}").SaveFlag + "_" + saveFlagCoord;
                     markerSaver.SaveData(saveFlag, saveFlag + ".cleared");
                 }
-                ModCore.Plugin.MainSaver.SaveLocal();
+                mainSaver.SaveLocal();
             }
         }
 

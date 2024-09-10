@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer
 		private static List<LocationData.Location> locations;
 		private static FadeEffectData fadeData;
 
-		public RandomizerSettings settings;
+		private RandomizerSettings settings;
 		private MessageBoxHandler itemMessageHandler;
 		private ItemHandler itemHandler;
 		private DeathLinkHandler deathLinkHandler;
@@ -244,7 +244,7 @@ namespace ArchipelagoRandomizer
 			Preloader preloader = new();
 			FreestandingReplacer.Reset();
 			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents;
-			bool regionConnections = Instance.settings.BlockRegionConnections;
+			bool blockRegionConnections = settings.BlockRegionConnections;
 
 			// Machine Fortress
             preloader.AddObjectToPreloadList("MachineFortress", () =>
@@ -278,7 +278,7 @@ namespace ArchipelagoRandomizer
 				return list.ToArray();
 			});
 			// Sweetwater Coast Caves
-			if (preloadItems || regionConnections) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
+			if (preloadItems || blockRegionConnections) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
 			{
 				List<GameObject> list = new();
 				if (preloadItems) list.AddRange([
@@ -295,7 +295,7 @@ namespace ArchipelagoRandomizer
 					FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
 					FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
 				]);
-                if (regionConnections)
+                if (blockRegionConnections)
                 {
                     GameObject poof = GameObject.Instantiate(Resources.FindObjectsOfTypeAll<SimpleQuickParticleEffect>().First((x) => x.gameObject.name == "ConfettiLarge").gameObject);
                     BlockadeVisualsHandler.poofEffect = poof;
@@ -382,7 +382,7 @@ namespace ArchipelagoRandomizer
 				];
 			});
 			// Ludo City
-			if (regionConnections) preloader.AddObjectToPreloadList("Deep20", () =>
+			if (blockRegionConnections) preloader.AddObjectToPreloadList("Deep20", () =>
 			{
 				GameObject bcm = GameObject.Instantiate(GameObject.Find("LevelRoot").transform.Find("A/NPCs/BusinessCasual").gameObject);
 				BlockadeVisualsHandler.bcm = bcm;
