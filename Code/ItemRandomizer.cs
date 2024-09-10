@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static ArchipelagoRandomizer.MessageBoxHandler;
 
@@ -13,6 +14,7 @@ namespace ArchipelagoRandomizer
 		private static List<LocationData.Location> locations;
 		private static FadeEffectData fadeData;
 
+		private RandomizerSettings settings;
 		private MessageBoxHandler itemMessageHandler;
 		private ItemHandler itemHandler;
 		private DeathLinkHandler deathLinkHandler;
@@ -23,7 +25,6 @@ namespace ArchipelagoRandomizer
 		private DoorHandler doorHandler;
 		private Entity player;
 		private SaverOwner mainSaver;
-		private RandomizerSettings settings;
 		private PlayerActionModifier playerActionModifier;
 		private LootMenuHandler lootMenuHandler;
 		private bool rollOpensChests;
@@ -103,7 +104,7 @@ namespace ArchipelagoRandomizer
 			if (scoutedItemInfo == null)
 				return null;
 
-			return itemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
+			return ItemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
 		}
 
 		public IEnumerator ItemSent(string itemName, string playerName)
@@ -114,7 +115,7 @@ namespace ArchipelagoRandomizer
 
 			MessageData messageData = new()
 			{
-				Item = itemHandler.GetItemData(itemName),
+				Item = ItemHandler.GetItemData(itemName),
 				ItemName = itemName,
 				PlayerName = playerName,
 				MessageType = MessageType.Sent
@@ -124,7 +125,7 @@ namespace ArchipelagoRandomizer
 
 		public IEnumerator ItemReceived(int offset, string itemName, string sentFromPlayer)
 		{
-			ItemHandler.ItemData.Item item = itemHandler.GetItemData(offset);
+			ItemHandler.ItemData.Item item = ItemHandler.GetItemData(offset);
 
 			// Do nothing if null item
 			if (item == null)
@@ -243,6 +244,7 @@ namespace ArchipelagoRandomizer
 			Preloader preloader = new();
 			FreestandingReplacer.Reset();
 			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents;
+			bool blockRegionConnections = settings.BlockRegionConnections;
 
 			// Machine Fortress
             preloader.AddObjectToPreloadList("MachineFortress", () =>
@@ -276,22 +278,33 @@ namespace ArchipelagoRandomizer
 				return list.ToArray();
 			});
 			// Sweetwater Coast Caves
-			if (preloadItems) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
+			if (preloadItems || blockRegionConnections) preloader.AddObjectToPreloadList("CandyCoastCaves", () =>
 			{
-				return [
+				List<GameObject> list = new();
+				if (preloadItems) list.AddRange([
 					FreestandingReplacer.GetModelFromPath("Secret Shard"),
 					FreestandingReplacer.GetModelFromPath("Lockpick"),
 					FreestandingReplacer.GetModelFromPath("Connection"),
 					FreestandingReplacer.GetModelFromGameObject("Tippsie Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Ittle Dew 1 Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Jenny Dew Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Swimsuit Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Tiger Jenny Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Little Dude Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Delinquint Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
-                    FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
-                    ];
+					FreestandingReplacer.GetModelFromGameObject("Ittle Dew 1 Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Jenny Dew Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Swimsuit Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Tiger Jenny Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Little Dude Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Delinquint Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
+					FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
+				]);
+                if (blockRegionConnections)
+                {
+                    GameObject poof = GameObject.Instantiate(Resources.FindObjectsOfTypeAll<SimpleQuickParticleEffect>().First((x) => x.gameObject.name == "ConfettiLarge").gameObject);
+                    BlockadeVisualsHandler.poofEffect = poof;
+					poof.SetActive(false);
+					//poof.GetComponent<SimpleQuickParticleEffect>().owningFactory = EffectFactory.Instance;
+                    list.Add(poof);
+                }
+
+				return list.ToArray();
 			});
             // Trash Cave
             if (preloadItems) preloader.AddObjectToPreloadList("TrashCave", () =>
@@ -368,6 +381,13 @@ namespace ArchipelagoRandomizer
 					FreestandingReplacer.GetModelFromSpawner("Apathetic Frog Outfit")
 				];
 			});
+			// Ludo City
+			if (blockRegionConnections) preloader.AddObjectToPreloadList("Deep20", () =>
+			{
+				GameObject bcm = GameObject.Instantiate(GameObject.Find("LevelRoot").transform.Find("A/NPCs/BusinessCasual").gameObject);
+				BlockadeVisualsHandler.bcm = bcm;
+				return [bcm];
+			});
             // Bad Dream
             if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>
             {
@@ -393,8 +413,9 @@ namespace ArchipelagoRandomizer
 			roomEventHandler = new RoomLoadEvents(settings);
 			doorHandler = new DoorHandler();
 			playerActionModifier = new();
+            BlockadeVisualsHandler.Init();
 
-			Events.OnPlayerSpawn += OnPlayerSpawn;
+            Events.OnPlayerSpawn += OnPlayerSpawn;
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)

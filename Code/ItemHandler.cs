@@ -57,8 +57,15 @@ namespace ArchipelagoRandomizer
 			Junk = 8
 		}
 
-		public int GetItemCount(ItemData.Item item, out bool isLevelItem)
+		/// <summary>
+		/// Returns the count of requested item stored in the save file. Also returns if the item has levels.
+		/// </summary>
+		/// <param name="item">The item to check for, use GetItemData to get the item reference</param>
+		/// <param name="isLevelItem">Does the item have levels?</param>
+		/// <returns></returns>
+		public static int GetItemCount(ItemData.Item item, out bool isLevelItem)
 		{
+			var mainSaver = Instance.mainSaver;
             isLevelItem = false;
 
             if (item == null)
@@ -121,18 +128,43 @@ namespace ArchipelagoRandomizer
 				return cardSaver.LoadInt(item.SaveFlag);
             }
 
-            return player.GetStateVariable(item.SaveFlag);
+			if (mainSaver.GetSaver("/local/player/vars").HasData(item.SaveFlag)) return player.GetStateVariable(item.SaveFlag);
+
+			// use the AP items obtained as a last resort
+            return GetAPItemCount(item);
 		}
 
-		public ItemData.Item GetItemData(string itemName)
+        /// <summary>
+        /// Returns the count of requested item stored in the save file.
+        /// </summary>
+        /// <param name="item">The item to check for, use GetItemData to get the item reference</param>
+        /// <returns></returns>
+        public static int GetItemCount(ItemData.Item item)
 		{
-			if (itemData == null)
+			return GetItemCount(item, out _);
+		}
+
+		/// <summary>
+		/// Similar to GetItemCount, but pulls from the received items instead of saved items, so it can be out of sync in the event of inventory editing.
+		/// </summary>
+		/// <param name="item"></param>
+		/// <returns></returns>
+		public static int GetAPItemCount(ItemData.Item item)
+		{
+			var apSaver = ModCore.Plugin.MainSaver.GetSaver("/local/archipelago/itemsObtained");
+			if (apSaver.HasData(item.ItemName)) return apSaver.LoadInt(item.ItemName);
+			return 0;
+		}
+
+		public static ItemData.Item GetItemData(string itemName)
+        {
+            if (itemData == null)
 				return null;
 
-			return itemData.Find(item => item.ItemName == itemName);
+            return itemData.Find(item => item.ItemName == itemName);
 		}
 
-		public ItemData.Item GetItemData(int offset)
+		public static ItemData.Item GetItemData(int offset)
 		{
 			if (itemData == null)
 				return null;
@@ -140,7 +172,7 @@ namespace ArchipelagoRandomizer
 			return itemData.Find(item => item.Offset == offset);
 		}
 
-		public ItemData.Item GetItemData(APItem item)
+		public static ItemData.Item GetItemData(APItem item)
 		{
 			int index = (int)item;
 			// Accomadate for gap before Card 1, needs to be updated if those slots get filled
@@ -148,7 +180,7 @@ namespace ArchipelagoRandomizer
             return GetItemData(index);
 		}
 
-        public string GetItemDataName(APItem item)
+        public static string GetItemDataName(APItem item)
         {
             return GetItemData(item).ItemName;
         }
@@ -264,7 +296,7 @@ namespace ArchipelagoRandomizer
 
 			mainSaver = ModCore.Plugin.MainSaver;
 			itemsObtainedSaver = itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
-		}
+        }
 
 		private void AddCard(string saveFlag)
 		{

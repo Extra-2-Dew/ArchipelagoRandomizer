@@ -1,0 +1,574 @@
+[
+    {
+        "scene": "FluffyFields",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Pepperpain Prairie",
+        "ittleTalk": true,
+        "position": {
+            "x": 29,
+            "y": 0,
+            "z": -1
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "But walls speak louder\nthan words, I guess."
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Fancy Ruins",
+        "ittleTalk": true,
+        "position": {
+            "x": 101,
+            "y": 0,
+            "z": -29
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Closed for renovations.\""
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Fancy Ruins",
+        "ittleTalk": true,
+        "position": {
+            "x": 93,
+            "y": 0,
+            "z": -38
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Brand new Art Exhibit\nopening soon!\""
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Slippery Slope",
+        "ittleTalk": true,
+        "position": {
+            "x": -22,
+            "y": 0,
+            "z": -40
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Buzz off!\""
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Sweetwater Coast",
+        "ittleTalk": true,
+        "position": {
+            "x": -34,
+            "y": 0,
+            "z": -51
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Lifeguard openings available.\nTo apply, write to I. Carver,\nUnfortunate Island.\""
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": -30,
+            "y": 0,
+            "z": -62
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"KEEP OUT, THIS IS OUR TURF!\""
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 24,
+            "y": 0,
+            "z": -64
+        },
+        "rotation": 0,
+        "width": 5,
+        "dialogue": "Wow, they got its child too.\nBlack licorice and honey?"
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "C",
+        "blockadeName": "Fluffy Fields To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 59,
+            "y": 0,
+            "z": -64
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Maintain the barricades!\nThe turnips are coming!\""
+    },
+    {
+        "scene": "FluffyFields",
+        "room": "C",
+        "blockadeName": "Fluffy Fields To Fancy Ruins",
+        "ittleTalk": true,
+        "position": {
+            "x": 67,
+            "y": 0,
+            "z": -56
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Maintain the barricades!\nTacky decor is coming!\""
+    },
+    {
+        "scene": "CandyCoast",
+        "room": "A",
+        "blockadeName": "Sweetwater Coast To Slippery Slope",
+        "ittleTalk": true,
+        "position": {
+            "x": 35,
+            "y": 0,
+            "z": -3
+        },
+        "width": 3,
+        "dialogue": "\"Slippery Slope is currently\nexperiencing a bee apocalypse.\""
+    },
+    {
+        "scene": "CandyCoast",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Sweetwater Coast",
+        "ittleTalk": true,
+        "position": {
+            "x": 49,
+            "y": 0,
+            "z": -12
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Fluffy Fields is currently\nexperiencing a pillow apocalypse.\""
+    },
+    {
+        "scene": "CandyCoast",
+        "room": "B",
+        "blockadeName": "Sweetwater Coast To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 93,
+            "y": 0,
+            "z": -67
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Your water is too clean!\nStay away, freaks!\""
+    },
+    {
+        "scene": "CandyCoast",
+        "room": "C",
+        "blockadeName": "Sweetwater Coast To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 114,
+            "y": 0,
+            "z": -67
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"What do you need a changing tent for?\nWho even needs clothes?\nHats are where it's at!\""
+    },
+    {
+        "scene": "CandyCoast",
+        "room": "C",
+        "blockadeName": "Sweetwater Coast To Fancy Ruins",
+        "isBCM": true,
+        "position": {
+            "x": 106,
+            "y": 0,
+            "z": -68.7
+        },
+        "dialogue": "Monopolize subterrainean travel!\nPromote silicon sales for booming markets!\nEmbrace hyperactive sugar addiction!"
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "A",
+        "blockadeName": "Sweetwater Coast To Fancy Ruins",
+        "isBCM": true,
+        "position": {
+            "x": 63,
+            "y": 0,
+            "z": -21
+        },
+        "dialogue": "Mobilize the marble market!\nEngage symbiotic hype!\nSell massive monocles!"
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Fancy Ruins",
+        "ittleTalk": true,
+        "position": {
+            "x": 1,
+            "y": 0,
+            "z": -29
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Pillows are so last year.\""
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "A",
+        "blockadeName": "Fancy Ruins To Pepperpain Prairie",
+        "ittleTalk": true,
+        "position": {
+            "x": 59,
+            "y": 0,
+            "z": -1
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"A truly fancy individual\ndoes not engage in frivilous\n activy such as \"fiestas\".\""
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Fancy Ruins",
+        "ittleTalk": true,
+        "position": {
+            "x": -9,
+            "y": 0,
+            "z": -41
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Blocked off for your\nown saftey, lest you\nsuccumb to their inferior\nfashion.\""
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Fancy Ruins",
+        "ittleTalk": true,
+        "position": {
+            "x": -33,
+            "y": 0,
+            "z": -56
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"An army mounts beyond this\nbarricade. They must be after our\npriceless artwork.\""
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "B",
+        "blockadeName": "Fancy Ruins To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": -14.5,
+            "y": 0,
+            "z": -63
+        },
+        "rotation": 0,
+        "width": 4,
+        "dialogue": "This gate looks weird.\nI think it's slightly wider\nthan the others."
+    },
+    {
+        "scene": "FancyRuins",
+        "room": "C",
+        "blockadeName": "Fancy Ruins To Frozen Court",
+        "ittleTalk": true,
+        "position": {
+            "x": 74,
+            "y": 0,
+            "z": -63
+        },
+        "rotation": 0,
+        "width": 5,
+        "dialogue": "\"Art Installation\n\"W I D E   G A T E\"\nBy Lae Z. Dehv\""
+    },
+    {
+        "scene": "StarWoods",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 4,
+            "y": 0,
+            "z": -2
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Closed until morning.\""
+    },
+    {
+        "scene": "StarWoods",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 58,
+            "y": 0,
+            "z": -2
+        },
+        "rotation": 0,
+        "width": 5,
+        "dialogue": "This gate is kind\nof ugly."
+    },
+    {
+        "scene": "StarWoods",
+        "room": "A",
+        "blockadeName": "Sweetwater Coast To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 42,
+            "y": 0,
+            "z": -37
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "This exit is kind\nof redundant, really."
+    },
+    {
+        "scene": "StarWoods",
+        "room": "A",
+        "blockadeName": "Sweetwater Coast To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 63,
+            "y": 0,
+            "z": -37
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"BEWARE!\nNON-TOXIC WATER!\nDELICIOUS EDIBLES!\nCLOTHES!\""
+    },
+    {
+        "scene": "StarWoods",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 93,
+            "y": 0,
+            "z": -2
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"They form an army!\nPrepare the offensive!\nMaintain the barracades!\""
+    },
+    {
+        "scene": "StarWoods",
+        "room": "B",
+        "blockadeName": "Fancy Ruins To Star Woods",
+        "ittleTalk": true,
+        "position": {
+            "x": 121.5,
+            "y": 0,
+            "z": -2
+        },
+        "rotation": 0,
+        "width": 4,
+        "dialogue": "\"Cringe beyond this point!\""
+    },
+    {
+        "scene": "StarWoods2",
+        "room": "A",
+        "blockadeName": "Star Woods To Frozen Court",
+        "isBCM": true,
+        "position": {
+            "x": 82.5,
+            "y": 1,
+            "z": -8
+        },
+        "dialogue": "Ethically sourced tuber enzymes!\nConvenient cost-effective waste storage!\nAutomatic star-powered marshmallow roasters!"
+    },
+    {
+        "scene": "SlipperySlope",
+        "room": "A",
+        "blockadeName": "Slippery Slope To Lonely Road",
+        "ittleTalk": true,
+        "position": {
+            "x": 76,
+            "y": 0,
+            "z": -1
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Foul Ittle. In search of the\nElden Raft. Emboldened by the\nflames of adventure. Someone must\nextinguish thy flame.\""
+    },
+    {
+        "scene": "SlipperySlope",
+        "room": "A",
+        "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "ittleTalk": true,
+        "position": {
+            "x": 83,
+            "y": 0,
+            "z": -32
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Did you know there's\na cave that also goes to\nPepperpain Prairie? I wonder if\nanyone has ever used it...\""
+    },
+    {
+        "scene": "SlipperySlope",
+        "room": "B",
+        "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "isBCM": true,
+        "position": {
+            "x": 40,
+            "y": 2,
+            "z": -56.7
+        },
+        "dialogue": "Deploy the beekeepers!\nCreate natural bottled water campaign!\nEmploy vehicular volcanos!"
+    },
+    {
+        "scene": "SlipperySlope",
+        "room": "B",
+        "blockadeName": "Sweetwater Coast To Slippery Slope",
+        "ittleTalk": true,
+        "position": {
+            "x": 35,
+            "y": 0,
+            "z": -77
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Route closed due\nto flooding.\""
+    },
+    {
+        "scene": "SlipperySlope",
+        "room": "B",
+        "blockadeName": "Fluffy Fields To Slippery Slope",
+        "ittleTalk": true,
+        "position": {
+            "x": 64,
+            "y": 0,
+            "z": -77
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"We don't need any\nmore bees, thank you.\""
+    },
+    {
+        "scene": "VitaminHills",
+        "room": "A",
+        "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "isBCM": true,
+        "position": {
+            "x": 26,
+            "y": 0,
+            "z": -22.7
+        },
+        "dialogue": "Advertise spiciness challenge!\nManage salsa exports across the Ludoverse!\nInvent unique dipping combos!"
+    },
+    {
+        "scene": "VitaminHills",
+        "room": "A",
+        "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "ittleTalk": true,
+        "position": {
+            "x": 2,
+            "y": 0,
+            "z": -32
+        },
+        "rotation": 90,
+        "width": 3,
+        "dialogue": "\"Do NOT let the bees in.\nThe brutuses are afraid\nof being stung.\""
+    },
+    {
+        "scene": "VitaminHills",
+        "room": "A",
+        "blockadeName": "Fluffy Fields To Pepperpain Prairie",
+        "ittleTalk": true,
+        "position": {
+            "x": 29,
+            "y": 0,
+            "z": -38
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"Stop.\""
+    },
+    {
+        "scene": "VitaminHills",
+        "room": "C",
+        "blockadeName": "Fancy Ruins To Pepperpain Prairie",
+        "ittleTalk": true,
+        "position": {
+            "x": 161,
+            "y": 0,
+            "z": -38
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "\"They wanted 300 Gold Coins\nfor a single statue! Talk\nabout highway robbery!\""
+    },
+    {
+        "scene": "VitaminHills",
+        "room": "C",
+        "blockadeName": "Slippery Slope To Pepperpain Prairie",
+        "isBCM": true,
+        "position": {
+            "x": 177,
+            "y": 0,
+            "z": -32.7
+        },
+        "dialogue": "Ten dollar ten gallon hats!\nPremium cowbun beef guaranteed confetti free!\nHoming revolvers and silver bullets!"
+    },
+    {
+        "scene": "FrozenCourt",
+        "room": "A",
+        "blockadeName": "Fancy Ruins To Frozen Court",
+        "ittleTalk": false,
+        "position": {
+            "x": 57,
+            "y": 0,
+            "z": -2
+        },
+        "rotation": 0,
+        "width": 5,
+        "dialogue": "Hi! I'm Simon the talking Sign!\nSorry I have to block your\npath, but them's the rules.\nYou must have gotten a weird path\nto meet me!"
+    },
+    {
+        "scene": "FrozenCourt",
+        "room": "A",
+        "blockadeName": "Fancy Ruins To Frozen Court",
+        "isBCM": true,
+        "position": {
+            "x": 5,
+            "y": 0,
+            "z": -3
+        },
+        "dialogue": "Boiling-hot cocoa!\nBurning the ozone layer!\nLiterally any source of warmth!"
+    },
+    {
+        "scene": "FrozenCourt",
+        "room": "A",
+        "blockadeName": "Star Woods To Frozen Court",
+        "isBCM": true,
+        "ittleTalk": true,
+        "position": {
+            "x": 3.7,
+            "y": 0,
+            "z": -60
+        },
+        "dialogue": "Wow, you'd rather freeze\nto death than mess with\nthe brand. Dedication."
+    },
+    {
+        "scene": "LonelyRoad",
+        "room": "C",
+        "blockadeName": "Slippery Slope To Lonely Road",
+        "ittleTalk": false,
+        "position": {
+            "x": 76,
+            "y": 0,
+            "z": -37
+        },
+        "rotation": 0,
+        "width": 3,
+        "dialogue": "Wow, I can't believe you cheated\nand teleported to Lonely Road!\nWhat a loser!"
+    }
+]

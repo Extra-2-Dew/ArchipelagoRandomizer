@@ -1,5 +1,8 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace ArchipelagoRandomizer
 {
@@ -197,6 +200,19 @@ namespace ArchipelagoRandomizer
 		public static void MainMenu_DeleteConfirmScreen_ClickedConfirm_Patch()
 		{
 			APMenuStuff.Instance.DeleteAPDataFile();
+		}
+
+		[HarmonyPrefix]
+		[HarmonyPatch(typeof(MapWindowMap), nameof(MapWindowMap.LoadMap), new Type[] { typeof(MapData), typeof(Entity), typeof(float), typeof(MapData), typeof(Texture2D), typeof(bool) })]
+		public static void MapWindowMap_LoadMap_Prefix(ref MapData mapData)
+		{
+			if (!ItemRandomizer.IsActive) return;
+			// list will be empty if Blockades are off
+			// otherwise, replace the marker data used by vanilla map data objects
+            if (BlockadeVisualsHandler.editedDatas.ContainsKey(mapData.name))
+			{
+				mapData._markers = BlockadeVisualsHandler.editedDatas[mapData.name]._markers;
+			}
 		}
 
 		// KEPT AS REFERENCE SINCE THIS WAS PAIN
