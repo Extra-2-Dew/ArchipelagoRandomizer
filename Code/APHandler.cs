@@ -228,15 +228,13 @@ namespace ArchipelagoRandomizer
 
 		private void OnConnected(LoginSuccessful loginSuccess)
 		{
-			if (slotData == null)
-				slotData = loginSuccess.SlotData;
+			slotData = loginSuccess.SlotData;
 
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			Session.Items.ItemReceived += OnReceivedItem;
 			Session.Socket.SocketClosed += OnDisconnected;
 
-			if (scoutedItems == null)
-				ScoutLocations();
+			ScoutLocations();
 		}
 
 		private void OnDisconnected(string reason)
