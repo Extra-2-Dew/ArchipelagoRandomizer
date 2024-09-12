@@ -153,7 +153,8 @@ namespace ArchipelagoRandomizer
 			var key = $"id2.pos.{CurrentPlayer.Slot}";
 			var value = $"{(int)position.x},{(int)position.y}";
 
-			Session.DataStorage[key] = value;
+			// TODO: Add workaround for DataStorage writes causing lags
+			// Session.DataStorage[key] = value;
 		}
 
 		public void SetLevelName(string levelName)
