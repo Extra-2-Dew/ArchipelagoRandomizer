@@ -7,6 +7,7 @@ using ModCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer
@@ -153,8 +154,10 @@ namespace ArchipelagoRandomizer
 			var key = $"id2.pos.{CurrentPlayer.Slot}";
 			var value = $"{(int)position.x},{(int)position.y}";
 
-			// TODO: Add workaround for DataStorage writes causing lags
-			// Session.DataStorage[key] = value;
+			ThreadPool.QueueUserWorkItem((_) =>
+			{
+				Session.DataStorage[key] = value;
+			});
 		}
 
 		public void SetLevelName(string levelName)
@@ -167,7 +170,10 @@ namespace ArchipelagoRandomizer
 			var key = $"id2.levelName.{CurrentPlayer.Slot}";
 			var value = levelName;
 
-			Session.DataStorage[key] = value;
+			ThreadPool.QueueUserWorkItem((_) =>
+			{
+				Session.DataStorage[key] = value;
+			});
 		}
 
 		private bool TryCreateSession(string url, out string errorMessage)
