@@ -1,4 +1,6 @@
 ﻿using Archipelago.MultiClient.Net.Models;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -255,6 +257,9 @@ namespace ArchipelagoRandomizer
 					if (DoModifyShardReqs)
 						ModifyShardDungeonReqs();
 					break;
+				case "LonelyRoad":
+					Plugin.Instance.StartCoroutine(FixLonelyRoadMeteor());
+					break;
 			}
 
 			AddCustomComponentToItems();
@@ -267,5 +272,15 @@ namespace ArchipelagoRandomizer
 			if ((item.Type == ItemHandler.ItemTypes.Melee || item.Type == ItemHandler.ItemTypes.EFCS) && SceneName == "Deep19s" && DoGiveTempEFCS)
 				GiveTempEFCS();
 		}
-	}
+
+        /// <summary>
+        /// Adds Ice damage to the accepted damge types for the Lonely Road meteor that blocks Moon Garden
+        /// </summary>
+        private IEnumerator FixLonelyRoadMeteor()
+        {
+			yield return new WaitForEndOfFrame();
+			DamageType iceDamage = Resources.FindObjectsOfTypeAll<DamageType>().First((x) => x.name == "dmg_Cold");
+			GameObject.Find("LevelRoot").transform.Find("A/Doors/CaveA (night flames and meteor)/PuzzleStuff/Meteor/BreakableMeteor/Collision").GetComponent<HitTrigger>()._damageTypes.Add(iceDamage);
+        }
+    }
 }
