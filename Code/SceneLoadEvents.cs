@@ -68,16 +68,25 @@ namespace ArchipelagoRandomizer
 
 			else if (SceneName == "MachineFortress")
 				GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject.AddComponent<RandomizedObject>();
-		}
+        }
 
-		/// <summary>
-		/// Helps prevent softlocks or near-softlocks when phasing by
-		/// resetting your spawn point to the point from before the <br/>
-		/// softlock. This applies to cases of entering Tomb of Simulacrum,
-		/// the dream dungeons, Cave of Mystery/Ludo City, <br />
-		/// or doing Grand Library skip without a way to escape these scenarios
-		/// </summary>
-		private void OverrideSpawnPoints()
+        /// <summary>
+        /// Adds Ice damage to the accepted damge types for the Lonely Road meteor that blocks Moon Garden
+        /// </summary>
+        private void FixLonelyRoadMeteor()
+        {
+            DamageType iceDamage = Resources.FindObjectsOfTypeAll<DamageType>().First((x) => x.name == "dmg_Cold");
+            GameObject.Find("LevelRoot").transform.Find("A/Doors/CaveA (night flames and meteor)/PuzzleStuff/Meteor/BreakableMeteor/Collision").GetComponent<HitTrigger>()._damageTypes.Add(iceDamage);
+        }
+
+        /// <summary>
+        /// Helps prevent softlocks or near-softlocks when phasing by
+        /// resetting your spawn point to the point from before the <br/>
+        /// softlock. This applies to cases of entering Tomb of Simulacrum,
+        /// the dream dungeons, Cave of Mystery/Ludo City, <br />
+        /// or doing Grand Library skip without a way to escape these scenarios
+        /// </summary>
+        private void OverrideSpawnPoints()
 		{
 			SceneDoor door = null;
 
@@ -258,7 +267,7 @@ namespace ArchipelagoRandomizer
 						ModifyShardDungeonReqs();
 					break;
 				case "LonelyRoad":
-					Plugin.Instance.StartCoroutine(FixLonelyRoadMeteor());
+					FixLonelyRoadMeteor();
 					break;
 			}
 
@@ -272,15 +281,5 @@ namespace ArchipelagoRandomizer
 			if ((item.Type == ItemHandler.ItemTypes.Melee || item.Type == ItemHandler.ItemTypes.EFCS) && SceneName == "Deep19s" && DoGiveTempEFCS)
 				GiveTempEFCS();
 		}
-
-        /// <summary>
-        /// Adds Ice damage to the accepted damge types for the Lonely Road meteor that blocks Moon Garden
-        /// </summary>
-        private IEnumerator FixLonelyRoadMeteor()
-        {
-			yield return new WaitForEndOfFrame();
-			DamageType iceDamage = Resources.FindObjectsOfTypeAll<DamageType>().First((x) => x.name == "dmg_Cold");
-			GameObject.Find("LevelRoot").transform.Find("A/Doors/CaveA (night flames and meteor)/PuzzleStuff/Meteor/BreakableMeteor/Collision").GetComponent<HitTrigger>()._damageTypes.Add(iceDamage);
-        }
     }
 }
