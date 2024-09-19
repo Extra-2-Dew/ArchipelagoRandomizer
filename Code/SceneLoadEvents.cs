@@ -1,5 +1,4 @@
 ﻿using Archipelago.MultiClient.Net.Models;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -68,25 +67,25 @@ namespace ArchipelagoRandomizer
 
 			else if (SceneName == "MachineFortress")
 				GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject.AddComponent<RandomizedObject>();
-        }
+		}
 
-        /// <summary>
-        /// Adds Ice damage to the accepted damge types for the Lonely Road meteor that blocks Moon Garden
-        /// </summary>
-        private void FixLonelyRoadMeteor()
-        {
-            DamageType iceDamage = Resources.FindObjectsOfTypeAll<DamageType>().First((x) => x.name == "dmg_Cold");
-            GameObject.Find("LevelRoot").transform.Find("A/Doors/CaveA (night flames and meteor)/PuzzleStuff/Meteor/BreakableMeteor/Collision").GetComponent<HitTrigger>()._damageTypes.Add(iceDamage);
-        }
+		/// <summary>
+		/// Adds Ice damage to the accepted damge types for the Lonely Road meteor that blocks Moon Garden
+		/// </summary>
+		private void FixLonelyRoadMeteor()
+		{
+			DamageType iceDamage = Resources.FindObjectsOfTypeAll<DamageType>().First((x) => x.name == "dmg_Cold");
+			GameObject.Find("LevelRoot").transform.Find("A/Doors/CaveA (night flames and meteor)/PuzzleStuff/Meteor/BreakableMeteor/Collision").GetComponent<HitTrigger>()._damageTypes.Add(iceDamage);
+		}
 
-        /// <summary>
-        /// Helps prevent softlocks or near-softlocks when phasing by
-        /// resetting your spawn point to the point from before the <br/>
-        /// softlock. This applies to cases of entering Tomb of Simulacrum,
-        /// the dream dungeons, Cave of Mystery/Ludo City, <br />
-        /// or doing Grand Library skip without a way to escape these scenarios
-        /// </summary>
-        private void OverrideSpawnPoints()
+		/// <summary>
+		/// Helps prevent softlocks or near-softlocks when phasing by
+		/// resetting your spawn point to the point from before the <br/>
+		/// softlock. This applies to cases of entering Tomb of Simulacrum,
+		/// the dream dungeons, Cave of Mystery/Ludo City, <br />
+		/// or doing Grand Library skip without a way to escape these scenarios
+		/// </summary>
+		private void OverrideSpawnPoints()
 		{
 			SceneDoor door = null;
 
@@ -116,6 +115,9 @@ namespace ArchipelagoRandomizer
 				case "Deep20":
 					SceneDoor.GetDoorForName("Deep20")._saveStartPos = false;
 					SceneDoor.GetDoorForName("Deep20_2")._saveStartPos = false;
+					return;
+				case "Deep23":
+					SceneDoor.GetDoorForName("Deep23")._saveStartPos = false;
 					return;
 			}
 
@@ -281,5 +283,5 @@ namespace ArchipelagoRandomizer
 			if ((item.Type == ItemHandler.ItemTypes.Melee || item.Type == ItemHandler.ItemTypes.EFCS) && SceneName == "Deep19s" && DoGiveTempEFCS)
 				GiveTempEFCS();
 		}
-    }
+	}
 }
