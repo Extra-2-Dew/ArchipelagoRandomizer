@@ -46,6 +46,10 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.ChestColors("Orange", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Yellow"))
 			},
+			{ new("RegionConnector", false,
+				new ChestCrystalColorData.ChestColors("Orange", "Grey", "Grey"),
+				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Orange"))
+			},
 			{ new("Empty", false,
 				new ChestCrystalColorData.ChestColors("LightGrey", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Silver", "Silver", "Grey"))
@@ -103,6 +107,8 @@ namespace ArchipelagoRandomizer
 					if (item.Type == ItemHandler.ItemTypes.Key || item.Type == ItemHandler.ItemTypes.Keyring)
 						colors = chestCrystalColors.Find(x => x.flag == "Key");
 					else if (item.Type == ItemHandler.ItemTypes.Shard)
+						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
+					else if (item.Type == ItemHandler.ItemTypes.RegionConnector)
 						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
 					else
 						colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
