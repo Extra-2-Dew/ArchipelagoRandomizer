@@ -27,8 +27,8 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.CrystalColors("DarkGrey", "DarkGrey", "LightGrey"))
 			},
 			{ new("Junk", true,
-				new ChestCrystalColorData.ChestColors("LightGrey", "Grey", "Grey"),
-				new ChestCrystalColorData.CrystalColors("Silver", "Silver", "Grey"))
+				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
+				new ChestCrystalColorData.CrystalColors("Silver", "Burgundy", "LightGrey"))
 			},
 			{ new("Filler", false,
 				new ChestCrystalColorData.ChestColors("Cyan", "Grey", "Grey"),
@@ -45,10 +45,6 @@ namespace ArchipelagoRandomizer
 			{ new("Advancement", false,
 				new ChestCrystalColorData.ChestColors("Orange", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Yellow"))
-			},
-			{ new("RegionConnector", false,
-				new ChestCrystalColorData.ChestColors("Orange", "Grey", "Grey"),
-				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Orange"))
 			},
 			{ new("Empty", false,
 				new ChestCrystalColorData.ChestColors("LightGrey", "Grey", "Grey"),
@@ -79,8 +75,13 @@ namespace ArchipelagoRandomizer
 		{
 			ItemHandler.ItemData.Item item = ItemRandomizer.Instance.GetItemForLocation(SceneManager.GetActiveScene().name, dummyAction._saveName, out var scoutedItemInfo);
 
-			// Leave vanila if major
-			if (item != null && CheckItemFlags(item, ItemHandler.ItemFlags.Major))
+			// Leave vanilla if major, including region connectors
+			if (
+				item != null && (
+					CheckItemFlags(item, ItemHandler.ItemFlags.Major)
+					|| item.Type == ItemHandler.ItemTypes.RegionConnector
+				)
+			)
 				return;
 
 			ChestCrystalColorData colors = null;
@@ -107,8 +108,6 @@ namespace ArchipelagoRandomizer
 					if (item.Type == ItemHandler.ItemTypes.Key || item.Type == ItemHandler.ItemTypes.Keyring)
 						colors = chestCrystalColors.Find(x => x.flag == "Key");
 					else if (item.Type == ItemHandler.ItemTypes.Shard)
-						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
-					else if (item.Type == ItemHandler.ItemTypes.RegionConnector)
 						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
 					else
 						colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
