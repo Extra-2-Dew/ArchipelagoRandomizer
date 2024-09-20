@@ -190,7 +190,7 @@
             "y": 0,
             "z": -68.7
         },
-        "dialogue": "Monopolize subterrainean travel!\nPromote silicon sales for booming markets!\nEmbrace hyperactive sugar addiction!"
+        "dialogue": "Monopolize subterranean travel!\nPromote silicon sales for booming markets!\nEmbrace hyperactive sugar addiction!"
     },
     {
         "scene": "FancyRuins",
@@ -230,7 +230,7 @@
         },
         "rotation": 0,
         "width": 3,
-        "dialogue": "\"A truly fancy individual\ndoes not engage in frivilous\n activy such as \"fiestas\".\""
+        "dialogue": "\"A truly fancy individual\ndoes not engage in frivolous\n activy such as \"fiestas\".\""
     },
     {
         "scene": "FancyRuins",
@@ -356,7 +356,7 @@
         },
         "rotation": 0,
         "width": 3,
-        "dialogue": "\"They form an army!\nPrepare the offensive!\nMaintain the barracades!\""
+        "dialogue": "\"They form an army!\nPrepare the offensive!\nMaintain the barricades!\""
     },
     {
         "scene": "StarWoods",
