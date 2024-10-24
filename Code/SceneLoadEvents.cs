@@ -224,10 +224,27 @@ namespace ArchipelagoRandomizer
 			hintSpeech.GetComponent<Sign>()._text = $"Deep in the never-ending madness,\nthe way to {player} {itemInfo.ItemDisplayName}\n awaits.";
 		}
 
+		/// <summary>
+		/// Removes the vanilla bee chest spawner in Machine Fortress.
+		/// This allows for that chest to give a random item.
+		/// </summary>
 		private void RemoveBeeChestSpawner()
 		{
 			Transform beeChest = GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees");
 			Object.Destroy(beeChest.GetComponent<SpawnEntityEventObserver>());
+		}
+
+		/// <summary>
+		/// Implements various quality of life features
+		/// </summary>
+		private void QualityOfLifeStuff()
+		{
+			// Pepperpain Mountain cow UFO for Maze of Steel
+			if (SceneName == "VitaminHills3")
+			{
+				GameObject.Find("Countdown").GetComponent<TimerTrigger>().timer = 0;
+				return;
+			}
 		}
 
 		private void DisableRando()
@@ -275,6 +292,8 @@ namespace ArchipelagoRandomizer
 
 			AddCustomComponentToItems();
 			OverrideSpawnPoints();
+			QualityOfLifeStuff();
+
 			if (settings.BlockRegionConnections) BlockadeVisualsHandler.SpawnBlockades(SceneName);
 		}
 
