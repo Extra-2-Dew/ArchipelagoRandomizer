@@ -14,13 +14,17 @@ namespace ArchipelagoRandomizer
 		{
 			this.settings = settings;
 			Events.OnRoomChanged += OnRoomChanged;
-			Events.OnEntitySpawn += SpeedUpSweatyPathingEnemies;
+
+			if (Plugin.Instance.APFileData.QualityOfLife)
+				Events.OnEntitySpawn += SpeedUpSweatyPathingEnemies;
 		}
 
 		public void DoDisable()
 		{
 			Events.OnRoomChanged -= OnRoomChanged;
-			Events.OnEntitySpawn -= SpeedUpSweatyPathingEnemies;
+
+			if (Plugin.Instance.APFileData.QualityOfLife)
+				Events.OnEntitySpawn -= SpeedUpSweatyPathingEnemies;
 		}
 
 		/// <summary>
@@ -186,7 +190,7 @@ namespace ArchipelagoRandomizer
 			if (doFixSyncopeKeyDupe)
 				FixSyncopeKeyDupe();
 
-			if (scene == "FrozenCourt")
+			if (Plugin.Instance.APFileData.QualityOfLife && scene == "FrozenCourt")
 				ModifyFrozenGhosts();
 		}
 	}

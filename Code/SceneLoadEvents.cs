@@ -292,7 +292,9 @@ namespace ArchipelagoRandomizer
 
 			AddCustomComponentToItems();
 			OverrideSpawnPoints();
-			QualityOfLifeStuff();
+
+			if (Plugin.Instance.APFileData.QualityOfLife)
+				QualityOfLifeStuff();
 
 			if (settings.BlockRegionConnections) BlockadeVisualsHandler.SpawnBlockades(SceneName);
 		}

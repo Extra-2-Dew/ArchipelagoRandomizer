@@ -247,7 +247,7 @@ namespace ArchipelagoRandomizer
 			bool blockRegionConnections = settings.BlockRegionConnections;
 
 			// Machine Fortress
-            preloader.AddObjectToPreloadList("MachineFortress", () =>
+			preloader.AddObjectToPreloadList("MachineFortress", () =>
 			{
 				List<GameObject> list = [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
@@ -295,28 +295,28 @@ namespace ArchipelagoRandomizer
 					FreestandingReplacer.GetModelFromGameObject("That Guy Outfit"),
 					FreestandingReplacer.GetModelFromGameObject("Jenny Berry Outfit"),
 				]);
-                if (blockRegionConnections)
-                {
-                    GameObject poof = GameObject.Instantiate(Resources.FindObjectsOfTypeAll<SimpleQuickParticleEffect>().First((x) => x.gameObject.name == "ConfettiLarge").gameObject);
-                    BlockadeVisualsHandler.poofEffect = poof;
+				if (blockRegionConnections)
+				{
+					GameObject poof = GameObject.Instantiate(Resources.FindObjectsOfTypeAll<SimpleQuickParticleEffect>().First((x) => x.gameObject.name == "ConfettiLarge").gameObject);
+					BlockadeVisualsHandler.poofEffect = poof;
 					poof.SetActive(false);
 					//poof.GetComponent<SimpleQuickParticleEffect>().owningFactory = EffectFactory.Instance;
-                    list.Add(poof);
-                }
+					list.Add(poof);
+				}
 
 				return list.ToArray();
 			});
-            // Trash Cave
-            if (preloadItems) preloader.AddObjectToPreloadList("TrashCave", () =>
+			// Trash Cave
+			if (preloadItems) preloader.AddObjectToPreloadList("TrashCave", () =>
 			{
 				return [
-                    FreestandingReplacer.GetModelFromPath("Progressive Melee"),
+					FreestandingReplacer.GetModelFromPath("Progressive Melee"),
 					FreestandingReplacer.GetModelFromPath("Impossible Gates Pass"),
-                    FreestandingReplacer.GetModelFromPath("Raft Piece"),
-                    FreestandingReplacer.GetModelFromPath("Key")
-                ];
+					FreestandingReplacer.GetModelFromPath("Raft Piece"),
+					FreestandingReplacer.GetModelFromPath("Key")
+				];
 			});
-            /*
+			/*
 			// Pepperpain Mountain
 			// TODO: Store: Eruption
 			preloader.AddObjectToPreloadList("VitaminHills3", () =>
@@ -324,29 +324,29 @@ namespace ArchipelagoRandomizer
 				return [null];
 			});
 			*/
-            // Autumn Climb
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep1", () =>
+			// Autumn Climb
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep1", () =>
 			{
 				return [
-                    FreestandingReplacer.GetModelFromPath("Progressive Tracker")
-                ];
+					FreestandingReplacer.GetModelFromPath("Progressive Tracker")
+				];
 			});
-            // The Vault
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep2", () =>
+			// The Vault
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep2", () =>
 			{
 				return [
-                    FreestandingReplacer.GetModelFromPath("Progressive Amulet")
-                ];
+					FreestandingReplacer.GetModelFromPath("Progressive Amulet")
+				];
 			});
-            // Painful Plain
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep3", () =>
+			// Painful Plain
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep3", () =>
 			{
 				return [
-                    FreestandingReplacer.GetModelFromPath("Progressive Tome")
-                ];
+					FreestandingReplacer.GetModelFromPath("Progressive Tome")
+				];
 			});
-            // Ocean Castle
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep9", () =>
+			// Ocean Castle
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep9", () =>
 			{
 				GameObject force = FreestandingReplacer.GetModelFromPath("Progressive Force Wand");
 				// make the shine object use the same transform as the rod object
@@ -355,27 +355,27 @@ namespace ArchipelagoRandomizer
 				shine.transform.localPosition = Vector3.zero;
 				shine.transform.localRotation = Quaternion.identity;
 				shine.transform.localScale = Vector3.one;
-				
-                return [
+
+				return [
 					force
 				];
 			});
-            // Northern End
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep14", () =>
+			// Northern End
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep14", () =>
 			{
-                return [
+				return [
 					FreestandingReplacer.GetModelFromPath("Progressive Ice Ring")
 				];
 			});
-            // Moon Garden
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep15", () =>
+			// Moon Garden
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep15", () =>
 			{
 				return [
 					FreestandingReplacer.GetModelFromPath("Progressive Chain")
 				];
 			});
-            // Cave of Mystery
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep17", () =>
+			// Cave of Mystery
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep17", () =>
 			{
 				return [
 					FreestandingReplacer.GetModelFromSpawner("Apathetic Frog Outfit")
@@ -388,18 +388,18 @@ namespace ArchipelagoRandomizer
 				BlockadeVisualsHandler.bcm = bcm;
 				return [bcm];
 			});
-            // Bad Dream
-            if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>
-            {
+			// Bad Dream
+			if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>
+			{
 				// gotta do this late
 				FreestandingReplacer.SetupKeyMaterials();
 
-                GameObject card = FreestandingReplacer.GetModelFromPath("Card");
-                return [card];
-            });
+				GameObject card = FreestandingReplacer.GetModelFromPath("Card");
+				return [card];
+			});
 
 
-            preloader.StartPreload(PreloadDone);
+			preloader.StartPreload(PreloadDone);
 		}
 
 		private void PreloadDone()
@@ -413,9 +413,9 @@ namespace ArchipelagoRandomizer
 			roomEventHandler = new RoomLoadEvents(settings);
 			doorHandler = new DoorHandler();
 			playerActionModifier = new();
-            BlockadeVisualsHandler.Init();
+			BlockadeVisualsHandler.Init();
 
-            Events.OnPlayerSpawn += OnPlayerSpawn;
+			Events.OnPlayerSpawn += OnPlayerSpawn;
 		}
 
 		private void OnPlayerSpawn(Entity player, GameObject camera, PlayerController controller)
@@ -454,6 +454,7 @@ namespace ArchipelagoRandomizer
 			public bool AutoEquipOutfits { get; set; }
 			public bool StackStatuses { get; set; }
 			public bool ChestAppearanceMatchesContents { get; set; }
+			public bool QualityOfLife { get; set; } = true;
 		}
 
 		public delegate void OnItemReceievedFunc(ItemHandler.ItemData.Item item, string sentFromPlayerName);
