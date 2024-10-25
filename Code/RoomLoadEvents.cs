@@ -14,11 +14,17 @@ namespace ArchipelagoRandomizer
 		{
 			this.settings = settings;
 			Events.OnRoomChanged += OnRoomChanged;
+
+			if (Plugin.Instance.APFileData.QualityOfLife)
+				Events.OnEntitySpawn += SpeedUpSweatyPathingEnemies;
 		}
 
 		public void DoDisable()
 		{
 			Events.OnRoomChanged -= OnRoomChanged;
+
+			if (Plugin.Instance.APFileData.QualityOfLife)
+				Events.OnEntitySpawn -= SpeedUpSweatyPathingEnemies;
 		}
 
 		/// <summary>
@@ -116,12 +122,47 @@ namespace ArchipelagoRandomizer
 				doodads.transform.Find("KeyParent").gameObject.SetActive(false);
 		}
 
+		/// <summary>
+		/// Speeds up sweaty pathing enemies and makes them invincible
+		/// </summary>
+		private void SpeedUpSweatyPathingEnemies(Entity entity)
+		{
+			string scene = SceneManager.GetActiveScene().name;
+			bool isSweaty = entity.name.StartsWith("Sweaty") && (scene == "FluffyFields" || scene == "FancyRuins" || scene == "FrozenCourt");
+
+			if (isSweaty)
+			{
+				entity.GetEntityComponent<Moveable>()._moveSpeed = 15;
+
+				if (entity.GetComponent<Hittable>() != null)
+					Object.Destroy(entity.GetComponent<Hittable>());
+			}
+		}
+
+		/// <summary>
+		/// Spawns both Frozen Court ghosts regardless of time of day, and prevents
+		/// them from despawning when they go offscreen
+		/// </summary>
+		private void ModifyFrozenGhosts()
+		{
+			LevelTimeInhibitor[] inhibitors = GameObject.Find("Doors").transform.GetComponentsInChildren<LevelTimeInhibitor>();
+
+			foreach (LevelTimeInhibitor inhibitor in inhibitors)
+			{
+				Transform parent = inhibitor.transform.parent;
+				parent.GetComponent<SpawnEntityEventObserver>()._entity.controller.transform.Find("WalkState").GetComponent<PatrolState>()._canceller = null;
+				Object.Destroy(parent.GetComponent<DisableEventObserver>());
+				Object.Destroy(inhibitor.gameObject);
+			}
+		}
+
 		private void OnRoomChanged(Entity entity, LevelRoom toRoom, LevelRoom fromRoom, EntityEventsOwner.RoomEventData data)
 		{
 			if (toRoom == null)
 				return;
 
 			CurrentRoom = toRoom;
+			string scene = SceneManager.GetActiveScene().name;
 
 			if (Plugin.IsDebug)
 			{
@@ -135,7 +176,7 @@ namespace ArchipelagoRandomizer
 				Plugin.LogDebugMessage(debugMsg);
 			}
 
-			bool doOpenRemedy = settings.IncludeSuperSecrets && SceneManager.GetActiveScene().name == "Deep13" && CurrentRoom.RoomName == "E";
+			bool doOpenRemedy = settings.IncludeSuperSecrets && scene == "Deep13" && CurrentRoom.RoomName == "E";
 			bool doRandomizeSyncopePianoPuzzle = settings.IncludeDreamDungeons && settings.SyncopePianoPuzzle != "DEAD" && SceneManager.GetActiveScene().name == "DreamDynamite" &&
 				(CurrentRoom.RoomName == "K" || CurrentRoom.RoomName == "W");
 			bool doFixSyncopeKeyDupe = settings.IncludeDreamDungeons && (toRoom.RoomName == "AF" || toRoom.RoomName == "AG");
@@ -148,6 +189,9 @@ namespace ArchipelagoRandomizer
 
 			if (doFixSyncopeKeyDupe)
 				FixSyncopeKeyDupe();
+
+			if (Plugin.Instance.APFileData.QualityOfLife && scene == "FrozenCourt")
+				ModifyFrozenGhosts();
 		}
 	}
 }
