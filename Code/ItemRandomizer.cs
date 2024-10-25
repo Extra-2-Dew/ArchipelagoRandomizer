@@ -454,7 +454,7 @@ namespace ArchipelagoRandomizer
 			public bool AutoEquipOutfits { get; set; }
 			public bool StackStatuses { get; set; }
 			public bool ChestAppearanceMatchesContents { get; set; }
-			public bool QualityOfLife { get; set; } = true;
+			public bool QualityOfLife { get; set; }
 		}
 
 		public delegate void OnItemReceievedFunc(ItemHandler.ItemData.Item item, string sentFromPlayerName);

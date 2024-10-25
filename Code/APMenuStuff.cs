@@ -266,6 +266,7 @@ namespace ArchipelagoRandomizer
 			bool autoEquipOutfits = GetToggleValue("OutfitToggle");
 			bool stackStatuses = GetToggleValue("StackStatuses");
 			bool chestAppearanceMatchesContents = GetToggleValue("ChestsMatchContents");
+			bool qualityOfLife = GetToggleValue("QualityOfLife");
 
 			if (string.IsNullOrEmpty(server) || string.IsNullOrEmpty(portStr) || string.IsNullOrEmpty(slotName))
 				return null;
@@ -285,7 +286,8 @@ namespace ArchipelagoRandomizer
 				Deathlink = deathlink,
 				AutoEquipOutfits = autoEquipOutfits,
 				StackStatuses = stackStatuses,
-				ChestAppearanceMatchesContents = chestAppearanceMatchesContents
+				ChestAppearanceMatchesContents = chestAppearanceMatchesContents,
+				QualityOfLife = qualityOfLife
 			};
 		}
 
@@ -343,6 +345,9 @@ namespace ArchipelagoRandomizer
 						break;
 					case "ChestsMatchContents":
 						toggle.isOn = apFileData.ChestAppearanceMatchesContents;
+						break;
+					case "QualityOfLife":
+						toggle.isOn = apFileData.QualityOfLife;
 						break;
 				}
 			}
