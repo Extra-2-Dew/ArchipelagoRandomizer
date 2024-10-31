@@ -73,6 +73,18 @@
 			"flag": "outfit10"
 		},
 		{
+			"location": "Fluffy Fields Caves - Incomplete Sign",
+			"offset": 12,
+			"scene": "FluffyFieldsCaves",
+			"flag": "MegaSecretsign2"
+		},
+		{
+			"location": "Fluffy Fields Caves - Cipher Sign",
+			"offset": 13,
+			"scene": "FluffyFieldsCaves",
+			"flag": "SignDeepB1"
+		},
+		{
 			"location": "Sweetwater Coast Caves - White Gates Combat Chest",
 			"offset": 100,
 			"scene": "CandyCoastCaves",
@@ -125,6 +137,12 @@
 			"offset": 108,
 			"scene": "CandyCoastCaves",
 			"flag": "Dungeon_Chest-94--16"
+		},
+		{
+			"location": "Sweetwater Coast Caves - Incomplete Sign",
+			"offset": 109,
+			"scene": "CandyCoastCaves",
+			"flag": "MegaSecretsign4"
 		},
 		{
 			"location": "Fancy Ruins Caves - Two Torches Chest",
@@ -385,6 +403,12 @@
 			"flag": "Dungeon_Chest-82--27"
 		},
 		{
+			"location": "Pepperpain Caves - Incomplete Sign",
+			"offset": 511,
+			"scene": "VitaminHillsCaves",
+			"flag": "MegaSecretsign3"
+		},
+		{
 			"location": "Frozen Court Caves - Bushfire Chest",
 			"offset": 600,
 			"scene": "FrozenCourtCaves",
@@ -445,6 +469,12 @@
 			"flag": "Dungeon_Chest-63--15"
 		},
 		{
+			"location": "Frozen Court Caves - Cipher Sign",
+			"offset": 610,
+			"scene": "FrozenCourtCaves",
+			"flag": "SignDeepB2"
+		},
+		{
 			"location": "Lonely Road Caves - Timed Platforms Chest",
 			"offset": 700,
 			"scene": "LonelyRoadCaves",
@@ -497,6 +527,12 @@
 			"offset": 708,
 			"scene": "LonelyRoadCaves",
 			"flag": "Chest-67--32"
+		},
+		{
+			"location": "Lonely Road Caves - Incomplete Sign",
+			"offset": 709,
+			"scene": "LonelyRoadCaves",
+			"flag": "MegaSecretsign1"
 		},
 		{
 			"location": "Pillow Fort - Treasure Chest",
@@ -1513,6 +1549,18 @@
 			"flag": "Dungeon_Chest-0-8"
 		},
 		{
+			"location": "Maze of Steel - Hint Sign",
+			"offset": 2515,
+			"scene": "Deep11",
+			"flag": "Deep11Sign1"
+		},
+		{
+			"location": "Maze of Steel - Cipher Sign",
+			"offset": 2516,
+			"scene": "Deep11",
+			"flag": "SignDeepA1"
+		},
+		{
 			"location": "Ludo City - Chest",
 			"offset": 2600,
 			"scene": "Deep20",
@@ -1529,6 +1577,102 @@
 			"offset": 2603,
 			"scene": "Deep19s",
 			"flag": "outfit9"
+		},
+		{
+			"location": "Nowhere - Left Hint Sign",
+			"offset": 2604,
+			"scene": "Deep16",
+			"flag": "Deep16Sign1"
+		},
+		{
+			"location": "Nowhere - Right Hint Sign",
+			"offset": 2605,
+			"scene": "Deep16",
+			"flag": "Deep16Sign2"
+		},
+		{
+			"location": "Nowhere - Cipher Sign",
+			"offset": 2606,
+			"scene": "Deep16",
+			"flag": "SignDeepA2"
+		},
+		{
+			"location": "Ludo City - Cipher Sign",
+			"offset": 2607,
+			"scene": "Deep20",
+			"flag": "SignDeepC2"
+		},
+		{
+			"location": "Abyssal Plane - Shard Hint Sign",
+			"offset": 2608,
+			"scene": "Deep21",
+			"flag": "Deep21Sign1"
+		},
+		{
+			"location": "Abyssal Plane - Roll Hint Sign",
+			"offset": 2609,
+			"scene": "Deep21",
+			"flag": "Deep21Sign3"
+		},
+		{
+			"location": "Abyssal Plane - Drop Table Hint Sign",
+			"offset": 2610,
+			"scene": "Deep21",
+			"flag": "Deep21Sign2"
+		},
+		{
+			"location": "Abyssal Plane - Boss Hint Sign",
+			"offset": 2611,
+			"scene": "Deep21",
+			"flag": "Deep21Sign4"
+		},
+		{
+			"location": "Place From Younger Days - Cipher Sign",
+			"offset": 2612,
+			"scene": "Deep22",
+			"flag": "SignDeepC1"
+		},
+		{
+			"location": "Promised Remedy - E Cipher Sign",
+			"offset": 2613,
+			"scene": "Deep19s",
+			"flag": "SignDeepG1"
+		},
+		{
+			"location": "Promised Remedy - F Cipher Sign",
+			"offset": 2614,
+			"scene": "Deep19s",
+			"flag": "SignDeepE2"
+		},
+		{
+			"location": "Promised Remedy - G Left Cipher Sign",
+			"offset": 2615,
+			"scene": "Deep19s",
+			"flag": "SignDeepD1"
+		},
+		{
+			"location": "Promised Remedy - G Middle Cipher Sign",
+			"offset": 2616,
+			"scene": "Deep19s",
+			"flag": "SignDeepE1"
+		},
+		{
+			"location": "Promised Remedy - G Right Cipher Sign",
+			"offset": 2617,
+			"scene": "Deep19s",
+			"flag": "SignDeepF1"
+		},
+		{
+			"location": "Promised Remedy - M Cipher Sign",
+			"offset": 2618,
+			"scene": "Deep19s",
+			"flag": "SignDeepF2"
+		},
+		{
+			"location": "Promised Remedy - N Cipher Sign",
+			"offset": 2619,
+			"scene": "Deep19s",
+			"flag": "SignDeepD2"
 		}
 	]
 }
