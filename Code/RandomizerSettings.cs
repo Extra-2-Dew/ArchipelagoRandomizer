@@ -43,6 +43,7 @@ namespace ArchipelagoRandomizer
 		private bool includeDreamDungeons;
 		private bool includePortalWorlds;
 		private bool includeSecretDungeons;
+		private bool includeSecretSigns;
 		private bool includeSuperSecrets;
 		private bool keepItemsInDreamDungeons;
 		private KeySettings keySetting;
@@ -65,6 +66,7 @@ namespace ArchipelagoRandomizer
 		public bool IncludeDreamDungeons { get { return includeDreamDungeons; } }
 		public bool IncludePortalWorlds { get { return includePortalWorlds; } }
 		public bool IncludeSecretDungeons { get { return includeSecretDungeons; } }
+		public bool IncludeSecretSigns { get { return includeSecretSigns; } }
 		public bool IncludeSuperSecrets { get { return includeSuperSecrets; } }
 		public bool KeepItemsInDreamDungeons { get { return keepItemsInDreamDungeons; } }
 		public KeySettings KeySetting { get { return keySetting; } }
@@ -96,6 +98,7 @@ namespace ArchipelagoRandomizer
 				{ nameof(IncludeDreamDungeons), includeDreamDungeons = APHandler.GetSlotData<long>("include_dream_dungeons") == 1 },
 				{ nameof(IncludePortalWorlds), includePortalWorlds = APHandler.GetSlotData<long>("include_portal_worlds") == 1 },
 				{ nameof(IncludeSecretDungeons), includeSecretDungeons = APHandler.GetSlotData<long>("include_secret_dungeons") == 1 },
+				{ nameof(IncludeSecretSigns), includeSecretSigns = APHandler.GetSlotData<long>("include_secret_signs") == 1 },
 				{ nameof(IncludeSuperSecrets), includeSuperSecrets = APHandler.GetSlotData<long>("include_super_secrets") == 1 },
 				{ nameof(KeepItemsInDreamDungeons), keepItemsInDreamDungeons = APHandler.GetSlotData<long>("dream_dungeons_do_not_change_items") == 1 },
 				{ nameof(KeySetting), keySetting = (KeySettings)APHandler.GetSlotData<long>("key_settings") },
