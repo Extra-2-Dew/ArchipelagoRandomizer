@@ -11,7 +11,7 @@ namespace ArchipelagoRandomizer
 		[HarmonyPostfix, HarmonyPatch(typeof(Sign), nameof(Sign.Show))]
 		public static void Sign_Show_Patch(Sign __instance)
 		{
-			if (!RandomizerSettings.Instance.IncludeSecretSigns)
+			if (!ItemRandomizer.IsActive || !RandomizerSettings.Instance.IncludeSecretSigns)
 				return;
 
 			SignHandler.Instance.ReadSign(__instance);

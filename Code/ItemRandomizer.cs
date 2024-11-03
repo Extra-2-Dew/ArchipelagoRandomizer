@@ -9,7 +9,10 @@ namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer : MonoBehaviour
 	{
+		public static event System.Action OnEnabled;
+		public static event System.Action OnDisabled;
 		public static event OnItemReceievedFunc OnItemReceived;
+
 		private static ItemRandomizer instance;
 		private static List<LocationData.Location> locations;
 		private static FadeEffectData fadeData;
@@ -23,12 +26,14 @@ namespace ArchipelagoRandomizer
 		private SceneLoadEvents sceneEventHandler;
 		private RoomLoadEvents roomEventHandler;
 		private DoorHandler doorHandler;
+		private SignHandler signHandler;
 		private Entity player;
 		private SaverOwner mainSaver;
 		private PlayerActionModifier playerActionModifier;
 		private LootMenuHandler lootMenuHandler;
 		private bool rollOpensChests;
 		private bool hasSyncedItemsWithServer;
+		private bool preloadingDone;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -300,6 +305,7 @@ namespace ArchipelagoRandomizer
 
 			APHandler.Instance.Disconnect();
 
+			OnDisabled?.Invoke();
 			Plugin.Log.LogInfo("ItemRandomizer is disabled!");
 		}
 
@@ -307,7 +313,7 @@ namespace ArchipelagoRandomizer
 		{
 			Preloader preloader = new();
 			FreestandingReplacer.Reset();
-			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents;
+			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents || settings.IncludeSecretSigns;
 			bool blockRegionConnections = settings.BlockRegionConnections;
 
 			// Machine Fortress
@@ -468,6 +474,7 @@ namespace ArchipelagoRandomizer
 
 		private void PreloadDone()
 		{
+			preloadingDone = true;
 			itemHandler = gameObject.AddComponent<ItemHandler>();
 			itemMessageHandler = MessageBoxHandler.Instance;
 			deathLinkHandler = Plugin.Instance.APFileData.Deathlink ? gameObject.AddComponent<DeathLinkHandler>() : null;
@@ -477,9 +484,10 @@ namespace ArchipelagoRandomizer
 			roomEventHandler = new RoomLoadEvents(settings);
 			doorHandler = new DoorHandler();
 			playerActionModifier = new();
-			new SignHandler();
+			signHandler = gameObject.AddComponent<SignHandler>();
 			BlockadeVisualsHandler.Init();
 
+			OnEnabled?.Invoke();
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 		}
 
