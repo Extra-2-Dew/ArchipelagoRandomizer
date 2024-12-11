@@ -14,17 +14,6 @@ namespace ArchipelagoRandomizer
 
 		public static SignHandler Instance { get; private set; }
 
-		/* NOT IN USE CURRENTLY, INHERIT ITEMRANDOCOMPONENT WHEN READY TO USE
-		public override void Preload(Preloader preloader)
-		{
-			preloader.AddObjectToPreloadList("Deep26", () =>
-			{
-				GameObject card = Instantiate(GameObject.Find("Spawner").GetComponent<SpawnItemEventObserver>()._itemPrefab.gameObject);
-				return [card];
-			});
-		}
-		*/
-
 		private void Awake()
 		{
 			allSignLocations = ItemRandomizer.GetLocationData().FindAll(location => location.LocationName.EndsWith("Sign"));
