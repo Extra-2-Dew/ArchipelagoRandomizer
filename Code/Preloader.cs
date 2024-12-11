@@ -32,14 +32,31 @@ namespace ArchipelagoRandomizer
 			objectsToPreload = new();
 			preloadedObjects = new();
 			objectHolder = new GameObject("Preloaded Objects").transform;
+			objectHolder.gameObject.SetActive(false);
 			fadeData = ItemRandomizer.Instance.FadeData;
 			Object.DontDestroyOnLoad(objectHolder);
 			APHandler.Instance.OnDisconnect += OnDisconnected;
 		}
 
+		/// <summary>
+		/// Returns a preloaded object
+		/// </summary>
+		/// <typeparam name="T">The Type of the object</typeparam>
+		/// <param name="name">The name of the object</param>
+		/// <param name="keepInactive">Should the object remain inactive? Objects are set to inactive when preloaded.
+		/// If this is false, the object will be activated when returned here, so you don't have to do it manually</param>
 		public static T GetPreloadedObject<T>(string name) where T : Object
 		{
-			return (T)Instance.preloadedObjects.Find(x => x.name == name);
+			// Find the preloaded object
+			T obj = (T)Instance.preloadedObjects.Find(x => x.name == name);
+
+			if (obj == null)
+			{
+				Plugin.Log.LogError($"No object with name {name} was found in preload list!");
+				return null;
+			}
+
+			return obj;
 		}
 
 		public static List<Object> GetAllPreloadedObjects()

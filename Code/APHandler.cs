@@ -88,6 +88,7 @@ namespace ArchipelagoRandomizer
 			{
 				Session.Locations.CompleteLocationChecksAsync((bool success) =>
 				{
+					// Determine which location was checked
 					long id = baseId + offset;
 					string locationName = Session.Locations.GetLocationNameFromId(id);
 					ScoutedItemInfo item = scoutedItems.FirstOrDefault(x => x.LocationId == id);
@@ -96,7 +97,11 @@ namespace ArchipelagoRandomizer
 					if (item != null && item.Player.Slot != CurrentPlayer.Slot)
 						Plugin.StartRoutine(ItemRandomizer.Instance.ItemSent(item.ItemDisplayName, item.Player.Name));
 
-					ModCore.Plugin.MainSaver.SaveLocal();
+					// Save to file
+					SaverOwner mainSaver = ModCore.Plugin.MainSaver;
+					mainSaver.GetSaver(Constants.locationsCheckedSaver).SaveBool(locationName, true);
+					mainSaver.SaveLocal();
+
 					Plugin.Log.LogInfo($"Checked location: {locationName}");
 				}, baseId + offset);
 			};

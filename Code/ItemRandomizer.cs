@@ -9,7 +9,10 @@ namespace ArchipelagoRandomizer
 {
 	public class ItemRandomizer : MonoBehaviour
 	{
+		public static event System.Action OnEnabled;
+		public static event System.Action OnDisabled;
 		public static event OnItemReceievedFunc OnItemReceived;
+
 		private static ItemRandomizer instance;
 		private static List<LocationData.Location> locations;
 		private static FadeEffectData fadeData;
@@ -23,6 +26,7 @@ namespace ArchipelagoRandomizer
 		private SceneLoadEvents sceneEventHandler;
 		private RoomLoadEvents roomEventHandler;
 		private DoorHandler doorHandler;
+		private SignHandler signHandler;
 		private Entity player;
 		private SaverOwner mainSaver;
 		private PlayerActionModifier playerActionModifier;
@@ -80,18 +84,17 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
+		/// <summary>
+		/// Marks a location as checked
+		/// </summary>
+		/// <param name="saveFlag">The flag for the location, which is usually unique</param>
+		/// <param name="sceneName">The scene the location is in. This is a backup incase the flag isn't unique</param>
 		public void LocationChecked(string saveFlag, string sceneName)
 		{
-			if (string.IsNullOrEmpty(saveFlag))
-				return;
-
-			LocationData.Location location = locations.Find(x => (string.IsNullOrEmpty(x.SceneName) || x.SceneName == sceneName) && x.Flag == saveFlag);
+			LocationData.Location location = GetLocationFromFlag(saveFlag, sceneName);
 
 			if (location == null)
-			{
-				Plugin.Log.LogError($"No location with save flag {saveFlag} in {sceneName} was found in JSON data, so location will not be marked on Archipelago server!");
 				return;
-			}
 
 			APHandler.Instance.LocationChecked(location.Offset);
 		}
@@ -105,6 +108,76 @@ namespace ArchipelagoRandomizer
 				return null;
 
 			return ItemHandler.GetItemData(scoutedItemInfo.ItemDisplayName);
+		}
+
+		/// <summary>
+		/// Returns the Location object, if found.
+		/// </summary>
+		/// <param name="saveFlag">The flag for the location, which is usually unique</param>
+		/// <param name="sceneName">The scene the location is in. This is a backup incase the flag isn't unique</param>
+		public LocationData.Location GetLocationFromFlag(string saveFlag, string sceneName = "")
+		{
+			if (string.IsNullOrEmpty(saveFlag))
+			{
+				Plugin.Log.LogError("No save flag was given, so how do you expect to find the location?");
+				return null;
+			}
+
+			// Finds the location that has the saveFlag
+			// If sceneName is given, it needs to match that as well, which is useful in cases
+			// where multiple locations may share the same flags, but are in different scenes
+			LocationData.Location foundLocation = locations.Find(location =>
+				location.Flag == saveFlag &&
+				(
+					string.IsNullOrEmpty(sceneName) ||
+					location.SceneName == sceneName
+				)
+			);
+
+			if (foundLocation == null)
+			{
+				Plugin.Log.LogError($"No location with saveFlag '{saveFlag}' in scene '{sceneName}' was found.");
+				return null;
+			}
+
+			return foundLocation;
+		}
+
+		/// <summary>
+		/// Returns true if a randomized location has been checked, false otherwise.
+		/// </summary>
+		/// <param name="saveFlag">The flag for the location, which is usually unique</param>
+		/// <param name="sceneName">The scene the location is in. This is a backup incase the flag isn't unique</param>
+		public static bool HasCheckedLocation(string saveFlag, string sceneName = "")
+		{
+			LocationData.Location location = Instance.GetLocationFromFlag(saveFlag, sceneName);
+
+			if (location == null)
+				return false;
+
+			IDataSaver locationsCheckedSaver = ModCore.Plugin.MainSaver.GetSaver(Constants.locationsCheckedSaver);
+			bool hasCheckedLocation = locationsCheckedSaver.HasData(location.LocationName);
+			return hasCheckedLocation;
+		}
+
+		/// <summary>
+		/// Returns the count of times the given item was obtained.
+		/// </summary>
+		/// <param name="itemName">The name of the item</param>
+		public static int GetItemObtainedCount(string itemName)
+		{
+			IDataSaver itemsObtainedSaver = ModCore.Plugin.MainSaver.GetSaver(Constants.itemsObtainedSaver);
+			return itemsObtainedSaver.LoadInt(itemName);
+		}
+
+		public static Entity GetEntityFromSpawner(string path)
+		{
+			return GameObject.Find("LevelRoot").transform.Find(path).GetComponent<EntitySpawner>()._entityPrefab;
+		}
+
+		public static List<LocationData.Location> GetLocationData()
+		{
+			return locations;
 		}
 
 		public IEnumerator ItemSent(string itemName, string playerName)
@@ -160,11 +233,6 @@ namespace ArchipelagoRandomizer
 			yield return new WaitForEndOfFrame();
 			mainSaver.SaveAll();
 			SceneDoor.StartLoad("MainMenu", "", fadeData);
-		}
-
-		public static Entity GetEntityFromSpawner(string path)
-		{
-			return GameObject.Find("LevelRoot").transform.Find(path).GetComponent<EntitySpawner>()._entityPrefab;
 		}
 
 		private void Awake()
@@ -236,6 +304,7 @@ namespace ArchipelagoRandomizer
 
 			APHandler.Instance.Disconnect();
 
+			OnDisabled?.Invoke();
 			Plugin.Log.LogInfo("ItemRandomizer is disabled!");
 		}
 
@@ -389,7 +458,7 @@ namespace ArchipelagoRandomizer
 				return [bcm];
 			});
 			// Bad Dream
-			if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>
+			if (preloadItems || settings.IncludeSecretSigns) preloader.AddObjectToPreloadList("Deep26", () =>
 			{
 				// gotta do this late
 				FreestandingReplacer.SetupKeyMaterials();
@@ -413,8 +482,10 @@ namespace ArchipelagoRandomizer
 			roomEventHandler = new RoomLoadEvents(settings);
 			doorHandler = new DoorHandler();
 			playerActionModifier = new();
+			signHandler = gameObject.AddComponent<SignHandler>();
 			BlockadeVisualsHandler.Init();
 
+			OnEnabled?.Invoke();
 			Events.OnPlayerSpawn += OnPlayerSpawn;
 		}
 

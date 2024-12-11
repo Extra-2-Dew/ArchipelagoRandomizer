@@ -1,14 +1,22 @@
-﻿using System;
-using HarmonyLib;
-using System.Collections.Generic;
+﻿using HarmonyLib;
+using System;
 using UnityEngine;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace ArchipelagoRandomizer
 {
 	[HarmonyPatch]
 	public class Patches
 	{
+		// Marks signs as read
+		[HarmonyPostfix, HarmonyPatch(typeof(Sign), nameof(Sign.Show))]
+		public static void Sign_Show_Patch(Sign __instance)
+		{
+			if (!ItemRandomizer.IsActive || !RandomizerSettings.Instance.IncludeSecretSigns)
+				return;
+
+			SignHandler.Instance.ReadSign(__instance);
+		}
+
 		// Prevents loading into saved scene if doing preloading
 		[HarmonyPrefix, HarmonyPatch(typeof(MainMenu), nameof(MainMenu.StartGame))]
 		public static bool MainMenu_StartGame_Patch(MainMenu __instance)
@@ -209,7 +217,7 @@ namespace ArchipelagoRandomizer
 			if (!ItemRandomizer.IsActive) return;
 			// list will be empty if Blockades are off
 			// otherwise, replace the marker data used by vanilla map data objects
-            if (BlockadeVisualsHandler.editedDatas.ContainsKey(mapData.name))
+			if (BlockadeVisualsHandler.editedDatas.ContainsKey(mapData.name))
 			{
 				mapData._markers = BlockadeVisualsHandler.editedDatas[mapData.name]._markers;
 			}
