@@ -7,7 +7,7 @@ namespace ArchipelagoRandomizer
 	[HarmonyPatch]
 	public class Patches
 	{
-		// 
+		// Marks signs as read
 		[HarmonyPostfix, HarmonyPatch(typeof(Sign), nameof(Sign.Show))]
 		public static void Sign_Show_Patch(Sign __instance)
 		{

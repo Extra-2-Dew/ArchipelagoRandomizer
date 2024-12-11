@@ -5,6 +5,14 @@ namespace ArchipelagoRandomizer
 	public abstract class ItemRandoComponent : MonoBehaviour
 	{
 		/// <summary>
+		/// Preloads any objects this component needs to reference
+		/// </summary>
+		public virtual void Preload(Preloader preloader)
+		{
+			//
+		}
+
+		/// <summary>
 		/// This component is enabled when a file is started or loaded while the randomizer is active
 		/// </summary>
 		protected virtual void OnEnable()

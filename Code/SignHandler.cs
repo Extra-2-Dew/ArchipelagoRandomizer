@@ -7,12 +7,23 @@ namespace ArchipelagoRandomizer
 	/// <summary>
 	/// Handles granting items when signs are read
 	/// </summary>
-	public class SignHandler : ItemRandoComponent
+	public class SignHandler : MonoBehaviour
 	{
 		private readonly List<SignData> allSignData = new();
 		private List<ItemRandomizer.LocationData.Location> allSignLocations;
 
 		public static SignHandler Instance { get; private set; }
+
+		/* NOT IN USE CURRENTLY, INHERIT ITEMRANDOCOMPONENT WHEN READY TO USE
+		public override void Preload(Preloader preloader)
+		{
+			preloader.AddObjectToPreloadList("Deep26", () =>
+			{
+				GameObject card = Instantiate(GameObject.Find("Spawner").GetComponent<SpawnItemEventObserver>()._itemPrefab.gameObject);
+				return [card];
+			});
+		}
+		*/
 
 		private void Awake()
 		{
@@ -20,7 +31,7 @@ namespace ArchipelagoRandomizer
 			Instance = this;
 		}
 
-		protected override void OnEnable()
+		private void OnEnable()
 		{
 			// Create sign data objects
 			foreach (var location in allSignLocations)
@@ -36,11 +47,13 @@ namespace ArchipelagoRandomizer
 			}
 
 			Events.OnSceneLoaded += OnSceneLoaded;
+			ItemRandomizer.OnDisabled += OnDisable;
 		}
 
-		protected override void OnDisable()
+		private void OnDisable()
 		{
 			Events.OnSceneLoaded -= OnSceneLoaded;
+			ItemRandomizer.OnDisabled -= OnDisable;
 		}
 
 		/// <summary>
@@ -60,7 +73,10 @@ namespace ArchipelagoRandomizer
 			signData.HasRead = true;
 
 			// Remove sparkle particles
-			Destroy(sign._configString.transform.Find("Sparkles").gameObject);
+			Transform sparkles = sign._configString.transform.Find("Sparkles");
+
+			if (sparkles != null)
+				Destroy(sparkles.gameObject);
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -68,7 +84,7 @@ namespace ArchipelagoRandomizer
 			foreach (ConfigString signConfig in Resources.FindObjectsOfTypeAll<ConfigString>())
 			{
 				// Skip "fake" signs (like NPCs)
-				if (signConfig.transform.parent.name != "Doodads")
+				if (signConfig.transform.parent == null || signConfig.transform.parent.name != "Doodads")
 					continue;
 
 				// Get sign data
@@ -80,8 +96,8 @@ namespace ArchipelagoRandomizer
 					continue;
 
 				// Add particle effect to unread signs
-				GameObject preloadedKey = Preloader.GetPreloadedObject<GameObject>("Preview Card");
-				GameObject particles = preloadedKey.transform.Find("Particle System").gameObject;
+				GameObject preloadedCard = Preloader.GetPreloadedObject<GameObject>("Preview Card");
+				GameObject particles = preloadedCard.transform.Find("Particle System").gameObject;
 
 				GameObject clonedParticles = Instantiate(particles, signConfig.transform);
 				clonedParticles.name = "Sparkles";

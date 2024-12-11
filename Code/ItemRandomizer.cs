@@ -33,7 +33,6 @@ namespace ArchipelagoRandomizer
 		private LootMenuHandler lootMenuHandler;
 		private bool rollOpensChests;
 		private bool hasSyncedItemsWithServer;
-		private bool preloadingDone;
 
 		public static ItemRandomizer Instance { get { return instance; } }
 		public static bool IsActive { get; private set; }
@@ -313,7 +312,7 @@ namespace ArchipelagoRandomizer
 		{
 			Preloader preloader = new();
 			FreestandingReplacer.Reset();
-			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents || settings.IncludeSecretSigns;
+			bool preloadItems = Plugin.Instance.APFileData.ChestAppearanceMatchesContents;
 			bool blockRegionConnections = settings.BlockRegionConnections;
 
 			// Machine Fortress
@@ -459,7 +458,7 @@ namespace ArchipelagoRandomizer
 				return [bcm];
 			});
 			// Bad Dream
-			if (preloadItems) preloader.AddObjectToPreloadList("Deep26", () =>
+			if (preloadItems || settings.IncludeSecretSigns) preloader.AddObjectToPreloadList("Deep26", () =>
 			{
 				// gotta do this late
 				FreestandingReplacer.SetupKeyMaterials();
@@ -474,7 +473,6 @@ namespace ArchipelagoRandomizer
 
 		private void PreloadDone()
 		{
-			preloadingDone = true;
 			itemHandler = gameObject.AddComponent<ItemHandler>();
 			itemMessageHandler = MessageBoxHandler.Instance;
 			deathLinkHandler = Plugin.Instance.APFileData.Deathlink ? gameObject.AddComponent<DeathLinkHandler>() : null;
