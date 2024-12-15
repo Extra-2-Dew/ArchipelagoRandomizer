@@ -320,7 +320,8 @@ namespace ArchipelagoRandomizer
 			{
 				List<GameObject> list = [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
-					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject
+					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject,
+					Resources.FindObjectsOfTypeAll<Item>().FirstOrDefault(item => item.gameObject.name.EndsWith("Ball")).gameObject // Lightning drop
 					];
 				if (preloadItems) list.AddRange([
 					FreestandingReplacer.GetModelFromPath("Progressive Dynamite"),
@@ -467,6 +468,28 @@ namespace ArchipelagoRandomizer
 				return [card];
 			});
 
+			// Preload trap objects
+			if (settings.TrapsEnabled)
+			{
+				if (settings.SuperTrapsEnabled)
+				{
+					// Bad Dream
+					preloader.AddObjectToPreloadList("Deep26", () =>
+					{
+						GameObject matriarchSpawner = GameObject.Find("MatriarchSpawner");
+
+						return [matriarchSpawner];
+					});
+				}
+
+				// Pepperpain Trail
+				preloader.AddObjectToPreloadList("VitaminHills2", () =>
+				{
+					GameObject eruptionEvent = Resources.FindObjectsOfTypeAll<LevelEvent>().FirstOrDefault(levelEvent => levelEvent.name.StartsWith("Volcano")).gameObject;
+
+					return [eruptionEvent];
+				});
+			}
 
 			preloader.StartPreload(PreloadDone);
 		}
