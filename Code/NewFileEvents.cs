@@ -51,7 +51,6 @@ namespace ArchipelagoRandomizer
 				dwSaver.SaveInt("PuzzleGate-27--47", 1);
 				dwSaver.SaveInt("PuzzleGate-27--48", 1);
 				dwSaver.SaveInt("PuzzleGate-31--36", 1);
-				dwSaver.SaveInt("PuzzleGate-40--37", 1);
 				dwSaver.SaveInt("PuzzleGate-40--35", 1);
 				dwSaver.SaveInt("PuzzleGate-49--38", 1);
 				dwSaver.SaveInt("PuzzleGate-50--38", 1);

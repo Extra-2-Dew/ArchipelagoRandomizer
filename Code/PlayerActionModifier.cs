@@ -9,6 +9,7 @@
 		public PlayerActionModifier()
 		{
 			Events.OnPlayerSpawn += OnPlayerSpawn;
+			Events.OnPlayerRespawn += OnPlayerRespawn;
 			ItemRandomizer.OnItemReceived += OnItemReceived;
 		}
 
@@ -64,6 +65,15 @@
 		{
 			this.player = player;
 
+			if (DisableStick)
+				DoModifiyStick(true);
+
+			if (DisableRoll)
+				DoModifyRoll(true);
+		}
+
+		private void OnPlayerRespawn()
+		{
 			if (DisableStick)
 				DoModifiyStick(true);
 

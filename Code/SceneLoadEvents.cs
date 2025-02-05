@@ -18,8 +18,9 @@ namespace ArchipelagoRandomizer
 				if (!settings.IncludeSuperSecrets)
 					return false;
 
+				// Require Fire Mace and Fake EFCS
 				Entity player = ModCore.Utility.GetPlayer();
-				return player.GetStateVariable("melee") == 2 || player.GetStateVariable("fakeEFCS") > 0;
+				return player.GetStateVariable("melee") == 2 && player.GetStateVariable("fakeEFCS") > 0;
 			}
 		}
 
@@ -35,12 +36,14 @@ namespace ArchipelagoRandomizer
 		{
 			this.settings = settings;
 			Events.OnSceneLoaded += OnSceneLoaded;
+			Events.OnPlayerRespawn += OnPlayerRespawn;
 			ItemRandomizer.OnItemReceived += OnItemReceieved;
 		}
 
 		public void DoDisable()
 		{
 			Events.OnSceneLoaded -= OnSceneLoaded;
+			Events.OnPlayerRespawn -= OnPlayerRespawn;
 			ItemRandomizer.OnItemReceived -= OnItemReceieved;
 		}
 
@@ -139,11 +142,6 @@ namespace ArchipelagoRandomizer
 		private void GiveTempEFCS()
 		{
 			Entity player = ModCore.Utility.GetPlayer();
-
-			// Require Fire Mace and Fake EFCS
-			if (player.GetStateVariable("melee") < 2 || player.GetStateVariable("fakeEFCS") < 1)
-				return;
-
 			player.AddLocalTempVar("melee");
 			player.SetStateVariable("melee", 3);
 		}
@@ -297,6 +295,12 @@ namespace ArchipelagoRandomizer
 				QualityOfLifeStuff();
 
 			if (settings.BlockRegionConnections) BlockadeVisualsHandler.SpawnBlockades(SceneName);
+		}
+
+		private void OnPlayerRespawn()
+		{
+			if (SceneName == "Deep19s" && DoGiveTempEFCS)
+				GiveTempEFCS();
 		}
 
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)
