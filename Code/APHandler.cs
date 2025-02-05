@@ -7,6 +7,8 @@ using ModCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -147,6 +149,38 @@ namespace ArchipelagoRandomizer
 			return scoutedItems.Find(x => x.LocationId - forLocation.Offset == baseId);
 		}
 
+		public void SetPosition(Vector2 position)
+		{
+			if (!IsConnected)
+			{
+				return;
+			}
+
+			var key = $"id2.pos.{CurrentPlayer.Slot}";
+			var value = $"{(int)position.x},{(int)position.y}";
+
+			ThreadPool.QueueUserWorkItem((_) =>
+			{
+				Session.DataStorage[key] = value;
+			});
+		}
+
+		public void SetLevelName(string levelName)
+		{
+			if (!IsConnected)
+			{
+				return;
+			}
+
+			var key = $"id2.levelName.{CurrentPlayer.Slot}";
+			var value = levelName;
+
+			ThreadPool.QueueUserWorkItem((_) =>
+			{
+				Session.DataStorage[key] = value;
+			});
+		}
+
 		private bool TryCreateSession(string url, out string errorMessage)
 		{
 			if (Session != null)
@@ -205,15 +239,13 @@ namespace ArchipelagoRandomizer
 
 		private void OnConnected(LoginSuccessful loginSuccess)
 		{
-			if (slotData == null)
-				slotData = loginSuccess.SlotData;
+			slotData = loginSuccess.SlotData;
 
 			Session.MessageLog.OnMessageReceived += OnReceiveMessage;
 			Session.Items.ItemReceived += OnReceivedItem;
 			Session.Socket.SocketClosed += OnDisconnected;
 
-			if (scoutedItems == null)
-				ScoutLocations();
+			ScoutLocations();
 		}
 
 		private void OnDisconnected(string reason)
