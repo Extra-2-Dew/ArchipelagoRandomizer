@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Archipelago.MultiClient.Net.Enums;
 
 namespace ArchipelagoRandomizer
 {
@@ -38,7 +39,7 @@ namespace ArchipelagoRandomizer
 				new ChestCrystalColorData.ChestColors("Blue", "DarkYellow", "Gold"),
 				new ChestCrystalColorData.CrystalColors("Blue", "Blue", "Yellow"))
 			},
-			{ new("NeverExclude", false,
+			{ new("ProgUseful", false,
 				new ChestCrystalColorData.ChestColors("Orange", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("Orange", "Orange", "Orange"))
 			},
@@ -84,7 +85,7 @@ namespace ArchipelagoRandomizer
 			if (scoutedItemInfo != null)
 			{
 				// If trap
-				if (CheckItemFlags(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Trap))
+				if (CheckItemFlags(scoutedItemInfo, ItemFlags.Trap))
 				{
 					// Get random colors
 					int randIndex = Random.Range(0, trapChestColors.Count);
@@ -110,10 +111,13 @@ namespace ArchipelagoRandomizer
 				// If item for another game or is a trap
 				else
 				{
-					if (CheckItemFlags(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement))
+					if (CheckItemFlags(scoutedItemInfo, ItemFlags.Advancement))
 						colors = chestCrystalColors.Find(x => x.flag == "Advancement");
-					else if (CheckItemFlags(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude))
+					else if (CheckItemFlags(scoutedItemInfo, ItemFlags.None))
+						colors = chestCrystalColors.Find(x => x.flag == "Filler");
+					else if (CheckItemFlags(scoutedItemInfo, ItemFlags.NeverExclude))
 						colors = chestCrystalColors.Find(x => x.flag == "Useful");
+					else colors = chestCrystalColors.Find(x => x.flag == "ProgUseful");
 				}
 			}
 			// If no item, that means it's not randomized
