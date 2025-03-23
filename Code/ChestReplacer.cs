@@ -28,7 +28,7 @@ namespace ArchipelagoRandomizer
 			},
 			{ new("Junk", true,
 				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
-				new ChestCrystalColorData.CrystalColors("Burgundy", "Burgundy", "LightGrey"))
+				new ChestCrystalColorData.CrystalColors("Silver", "Silver", "Burgundy"))
 			},
 			{ new("Filler", false,
 				new ChestCrystalColorData.ChestColors("Cyan", "Grey", "Grey"),
@@ -36,7 +36,7 @@ namespace ArchipelagoRandomizer
 			},
 			{ new("Useful", false,
 				new ChestCrystalColorData.ChestColors("Blue", "DarkYellow", "Gold"),
-				new ChestCrystalColorData.CrystalColors("Blue", "Blue", "Blue"))
+				new ChestCrystalColorData.CrystalColors("Blue", "Blue", "Yellow"))
 			},
 			{ new("NeverExclude", false,
 				new ChestCrystalColorData.ChestColors("Orange", "Grey", "Grey"),
@@ -111,7 +111,7 @@ namespace ArchipelagoRandomizer
 				else
 				{
 					if (CheckItemFlags(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement))
-						colors = chestCrystalColors.Find(x => x.flag == scoutedItemInfo.Flags.ToString());
+						colors = chestCrystalColors.Find(x => x.flag == "Advancement");
 					else if (CheckItemFlags(scoutedItemInfo, Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude))
 						colors = chestCrystalColors.Find(x => x.flag == "Useful");
 				}
