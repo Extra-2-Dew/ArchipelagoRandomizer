@@ -243,6 +243,11 @@ namespace ArchipelagoRandomizer
 				GameObject.Find("Countdown").GetComponent<TimerTrigger>().timer = 0;
 				return;
 			}
+			else if (SceneName == "FluffyFields")
+			{
+				GameObject.Find("TimedWarper").GetComponentInChildren<TimedTouchTrigger>()._time = 0;
+				return;
+			}
 		}
 
 		private void DisableRando()
