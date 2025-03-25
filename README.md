@@ -42,6 +42,7 @@ There are three possible goals:
 ## Installation
 
 1. Download the latest version of [Bepinex](https://github.com/BepInEx/BepInEx/releases) (if you're on Linux, you need to use [v5.4.22](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.22)).
+    1. Install the latest 5.x version of Bepinex, not the topmost 6.x one!
     1. There are several types of Bepinex, **install the Unity.Mono one**, as ID2 uses the Mono runtime.
 2. Download the latest version of [ModCore](https://github.com/Extra-2-Dew/ModCore).
 3. Download the latest release (the zip file) from the [Releases page](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/releases).
