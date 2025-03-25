@@ -574,23 +574,28 @@ namespace ArchipelagoRandomizer
 
 		private IEnumerator SpawnMatriarch()
 		{
-			Plugin.Log.LogWarning("Matriarch trap is not implemented yet, so nothing happens!");
-
 			yield return new WaitForEndOfFrame();
 
-			//Plugin.Log.LogWarning("Matriarch spawned!");
+			if (matriarchSpawner == null)
+			{
+				GameObject matriarchSpawnerObj = Preloader.GetPreloadedObject<GameObject>("MatriarchSpawner");
 
-			//if (matriarchSpawner == null)
-			//{
-			//	GameObject matriarchSpawnerObj = Preloader.GetPreloadedObject<GameObject>("MatriarchSpawner");
-			//	float offsetX = Random.value > 0.5f ? 25f : -25f;
-			//	float offsetZ = Random.value > 0.5f ? 25 : -25f;
-			//	matriarchSpawnerObj.transform.position = new Vector3(player.transform.position.x + offsetX, player.transform.position.y, player.transform.position.z + offsetZ);
-			//	matriarchSpawner = matriarchSpawnerObj.GetComponent<EntitySpawner>();
-			//	matriarchSpawner._delay = 0;
-			//}
+				if (matriarchSpawnerObj == null)
+				{
+					yield return null;
+				}
 
-			//Instantiate(matriarchSpawner);
+				float offsetX = Random.value > 0.5f ? 25f : -25f;
+				float offsetZ = Random.value > 0.5f ? 25 : -25f;
+				matriarchSpawnerObj.transform.position = new Vector3(player.transform.position.x + offsetX, player.transform.position.y, player.transform.position.z + offsetZ);
+				matriarchSpawner = matriarchSpawnerObj.GetComponent<EntitySpawner>();
+				matriarchSpawner._delay = 0;
+				GameObject warper = matriarchSpawner._entityPrefab.transform.Find("Warper").gameObject;
+				Destroy(warper.GetComponent<SceneDoor>());
+				warper.AddComponent<MatriarchKiller>();
+			}
+
+			Instantiate(matriarchSpawner);
 		}
 
 		private void SortStatuses()
