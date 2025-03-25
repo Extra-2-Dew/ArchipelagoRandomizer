@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Archipelago.MultiClient.Net.Enums;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Archipelago.MultiClient.Net.Enums;
 
 namespace ArchipelagoRandomizer
 {
@@ -26,6 +26,10 @@ namespace ArchipelagoRandomizer
 			{ new("Shard", true,
 				new ChestCrystalColorData.ChestColors("DarkGrey", "Grey", "Grey"),
 				new ChestCrystalColorData.CrystalColors("DarkGrey", "DarkGrey", "LightGrey"))
+			},
+			{ new("RegionConnector", true,
+				new ChestCrystalColorData.ChestColors("TealGreen", "DarkYellow", "Gold"),
+				new ChestCrystalColorData.CrystalColors("Green", "Green", "TealGreen"))
 			},
 			{ new("Junk", true,
 				new ChestCrystalColorData.ChestColors("Burgundy", "Grey", "Grey"),
@@ -105,6 +109,8 @@ namespace ArchipelagoRandomizer
 						colors = chestCrystalColors.Find(x => x.flag == "Key");
 					else if (item.Type == ItemHandler.ItemTypes.Shard)
 						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
+					else if (item.ItemName == "Lightning")
+						colors = chestCrystalColors.Find(x => x.flag == "Junk");
 					else
 						colors = chestCrystalColors.Find(x => x.flag == item.Flag.ToString());
 				}
