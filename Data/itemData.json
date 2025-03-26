@@ -960,6 +960,7 @@
 			"itemName": "Potion",
 			"iconName": "Custom/potion",
 			"offset": 163,
+			"flag": "Macguffin",
 			"saveFlag": "potions"
 		}
 	]
