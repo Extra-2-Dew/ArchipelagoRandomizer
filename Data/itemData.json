@@ -826,7 +826,7 @@
 		},
 		{
 			"itemName": "Lightning",
-			"iconName": "Custom/Lightning",
+			"iconName": "Custom/ItemIcon_Lightning",
 			"offset": 144,
 			"type": "Lightning"
 		},
