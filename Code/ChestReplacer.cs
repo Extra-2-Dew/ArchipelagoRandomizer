@@ -117,11 +117,11 @@ namespace ArchipelagoRandomizer
 				// If item for another game or is a trap
 				else
 				{
-					if (CheckItemFlags(scoutedItemInfo, ItemFlags.Advancement))
+					if (scoutedItemInfo.Flags == ItemFlags.Advancement)
 						colors = chestCrystalColors.Find(x => x.flag == "Advancement");
-					else if (CheckItemFlags(scoutedItemInfo, ItemFlags.None))
+					else if (scoutedItemInfo.Flags == ItemFlags.None)
 						colors = chestCrystalColors.Find(x => x.flag == "Filler");
-					else if (CheckItemFlags(scoutedItemInfo, ItemFlags.NeverExclude))
+					else if (scoutedItemInfo.Flags == ItemFlags.NeverExclude)
 						colors = chestCrystalColors.Find(x => x.flag == "Useful");
 					else colors = chestCrystalColors.Find(x => x.flag == "ProgUseful");
 				}
@@ -185,7 +185,7 @@ namespace ArchipelagoRandomizer
 			return (item.Flag & flag) == flag;
 		}
 
-		private bool CheckItemFlags(Archipelago.MultiClient.Net.Models.ScoutedItemInfo item, Archipelago.MultiClient.Net.Enums.ItemFlags flag)
+		private bool CheckItemFlags(Archipelago.MultiClient.Net.Models.ScoutedItemInfo item, ItemFlags flag)
 		{
 			return (item.Flags & flag) == flag;
 		}
