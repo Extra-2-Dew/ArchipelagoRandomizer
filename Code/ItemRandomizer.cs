@@ -318,10 +318,12 @@ namespace ArchipelagoRandomizer
 			// Machine Fortress
 			preloader.AddObjectToPreloadList("MachineFortress", () =>
 			{
+				GameObject lightningBall = Instantiate(Resources.FindObjectsOfTypeAll<Item>().FirstOrDefault(item => item.gameObject.name.EndsWith("Ball")).gameObject);
+				lightningBall.name = lightningBall.name.Remove(lightningBall.name.IndexOf("(Clone)"));
 				List<GameObject> list = [
 					GameObject.Find("LevelRoot").transform.Find("O/Doodads/Dungeon_ChestBees").gameObject,
 					GameObject.Find("LevelRoot").transform.Find("G/Logic/SecretPortal").gameObject,
-					Resources.FindObjectsOfTypeAll<Item>().FirstOrDefault(item => item.gameObject.name.EndsWith("Ball")).gameObject // Lightning drop
+					lightningBall
 					];
 				if (preloadItems) list.AddRange([
 					FreestandingReplacer.GetModelFromPath("Progressive Dynamite"),
@@ -386,14 +388,6 @@ namespace ArchipelagoRandomizer
 					FreestandingReplacer.GetModelFromPath("Key")
 				];
 			});
-			/*
-			// Pepperpain Mountain
-			// TODO: Store: Eruption
-			preloader.AddObjectToPreloadList("VitaminHills3", () =>
-			{
-				return [null];
-			});
-			*/
 			// Autumn Climb
 			if (preloadItems) preloader.AddObjectToPreloadList("Deep1", () =>
 			{
@@ -485,7 +479,8 @@ namespace ArchipelagoRandomizer
 				// Pepperpain Trail
 				preloader.AddObjectToPreloadList("VitaminHills2", () =>
 				{
-					GameObject eruptionEvent = Resources.FindObjectsOfTypeAll<LevelEvent>().FirstOrDefault(levelEvent => levelEvent.name.StartsWith("Volcano")).gameObject;
+					GameObject eruptionEvent = Instantiate(Resources.FindObjectsOfTypeAll<LevelEvent>().FirstOrDefault(levelEvent => levelEvent.name.StartsWith("Volcano")).gameObject);
+					eruptionEvent.name = eruptionEvent.name.Remove(eruptionEvent.name.IndexOf("(Clone)"));
 
 					return [eruptionEvent];
 				});
