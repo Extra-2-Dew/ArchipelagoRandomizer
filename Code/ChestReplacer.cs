@@ -109,6 +109,8 @@ namespace ArchipelagoRandomizer
 						colors = chestCrystalColors.Find(x => x.flag == "Key");
 					else if (item.Type == ItemHandler.ItemTypes.Shard)
 						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
+					else if (item.Type == ItemHandler.ItemTypes.RegionConnector)
+						colors = chestCrystalColors.Find(x => x.flag == item.Type.ToString());
 					else if (item.ItemName == "Lightning")
 						colors = chestCrystalColors.Find(x => x.flag == "Junk");
 					else
