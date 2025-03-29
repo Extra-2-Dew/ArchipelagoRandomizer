@@ -238,12 +238,13 @@ namespace ArchipelagoRandomizer
 		private void QualityOfLifeStuff()
 		{
 			// Pepperpain Mountain cow UFO for Maze of Steel
-			if (SceneName == "VitaminHills3")
+			if (settings.IncludePortalWorlds && SceneName == "VitaminHills3")
 			{
 				GameObject.Find("Countdown").GetComponent<TimerTrigger>().timer = 0;
 				return;
 			}
-			else if (SceneName == "FluffyFields")
+			// Jenny Berry's house
+			else if (settings.IncludeSuperSecrets && SceneName == "FluffyFields")
 			{
 				GameObject.Find("TimedWarper").GetComponentInChildren<TimedTouchTrigger>()._time = 0;
 				return;

@@ -555,9 +555,10 @@ namespace ArchipelagoRandomizer
 			if (beeSwarmSpawner == null)
 			{
 				GameObject beeSwarmSpawnerObj = Preloader.GetPreloadedObject<GameObject>("Dungeon_ChestBees");
-				beeSwarmSpawnerObj.transform.position = player.transform.position;
 				beeSwarmSpawner = beeSwarmSpawnerObj.GetComponent<SpawnEntityEventObserver>();
 			}
+
+			beeSwarmSpawner.transform.position = player.transform.position;
 
 			// Spawn count of bees
 			for (int i = 0; i < count; i++)
