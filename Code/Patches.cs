@@ -145,7 +145,7 @@ namespace ArchipelagoRandomizer
 		public static void SpawnItemEventObserver_SpawnItem_Postfix(SpawnItemEventObserver __instance)
 		{
 			if (!ItemRandomizer.IsActive || !Plugin.Instance.APFileData.ChestAppearanceMatchesContents) return;
-			if (__instance.transform.parent.name == "KeyChest" || __instance.transform.parent.name == "CardChest")
+			if (__instance.transform.parent.name.Contains("KeyChest") || __instance.transform.parent.name.Contains("CardChest"))
 			{
 				GameObject spawnedObject = __instance.showItem.gameObject;
 				PreviewItemInfo preview = spawnedObject.AddComponent<PreviewItemInfo>();

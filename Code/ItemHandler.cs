@@ -22,6 +22,9 @@ namespace ArchipelagoRandomizer
 		private EntityStatusable playerStatusable;
 		private SaverOwner mainSaver;
 		private SpawnEntityEventObserver beeSwarmSpawner;
+		private EntitySpawner matriarchSpawner;
+		private LevelEvent eruptionEvent;
+		private GameObject lightning;
 		private SoundClip heartSound;
 
 		public static ItemHandler Instance { get { return instance; } }
@@ -29,22 +32,32 @@ namespace ArchipelagoRandomizer
 		public enum ItemTypes
 		{
 			None,
-			Bees,
 			Buff,
 			Card,
 			CaveScroll,
 			Crayon,
-			Debuff,
 			EFCS,
 			Heart,
 			Key,
 			Keyring,
+			Lightning,
 			Melee,
 			Outfit,
 			PortalWorldScroll,
 			RegionConnector,
 			Shard,
+			Trap,
 			Upgrade
+		}
+
+		public enum TrapType
+		{
+			BeeOnslaught,
+			Bees,
+			Debuff,
+			Eruption,
+			Matriarch,
+			Snowboarding
 		}
 
 		[System.Flags]
@@ -66,9 +79,9 @@ namespace ArchipelagoRandomizer
 		public static int GetItemCount(ItemData.Item item, out bool isLevelItem)
 		{
 			var mainSaver = Instance.mainSaver;
-            isLevelItem = false;
+			isLevelItem = false;
 
-            if (item == null)
+			if (item == null)
 			{
 				Plugin.Log.LogError("Illegal item count requested! Returning a count of 0.");
 				return 0;
@@ -76,15 +89,15 @@ namespace ArchipelagoRandomizer
 
 			List<string> levelItems = new() { "chain", "tome", "amulet", "headband", "tracker" };
 
-            isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
+			isLevelItem = item.Type == ItemTypes.Upgrade || levelItems.Contains(item.SaveFlag);
 
-            Entity player = ModCore.Utility.GetPlayer();
+			Entity player = ModCore.Utility.GetPlayer();
 
-            if (player == null || mainSaver == null)
+			if (player == null || mainSaver == null)
 				return 0;
 
 
-            if (item.Type == ItemTypes.Key)
+			if (item.Type == ItemTypes.Key)
 			{
 				string dungeonName = item.ItemName.Substring(0, item.ItemName.IndexOf("Key") - 1).Replace(" ", "");
 
@@ -117,29 +130,32 @@ namespace ArchipelagoRandomizer
 				return keyCount;
 			}
 
-            if (item.ItemName.Contains("Outfit") && mainSaver.WorldStorage.HasData(item.SaveFlag))
+			if (string.IsNullOrEmpty(item.SaveFlag))
+				return 0;
+
+			if (item.ItemName.Contains("Outfit") && mainSaver.WorldStorage.HasData(item.SaveFlag))
 			{
 				return 1;
-            }
+			}
 
-            if (item.Type == ItemTypes.Card)
+			if (item.Type == ItemTypes.Card)
 			{
 				var cardSaver = mainSaver.GetSaver("/local/cards");
 				return cardSaver.LoadInt(item.SaveFlag);
-            }
+			}
 
 			if (mainSaver.GetSaver("/local/player/vars").HasData(item.SaveFlag)) return player.GetStateVariable(item.SaveFlag);
 
 			// use the AP items obtained as a last resort
-            return GetAPItemCount(item);
+			return GetAPItemCount(item);
 		}
 
-        /// <summary>
-        /// Returns the count of requested item stored in the save file.
-        /// </summary>
-        /// <param name="item">The item to check for, use GetItemData to get the item reference</param>
-        /// <returns></returns>
-        public static int GetItemCount(ItemData.Item item)
+		/// <summary>
+		/// Returns the count of requested item stored in the save file.
+		/// </summary>
+		/// <param name="item">The item to check for, use GetItemData to get the item reference</param>
+		/// <returns></returns>
+		public static int GetItemCount(ItemData.Item item)
 		{
 			return GetItemCount(item, out _);
 		}
@@ -157,11 +173,11 @@ namespace ArchipelagoRandomizer
 		}
 
 		public static ItemData.Item GetItemData(string itemName)
-        {
-            if (itemData == null)
+		{
+			if (itemData == null)
 				return null;
 
-            return itemData.Find(item => item.ItemName == itemName);
+			return itemData.Find(item => item.ItemName == itemName);
 		}
 
 		public static ItemData.Item GetItemData(int offset)
@@ -177,15 +193,15 @@ namespace ArchipelagoRandomizer
 			int index = (int)item;
 			// Accomadate for gap before Card 1, needs to be updated if those slots get filled
 			if (index > 65) index += 34;
-            return GetItemData(index);
+			return GetItemData(index);
 		}
 
-        public static string GetItemDataName(APItem item)
-        {
-            return GetItemData(item).ItemName;
-        }
+		public static string GetItemDataName(APItem item)
+		{
+			return GetItemData(item).ItemName;
+		}
 
-        public void GiveItem(ItemData.Item item)
+		public void GiveItem(ItemData.Item item)
 		{
 			StartCoroutine(DoGiveItem(item));
 		}
@@ -197,9 +213,6 @@ namespace ArchipelagoRandomizer
 
 			switch (item.Type)
 			{
-				case ItemTypes.Bees:
-					Plugin.StartRoutine(SpawnBees());
-					break;
 				case ItemTypes.Buff:
 					ApplyRandomStatus(false);
 					break;
@@ -211,9 +224,6 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemTypes.Crayon:
 					AddCrayon();
-					break;
-				case ItemTypes.Debuff:
-					ApplyRandomStatus(true);
 					break;
 				case ItemTypes.EFCS:
 					AddEFCS();
@@ -227,6 +237,9 @@ namespace ArchipelagoRandomizer
 				case ItemTypes.Keyring:
 					AddKeys(item.ItemName, true);
 					break;
+				case ItemTypes.Lightning:
+					SpawnLightning();
+					break;
 				case ItemTypes.Outfit:
 					AddOutfit(item.SaveFlag);
 					break;
@@ -235,6 +248,9 @@ namespace ArchipelagoRandomizer
 					break;
 				case ItemTypes.RegionConnector:
 					AddRegionConnector(item.SaveFlag);
+					break;
+				case ItemTypes.Trap:
+					HandleTrap(item);
 					break;
 				case ItemTypes.Upgrade:
 					AddUpgrade(item);
@@ -296,7 +312,7 @@ namespace ArchipelagoRandomizer
 
 			mainSaver = ModCore.Plugin.MainSaver;
 			itemsObtainedSaver = itemsObtainedSaver = mainSaver.GetSaver("/local/archipelago/itemsObtained");
-        }
+		}
 
 		private void AddCard(string saveFlag)
 		{
@@ -493,6 +509,31 @@ namespace ArchipelagoRandomizer
 			playerStatusable.AddStatus(randomStatus);
 		}
 
+		private void HandleTrap(ItemData.Item item)
+		{
+			switch (item.TrapType)
+			{
+				case TrapType.BeeOnslaught:
+					Plugin.StartRoutine(SpawnBees(10));
+					break;
+				case TrapType.Bees:
+					Plugin.StartRoutine(SpawnBees(1));
+					break;
+				case TrapType.Debuff:
+					ApplyRandomStatus(true);
+					break;
+				case TrapType.Eruption:
+					StartEruption();
+					break;
+				case TrapType.Matriarch:
+					Plugin.StartRoutine(SpawnMatriarch());
+					break;
+				case TrapType.Snowboarding:
+					StartSnowboarding();
+					break;
+			}
+		}
+
 		private void IncrementItem(ItemData.Item item)
 		{
 			int currentLevel = player.GetStateVariable(item.SaveFlag);
@@ -507,18 +548,55 @@ namespace ArchipelagoRandomizer
 			player.SetStateVariable(item.SaveFlag, newLevel);
 		}
 
-		private IEnumerator SpawnBees()
+		private IEnumerator SpawnBees(int count)
 		{
 			yield return new WaitForEndOfFrame();
 
 			if (beeSwarmSpawner == null)
 			{
 				GameObject beeSwarmSpawnerObj = Preloader.GetPreloadedObject<GameObject>("Dungeon_ChestBees");
-				beeSwarmSpawnerObj.transform.position = player.transform.position;
 				beeSwarmSpawner = beeSwarmSpawnerObj.GetComponent<SpawnEntityEventObserver>();
 			}
 
-			beeSwarmSpawner.OnFire(false);
+			beeSwarmSpawner.transform.position = player.transform.position;
+
+			// Spawn count of bees
+			for (int i = 0; i < count; i++)
+			{
+				beeSwarmSpawner.OnFire(false);
+			}
+		}
+
+		private void SpawnLightning()
+		{
+			lightning ??= Preloader.GetPreloadedObject<GameObject>("Item_LightningBall");
+			Instantiate(lightning).transform.position = player.transform.position;
+		}
+
+		private IEnumerator SpawnMatriarch()
+		{
+			yield return new WaitForEndOfFrame();
+
+			if (matriarchSpawner == null)
+			{
+				GameObject matriarchSpawnerObj = Preloader.GetPreloadedObject<GameObject>("MatriarchSpawner");
+
+				if (matriarchSpawnerObj == null)
+				{
+					yield return null;
+				}
+
+				float offsetX = Random.value > 0.5f ? 25f : -25f;
+				float offsetZ = Random.value > 0.5f ? 25 : -25f;
+				matriarchSpawnerObj.transform.position = new Vector3(player.transform.position.x + offsetX, player.transform.position.y, player.transform.position.z + offsetZ);
+				matriarchSpawner = matriarchSpawnerObj.GetComponent<EntitySpawner>();
+				matriarchSpawner._delay = 0;
+				GameObject warper = matriarchSpawner._entityPrefab.transform.Find("Warper").gameObject;
+				Destroy(warper.GetComponent<SceneDoor>());
+				warper.AddComponent<MatriarchKiller>();
+			}
+
+			Instantiate(matriarchSpawner);
 		}
 
 		private void SortStatuses()
@@ -546,6 +624,17 @@ namespace ArchipelagoRandomizer
 			Plugin.Log.LogInfo("Stored statuses!");
 		}
 
+		private void StartEruption()
+		{
+			eruptionEvent ??= Preloader.GetPreloadedObject<GameObject>("VolcanoEvent").GetComponent<LevelEvent>();
+			LevelEventMotivator.MotivateEvent(eruptionEvent);
+		}
+
+		private void StartSnowboarding()
+		{
+			Plugin.Log.LogWarning("Snowboarding trap is not implemented yet, so nothing happens!");
+		}
+
 		private void LogNotImplementedMessage(string itemName)
 		{
 			Plugin.Log.LogWarning($"Obtained {itemName}, but this is not implemented yet, so nothing happens!");
@@ -563,142 +652,143 @@ namespace ArchipelagoRandomizer
 				public string SaveFlag { get; set; }
 				public ItemTypes Type { get; set; }
 				public ItemFlags Flag { get; set; }
+				public TrapType TrapType { get; set; }
 				public int Max { get; set; }
 			}
 		}
 	}
 
-    public enum APItem
-    {
-        ProgressiveMelee,
-        ProgressiveForceWand,
-        ProgressiveDynamite,
-        ProgressiveIceRing,
-        ProgressiveChain,
-        ForceWandUpgrade,
-        DynamiteUpgrade,
-        IceRingUpgrade,
-        ChainUpgrade,
-        Roll,
-        ProgressiveTracker,
-        ProgressiveHeadband,
-        ProgressiveAmulet,
-        ProgressiveTome,
-        SecretShard,
-        ForbiddenKey,
-        Lockpick,
-        BoxOfCrayons,
-        CaveScroll,
-        PortalWorldScroll,
-        YellowHeart,
-        RaftPiece,
-        PillowFortKey,
-        PillowFortKeyRing,
-        SandCastleKey,
-        SandCastleKeyRing,
-        ArtExhibitKey,
-        ArtExhibitKeyRing,
-        TrashCaveKey,
-        TrashCaveKeyRing,
-        FloodedBasementKey,
-        FloodedBasementKeyRing,
-        PotassiumMineKey,
-        PotassiumMineKeyRing,
-        BoilingGraveKey,
-        BoilingGraveKeyRing,
-        GrandLibraryKey,
-        GrandLibraryKeyRing,
-        SunkenLabyrinthKey,
-        SunkenLabyrinthKeyRing,
-        MachineFortressKey,
-        MachineFortressKeyRing,
-        DarkHypostyleKey,
-        DarkHypostyleKeyRing,
-        TombOfSimulacrumKey,
-        TombOfSimulacrumKeyRing,
-        SyncopeKey,
-        SyncopeKeyRing,
-        BottomlessTowerKey,
-        BottomlessTowerKeyRing,
-        AntigramKey,
-        AntigramKeyRing,
-        QuietusKey,
-        QuietusKeyRing,
-        JennyDewOutfit,
-        SwimsuitOutfit,
-        TippsieOutfit,
-        LittleDudeOutfit,
-        TigerJennyOutfit,
-        IttleDew1Outfit,
-        DelinquintOutfit,
-        JennyBerryOutfit,
-        ApatheticFrogOutfit,
-        ThatGuyOutfit,
-        BigOldPileOLoot,
-        ImpossibleGatesPass,
-        Card1Fishbun,
-        Card2StupidBee,
-        Card3SafetyJenny,
-        Card4Shellbun,
-        Card5Spikebun,
-        Card6FeralGate,
-        Card7CandySnake,
-        Card8HermitLegs,
-        Card9Ogler,
-        Card10Hyperdusa,
-        Card11EvilEasel,
-        Card12Warnip,
-        Card13Octacle,
-        Card14Rotnip,
-        Card15BeeSwarm,
-        Card16Volcano,
-        Card17JennyShark,
-        Card18SwimmyRoger,
-        Card19Bunboy,
-        Card20Spectre,
-        Card21ReturnOfBrutus,
-        Card22Jelly,
-        Card23Skullnip,
-        Card24SlayerJenny,
-        Card25Titan,
-        Card26ChillyRoger,
-        Card27JennyFlower,
-        Card28Hexrot,
-        Card29JennyMole,
-        Card30JennyBunUnemployed,
-        Card31JennyCat,
-        Card32JennyMermaid,
-        Card33JennyBerryVacation,
-        Card34Mapman,
-        Card35Cyberjenny,
-        Card36LeBiadlo,
-        Card37Lenny,
-        Card38PasselCarver,
-        Card39Tippsie,
-        Card40IttleDew,
-        Card41NappingFly,
-        RandomBuff,
-        RandomDebuffTrap,
-        BeeTrap,
+	public enum APItem
+	{
+		ProgressiveMelee,
+		ProgressiveForceWand,
+		ProgressiveDynamite,
+		ProgressiveIceRing,
+		ProgressiveChain,
+		ForceWandUpgrade,
+		DynamiteUpgrade,
+		IceRingUpgrade,
+		ChainUpgrade,
+		Roll,
+		ProgressiveTracker,
+		ProgressiveHeadband,
+		ProgressiveAmulet,
+		ProgressiveTome,
+		SecretShard,
+		ForbiddenKey,
+		Lockpick,
+		BoxOfCrayons,
+		CaveScroll,
+		PortalWorldScroll,
+		YellowHeart,
+		RaftPiece,
+		PillowFortKey,
+		PillowFortKeyRing,
+		SandCastleKey,
+		SandCastleKeyRing,
+		ArtExhibitKey,
+		ArtExhibitKeyRing,
+		TrashCaveKey,
+		TrashCaveKeyRing,
+		FloodedBasementKey,
+		FloodedBasementKeyRing,
+		PotassiumMineKey,
+		PotassiumMineKeyRing,
+		BoilingGraveKey,
+		BoilingGraveKeyRing,
+		GrandLibraryKey,
+		GrandLibraryKeyRing,
+		SunkenLabyrinthKey,
+		SunkenLabyrinthKeyRing,
+		MachineFortressKey,
+		MachineFortressKeyRing,
+		DarkHypostyleKey,
+		DarkHypostyleKeyRing,
+		TombOfSimulacrumKey,
+		TombOfSimulacrumKeyRing,
+		SyncopeKey,
+		SyncopeKeyRing,
+		BottomlessTowerKey,
+		BottomlessTowerKeyRing,
+		AntigramKey,
+		AntigramKeyRing,
+		QuietusKey,
+		QuietusKeyRing,
+		JennyDewOutfit,
+		SwimsuitOutfit,
+		TippsieOutfit,
+		LittleDudeOutfit,
+		TigerJennyOutfit,
+		IttleDew1Outfit,
+		DelinquintOutfit,
+		JennyBerryOutfit,
+		ApatheticFrogOutfit,
+		ThatGuyOutfit,
+		BigOldPileOLoot,
+		ImpossibleGatesPass,
+		Card1Fishbun,
+		Card2StupidBee,
+		Card3SafetyJenny,
+		Card4Shellbun,
+		Card5Spikebun,
+		Card6FeralGate,
+		Card7CandySnake,
+		Card8HermitLegs,
+		Card9Ogler,
+		Card10Hyperdusa,
+		Card11EvilEasel,
+		Card12Warnip,
+		Card13Octacle,
+		Card14Rotnip,
+		Card15BeeSwarm,
+		Card16Volcano,
+		Card17JennyShark,
+		Card18SwimmyRoger,
+		Card19Bunboy,
+		Card20Spectre,
+		Card21ReturnOfBrutus,
+		Card22Jelly,
+		Card23Skullnip,
+		Card24SlayerJenny,
+		Card25Titan,
+		Card26ChillyRoger,
+		Card27JennyFlower,
+		Card28Hexrot,
+		Card29JennyMole,
+		Card30JennyBunUnemployed,
+		Card31JennyCat,
+		Card32JennyMermaid,
+		Card33JennyBerryVacation,
+		Card34Mapman,
+		Card35Cyberjenny,
+		Card36LeBiadlo,
+		Card37Lenny,
+		Card38PasselCarver,
+		Card39Tippsie,
+		Card40IttleDew,
+		Card41NappingFly,
+		RandomBuff,
+		RandomDebuffTrap,
+		BeeTrap,
 		Lightning,
 		MeteorShowerTrap,
 		BeeOnslaughtTrap,
 		FreeRangeSnowboardingTrap,
 		MatriarchTrap,
-        ConnectionFluffyFieldsToSweetwaterCoast,
-        ConnectionFluffyFieldsToFancyRuins,
-        ConnectionFluffyFieldsToStarWoods,
-        ConnectionFluffyFieldsToSlipperSlope,
-        ConnectionFluffyFieldsToPepperpainPrairie,
-        ConnectionSweetwaterCoastToFancyRuins,
-        ConnectionSweetwaterCoastToStarWoods,
-        ConnectionSweetwaterCoastToSlipperySlope,
-        ConnectionFancyRuinsToStarWoods,
-        ConnectionFancyRuinsToPepperpainPrairie,
-        ConnectionFancyRuinsToFrozenCourt,
-        ConnectionStarWoodsToFrozenCourt,
-        ConnectionSlipperySlopeToPepperpainPrairie,
-        ConnectionSlipperySlopeToLonelyRoad,
-        Potion
-    }
+		ConnectionFluffyFieldsToSweetwaterCoast,
+		ConnectionFluffyFieldsToFancyRuins,
+		ConnectionFluffyFieldsToStarWoods,
+		ConnectionFluffyFieldsToSlipperSlope,
+		ConnectionFluffyFieldsToPepperpainPrairie,
+		ConnectionSweetwaterCoastToFancyRuins,
+		ConnectionSweetwaterCoastToStarWoods,
+		ConnectionSweetwaterCoastToSlipperySlope,
+		ConnectionFancyRuinsToStarWoods,
+		ConnectionFancyRuinsToPepperpainPrairie,
+		ConnectionFancyRuinsToFrozenCourt,
+		ConnectionStarWoodsToFrozenCourt,
+		ConnectionSlipperySlopeToPepperpainPrairie,
+		ConnectionSlipperySlopeToLonelyRoad,
+		Potion
+	}
 }

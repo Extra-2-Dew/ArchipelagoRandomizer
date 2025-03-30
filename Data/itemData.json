@@ -814,13 +814,49 @@
 			"itemName": "Random Debuff Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 142,
-			"type": "Debuff"
+			"type": "Trap",
+			"trapType": "Debuff"
 		},
 		{
 			"itemName": "Bee Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 143,
-			"type": "Bees"
+			"type": "Trap",
+			"trapType": "Bees"
+		},
+		{
+			"itemName": "Lightning",
+			"iconName": "Custom/ItemIcon_Lightning",
+			"offset": 144,
+			"type": "Lightning"
+		},
+		{
+			"itemName": "Eruption",
+			"iconName": "Custom/APTrap",
+			"offset": 145,
+			"type": "Trap",
+			"trapType": "Eruption"
+		},
+		{
+			"itemName": "Bee Onslaught",
+			"iconName": "Custom/APTrap",
+			"offset": 146,
+			"type": "Trap",
+			"trapType": "BeeOnslaught"
+		},
+		{
+			"itemName": "Freerange Snowboarding",
+			"iconName": "Custom/APTrap",
+			"offset": 147,
+			"type": "Trap",
+			"trapType": "Snowboarding"
+		},
+		{
+			"itemName": "Matriarch",
+			"iconName": "Custom/APTrap",
+			"offset": 148,
+			"type": "Trap",
+			"trapType": "Matriarch"
 		},
 		{
 			"itemName": "Connection - Fluffy Fields To Sweetwater Coast",
@@ -924,6 +960,7 @@
 			"itemName": "Potion",
 			"iconName": "Custom/potion",
 			"offset": 163,
+			"flag": "Macguffin",
 			"saveFlag": "potions"
 		}
 	]

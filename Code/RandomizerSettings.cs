@@ -56,7 +56,9 @@ namespace ArchipelagoRandomizer
 		private ShardSettings shardSetting;
 		private bool startWithTracker;
 		private bool startWithWarps;
+		private bool superTrapsEnabled;
 		private string syncopePianoPuzzle;
+		private bool trapsEnabled;
 
 		public static RandomizerSettings Instance { get; private set; }
 
@@ -79,7 +81,9 @@ namespace ArchipelagoRandomizer
 		public ShardSettings ShardSetting { get { return shardSetting; } }
 		public bool StartWithTracker { get { return startWithTracker; } }
 		public bool StartWithWarps { get { return startWithWarps; } }
+		public bool SuperTrapsEnabled { get { return superTrapsEnabled; } }
 		public string SyncopePianoPuzzle { get { return syncopePianoPuzzle; } }
+		public bool TrapsEnabled { get { return trapsEnabled; } }
 
 		public RandomizerSettings()
 		{
@@ -111,7 +115,9 @@ namespace ArchipelagoRandomizer
 				{ nameof(ShardSetting), shardSetting = (ShardSettings)APHandler.GetSlotData<long>("shard_settings") },
 				{ nameof(StartWithTracker), startWithTracker = APHandler.GetSlotData<long>("start_with_tracker") == 1 },
 				{ nameof(StartWithWarps), startWithWarps = APHandler.GetSlotData<long>("start_with_all_warps") == 1 },
-				{ nameof(SyncopePianoPuzzle), syncopePianoPuzzle = APHandler.GetSlotData<string>("piano_puzzle") }
+				{ nameof(SuperTrapsEnabled), superTrapsEnabled = APHandler.GetSlotData<long>("super_trap_percentage") > 0},
+				{ nameof(SyncopePianoPuzzle), syncopePianoPuzzle = APHandler.GetSlotData<string>("piano_puzzle") },
+				{ nameof(TrapsEnabled), trapsEnabled = APHandler.GetSlotData<long>("trap_percentage") > 0 }
 			};
 		}
 
