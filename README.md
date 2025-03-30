@@ -16,6 +16,7 @@ Currently, the randomizer can give you the following:
 * All dungeon keys
 * Crayons
 * Lockpicks
+* Connections between regions (optional, if enabled you need these to move through the overworld)
 * Random status effects (both positive and negative)
 * BEES
 
@@ -31,13 +32,15 @@ Currently, the following locations are randomized:
 * All chests and keys in the four secret dungeons (optional)
 * All cards and keys in the five Dreamworld dungeons (optional)
 * Certain SUPER SECRET LOCATIONS (optional)
+* Certain secret signs (optional), including the four incomplete signs, secret signs in Portal Worlds, and if you have Super Secrets on, Cipher Signs.
 
 ## What is the goal of the randomizer?
 
-There are three possible goals:
+There are four possible goals:
 * **Raft Quest**: Simply find the 8 Raft Pieces and escape the island.
 * **Queen of Adventure**: Find the 8 Raft Pieces, but before you can escape the island, you must also defeat Simulacrum and take her Big Ol' Bag of Loot.
 * **Queen of Dreams**: Find a Raft Piece to enter the Dreamworld and complete all five Dreamworld dungeons. This will let you escape the island.
+* **Potion Hunt**: Find a configurable number of health potions so that Tippsie can build you a Raft and escape the island.
 
 ## Installation
 
@@ -91,7 +94,7 @@ As the mod is still in develpment, there may be bugs, softlocks, or items not pr
 
 ### What's this "Chests Match Contents" setting?
 
-If you have the setting on, chests will change their colors to let you know what kind of item is inside them. If they're in a crystal, the crystal will change color too.
+If you have the setting on, chests will change their colors to let you know what kind of item is inside them. If they're in a crystal, the crystal will change color too. This also affects keychests and cardchests, so keys and cards will now display what they contain.
 
 ![Chests Match Contents chart](https://github.com/Extra-2-Dew/ArchipelagoRandomizer/blob/main/Readme%20Art/ChestsMatchContentsChart.png)
 
