@@ -137,7 +137,7 @@ namespace ArchipelagoRandomizer
                     {
                         blockade.transform.SetParent(room.transform, true);
                     }
-                    if (blockade.GetComponent<RoomObject>() != null) blockade.GetComponent<RoomObject>()._room = room.GetComponent<LevelRoom>();
+                    if (blockade.GetComponent<RoomObject>() != null) MonoBehaviour.Destroy(blockade.GetComponent<RoomObject>());
                     Sign sign = blockade.GetComponentInChildren<Sign>();
                     if (string.IsNullOrEmpty(spawn.dialogue))
                     {
