@@ -32,6 +32,15 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
+		private bool DoPreventAccessToFluffyFromStaffArea
+		{
+			get
+			{
+				IDataSaver fluffySeenRoomsSaver = ModCore.Plugin.MainSaver.GetSaver("/local/levels/FluffyFields/player/seenrooms");
+				return settings.StartingRegion != StartingRegion.FluffyFields && settings.BlockRegionConnections && ModCore.Utility.GetPlayer().GetComponent<RoomSwitchable>().RoomData.LatestRoom == "C" && fluffySeenRoomsSaver.LoadInt("A") == 0 && fluffySeenRoomsSaver.LoadInt("B") == 0;
+			}
+		}
+
 		public SceneLoadEvents(RandomizerSettings settings)
 		{
 			this.settings = settings;
@@ -251,6 +260,25 @@ namespace ArchipelagoRandomizer
 			}
 		}
 
+		/// <summary>
+		/// Disables the room transitions from Fluffy staff area until you've unlocked the region
+		/// </summary>
+		private void PreventAccessToFluffyFromStaffArea(bool prevent)
+		{
+			if (prevent)
+			{
+				// Disable transitions
+				GameObject.Find("LevelRoot/DoorZones/AC").SetActive(false);
+				GameObject.Find("LevelRoot/DoorZones/BC").SetActive(false);
+			}
+			else
+			{
+				// Destroy barricades
+				Object.Destroy(GameObject.Find("Connection - Fluffy Fields C to Fluffy Fields A"));
+				Object.Destroy(GameObject.Find("Connection - Fluffy Fields C to Fluffy Fields B"));
+			}
+		}
+
 		private void DisableRando()
 		{
 			MessageBoxHandler.Instance.HideMessageBoxes();
@@ -260,8 +288,6 @@ namespace ArchipelagoRandomizer
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
 			SceneName = scene.name;
-
-			Plugin.LogDebugMessage("Event fired:\n" + $"    Curr: {scene.name}");
 
 			switch (SceneName)
 			{
@@ -284,10 +310,22 @@ namespace ArchipelagoRandomizer
 					RemoveBeeChestSpawner();
 					break;
 				case "FluffyFields":
+					if (DoModifyShardReqs)
+					{
+						ModifyShardDungeonReqs();
+					}
+					break;
 				case "FancyRuins":
+					if (DoModifyShardReqs)
+					{
+						ModifyShardDungeonReqs();
+					}
+					break;
 				case "StarWoods":
 					if (DoModifyShardReqs)
+					{
 						ModifyShardDungeonReqs();
+					}
 					break;
 				case "LonelyRoad":
 					FixLonelyRoadMeteor();
@@ -300,7 +338,15 @@ namespace ArchipelagoRandomizer
 			if (Plugin.Instance.APFileData.QualityOfLife)
 				QualityOfLifeStuff();
 
-			if (settings.BlockRegionConnections) BlockadeVisualsHandler.SpawnBlockades(SceneName);
+			if (settings.BlockRegionConnections)
+			{
+				BlockadeVisualsHandler.SpawnBlockades(SceneName);
+
+				if (SceneName == "FluffyFields")
+				{
+					PreventAccessToFluffyFromStaffArea(DoPreventAccessToFluffyFromStaffArea);
+				}
+			}
 		}
 
 		private void OnPlayerRespawn()
@@ -312,7 +358,9 @@ namespace ArchipelagoRandomizer
 		private void OnItemReceieved(ItemHandler.ItemData.Item item, string sentFromPlayerName)
 		{
 			if ((item.Type == ItemHandler.ItemTypes.Melee || item.Type == ItemHandler.ItemTypes.EFCS) && SceneName == "Deep19s" && DoGiveTempEFCS)
+			{
 				GiveTempEFCS();
+			}
 		}
 	}
 }

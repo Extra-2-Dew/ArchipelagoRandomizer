@@ -64,6 +64,10 @@ namespace ArchipelagoRandomizer
 				ObtainedTracker3();
 			if (settings.StartWithWarps)
 				UnlockWarpGarden();
+			if (settings.StartingRegion > 0)
+			{
+				RandomStartRegion();
+			}
 
 			mainSaver.SaveLocal();
 		}
@@ -306,6 +310,29 @@ namespace ArchipelagoRandomizer
 					mainSaver.GetSaver($"/local/levels/{sceneAndRoom.Key}/player/seenrooms").SaveInt(sceneAndRoom.Value[i], 1);
 				}
 			}
+		}
+
+		private void RandomStartRegion()
+		{
+			IDataSaver startSaver = mainSaver.LocalStorage.GetLocalSaver("start");
+			startSaver.SaveData("level", settings.StartingRegion.ToString());
+			string door;
+
+			switch (settings.StartingRegion)
+			{
+				case StartingRegion.FluffyFields:
+					door = "";
+					break;
+				case StartingRegion.LonelyRoad:
+					door = "LR_SS1";
+					break;
+				default:
+					door = "RestorePt1";
+					break;
+			}
+
+			startSaver.SaveData("door", door);
+			mainSaver.GetSaver("/local/levels/FluffyFields/A").SaveInt("IntroDialog-39--26", 1);
 		}
 	}
 }

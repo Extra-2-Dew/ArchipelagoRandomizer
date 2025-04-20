@@ -111,20 +111,48 @@
         "width": 3,
         "dialogue": "\"Maintain the barricades!\nThe turnips are coming!\""
     },
-    {
-        "scene": "FluffyFields",
-        "room": "C",
-        "blockadeName": "Fluffy Fields To Fancy Ruins",
-        "ittleTalk": true,
-        "position": {
-            "x": 67,
-            "y": 0,
-            "z": -56
-        },
-        "rotation": 90,
-        "width": 3,
-        "dialogue": "\"Maintain the barricades!\nTacky decor is coming!\""
-    },
+	{
+		"scene": "FluffyFields",
+		"room": "C",
+		"blockadeName": "Fluffy Fields To Fancy Ruins",
+		"ittleTalk": true,
+		"position": {
+			"x": 67,
+			"y": 0,
+			"z": -56
+		},
+		"rotation": 90,
+		"width": 3,
+		"dialogue": "\"Maintain the barricades!\nTacky decor is coming!\""
+	},
+	{
+		"scene": "FluffyFields",
+		"room": "C",
+		"blockadeName": "Fluffy Fields C to Fluffy Fields A",
+		"ittleTalk": true,
+		"position": {
+			"x": 60,
+			"y": 0,
+			"z": -40
+		},
+		"rotation": 0,
+		"width": 3,
+		"dialogue": "\"The Staff Area is in an enforced\nlockdown during their break. This barrier\nmay only be removed by authorized staff\nfrom the outside.\""
+	},
+	{
+		"scene": "FluffyFields",
+		"room": "C",
+		"blockadeName": "Fluffy Fields C to Fluffy Fields B",
+		"ittleTalk": true,
+		"position": {
+			"x": 35,
+			"y": 0,
+			"z": -58
+		},
+		"rotation": 90,
+		"width": 3,
+		"dialogue": "\"Staff caught leaving the premises\nwithout license may be penalized\nwith a 100 gold coin fine.\nOnly staff in other parts of Fluffy Fields\nmay remove this restriction.\""
+	},
     {
         "scene": "CandyCoast",
         "room": "A",
@@ -565,10 +593,10 @@
         "position": {
             "x": 76,
             "y": 0,
-            "z": -37
+            "z": -39
         },
         "rotation": 0,
         "width": 3,
-        "dialogue": "Wow, I can't believe you cheated\nand teleported to Lonely Road!\nWhat a loser!"
+        "dialogue": "Don't leave me! It gets\nso lonely here..."
     }
 ]

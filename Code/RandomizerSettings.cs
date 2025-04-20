@@ -35,6 +35,18 @@ namespace ArchipelagoRandomizer
 		Lockdown
 	}
 
+	public enum StartingRegion
+	{
+		FluffyFields,
+		CandyCoast,
+		FancyRuins,
+		StarWoods,
+		SlipperySlope,
+		VitaminHills,
+		FrozenCourt,
+		LonelyRoad
+	}
+
 	public class RandomizerSettings
 	{
 		private bool blockRegionConnections;
@@ -54,6 +66,7 @@ namespace ArchipelagoRandomizer
 		private long requiredPotions;
 		private bool rollOpensChests;
 		private ShardSettings shardSetting;
+		private StartingRegion startingRegion;
 		private bool startWithTracker;
 		private bool startWithWarps;
 		private bool superTrapsEnabled;
@@ -79,6 +92,7 @@ namespace ArchipelagoRandomizer
 		public long RequiredPotions { get { return requiredPotions; } }
 		public bool RollOpensChests { get { return rollOpensChests; } }
 		public ShardSettings ShardSetting { get { return shardSetting; } }
+		public StartingRegion StartingRegion { get { return startingRegion; } }
 		public bool StartWithTracker { get { return startWithTracker; } }
 		public bool StartWithWarps { get { return startWithWarps; } }
 		public bool SuperTrapsEnabled { get { return superTrapsEnabled; } }
@@ -113,6 +127,7 @@ namespace ArchipelagoRandomizer
 				{ nameof(RequiredPotions), requiredPotions = APHandler.GetSlotData<long>("required_potion_count") },
 				{ nameof(RollOpensChests), rollOpensChests = APHandler.GetSlotData<long>("roll_opens_chests") == 1 },
 				{ nameof(ShardSetting), shardSetting = (ShardSettings)APHandler.GetSlotData<long>("shard_settings") },
+				{ nameof(StartingRegion), startingRegion = (StartingRegion)APHandler.GetSlotData<long>("random_start") },
 				{ nameof(StartWithTracker), startWithTracker = APHandler.GetSlotData<long>("start_with_tracker") == 1 },
 				{ nameof(StartWithWarps), startWithWarps = APHandler.GetSlotData<long>("start_with_all_warps") == 1 },
 				{ nameof(SuperTrapsEnabled), superTrapsEnabled = APHandler.GetSlotData<long>("super_trap_percentage") > 0},
