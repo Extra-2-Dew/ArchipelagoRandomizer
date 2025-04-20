@@ -62,19 +62,27 @@ namespace ArchipelagoRandomizer
 			ItemRandomizer.OnItemReceived -= OnItemGet;
 		}
 
-		private void ActivateCreditsTrigger()
+		private void ActivateCreditsTrigger(bool activate)
 		{
 			GameObject winGameTrigger = GameObject.Find("WinGameTrigger");
-			winGameTrigger.transform.Find("ActivateTrigger").gameObject.SetActive(false);
-			GameObject creditsDoor = winGameTrigger.transform.Find("LevelDoor").gameObject;
-			creditsDoor.SetActive(true);
 
-			if (effectRef == null)
-				return;
+			if (activate)
+			{
+				winGameTrigger.transform.Find("ActivateTrigger").gameObject.SetActive(false);
+				GameObject creditsDoor = winGameTrigger.transform.Find("LevelDoor").gameObject;
+				creditsDoor.SetActive(true);
 
-			EffectEventObserver effect = creditsDoor.AddComponent<EffectEventObserver>();
-			effect._onEffect = effectRef._onEffect;
-			effect.OnFire(false);
+				if (effectRef == null)
+					return;
+
+				EffectEventObserver effect = creditsDoor.AddComponent<EffectEventObserver>();
+				effect._onEffect = effectRef._onEffect;
+				effect.OnFire(false);
+			}
+			else
+			{
+				winGameTrigger.SetActive(false);
+			}
 		}
 
 		private void SendCompletion()
@@ -99,13 +107,23 @@ namespace ArchipelagoRandomizer
 			if (SceneManager.GetActiveScene().name != "FluffyFields")
 				return;
 
-			// If completed other goals, activate credits trigger
-			if (currentGoal == GoalSettings.QueenOfAdventure && HasCompletedQueenOfAdventure)
-				ActivateCreditsTrigger();
-			else if (currentGoal == GoalSettings.QueenOfDreams && HasCompletedQueenOfDreams)
-				ActivateCreditsTrigger();
-			else if (currentGoal == GoalSettings.PotionHunt && HasCompletedPotionHunt)
-				ActivateCreditsTrigger();
+			bool hasCompletedGoal = currentGoal switch
+			{
+				GoalSettings.QueenOfAdventure => HasCompletedQueenOfAdventure,
+				GoalSettings.QueenOfDreams => HasCompletedQueenOfDreams,
+				GoalSettings.PotionHunt => HasCompletedPotionHunt,
+				_ => false
+			};
+
+			if (hasCompletedGoal)
+			{
+				ActivateCreditsTrigger(true);
+			}
+			// Keep win game trigger disabled until all goal requirements are met
+			else if (currentGoal != GoalSettings.RaftQuest && HasCompletedRaftQuest)
+			{
+				ActivateCreditsTrigger(false);
+			}
 		}
 
 		private void OnItemGet(ItemHandler.ItemData.Item item, string sentFromPlayerName)
@@ -118,7 +136,7 @@ namespace ArchipelagoRandomizer
 			bool hasCompletedPotionHunt = (currentGoal == GoalSettings.PotionHunt && item.ItemName == "Potion" && HasCompletedPotionHunt);
 
 			if (hasCompletedRaftQuest || hasCompletedPotionHunt)
-				ActivateCreditsTrigger();
+				ActivateCreditsTrigger(true);
 		}
 	}
 }
