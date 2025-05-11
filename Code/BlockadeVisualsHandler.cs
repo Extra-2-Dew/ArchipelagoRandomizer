@@ -11,7 +11,7 @@ namespace ArchipelagoRandomizer
 		public static Dictionary<string, MapData> editedDatas;
 
 		private static GameObject blockadeStand;
-		private static string bundlePath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmodels");
+		private static string bundlePath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, ID2.PluginInfo.PLUGIN_NAME, "Assets", "apmodels");
 		private static List<BlockadeData> blockadeData;
 		private static Dictionary<string, List<GameObject>> currentSceneBlockades;
 		private static Texture2D lockedPath;
@@ -26,8 +26,8 @@ namespace ArchipelagoRandomizer
 
 			if (!RandomizerSettings.Instance.BlockRegionConnections) return;
 
-			string dataPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
-			string assetPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets");
+			string dataPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, ID2.PluginInfo.PLUGIN_NAME, "Data", "blockadeData.json");
+			string assetPath = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, ID2.PluginInfo.PLUGIN_NAME, "Assets");
 			if (!ModCore.Utility.TryParseJson<List<BlockadeData>>(dataPath, out blockadeData))
 			{
 				Plugin.Log.LogError("Unable to load Blockade Data! Blockades will not be available.");

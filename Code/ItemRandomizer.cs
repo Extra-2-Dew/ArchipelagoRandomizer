@@ -242,7 +242,7 @@ namespace ArchipelagoRandomizer
 			// Parse data JSON
 			if (locations == null)
 			{
-				string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "locationData.json");
+				string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, ID2.PluginInfo.PLUGIN_NAME, "Data", "locationData.json");
 
 				if (!ModCore.Utility.TryParseJson(path, out LocationData? data))
 				{

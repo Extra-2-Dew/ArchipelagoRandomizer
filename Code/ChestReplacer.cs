@@ -8,7 +8,7 @@ namespace ArchipelagoRandomizer
 	class ChestReplacer
 	{
 		private static ChestReplacer instance;
-		private const string assetPath = $"{PluginInfo.PLUGIN_NAME}/Assets/";
+		private const string assetPath = $"{ID2.PluginInfo.PLUGIN_NAME}/Assets/";
 		private static readonly List<ChestCrystalColorData> chestCrystalColors = new()
 		{
 			{ new("Key", true,

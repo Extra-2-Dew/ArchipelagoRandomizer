@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net35</TargetFramework>
 		<AssemblyName>ArchipelagoRandomizer</AssemblyName>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 		<LangVersion>Latest</LangVersion>
 		<NoWarn>1701;1702;0436</NoWarn>
 		<DebugType>portable</DebugType>
@@ -13,6 +13,9 @@
 	<PropertyGroup>
 		<GameDataPath>$([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\AppData\LocalLow\Ludosity\Ittle Dew 2</GameDataPath>
 		<OutDir>$(GameDataPath)\BepInEx\plugins\$(AssemblyName)</OutDir>
+		<RootNamespace>ID2</RootNamespace>
+		<Description>An Archipelago multiworld client for Ittle Dew 2</Description>
+		<Product>ArchipelagoRandomizer</Product>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Include="ArchipelagoRandomizer.csproj.user" />
@@ -30,6 +33,9 @@
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="$(GameDataPath)\BepInEx\plugins\ModCore\ModCore.dll">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="$(GameDataPath)\BepInEx\plugins\ItemChanger\ItemChanger.dll">
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="UnityEngine.UI">

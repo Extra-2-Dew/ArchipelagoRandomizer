@@ -9,8 +9,6 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
-	[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-	[BepInDependency("ModCore")]
 	public class Plugin : BaseUnityPlugin
 	{
 		private APHandler apHandler;
@@ -48,7 +46,7 @@ namespace ArchipelagoRandomizer
 		{
 			Instance = this;
 			Log = Logger;
-			Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+			Logger.LogInfo($"Plugin {ID2.PluginInfo.PLUGIN_GUID} is loaded!");
 
 			apHandler = new APHandler();
 			apCommandHandler = new APCommand();

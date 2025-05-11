@@ -36,7 +36,7 @@ namespace ArchipelagoRandomizer
 
 		public static void LoadMenuAssets()
 		{
-			AssetBundle bundle = AssetBundle.LoadFromFile(BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Assets", "apmenus"));
+			AssetBundle bundle = AssetBundle.LoadFromFile(BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, ID2.PluginInfo.PLUGIN_NAME, "Assets", "apmenus"));
 			menuPrefab = bundle.LoadAsset<GameObject>("APCanvas");
 			loadingScreenPrefab = bundle.LoadAsset<GameObject>("LoadingScreen");
 			loadingScreenPrefab.GetComponentInChildren<Slider>().value = 0;

@@ -19,7 +19,7 @@ namespace ArchipelagoRandomizer
 			if (doorsData == null)
 			{
 				// Parse item JSON
-				string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, PluginInfo.PLUGIN_NAME, "Data", "doorData.json");
+				string path = BepInEx.Utility.CombinePaths(BepInEx.Paths.PluginPath, ID2.PluginInfo.PLUGIN_NAME, "Data", "doorData.json");
 
 				if (!ModCore.Utility.TryParseJson(path, out DoorData? data))
 				{

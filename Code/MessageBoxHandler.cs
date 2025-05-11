@@ -165,7 +165,7 @@ namespace ArchipelagoRandomizer
 			{
 				if (string.IsNullOrEmpty(Data.ItemName))
 				{
-					Texture2D disconnectedTex = ModCore.Utility.GetTextureFromFile($"{PluginInfo.PLUGIN_NAME}/Assets/Disconnected.png");
+					Texture2D disconnectedTex = ModCore.Utility.GetTextureFromFile($"{ID2.PluginInfo.PLUGIN_NAME}/Assets/Disconnected.png");
 					messageBox.texture = disconnectedTex;
 					messageBox.mat.mainTexture = disconnectedTex;
 					return;
@@ -185,7 +185,7 @@ namespace ArchipelagoRandomizer
 				bool isCustomIcon = iconName.StartsWith("Custom");
 				string iconPath = !isCustomIcon ?
 					$"Items/ItemIcon_{iconName}" :
-					$"{PluginInfo.PLUGIN_NAME}/Assets/{iconName.Substring(iconName.LastIndexOf("/"))}.png";
+					$"{ID2.PluginInfo.PLUGIN_NAME}/Assets/{iconName.Substring(iconName.LastIndexOf("/"))}.png";
 				Texture2D texture = !isCustomIcon ? Resources.Load(iconPath) as Texture2D : ModCore.Utility.GetTextureFromFile(iconPath);
 
 				if (texture == null)

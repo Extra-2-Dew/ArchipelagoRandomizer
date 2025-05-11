@@ -1,9 +1,6 @@
-﻿using HarmonyLib;
-using System;
-using UnityEngine;
-
-namespace ArchipelagoRandomizer
+﻿namespace ArchipelagoRandomizer
 {
+	/*
 	[HarmonyPatch]
 	public class Patches
 	{
@@ -222,36 +219,37 @@ namespace ArchipelagoRandomizer
 				mapData._markers = BlockadeVisualsHandler.editedDatas[mapData.name]._markers;
 			}
 		}
-
-		// KEPT AS REFERENCE SINCE THIS WAS PAIN
-
-		//[HarmonyPatch(typeof(SpawnItemEventObserver))]
-		//[HarmonyPatch("SpawnItem")]
-		//public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-		//{
-		//	FieldInfo itemRandoField = AccessTools.Field(typeof(Plugin), "ItemRandomizer");
-		//	FieldInfo showItemField = AccessTools.Field(typeof(SpawnItemEventObserver), nameof(SpawnItemEventObserver.showItem));
-		//	MethodInfo handleItemReplacementMethod = AccessTools.Method(typeof(ItemRandomizer), "HandleItemReplacement");
-
-		//	return new CodeMatcher(instructions)
-		//		// Looks for matches
-		//		.MatchForward(true,
-		//			// Looks for method call for Item.Pickup
-		//			new CodeMatch(OpCodes.Ldloc_0)
-		//		).Insert(
-		//			// Store Item rando in stack
-		//			new CodeInstruction(OpCodes.Ldsfld, itemRandoField),
-		//			// Store SpawnItemEventObserver in stack
-		//			new CodeInstruction(OpCodes.Ldarg_0),
-		//			// Store entity in stack
-		//			new CodeInstruction(OpCodes.Ldloc_0),
-		//			// Store item in stack
-		//			new CodeInstruction(OpCodes.Ldloc_1),
-		//			// Calls ItemRandomizer.HandleItemReplacement() which returns the new Item object
-		//			new CodeInstruction(OpCodes.Callvirt, handleItemReplacementMethod),
-		//			// Reassign item
-		//			new CodeInstruction(OpCodes.Stloc_1)
-		//		).InstructionEnumeration();
-		//}
 	}
+	*/
+
+	// KEPT AS REFERENCE SINCE THIS WAS PAIN
+
+	//[HarmonyPatch(typeof(SpawnItemEventObserver))]
+	//[HarmonyPatch("SpawnItem")]
+	//public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+	//{
+	//	FieldInfo itemRandoField = AccessTools.Field(typeof(Plugin), "ItemRandomizer");
+	//	FieldInfo showItemField = AccessTools.Field(typeof(SpawnItemEventObserver), nameof(SpawnItemEventObserver.showItem));
+	//	MethodInfo handleItemReplacementMethod = AccessTools.Method(typeof(ItemRandomizer), "HandleItemReplacement");
+
+	//	return new CodeMatcher(instructions)
+	//		// Looks for matches
+	//		.MatchForward(true,
+	//			// Looks for method call for Item.Pickup
+	//			new CodeMatch(OpCodes.Ldloc_0)
+	//		).Insert(
+	//			// Store Item rando in stack
+	//			new CodeInstruction(OpCodes.Ldsfld, itemRandoField),
+	//			// Store SpawnItemEventObserver in stack
+	//			new CodeInstruction(OpCodes.Ldarg_0),
+	//			// Store entity in stack
+	//			new CodeInstruction(OpCodes.Ldloc_0),
+	//			// Store item in stack
+	//			new CodeInstruction(OpCodes.Ldloc_1),
+	//			// Calls ItemRandomizer.HandleItemReplacement() which returns the new Item object
+	//			new CodeInstruction(OpCodes.Callvirt, handleItemReplacementMethod),
+	//			// Reassign item
+	//			new CodeInstruction(OpCodes.Stloc_1)
+	//		).InstructionEnumeration();
+	//}
 }
