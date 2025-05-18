@@ -210,6 +210,18 @@ namespace ArchipelagoRandomizer
 			APMenuStuff.Instance.DeleteAPDataFile();
 		}
 
+		[HarmonyPostfix]
+		[HarmonyPatch(typeof(PlayerController), nameof(PlayerController.GetMoveDir))]
+		public static void PlayerController_GetMoveDir_Patch(PlayerController __instance)
+		{
+			if (!ItemRandomizer.IsActive)
+			{
+				return;
+			}
+
+			GPS.Instance.OnPlayerGetMoveDir(__instance);
+		}
+
 		[HarmonyPrefix]
 		[HarmonyPatch(typeof(MapWindowMap), nameof(MapWindowMap.LoadMap), new Type[] { typeof(MapData), typeof(Entity), typeof(float), typeof(MapData), typeof(Texture2D), typeof(bool) })]
 		public static void MapWindowMap_LoadMap_Prefix(ref MapData mapData)
