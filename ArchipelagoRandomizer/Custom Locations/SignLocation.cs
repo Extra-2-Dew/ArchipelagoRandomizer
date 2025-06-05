@@ -16,8 +16,6 @@ class SignLocation : Location
 		[HarmonyPatch(typeof(Sign), nameof(Sign.Show))]
 		private static bool SignShowPatch(Sign __instance)
 		{
-			//Vector3 position = __instance.transform.position;
-			//string flag = Replacer.Instance.GetFlagFromPosition("Sign", position);
 			string flag = __instance._configString._string;
 
 			if (Replacer.Instance.TryGetLocationFromFlag(flag, out Location location))

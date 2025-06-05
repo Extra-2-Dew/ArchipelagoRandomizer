@@ -52,6 +52,9 @@ class ItemRandomizer
 		public static readonly List<IC.ICItem> alwaysOnItems =
 		[
 			new ImpossibleGatesPassItem("Impossible Gates Pass"),
+			new DroppableItem("Heart", DroppableItem.ItemType.Heart),
+			new DroppableItem("Fruit", DroppableItem.ItemType.Fruit),
+			new DroppableItem("Lightning", DroppableItem.ItemType.Lightning),
 		];
 
 		public static readonly List<IC.ICItem> weaponUpgradeItems =
@@ -98,19 +101,28 @@ class ItemRandomizer
 			new RegionConnnectorItem("Connection - Slippery Slope To Pepperpain Prairie", IC.Area.SlipperySlope, IC.Area.VitaminHills) { Flag = "SS_VH" },
 			new RegionConnnectorItem("Connection - Slippery Slope To Lonely Road", IC.Area.SlipperySlope, IC.Area.LonelyRoad) { Flag = "SS_LR" },
 		];
+
+		public static readonly List<IC.ICItem> trapItems =
+		[
+			new TrapItem("Bee Swarm Trap", TrapItem.TrapType.Bees),
+			new TrapItem("Bee Onslaught Trap", TrapItem.TrapType.BeeOnslaught),
+			new TrapItem("Matriarch Trap", TrapItem.TrapType.Matriarch),
+			new TrapItem("Eruption Trap", TrapItem.TrapType.Eruption),
+			new TrapItem("Random Debuff", TrapItem.TrapType.Debuff),
+		];
 	}
 
 	private static readonly List<IC.Location> customLocations = [];
 	private static readonly List<IC.ICItem> customItems = [];
 
-	public ItemRandomizer()
+	public ItemRandomizer(bool newFile)
 	{
-		Events.OnFileStart += OnFileStart;
-	}
-
-	private void OnFileStart(bool newFile)
-	{
+		// This needs to be before preloading to avoid custom item/location lists from
+		// being deferred by C#. They need to add to preload list before preload starts.
 		AddCustomLocationsAndItems();
+
+		Preloader.Instance.StartPreload();
+
 		PlaceItems();
 		IC.RecentItemsDisplay.Enabled = true;
 	}
@@ -141,6 +153,10 @@ class ItemRandomizer
 		{
 			customItems.AddRange(CustomItems.regionConnectorItems);
 		}
+		if (true)
+		{
+			customItems.AddRange(CustomItems.trapItems);
+		}
 
 		IC.Predefined.AddCustomLocations(customLocations);
 		IC.Predefined.AddCustomItems(customItems);
@@ -152,10 +168,10 @@ class ItemRandomizer
 		Dictionary<string, string> placements = new()
 		{
 			// Pillow Fort
-			{ "Pillow Fort - Shellbun Nest Key", "Connection - Fluffy Fields To Sweetwater Coast" },
-			{ "Pillow Fort - Crayon Chest", "Tomb of Simulacrum Keyring" },
-			{ "Pillow Fort - Safety Jenny Gate Key", "Pillow Fort Key" },
-			{ "Pillow Fort - Treasure Chest", "Forcewand" },
+			{ "Pillow Fort - Shellbun Nest Key", "Fruit" },
+			{ "Pillow Fort - Crayon Chest", "Fruit" },
+			{ "Pillow Fort - Safety Jenny Gate Key", "Fruit" },
+			{ "Pillow Fort - Treasure Chest", "Fruit" },
 			{ "Machine Fortress - Bee Chest", "Raft Piece" },
 			{ "Fluffy Fields Caves - Cipher Sign", "Raft Piece" },
 		};
