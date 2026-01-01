@@ -1,71 +1,72 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net35</TargetFramework>
-		<AssemblyName>ArchipelagoRandomizer</AssemblyName>
-		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-		<LangVersion>Latest</LangVersion>
-		<NoWarn>1701;1702;0436</NoWarn>
-		<DebugType>portable</DebugType>
-	</PropertyGroup>
+	<Import Project="config.targets" Condition="Exists('config.targets')" />
 	
-	<!-- Custom properties-->
 	<PropertyGroup>
-		<GameDataPath>$([System.Environment]::GetFolderPath(SpecialFolder.UserProfile))\AppData\LocalLow\Ludosity\Ittle Dew 2</GameDataPath>
-		<OutDir>$(GameDataPath)\BepInEx\plugins\$(AssemblyName)</OutDir>
 		<RootNamespace>ID2</RootNamespace>
-		<Description>An Archipelago multiworld client for Ittle Dew 2</Description>
+		<AssemblyName>ArchipelagoRandomizer</AssemblyName>
+		<AssemblyTitle>ArchipelagoRandomizer</AssemblyTitle>
 		<Product>ArchipelagoRandomizer</Product>
+		<TargetFramework>net35</TargetFramework>
+		<LangVersion>Latest</LangVersion>
+		<OutputPath>$(SolutionDir)Build\</OutputPath>
+		
+		<!-- Custom properties -->
+		<ModName>ArchipelagoRandomizer</ModName>
+		<ExportDir>$(OutputPath)\Export</ExportDir>
+		<ManagedDir>$(GameInstallPath)\ID2_Data\Managed</ManagedDir>
 	</PropertyGroup>
-	<ItemGroup>
-	  <None Include="ArchipelagoRandomizer.csproj.user" />
-	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
-		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-		<PackageReference Include="BepInEx.Core" Version="5.*" />
-		<PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-		<PackageReference Include="UnityEngine.Modules" Version="5.6.7" IncludeAssets="compile" />
-		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" />
-
-		<Reference Include="$(GameInstallPath)\ID2_Data\Managed\Assembly-CSharp.dll" Publicize="true">
-			<Private>false</Private>
-		</Reference>
-		<Reference Include="$(GameDataPath)\BepInEx\plugins\ModCore\ModCore.dll">
-			<Private>false</Private>
-		</Reference>
-		<Reference Include="$(GameDataPath)\BepInEx\plugins\ItemChanger\ItemChanger.dll">
-			<Private>false</Private>
-		</Reference>
-		<Reference Include="UnityEngine.UI">
-			<HintPath>$(GameInstallPath)\ID2_Data\\Managed\UnityEngine.UI.dll</HintPath>
-		</Reference>
-		<None Update="Assets\**">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="c-wspp.dll">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-
-		<None Update="Data\*.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="manifest.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="thumbnail.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="websocket-sharp.dll">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-
-		<Publicize Include="Assembly-CSharp" />
-	</ItemGroup>
-  
-	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" />
+		
+		<Reference Include="BepInEx">
+			<HintPath>$(PluginsPath)\..\core\BepInEx.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="0Harmony">
+			<HintPath>$(PluginsPath)\..\core\0Harmony.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Assembly-CSharp" Publicize="true">
+			<HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>$(ManagedDir)\UnityEngine.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
 
+	<Target Name="LoadChecks" BeforeTargets="PrepareForBuild">
+		<!-- Warn if GameInstallPath is not defined -->
+		<Error
+			Condition="'$(GameInstallPath)' == '' Or !Exists('$(GameInstallPath)')"
+			Text="GameInstallPath not found or specified. Please define GameInstallPath in the config.targets file."
+			File="$(ProjectDir)config.targets"
+		/>
+	</Target>
+
+	<Target Name="PreBuildChecks" BeforeTargets="PreBuildEvent">
+		<!-- Error if PluginsPath is not defined -->
+		<Error Condition="'$(PluginsPath)' == '' Or !Exists('$(PluginsPath)')" Text="PluginsPath not found or specified. Please define PluginsPath in the config.targets file." />
+
+		<!-- Warn if README is missing -->
+		<Warning Condition="!Exists('$(ProjectDir)\README.md')" Text="README.md not found. The post-build zip will not include a README." />
+	</Target>
+
+	<Target Name="CopyMod" AfterTargets="PostBuildEvent">
+		<RemoveDir Directories="$(ExportDir)\" />
+		<MakeDir Directories="$(ExportDir)\" />
+		<MakeDir Directories="$(ExportDir)\zip\" />
+		<MakeDir Condition="!Exists('$(PluginsPath)\$(ModName)\')" Directories="$(PluginsPath)\$(ModName)\" />
+		<Copy SourceFiles="$(TargetPath);$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(PluginsPath)\$(ModName)\" />
+		<Copy SourceFiles="$(ProjectDir)\README.md;$(TargetPath);$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(ExportDir)\zip\" />
+		<ZipDirectory SourceDirectory="$(ExportDir)\zip\" DestinationFile="$(ExportDir)\$(ModName).zip" />
+		<RemoveDir Directories="$(ExportDir)\zip\" />
+		<GetFileHash Files="$(ExportDir)\$(ModName).zip" Algorithm="SHA256">
+			<Output TaskParameter="Items" ItemName="FilesWithHashes" />
+		</GetFileHash>
+		<WriteLinesToFile File="$(ExportDir)\SHA.txt" Lines="@(FilesWithHashes->'%(FileHash)')" Overwrite="true" Encoding="UTF-8" />
+	</Target>
 </Project>
