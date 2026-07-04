@@ -831,14 +831,14 @@
 			"type": "Lightning"
 		},
 		{
-			"itemName": "Eruption",
+			"itemName": "Meteor Shower Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 145,
 			"type": "Trap",
 			"trapType": "Eruption"
 		},
 		{
-			"itemName": "Bee Onslaught",
+			"itemName": "Bee Onslaught Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 146,
 			"type": "Trap",
@@ -852,7 +852,7 @@
 			"trapType": "Snowboarding"
 		},
 		{
-			"itemName": "Matriarch",
+			"itemName": "Matriarch Trap",
 			"iconName": "Custom/APTrap",
 			"offset": 148,
 			"type": "Trap",
